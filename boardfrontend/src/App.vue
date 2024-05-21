@@ -4,7 +4,7 @@
     <HeaderCom />
 
     <!-- 본문 -->
-    <div class="container">
+    <div>
       <router-view />
     </div>
 
