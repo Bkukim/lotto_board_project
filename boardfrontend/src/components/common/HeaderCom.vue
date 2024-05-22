@@ -1,33 +1,60 @@
 <template>
-  <div>
+  <div style="border-bottom: 1px solid #cccccc">
     <nav class="navbar navbar-expand-lg bg-dark-light">
+      <a class="navbar-brand" href="/">
+        <img
+          src="@/assets/img/LOTTO_LOGO.png"
+          alt="Logo"
+          width="200"
+          height="200"
+          class="d-inline-block align-text-top"
+        />
+      </a>
       <div class="container">
-        <a class="navbar-brand" href="#">
-          <img src="@/assets/img/LOTTO_LOGO.png" alt="Logo" width="200" height="200" class="d-inline-block align-text-top" />
-        </a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+        <!-- <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarNavDropdown"
+          aria-controls="navbarNavDropdown"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
           <span class="navbar-toggler-icon"></span>
-        </button>
+        </button> -->
         <div class="collapse navbar-collapse" id="navbarNavDropdown">
-          <ul class="navbar-nav ms-auto">
+          <ul class="navbar-nav ms-center" style="gap: 50px">
+
             <li class="nav-item">
-              <a class="nav-link active" aria-current="page" href="#">자유 게시판</a>
+              <a class="nav-link" href="#">공지사항</a>
+            </li>
+
+            <li class="nav-item">
+              <a class="nav-link" aria-current="page" href="/free/free-board"
+                >자유 게시판</a
+              >
+            </li>
+
+            <li class="nav-item">
+              <a class="nav-link" href="/clud/clud-board">동아리 게시판</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="#">공지 게시판</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="#">동아리 매칭 게시판</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="#">건의 익명 게시판</a>
+              <a class="nav-link" href="#">건의 게시판</a>
             </li>
             <li class="nav-item dropdown">
-              <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                Dropdown link
+              <a
+                class="nav-link dropdown-toggle"
+                href="#"
+                role="button"
+                data-bs-toggle="dropdown"
+                aria-expanded="false"
+              >
+                부서 게시판
               </a>
               <ul class="dropdown-menu">
-                <li><a class="dropdown-item" href="#">동아리 매칭 게시판</a></li>
+                <li>
+                  <a class="dropdown-item" href="#">동아리 매칭 게시판</a>
+                </li>
                 <li><a class="dropdown-item" href="#">자유 게시판</a></li>
                 <li><a class="dropdown-item" href="#">공지 게시판</a></li>
                 <li><a class="dropdown-item" href="#">건의 익명 게시판</a></li>
@@ -35,14 +62,35 @@
             </li>
           </ul>
         </div>
+
+        <!-- 검색 아이콘 -->
+        <router-link to="/">
+          <img
+            src="@/assets/img/serch_icon.png"
+            alt="Loo"
+            width="40"
+            height="40"
+            class="d-inline-block align-text-top"
+            style="margin-right: 15px"
+        /></router-link>
+
+        <!-- 로그인 아이콘 -->
+        <router-link to="/member/login">
+          <img
+            src="@/assets/img/login_icon.png"
+            alt="Loo"
+            width="40"
+            height="40"
+            class="d-inline-block align-text-top"
+          />
+        </router-link>
       </div>
     </nav>
   </div>
 </template>
 
 <script>
-export default {
-}
+export default {};
 </script>
 
 <style>
@@ -57,7 +105,26 @@ export default {
   margin: 0 0 0 2vw;
 }
 
-.nav-item{
+.nav-item {
   margin-right: 1.5vw;
+}
+
+
+
+/* 메뉴*/
+
+.nav-link{
+  letter-spacing: -1.8px;
+  font-weight: 500;
+}
+.nav-link:hover{
+ font-weight: bolder;
+ color: #ffffff;
+}
+.nav-item{
+  display: block;
+}
+.nav-item:hover{
+  border-bottom: 3px #162b59 solid;
 }
 </style>
