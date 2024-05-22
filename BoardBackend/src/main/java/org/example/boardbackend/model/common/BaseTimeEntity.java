@@ -46,6 +46,7 @@ public abstract class BaseTimeEntity {
         this.updateTime = LocalDateTime.now()
                 .format(DateTimeFormatter
                         .ofPattern("yyyy-MM-dd HH:mm:ss"));
+
         this.insertTime = this.updateTime;
     }
 }
