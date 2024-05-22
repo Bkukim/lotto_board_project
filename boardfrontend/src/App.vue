@@ -4,7 +4,7 @@
     <HeaderCom />
 
     <!-- 본문 -->
-    <div>
+    <div class="qhsans">
       <router-view />
     </div>
 
@@ -24,4 +24,7 @@ export default {
 };
 </script>
 <style >
+/* .qhsans{
+  height: 50vw;
+} */
 </style>
