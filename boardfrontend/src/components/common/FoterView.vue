@@ -16,7 +16,7 @@ export default {};
 
 <style>
 .footer_all {
-  background-color: #4480fe;
+  background-color: #162b59;
   height: 25vh;
   width: auto;
   color: #ffffff;

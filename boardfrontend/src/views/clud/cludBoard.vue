@@ -1,7 +1,16 @@
-
 <template>
   <div class="container text-center" id="fb_all">
-    <h3 class="mb-5 mt-5">자유게시판</h3>
+    <div
+      class="container text-center mt-5"
+      style="background-color: #cccccc; height: 300px"
+    >
+      이 부분에 이런 이미지 말고 날씨 API 넣을 예정입니다. <br>
+      공간만 만들어두면 될
+      것 같아요. 
+      <br><br>라고 민식씨가 말씀하셨습니다.
+    </div>
+
+    <h3 class="mb-5 mt-5">동아리 게시판</h3>
     <p class="mb-5">
       자유게시판은 자유로운 의견을 남기는 공간으로 건의관련 답변은 드리지
       않습니다. <br />
@@ -82,8 +91,7 @@
           <td>
             {{ index + 1 }}
           </td>
-          <td class="col-8">
-          </td>
+          <td class="col-8"></td>
           <td></td>
           <td></td>
         </tr>
@@ -106,8 +114,8 @@
   </div>
   <!-- 자유게시판 중앙정렬 전체박스 끝 -->
 </template>
-  
-  <script>
+    
+    <script>
 export default {
   data() {
     return {
@@ -116,8 +124,8 @@ export default {
   },
 };
 </script>
-  
-  <style>
+    
+    <style>
 /* 페이지 전체 높이 */
 #fb_all {
   height: 100vw;
@@ -179,5 +187,4 @@ p {
   border: none;
 }
 </style>
-  
-
+    

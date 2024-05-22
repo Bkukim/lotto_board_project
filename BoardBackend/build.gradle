@@ -50,6 +50,8 @@ dependencies {
 	//  TODO: apache kafka 라이브러리 : 메세징 서버
 	implementation 'org.springframework.kafka:spring-kafka'
 
+	//  todo: Redis : cache server
+	implementation 'org.springframework.boot:spring-boot-starter-data-redis'
 
 	// Spring boot 3.x이상에서 QueryDSL 패키지를 정의하는 방법
 	implementation 'com.querydsl:querydsl-jpa:5.0.0:jakarta'
