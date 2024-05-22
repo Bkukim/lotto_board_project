@@ -15,46 +15,40 @@ import org.springframework.stereotype.Service;
 import java.util.Optional;
 
 /**
- * packageName : org.example.boardbackend.service.event
- * fileName : EventService
+ * packageName : org.example.boardbackend.service.notice
+ * fileName : NoticeService
  * author : PC
- * date : 2024-05-21
+ * date : 2024-05-22
  * description :
  * 요약 :
  * <p>
  * ===========================================================
  * DATE            AUTHOR             NOTE
  * -----------------------------------------------------------
- * 2024-05-21         PC          최초 생성
+ * 2024-05-22         PC          최초 생성
  */
-
 @Slf4j
 @Service
-@EnableCaching // todo 캐깅 기능을 사용하게 해주는 어노테이션
 @RequiredArgsConstructor
 public class NoticeService {
-
     private final NoticeRepository noticeRepository;
 
-    @Cacheable("notices")
+    // todo 공지사항 제목으로 검색 페이지
     public Page<INoticeDto> findByTitleContaining(String title, Pageable pageable) {
         Page<INoticeDto> notices = noticeRepository.findByTitleContaining(title,pageable);
 
         return notices;
     }
 
-    @Cacheable("notice") //
+    // todo 상세조회
     public Optional<Notice> findById(long noticeId) {
-        log.debug("캐쉬 안됨");
         Optional<Notice> notice = noticeRepository.findById(noticeId);
 
         return notice;
     }
 
-    // todo 저장함수는 redis에서 이용할 수 없다.
 
-    //    사용법 : @CacheEvict(value = "값", key = "#객체명.속성명")
-    @CacheEvict(value = "notice", key = "#notice.noticeId")
+   // todo 수정함수
     public Notice update(Notice notice) {
 
         Notice notice2 = noticeRepository.save(notice);
@@ -62,8 +56,7 @@ public class NoticeService {
         return notice2;
     }
 
-    //    사용법 : @CacheEvict(value = "키이름", key = "#매개변수명")
-    @CacheEvict(value = "notice", key = "#noticeId")
+    // todo  삭제 함수
     public boolean removeById(long noticeId) {
 
         if (noticeRepository.existsById(noticeId)) {
@@ -72,6 +65,5 @@ public class NoticeService {
         }
         return false;
     }
-
 
 }
