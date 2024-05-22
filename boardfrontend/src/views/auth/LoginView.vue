@@ -100,10 +100,15 @@
             class="btn btn-custom naver mt-4"
             id="kakao-login-btn"
             type="submit"
+            @click="loginWithKakao"
           >
             <img src="@/assets/img/K.png" /> &nbsp;&nbsp; 카카오 로그인 /
             회원가입
           </button>
+          <!-- <div v-if="user">
+            <h2>{{user.kakao_account.profile.nickname}}님 환영합니다!</h2>
+            </div> -->
+
         </div>
       </div>
     </div>
@@ -122,12 +127,34 @@ export default {
     };
   },
   methods: {
+    // 카카오 로그인
+    // loginWithKakao() {
+    //   Kakao.Auth.authorize({
+    //     redirectUri: 'http://localhost:8080/member/kakao/callback'
+    //   });
+    // },
+    // 카카오 로그인 상태
+    // async checkLoginStatus() {
+    //   if (Kakao.Auth.getAccessToken()) {
+    //     try {
+    //       const response = await Kakao.API.request({
+    //         url: '/v2/user/me'
+    //       });
+    //       this.user = response;
+    //     } catch (error) {
+    //       console.error(error);
+    //     }
+    //   }
+    // },
+    // 아이디 찾기
     goFindId() {
       this.$router.push("/member/find-id");
     },
+    // 회원가입
     goJoin() {
       this.$router.push("/member/join");
     },
+    // 비밀번호 찾기
     goFindPwd() {
       this.$router.push("/member/find-pwd");
     },
