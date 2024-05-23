@@ -11,35 +11,22 @@
         />
       </a>
       <div class="container">
-        <!-- <button
-          class="navbar-toggler"
-          type="button"
-          data-bs-toggle="collapse"
-          data-bs-target="#navbarNavDropdown"
-          aria-controls="navbarNavDropdown"
-          aria-expanded="false"
-          aria-label="Toggle navigation"
-        >
-          <span class="navbar-toggler-icon"></span>
-        </button> -->
         <div class="collapse navbar-collapse" id="navbarNavDropdown">
-          <ul class="navbar-nav ms-center" style="gap: 50px">
-
+          <ul class="navbar-nav ms-center" style="gap: 30px">
             <li class="nav-item">
-              <a class="nav-link" href="#">공지사항</a>
+              <a class="nav-link" href="/notice/notice-board">공지사항</a>
             </li>
-
             <li class="nav-item">
-              <a class="nav-link" aria-current="page" href="/free/free-board"
-                >자유 게시판</a
-              >
+              <a class="nav-link" aria-current="page" href="/free/free-board">자유 게시판</a>
             </li>
-
             <li class="nav-item">
               <a class="nav-link" href="/clud/clud-board">동아리 게시판</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="#">건의 게시판</a>
+              <a class="nav-link" href="/complaint/complaint-board">건의 게시판</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#">이벤트</a>
             </li>
             <li class="nav-item dropdown">
               <a
@@ -63,16 +50,29 @@
           </ul>
         </div>
 
-        <!-- 검색 아이콘 -->
-        <router-link to="/">
-          <img
-            src="@/assets/img/serch_icon.png"
-            alt="Loo"
-            width="40"
-            height="40"
-            class="d-inline-block align-text-top"
-            style="margin-right: 15px"
-        /></router-link>
+        <!-- 검색바 -->
+        <nav class="navbar navbar-light bg-light" style="background-color: rgb(255, 255, 255);">
+          <div class="navbar container-fluid" style="background-color: rgb(255, 255, 255); height: 70px;" >
+            <form class="d-flex"> 
+              <input
+                class="form-control me-2"
+                type="search"
+                placeholder="Search"
+                aria-label="Search"
+              />
+              <button class="btn btn-outline-success search-button" type="submit" style="border: none;" id="s_all">
+                <img
+                  src="@/assets/img/serch_icon.png"
+                  alt="Loo"
+                  width="40"
+                  height="40"
+                  class="d-inline-block align-text-top"
+                  style="margin-right: 15px;" 
+                />
+              </button>
+            </form>
+          </div>
+        </nav>
 
         <!-- 로그인 아이콘 -->
         <router-link to="/member/login">
@@ -109,22 +109,41 @@ export default {};
   margin-right: 1.5vw;
 }
 
-
-
-/* 메뉴*/
-
-.nav-link{
+/* 메뉴 */
+.nav-link {
   letter-spacing: -1.8px;
   font-weight: 500;
 }
-.nav-link:hover{
- font-weight: bolder;
- color: #ffffff;
+
+.nav-link:hover {
+  font-weight: bolder;
+  color: #ffffff;
 }
-.nav-item{
+
+.nav-item {
   display: block;
 }
-.nav-item:hover{
+
+.nav-item:hover {
   border-bottom: 3px #162b59 solid;
 }
+
+/* 검색 돋보기 아이콘 */
+#s_all:hover{
+  
+  background-color: #2d61d056;
+}
+
+.search-button {
+  border: none;
+  background-color: transparent;
+  padding: 0;
+}
+
+.search-button:hover {
+  background-color: #162b59;
+}
+
+
+
 </style>
