@@ -1,4 +1,4 @@
-﻿package org.example.boardbackend.service.notice;
+package org.example.boardbackend.service.notice;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

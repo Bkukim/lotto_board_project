@@ -20,7 +20,7 @@
         <!-- 팀 인원 수 설정 -->
         <div class="select-wrapper">
           <select v-model="matchDetails.teamSize" class="half-width-select">
-            <option disabled value="">팀 인원 수 선택</option>
+            <option disabled value="">경기 인원 수 선택</option>
             <option value="5vs5">5vs5</option>
             <option value="6vs6">6vs6</option>
           </select>
@@ -30,7 +30,7 @@
         <!-- 경기 형식 설정 -->
         <div class="select-wrapper">
           <select v-model="matchDetails.matchType" class="half-width-select">
-            <option disabled value="">경기 형식 선택</option>
+            <option disabled value="">경기 방식 선택</option>
             <option value="3파전">3파전</option>
             <option value="토너먼트">토너먼트</option>
           </select>

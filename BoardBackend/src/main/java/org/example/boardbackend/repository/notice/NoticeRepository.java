@@ -1,4 +1,4 @@
-﻿package org.example.boardbackend.repository.notice;
+package org.example.boardbackend.repository.notice;
 
 import org.example.boardbackend.model.dto.notice.INoticeDto;
 import org.example.boardbackend.model.entity.notice.Notice;
