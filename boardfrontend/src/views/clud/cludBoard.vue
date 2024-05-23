@@ -7,7 +7,7 @@
       이 부분에 이런 이미지 말고 날씨 API 넣을 예정입니다. <br>
       공간만 만들어두면 될
       것 같아요. 
-      <br><br>라고 민식씨가 말씀하셨습니다.
+      <br><br> <b style="font-size: 50px;">라고 민식씨가 말씀하셨습니다.</b>
     </div>
 
     <h3 class="mb-5 mt-5">동아리 게시판</h3>
@@ -78,11 +78,10 @@
     <table class="table mt-5">
       <thead>
         <tr>
-          <th scope="col">번호</th>
+          <th scope="col">시간</th>
           <th scope="col">제목</th>
-          <th scope="col">작성자</th>
-          <th scope="col">등록일</th>
-          <th scope="col">조회수</th>
+          <th scope="col">    </th>
+          <th scope="col">    </th>
         </tr>
       </thead>
       <tbody>
@@ -92,8 +91,12 @@
             {{ index + 1 }}
           </td>
           <td class="col-8"></td>
-          <td></td>
-          <td></td>
+          <!-- 마감임박 버튼 -->
+          <td><button type="button" class="btn btn-danger" style="background-color: #ff5542; border: none;">마감임박!</button></td>
+          <!-- 신청가능 버튼 -->
+          <td><button type="button" class="btn btn-danger" style="background-color: #1570ff; border: none;">신청가능</button></td>
+          <!-- 마감 버튼 -->
+          <td><button type="button" class="btn btn-danger" style="background-color: #cccccc; border: none;">마감</button></td>
         </tr>
       </tbody>
     </table>
