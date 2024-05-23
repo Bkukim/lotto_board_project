@@ -20,7 +20,7 @@ import org.hibernate.annotations.DynamicUpdate;
  * 2024-05-21         PC          최초 생성
  */
 @Entity
-@Table(name = "NOTICE")
+@Table(name = "LOTTO_NOTICE")
 @SequenceGenerator(
         name = "SQ_NOTICE_GENERATOR"
         , sequenceName = "SQ_NOTICE"
