@@ -6,9 +6,6 @@
     >
       매칭 글 작성
     </h3>
-
-    
-
     <div class="shadow"
       style="
         width: 1000px;
@@ -59,7 +56,7 @@
               class="half-width-select"
               style="height: 50px; padding-left: 20px"
             >
-              <option disabled value="">팀 인원 수 선택</option>
+              <option disabled value="">경기 인원 수 선택</option>
               <option value="5vs5">5vs5</option>
               <option value="6vs6">6vs6</option>
             </select>
@@ -85,7 +82,7 @@
               class="half-width-select"
               style="height: 50px; padding-left: 20px"
             >
-              <option disabled value="">경기 형식 선택</option>
+              <option disabled value="">경기 방식 선택</option>
               <option value="3파전">3파전</option>
               <option value="토너먼트">토너먼트</option>
             </select>
