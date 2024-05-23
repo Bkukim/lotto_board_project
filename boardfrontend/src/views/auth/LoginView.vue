@@ -81,35 +81,40 @@
           </div>
         </div>
       </div>
-      <!-- 소셜로그인 -->
+      <!-- 소셜 로그인 : 네이버 -->
       <div class="row text-center mt-5">
         <div>
-          <button
+          <!-- <button
             class="btn btn-custom naver mt-4 mb-3"
             id="naver-login-btn"
             type="submit"
           >
             <img src="@/assets/img/N.png" /> &nbsp;&nbsp; 네이버 로그인 /
             회원가입
-          </button>
+          </button> -->
+          <img src="@/assets/img/btnG_완성형.png" />
         </div>
       </div>
+      <!-- 소셜 로그인 : 카카오 -->
       <div class="row text-center">
         <div>
-          <button
+          <!-- <button
             class="btn btn-custom naver mt-4"
             id="kakao-login-btn"
             type="submit"
             @click="loginWithKakao"
-          >
-            <img src="@/assets/img/K.png" /> &nbsp;&nbsp; 카카오 로그인 /
+          > -->
+            <!-- <img src="@/assets/img/K.png" /> &nbsp;&nbsp; 카카오 로그인 /
             회원가입
-          </button>
+          </button> -->
           <!-- <div v-if="user">
             <h2>{{user.kakao_account.profile.nickname}}님 환영합니다!</h2>
             </div> -->
-
+        <img src="@/assets/img/kakao_login_medium_wide.png" />
         </div>
+        <br>
+        <br>
+        <br>
       </div>
     </div>
   </div>
