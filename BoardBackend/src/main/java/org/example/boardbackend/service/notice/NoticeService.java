@@ -55,6 +55,12 @@ public class NoticeService {
 
         return notice2;
     }
+// todo 저장함수
+    public Notice save(Notice notice) {
+//        JPA 저장 함수 실행 : return 값 : 저장된 객체
+        Notice notice1 = noticeRepository.save(notice);
+        return notice1;
+    }
 
     // todo  삭제 함수
     public boolean removeById(long noticeId) {
