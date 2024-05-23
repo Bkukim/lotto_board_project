@@ -92,9 +92,10 @@
             <img src="@/assets/img/N.png" /> &nbsp;&nbsp; 네이버 로그인 /
             회원가입
           </button> -->
-          <img src="@/assets/img/btnG_완성형.png" />
+          <img src="@/assets/img/btnG_완성형.png" style="width:300px; height:auto;"/>
         </div>
       </div>
+      <br>
       <!-- 소셜 로그인 : 카카오 -->
       <div class="row text-center">
         <div>
@@ -110,7 +111,7 @@
           <!-- <div v-if="user">
             <h2>{{user.kakao_account.profile.nickname}}님 환영합니다!</h2>
             </div> -->
-        <img src="@/assets/img/kakao_login_medium_wide.png" />
+        <img src="@/assets/img/kakao_login_medium_wide.png" style="width: 300px; height:auto;" />
         </div>
         <br>
         <br>
