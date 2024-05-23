@@ -48,7 +48,7 @@ public class NoticeService {
     }
 
 
-   // todo 수정함수
+    // todo 수정함수
     public Notice update(Notice notice) {
 
         Notice notice2 = noticeRepository.save(notice);

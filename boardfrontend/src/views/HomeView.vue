@@ -328,7 +328,7 @@ export default {
 /* HOT */
 .hot_cm {
   height: 100px;
-  background-color: #eae8e8b9;
+  background-color: #f0f0f0b9;
   text-align: center;
   font-size: 20px;
   padding: 20px;

@@ -43,9 +43,9 @@ public class NormalNoticeController {
 
     @GetMapping("/all/{eventYn}")
     public ResponseEntity<Object> getAllNotice(@PathVariable boolean eventYn, // 이벤트 가 존재하면 true 보내게
-                                     @RequestParam String title,
-                                     @RequestParam int page,
-                                     @RequestParam int size){
+                                               @RequestParam String title,
+                                               @RequestParam int page,
+                                               @RequestParam int size){
         try {
             Pageable pageable = PageRequest.of(page, size);
             Map<String, Object> response = new HashMap<>();
@@ -54,13 +54,13 @@ public class NormalNoticeController {
                 notices = noticeRedisService
                         .redisFindByTitleContaining(title, pageable);
             } else {
-               notices = noticeRedisService
+                notices = noticeRedisService
                         .findByTitleContaining(title, pageable);
             }
-                response.put("notices", notices.getContent());
-                response.put("currentPage", notices.getNumber());
-                response.put("totalItems", notices.getTotalElements());
-                response.put("totalPages", notices.getTotalPages());
+            response.put("notices", notices.getContent());
+            response.put("currentPage", notices.getNumber());
+            response.put("totalItems", notices.getTotalElements());
+            response.put("totalPages", notices.getTotalPages());
 
             return new ResponseEntity<>(response,HttpStatus.OK);
 

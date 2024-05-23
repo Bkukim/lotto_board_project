@@ -1,5 +1,9 @@
 package org.example.boardbackend.config;
 
+
+
+
+
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -64,3 +68,4 @@ public class RedisConfig {
                 .serializeValuesWith(SerializationPair.fromSerializer(new GenericJackson2JsonRedisSerializer())); // Value 를 직렬화할 때 사용하는 규칙. Jackson2 를 많이 사용함
     }
 }
+
