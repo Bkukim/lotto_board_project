@@ -37,7 +37,7 @@ import org.hibernate.annotations.DynamicUpdate;
 @DynamicInsert
 @DynamicUpdate
 public class FreeBoardReport extends BaseTimeEntity {
-//    시퀀스 명 바꾸기
+    //    시퀀스 명 바꾸기
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE
             , generator = "SQ_FREE_BOARD_REPORT_GENERATOR"

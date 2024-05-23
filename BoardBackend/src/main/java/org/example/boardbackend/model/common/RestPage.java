@@ -1,4 +1,4 @@
-﻿package org.example.boardbackend.model.common;
+package org.example.boardbackend.model.common;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;

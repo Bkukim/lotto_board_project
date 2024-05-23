@@ -1,4 +1,4 @@
-﻿package org.example.boardbackend.model.dto.notice;
+package org.example.boardbackend.model.dto.notice;
 
 /**
  * packageName : org.example.boardbackend.model.dto.notice

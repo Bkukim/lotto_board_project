@@ -1,4 +1,4 @@
-﻿package org.example.boardbackend.model.entity.notice;
+package org.example.boardbackend.model.entity.notice;
 
 import jakarta.persistence.*;
 import lombok.*;
