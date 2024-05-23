@@ -23,6 +23,7 @@ repositories {
 }
 
 dependencies {
+
 	//  TODO: model mapper : entity 에서 dto 로 변환하는 라이브러리 (entity <-> dto)
 	implementation 'org.modelmapper:modelmapper:2.4.2'
 
@@ -67,6 +68,7 @@ dependencies {
 	annotationProcessor 'org.projectlombok:lombok'
 	providedRuntime 'org.springframework.boot:spring-boot-starter-tomcat'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 }
 
 tasks.named('bootBuildImage') {
@@ -76,7 +78,6 @@ tasks.named('bootBuildImage') {
 tasks.named('test') {
 	useJUnitPlatform()
 }
-
 // TODO: 여기 복사 : 쿼리 dsl 빌드 부분
 // === QueryDsl 빌드 옵션 (선택) ===
 def querydslDir = "$buildDir/generated/querydsl"
