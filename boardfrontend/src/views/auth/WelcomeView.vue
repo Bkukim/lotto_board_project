@@ -10,16 +10,16 @@
       <div class="row justify-content-md-center">
         <div class="col-8">
         
-          <div class="mt-5" id="box">
+          <!-- <div class="mt-5" id="box"> -->
             <!-- 로고 이미지 -->
-            <div class="text-center">
+            <!-- <div class="text-center">
               <img src="@/assets/images/ROUTTO_logo_wh.png">
-            </div>
+            </div> -->
             <!-- 루또에 오신 것을 환영합니다 . 시작  -->
-           <div class="text-center">
+           <!-- <div class="text-center">
             <h3>루또에 오신 것을 환영합니다.</h3>
-           </div>
-          </div>
+           </div> -->
+          <!-- </div> -->
         </div>
       </div>
     </div>
@@ -42,6 +42,11 @@
       
     </div>
   </div>
+  <br />
+  <br />
+  <br />
+  <br />
+  <br />
   <br />
   <br />
   <br />
