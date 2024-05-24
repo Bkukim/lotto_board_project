@@ -1,6 +1,7 @@
 package org.example.boardbackend.repository.notice;
 
 import org.example.boardbackend.model.dto.notice.INoticeDto;
+import org.example.boardbackend.model.dto.notice.NoticeAllDto;
 import org.example.boardbackend.model.entity.notice.Notice;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -23,16 +24,27 @@ import org.springframework.stereotype.Repository;
  * 2024-05-21         PC          최초 생성
  */
 @Repository
-public interface NoticeRepository extends JpaRepository<Notice,Long> {
+public interface NoticeRepository extends JpaRepository<Notice, Long> {
     @Query(value = "SELECT NOTICE_ID AS noticeId\n" +
             ", TITLE AS title\n" +
             ", CONTENT AS content\n" +
             ", NOTICE_ING_URL AS noticeImgUrl\n" +
             ", NOTICE_IMG_UUID AS noticeImgUuid\n" +
             ", EVENT_YN AS eventYn\n" +
-            "FROM NOTICE\n" +
+            "FROM LOTTO_NOTICE\n" +
+            "WHERE TITLE LIKE '%'|| :title ||'%'"
+            , countQuery = "SELECT COUNT(*)\n" +
+            "FROM LOTTO_NOTICE\n" +
             "WHERE TITLE LIKE '%'|| :title ||'%'"
             , nativeQuery = true
     )
     Page<INoticeDto> findByTitleContaining(@Param("title") String title, Pageable pageable);
+//    @Query(value = "SELECT NOTICE_ID, TITLE \n" +
+//            "FROM LOTTO_NOTICE\n" +
+//            "WHERE TITLE LIKE '%'||:title||'%'",
+//    countQuery = "SELECT NOTICE_ID, TITLE \n" +
+//            "FROM LOTTO_NOTICE\n" +
+//            "WHERE TITLE LIKE '%h%'",
+//    nativeQuery = true)
+//    Page<NoticeAllDto> findAllByTitleContaining(@Param("title") String title, Pageable pageable);
 }

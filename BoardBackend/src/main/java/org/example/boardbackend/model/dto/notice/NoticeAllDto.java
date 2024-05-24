@@ -2,23 +2,19 @@ package org.example.boardbackend.model.dto.notice;
 
 /**
  * packageName : org.example.boardbackend.model.dto.notice
- * fileName : INoticeDto
- * author : PC
- * date : 2024-05-21
- * description :
+ * fileName : NoticeAllDto
+ * author : KimDJ
+ * date : 2024-05-24
+ * description : 기본키와 제목만 가져오는  DTO
  * 요약 :
+ *
  * <p>
  * ===========================================================
  * DATE            AUTHOR             NOTE
  * -----------------------------------------------------------
- * 2024-05-21         PC          최초 생성
+ * 2024-05-24         KimDJ          최초 생성
  */
-public interface INoticeDto {
+public interface NoticeAllDto {
     long getNoticeId();
     String getTitle();
-    String getContent();
-    String getNoticeImgUrl();
-    String getNoticeImgUuid();
-    String eventYn();
-
 }

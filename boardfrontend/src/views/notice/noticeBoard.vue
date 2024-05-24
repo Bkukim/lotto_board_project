@@ -1,9 +1,12 @@
-
 <template>
   <div class="container text-center" id="fb_all">
     <h3
       class="mb-5 mt-5"
-      style="color: #535353; font-family: Inter-Light, sans-serif; font-weight: 600;"
+      style="
+        color: #535353;
+        font-family: Inter-Light, sans-serif;
+        font-weight: 600;
+      "
       id="nt_h3"
     >
       공지사항
@@ -28,8 +31,8 @@
               -- 검색 선택 ---
             </button>
             <ul class="dropdown-menu">
-              <li><a class="dropdown-item" href="#">Action</a></li>
-              <li><a class="dropdown-item" href="#">Another action</a></li>
+              <li><a class="dropdown-item" href="#">이벤트</a></li>
+              <li><a class="dropdown-item" href="#">공지사항</a></li>
               <li><a class="dropdown-item" href="#">Something else here</a></li>
             </ul>
           </div>
@@ -86,13 +89,13 @@
       </thead>
       <tbody>
         <!-- 반복문 시작할 행 -->
-        <tr v-for="(data, index) in freeList" :key="index">
+        <tr v-for="(data, index) in notices" :key="index">
           <td>
             {{ index + 1 }}
           </td>
-          <td class="col-8"></td>
-          <td></td>
-          <td></td>
+          <td class="col-8">{{ data.title }}</td>
+          <td>관리자</td>
+          <td>{{ data.insertTime }}</td>
           <td></td>
         </tr>
       </tbody>
@@ -114,18 +117,52 @@
   </div>
   <!-- 자유게시판 중앙정렬 전체박스 끝 -->
 </template>
-    
-    <script>
+
+<script>
+import NoticeService from "@/services/notice/NoticeService";
+
 export default {
   data() {
     return {
-      freeList: [1, 2, 3, 4],
+      notices: [],
+      title: "",
+      eventYn: "n",
+
+      // 공통속성
+      page: 1, // 현재페이지번호
+      count: 0, // 전체데이터개수
+      pageSize: 10, // 1페이지당개수(select태그)
     };
+  },
+  methods: {
+    // 전체조회 함수
+    async retrieveNotice() {
+      try {
+        // TODO: 1) 공통 전체조회 함수 실행
+        let response = await NoticeService.getAll(
+          this.eventYn,
+          this.title, // 검색어
+          this.page - 1, // 현재페이지번호-1
+          this.pageSize // 1페이지당개수(size)
+        );
+        console.log("프론트입니다")
+        const { notices, totalItems } = response.data; // 부서배열(벡엔드 전송)
+        this.notices = notices; // 부서배열(벡엔드 전송)
+        this.count = totalItems; // 전체페이지수(벡엔드 전송)
+        console.log(response.data);
+      } catch (e) {
+        console.log(e);
+      }
+    },
+  },
+  mounted() {
+    this.retrieveNotice();
+    window.scrollTo(0, 0);
   },
 };
 </script>
-    
-    <style>
+
+<style>
 /* 페이지 전체 높이 */
 #fb_all {
   height: 100vw;
@@ -195,6 +232,3 @@ p {
   border: none;
 }
 </style>
-    
-  
-  
