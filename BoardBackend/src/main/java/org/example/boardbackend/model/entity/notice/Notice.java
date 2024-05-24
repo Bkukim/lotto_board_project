@@ -6,6 +6,9 @@ import org.example.boardbackend.model.common.BaseTimeEntity;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 
+import java.sql.Blob;
+import java.sql.Clob;
+
 /**
  * packageName : org.example.boardbackend.model.entity
  * fileName : Event
@@ -43,10 +46,12 @@ public class Notice extends BaseTimeEntity {
     )
     private long noticeId;
     private String title;
+    @Lob
     private String content;
     private byte[] noticeImg;
     private String noticeImgUrl;
     private String noticeImgUuid;
-    private boolean eventYn;
-    private long eventWinnerQuota;
+    private String eventYn;
+    @Lob
+    private String eventWinnerQuota;
 }
