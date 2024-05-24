@@ -38,17 +38,20 @@ import java.util.Optional;
 public class NormalNoticeController {
 
     private final NoticeRedisService noticeRedisService;
-
+//todo: 공지사항 clob이 string 변환이 안되어서
+//      문제 되어서 조회가 안되는거라고 합니다...
+//      아직 못찾았어요 그래서 타이틀만 조회하려고 하니까 레디스 어캐 조회하는지 몰라서 일단 둬요..ㅠ
     @GetMapping("/all/{eventYn}")
-    public ResponseEntity<Object> getAllNotice(@PathVariable boolean eventYn, // 이벤트 가 존재하면 true 보내게
+    public ResponseEntity<Object> getAllNotice(@PathVariable String eventYn, // 이벤트 가 존재하면 true 보내게
                                                @RequestParam String title,
                                                @RequestParam int page,
-                                               @RequestParam int size){
+                                               @RequestParam int size) {
         try {
+            log.debug("실행시작");
             Pageable pageable = PageRequest.of(page, size);
             Map<String, Object> response = new HashMap<>();
             Page<INoticeDto> notices;
-            if (eventYn) { // 이벤트가 있을경우 레디스 사용
+            if (eventYn.equals("y")) { // 이벤트가 있을경우 레디스 사용
                 notices = noticeRedisService
                         .redisFindByTitleContaining(title, pageable);
             } else {
@@ -59,11 +62,11 @@ public class NormalNoticeController {
             response.put("currentPage", notices.getNumber());
             response.put("totalItems", notices.getTotalElements());
             response.put("totalPages", notices.getTotalPages());
+            log.debug("실행다됨"+response);
 
-            return new ResponseEntity<>(response,HttpStatus.OK);
-
+            return new ResponseEntity<>(response, HttpStatus.OK);
         } catch (Exception e) {
-            log.debug(e.getMessage());
+            log.debug("실행중"+e.getMessage());
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
@@ -71,16 +74,16 @@ public class NormalNoticeController {
 
     @GetMapping("/{noticeId}/{eventYn}")
     public ResponseEntity<Object> getNoticeByNoticeId(@PathVariable long noticeId,
-                                                      @PathVariable boolean eventYn){
+                                                      @PathVariable boolean eventYn) {
         try {
             Optional<Notice> notice;
             if (eventYn) {
                 notice = noticeRedisService.redisFindById(noticeId);
-            }else {
+            } else {
                 notice = noticeRedisService.findById(noticeId);
             }
             return new ResponseEntity<>(notice, HttpStatus.OK);
-        }catch (Exception e){
+        } catch (Exception e) {
             log.debug(e.getMessage());
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }

@@ -10,6 +10,11 @@ const routes = [
     path: "/about",
     component: () => import("../views/AboutView.vue"),
   },
+  // 공지사항 add
+  {
+    path: "/notice-add",
+    component: () => import("../views/notice/AdminNoticeAdd.vue"),
+  },
   // 로그인
   {
     path: "/member/login",
