@@ -214,6 +214,7 @@
               </td>
               <td></td>
             </tr>
+
             <!-- email tr -->
             <tr>
               <td scope="row">
@@ -244,14 +245,21 @@
                   aria-label="Default select example"
                   v-model="user.department"
                 >
-                  <option value="Accounting Department">Accounting Department</option>
-                  <option selected value="Legal Department">Legal Department</option>
-                  <option value="Marketing Department">Marketing Department</option>
-                  <option selected value="Management Department">Management Department</option>
+                  <option value="Accounting Department">
+                    Accounting Department
+                  </option>
+                  <option selected value="Legal Department">
+                    Legal Department
+                  </option>
+                  <option value="Marketing Department">
+                    Marketing Department
+                  </option>
+                  <option selected value="Management Department">
+                    Management Department
+                  </option>
                 </select>
               </td>
-              <td>
-              </td>
+              <td></td>
             </tr>
             <!-- 주소 tr -->
             <tr>
@@ -420,7 +428,6 @@
         <!-- 기본 정보 테이블 끝 -->
         <br />
         <br />
-        <br />
         <!-- 추가 정보 테이블 시작-->
         <table class="table">
           <thead>
@@ -513,7 +520,7 @@ export default {
         birthday: "",
         email: "",
         role: "",
-        department:"",
+        department: "",
         detailAddress: "",
         pwQuestion: "",
         pwAnswer: "",
@@ -569,6 +576,7 @@ export default {
         alert("이름을 입력해주세요");
         return;
       }
+ 
       if (this.user.email == "") {
         alert("email을 입력해주세요");
         return;
@@ -577,7 +585,7 @@ export default {
         alert("올바른 email형식이 아닙니다");
         return;
       }
-      if(this.user.department == ""){
+      if (this.user.department == "") {
         alert("부서를 선택해주세요");
         return;
       }
