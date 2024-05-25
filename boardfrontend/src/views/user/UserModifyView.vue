@@ -340,15 +340,15 @@ export default {
       }
     },
 
-    // 유저 삭제 확인 함수
-    confirmDeleteUser() {
-      if (confirm("정말로 탈퇴 하시겠습니까?")) {
-        console.log("회원 탈퇴 완료");
-      } else {
-        console.log("회원 탈퇴 취소");
-        return;
-      }
-    },
+    // // 유저 삭제 확인 함수
+    // confirmDeleteUser() {
+    //   if (confirm("정말로 탈퇴 하시겠습니까?")) {
+    //     console.log("회원 탈퇴 완료");
+    //   } else {
+    //     console.log("회원 탈퇴 취소");
+    //     return;
+    //   }
+    // },
 
     // 주소함수
     execDaumPostcode() {
