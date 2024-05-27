@@ -1,10 +1,10 @@
-package org.example.boardbackend.controller.user.board;
+package org.example.boardbackend.controller.user.board.club;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.example.boardbackend.model.dto.board.club.CreateClubArticleDto;
 import org.example.boardbackend.model.entity.board.club.ClubBoard;
-import org.example.boardbackend.service.board.ClubBoardService;
+import org.example.boardbackend.service.board.club.ClubBoardService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
