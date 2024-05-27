@@ -19,6 +19,6 @@ public interface INoticeDto {
     String getContent();
     String getNoticeImgUrl();
     String getNoticeImgUuid();
-    boolean eventYn();
-    long eventWinnerQuota();
+    String eventYn();
+
 }

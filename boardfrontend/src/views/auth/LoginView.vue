@@ -92,25 +92,17 @@
             <img src="@/assets/img/N.png" /> &nbsp;&nbsp; 네이버 로그인 /
             회원가입
           </button> -->
-          <img src="@/assets/img/btnG_완성형.png" />
+          <img src="@/assets/img/btnG_완성형.png" style="width:300px; height:auto;"/>
         </div>
       </div>
+      <br>
       <!-- 소셜 로그인 : 카카오 -->
       <div class="row text-center">
         <div>
-          <!-- <button
-            class="btn btn-custom naver mt-4"
-            id="kakao-login-btn"
-            type="submit"
-            @click="loginWithKakao"
-          > -->
-            <!-- <img src="@/assets/img/K.png" /> &nbsp;&nbsp; 카카오 로그인 /
-            회원가입
-          </button> -->
+           <img src="@/assets/img/kakao_login_medium_wide.png" style="width: 300px; height:auto;" @click="goToKakaoAuth"/>
           <!-- <div v-if="user">
             <h2>{{user.kakao_account.profile.nickname}}님 환영합니다!</h2>
             </div> -->
-        <img src="@/assets/img/kakao_login_medium_wide.png" />
         </div>
         <br>
         <br>
@@ -120,37 +112,39 @@
   </div>
 </template>
   <script>
+  // TODO: 1) spring 보내준 user 객체(웹토큰있음)를 로컬스토리지에 저장
+// TODO:   사용법 :  localStorage.setItem(키, 값);
+// TODO:     => 단, 값은 문자열만 저장됨
+// TODO:   사용법 : JSON.stringify(객체) => 문자열로 바뀐 객체가 리턴됨
+// TODO: 2) 공유저장소의 state / mutations 함수 접근법
+// TODO:   mutations 사용법 : this.$store.commit("함수명", 저장할객체)
+// TODO:     => 로그인성공 공유함수(loginSuccess(state, 유저객체)) 실행
+// TODO:   state 사용법 : this.$store.state.공유속성명
+// TODO:     => 공유저장소의 공유속성 접근법
+// TODO: 3) 뷰의 라이프사이클
+// TODO:   - mounted() : 화면이 뜰때 자동 실행 (생명주기 함수)
+// TODO:   - created() : 뷰가 생성될대 자동 실행
+// TODO:   - created()(1번, 뷰만 생성되면 실행) -> mounted()(2번, html 태그까지 모두 뜰때)
+// TODO:     예) destoryed() : 뷰가 삭제될때 실행 (거의 사
 import AuthService from "@/services/auth/AuthService";
 export default {
   data() {
     return {
       user: {
         role: "",
-        userId: "",
+        userId: "",   // 로그인 ID
         password: "",
       },
     };
   },
   methods: {
     // 카카오 로그인
-    // loginWithKakao() {
-    //   Kakao.Auth.authorize({
-    //     redirectUri: 'http://localhost:8080/member/kakao/callback'
-    //   });
-    // },
-    // 카카오 로그인 상태
-    // async checkLoginStatus() {
-    //   if (Kakao.Auth.getAccessToken()) {
-    //     try {
-    //       const response = await Kakao.API.request({
-    //         url: '/v2/user/me'
-    //       });
-    //       this.user = response;
-    //     } catch (error) {
-    //       console.error(error);
-    //     }
-    //   }
-    // },
+   goToKakaoAuth() {
+      const client_id = 	"6a9b8daaeef2609b3db2849d027f6080";         // Rest API 키
+      const redirect_uri = 	"http://localhost:8080/auth-redirect";   // Redirect URI
+      const kakaoAuthUrl = `https://kauth.kakao.com/oauth/authorize?client_id=${client_id}&redirect_uri=${redirect_uri}&response_type=code`; // response_type=code는 고정
+      window.location.href = kakaoAuthUrl;  // 이 페이지는 카카오에서 제공하는 페이지라 따로 페이지 만들 필요 없음
+    },
     // 아이디 찾기
     goFindId() {
       this.$router.push("/member/find-id");
@@ -171,12 +165,14 @@ export default {
       try {
         let response = await AuthService.login(this.user);
         console.log(response.data); // response.data == jwt, userId, 권한
-        localStorage.setItem("user", JSON.stringify(response.data)); // 로칼호스트는 객체를 저장할 수 없기에 이걸 문자열러 바꿔서 진행해야한다.
+        localStorage.setItem("user", JSON.stringify(response.data)); // 로칼호스트는 객체를 저장할 수 없기에 이걸 문자열로 바꿔서 진행해야한다.
         this.$store.commit("loginSuccess", response.data);
 
         if (this.$store.state.user.role == "ROLE_USER") {
+          alert("로그인에 성공하였습니다.")
           this.$router.push("/");
         } else if (this.$store.state.user.role == "ROLE_ADMIN") {
+          alert("관리자 로그인에 성공하였습니다.")
           this.$router.push("/shop/admin/order");
         }
       } catch (e) {
