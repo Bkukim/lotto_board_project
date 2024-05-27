@@ -91,4 +91,15 @@ public class JwtUtils {
 
         return false;
     }
+
+    // 카카오 로그인을 위한 jwt생성 함수
+
+    public String generateJwtTokenForKakao(String userId) {
+        return Jwts.builder()
+                .setSubject(userId)
+                .setIssuedAt(new Date())
+                .setExpiration(new Date((new Date()).getTime() + jwtExpirationMs))
+                .signWith(SignatureAlgorithm.HS512, jwtSecret) // 암호화 적용 서명
+                .compact(); // 토큰 생성
+    }
 }
