@@ -29,6 +29,11 @@ const routes = [
     path: "/member/join",
     component: () => import("../views/auth/JoinView.vue"),
   },
+   // 회원가입 환영 페이지
+   {
+    path: "/member/join/welcome",
+    component: () => import("../views/auth/WelcomeView.vue"),
+  },
   // 아이디 찾기 페이지
   {
     path: "/member/find-id",
@@ -67,23 +72,23 @@ const routes = [
   },
   // 자유 게시판 -> 상세조회
   {
-    path: "/free/free-boardDetail",
+    path: "/free/free-boardDetail/:freeBoardId",
     component: () => import("../views/free/freeBoardDetail.vue"),
   },
   // 동아리 게시판
   {
-    path: "/clud/clud-board",
-    component: () => import("../views/clud/cludBoard.vue"),
+    path: "/club/club-board",
+    component: () => import("../views/club/clubBoard.vue"),
   },
   // 동아리 게시판 -> 매칭글쓰기
   {
-    path: "/clud/clud-boardDetail",
-    component: () => import("../views/clud/cludBoardDetail.vue"),
+    path: "/club/club-boardDetail",
+    component: () => import("../views/club/clubBoardDetail.vue"),
   },
   // 동아리 게시판 -> 매칭 모집글 게시글
   {
-    path: "/clud/clud-boardRecruitment",
-    component: () => import("../views/clud/cludBorardRecruitment.vue"),
+    path: "/club/club-boardRecruitment",
+    component: () => import("../views/club/clubBorardRecruitment.vue"),
   },
   // 건의 게시판
   {
