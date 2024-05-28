@@ -19,12 +19,14 @@ const routes = [
   {
     path: "/member/login",
     component: () => import("../views/auth/LoginView.vue"),
+
   },  
   // 카카오 로그인
   {
     path: "/auth-redirect",
     component: () => import("../views/auth/KakaoRedirectView.vue"),
   },  
+
   // 회원가입 페이지
   {
     path: "/member/join",
@@ -46,21 +48,37 @@ const routes = [
     path: "/member/find-pwd",
     component: () => import("../views/auth/FindPwd.vue"),
   },
+  // 비밀번호 재설정 페이지
+  {
+    path: "/member/new-pw",
+    component: () => import("../views/auth/NewPwdView.vue"),
+  },
+  // 회원정보 수정 페이지
+  {
+    path: "/member/user-modify",
+    component: () => import("../views/user/UserModifyView.vue"),
+  },
+
   // 공지사항
   {
     path: "/notice/notice-board",
     component: () => import("../views/notice/noticeBoard.vue"),
+  },
+  // 공지사항 add
+  {
+    path: "/notice-add",
+    component: () => import("../views/notice/AdminNoticeAdd.vue"),
   },
   // 자유 게시판
   {
     path: "/free/free-board",
     component: () => import("../views/free/freeBoard.vue"),
   },
-    // 자유 게시판 -> 상세조회
-    {
-      path: "/free/free-boardDetail",
-      component: () => import("../views/free/freeBoardDetail.vue"),
-    },
+  // 자유 게시판 -> 상세조회
+  {
+    path: "/free/free-boardDetail",
+    component: () => import("../views/free/freeBoardDetail.vue"),
+  },
   // 동아리 게시판
   {
     path: "/club/club-board",
@@ -80,6 +98,11 @@ const routes = [
   {
     path: "/complaint/complaint-board",
     component: () => import("../views/complaint/complaintBoard.vue"),
+  },
+  // 각게시판별 공지사항 관리 ::
+  {
+    path: "/notice-master",
+    component: () => import("../views/admin/MasterBoardNoticesAdmin.vue"),
   },
 ];
 
