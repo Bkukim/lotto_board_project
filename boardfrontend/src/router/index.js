@@ -72,18 +72,18 @@ const routes = [
   },
   // 동아리 게시판
   {
-    path: "/clud/clud-board",
-    component: () => import("../views/clud/cludBoard.vue"),
+    path: "/club/club-board",
+    component: () => import("../views/club/clubBoard.vue"),
   },
   // 동아리 게시판 -> 매칭글쓰기
   {
-    path: "/clud/clud-boardDetail",
-    component: () => import("../views/clud/cludBoardDetail.vue"),
+    path: "/club/club-boardDetail",
+    component: () => import("../views/club/clubBoardDetail.vue"),
   },
   // 동아리 게시판 -> 매칭 모집글 게시글
   {
-    path: "/clud/clud-boardRecruitment",
-    component: () => import("../views/clud/cludBorardRecruitment.vue"),
+    path: "/club/club-boardRecruitment",
+    component: () => import("../views/club/clubBorardRecruitment.vue"),
   },
   // 건의 게시판
   {
