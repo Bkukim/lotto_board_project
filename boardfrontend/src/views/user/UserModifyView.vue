@@ -86,19 +86,19 @@
                  style="width: 300px"
                   class="form-select"
                   aria-label="Default select example"
-                  v-model="user.department"
+                  v-model="user.dept"
                 >
-                  <option value="Accounting Department">
-                    Accounting Department
+                  <option value="회계부">
+                    회계부
                   </option>
-                  <option selected value="Legal Department">
-                    Legal Department
+                  <option selected value="재정부">
+                    재정부
                   </option>
-                  <option value="Marketing Department">
-                    Marketing Department
+                  <option value="기획부">
+                    기획부
                   </option>
-                  <option selected value="Management Department">
-                    Management Department
+                  <option selected value="홍보부">
+                    홍보부
                   </option>
                 </select>
               </td>
@@ -268,7 +268,7 @@ export default {
         //   birthday;
         //   phoneNum;
         //   email;
-        //   department;
+        //   dept;
         //   role;
         //   normalAddress;
         //   detailAddress;
@@ -286,7 +286,6 @@ export default {
   methods: {
     // 유저정보 불러오는 함수
     async getUser(userId) {
-        alert(userId);
       try {
         let response = await UserService.get(userId);
         console.log(response.data);
@@ -307,7 +306,7 @@ export default {
         birthday: this.user.birthday,
         phoneNum: this.user.phoneNum,
         email: this.user.email,
-        department: this.user.department,
+        dept: this.user.dept,
         normalAddress: this.address + "," + this.extraAddress,
         detailAddress: this.user.detailAddress,
       };

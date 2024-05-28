@@ -49,7 +49,7 @@ public class UserService {
 
     // todo : id찾는 함수
     public User findId(String role, String userName, String phoneNum){
-        User user = userRepository.findId(role, userName, phoneNum);
+        User user = userRepository.findUserByRoleAndUserNameAndPhoneNum(role, userName, phoneNum);
         return user;
     }
 

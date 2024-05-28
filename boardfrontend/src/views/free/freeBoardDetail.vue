@@ -3,7 +3,9 @@
   <div class="fbd_all" style="height: 2000px; background-color: #f2f2f2">
     <!-- 해당 게세판 이름 부분 -->
     <div class="container text-center">
-      <h3 style="text-align: left" id="fbd_h3">자유 게시판</h3>
+
+      <h3 style="text-align: left" id="fbd_h3">자유 게시판 글 상세보기</h3>
+
     </div>
     <!-- 해당 게세판 이름 부분  끝-->
 
@@ -27,7 +29,7 @@
           color: #595959;
         "
       >
-        게시글 제목
+        {{ freeBoardList.title }}
       </div>
 
       <div
@@ -40,8 +42,12 @@
         "
       >
         <div class="lotto_new row row-cols-lg-4 gap-5 justify-content-left">
-          <div class="col" style="color: #999999">등록일 |</div>
-          <div class="col" style="color: #999999">등록자 |</div>
+          <div class="col" style="color: #999999">
+            등록일 | {{ freeBoardList.insertTime }}
+          </div>
+          <div class="col" style="color: #999999">
+            등록자 | {{ freeBoardList.userId }}
+          </div>
         </div>
       </div>
 
@@ -54,7 +60,8 @@
           font-weight: 600;
           height: 450px;
         "
-      ></div>
+      >
+      {{freeBoardList.content}}</div>
 
       <!-- 파일첨부 -->
       <div class="mt-5" style="width: 500px">
@@ -171,7 +178,9 @@
         <div
           class="lotto_new row row-cols-lg-4 gap-5 justify-content-left mb-3"
         >
+
           <div class="col" style="color: #999999">등록자 | {값}</div>
+
           <div class="col" style="color: #999999">날짜 |</div>
         </div>
 
@@ -233,10 +242,12 @@
   <!-- 전체 박스 끝 -->
 </template>
 <script>
+
+import FreeBoardService from '@/services/board/free/FreeBoardService';
 import { ref } from "vue";
 
 export default {
-  setup() {
+    setup() {
     const text = ref("");
     const charCount = ref(0);
     const maxChars = 1000;
@@ -254,7 +265,33 @@ export default {
       updateCharacterCount,
     };
   },
-};
+  data() {
+    return {
+      freeBoardList: {
+        freeBoardId: this.$route.params.freeBoardId,
+        userId: "",
+        content: "",
+        title: "",
+      },
+    };
+  },
+  methods: {
+    // freeBoardId로 상세조회 : 화면뜰때 실행
+    async retrieveGetFreeBoard(freeBoardId) {
+      try {
+        let response = await FreeBoardService.getFreeBoardId(freeBoardId);
+        this.freeBoardList = response.data;
+        console.log(response.data);
+      } catch (e) {
+        alert("에러");
+        console.log(e);
+      }
+    },
+  },
+  mounted(){
+    this.retrieveGetFreeBoard(this.$route.params.freeBoardId);
+  }
+}
 </script>
 
 <style>
@@ -271,6 +308,7 @@ export default {
 #comments {
   margin-top: 500px;
 }
+
 .char-count {
   text-align: right;
   color: #999999;
@@ -278,3 +316,4 @@ export default {
   margin-top: 5px;
 }
 </style>
+

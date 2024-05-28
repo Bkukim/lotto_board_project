@@ -1,4 +1,3 @@
-
 <template>
   <div class="container text-center" id="fb_all">
     <h3 class="mb-5 mt-5">자유게시판</h3>
@@ -36,6 +35,7 @@
               aria-label="Sizing example input"
               aria-describedby="inputGroup-sizing-default"
               placeholder="검색어를 입력하세요."
+              v-model="searchTitle"
             />
           </div>
         </div>
@@ -46,6 +46,7 @@
             class="btn btn-outline-secondary"
             type="button"
             id="button-search"
+            @click="searchFreeBoard"
           >
             검색
           </button>
@@ -57,6 +58,7 @@
             class="btn btn-outline-secondary"
             type="button"
             id="button-reset"
+            @click="resetSearch"
           >
             초기화
           </button>
@@ -71,30 +73,32 @@
         <tr>
           <th scope="col">번호</th>
           <th scope="col">제목</th>
+          <th scope="col">내용</th>
           <th scope="col">작성자</th>
           <th scope="col">등록일</th>
           <th scope="col">좋아요</th>
-          <th scope="col">조회수</th>
+          <!-- <th scope="col">조회수</th> -->
         </tr>
       </thead>
       <tbody>
         <!-- 반복문 시작할 행 -->
         <tr v-for="(data, index) in freeBoardList" :key="index">
+          <td>{{ (page - 1) * pageSize + index + 1 }}</td>
+          <td>{{ data.title }}</td>
           <td>
-            {{ index + 1 }}
-          </td>
-          <td class="col-8"></td>
-          <td></td>
-          <td></td>
-          <td></td>
+
+                          <router-link
+                :to="'/free/free-boardDetail/' + data.freeBoardId"
+                class="router-link-exact-active alltext"
+              >
+            {{ data.content }}
+                          </router-link>
+            </td>
+          <td>{{ data.userId }}</td>
+          <td>{{ data.insertTime }}</td>
+          <td>{{ data.likes }}</td>
+
         </tr>
-        <td> {{  (page - 1) * pageSize + index + 1  }}</td>
-        <td>{{data.title}}</td>
-        <td>{{data.userId}}</td>
-        <td>asdf</td>
-        <td>asdf</td>
-        <td>asdf</td>
-        <td>asdf</td>
       </tbody>
     </table>
 
@@ -128,22 +132,22 @@
   </div>
   <!-- 자유게시판 중앙정렬 전체박스 끝 -->
 </template>
-  
-  <script>
+
+<script>
 import FreeBoardService from "@/services/board/free/FreeBoardService";
 
 export default {
   data() {
     return {
       freeBoardList: [],
-      searchTitle:"",
+      searchTitle: "",
       page: 1, // 현재페이지번호
       count: 0, // 전체데이터개수
       pageSize: 10, // 1페이지당개수(select태그)
     };
   },
   methods: {
-        // 전체조회 함수
+    // 전체조회 함수
     async retrieveFreeBoard() {
       try {
         // TODO: 1) 공통 전체조회 함수 실행
@@ -163,15 +167,25 @@ export default {
         console.log(e);
       }
     },
+    // 검색 함수
+    async searchFreeBoard() {
+      console.log("검색 함수 호출");
+      await this.retrieveFreeBoard();
+    },
+    // 초기화 함수
+    resetSearch() {
+      this.searchTitle = "";
+      this.retrieveFreeBoard();
+    },
   },
-    mounted() {
+  mounted() {
     this.retrieveFreeBoard();
     window.scrollTo(0, 0);
   },
 };
 </script>
-  
-  <style>
+
+<style>
 /* 페이지 전체 높이 */
 #fb_all {
   height: 100vw;
@@ -183,26 +197,26 @@ p {
 
 /* 페이징 번호 디자인 */
 .custom-pagination .page-item.active .page-link {
-  background-color: #342a26;
+  background-color: #162b59;
   border-color: #ffffff;
   color: white;
 }
 
 .custom-pagination .page-link {
-  color: #342a26;
+  color: #162b59;
 }
 
 .custom-pagination .page-link:hover {
   background-color: #ffffff;
   border-color: 1px solid#8f8f8f;
-  color: #342a26;
+  color: #162b59;
   /* border: none; */
 }
 
 .custom-pagination .page-link:focus {
   outline: none;
-  box-shadow: 0 0 0 0.2rem #342a26bf;
-  border-color: #342a26bf;
+  box-shadow: 0 0 0 0.2rem #162b59;
+  border-color: #162b59;
 }
 
 /* 검색버튼 */
@@ -233,5 +247,3 @@ p {
   border: none;
 }
 </style>
-  
-
