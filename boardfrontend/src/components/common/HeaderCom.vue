@@ -11,8 +11,19 @@
         />
       </a>
       <div class="container">
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarNavDropdown"
+          aria-controls="navbarNavDropdown"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
         <div class="collapse navbar-collapse" id="navbarNavDropdown">
-          <ul class="navbar-nav ms-center" style="gap: 30px">
+          <ul class="navbar-nav ms-auto" style="gap: 30px">
             <li class="nav-item">
               <a class="nav-link" href="/notice/notice-board">공지사항</a>
             </li>
@@ -51,8 +62,8 @@
         </div>
 
         <!-- 검색바 -->
-        <nav class="navbar navbar-light bg-light" style="background-color: rgb(255, 255, 255);">
-          <div class="navbar container-fluid" style="background-color: rgb(255, 255, 255); height: 70px;" >
+        <nav class="navbar navbar-light bg-light search-bar" style="background-color: rgb(255, 255, 255);">
+          <div class="container-fluid" style="background-color: rgb(255, 255, 255); height: 90px;" >
             <form class="d-flex"> 
               <input
                 class="form-control me-2"
@@ -92,7 +103,6 @@
 <script>
 export default {};
 </script>
-
 <style>
 /* 헤더 색상 변경 / 높이 설정 */
 .navbar {
@@ -129,8 +139,7 @@ export default {};
 }
 
 /* 검색 돋보기 아이콘 */
-#s_all:hover{
-  
+#s_all:hover {
   background-color: #2d61d056;
 }
 
@@ -144,6 +153,51 @@ export default {};
   background-color: #162b59;
 }
 
+/* 반응형 스타일 */
+@media (max-width: 1200px) {
+  .navbar-brand img {
+    width: 180px;
+    height: 180px;
+  }
+}
 
+@media (max-width: 992px) {
+  .navbar {
+    height: auto;
+  }
+  .navbar-brand img {
+    width: 150px;
+    height: 150px;
+  }
+  .search-bar {
+    display: none;
+  }
+  .navbar-toggler {
+    display: block;
+  }
+  .nav-item {
+    margin-right: 0;
+    margin-bottom: 10px;
+  }
+}
 
+@media (max-width: 768px) {
+  .navbar-nav {
+    flex-direction: column;
+    gap: 10px;
+  }
+  .navbar-toggler {
+    margin-left: auto;
+  }
+  .navbar {
+    padding: 10px 0;
+  }
+  .navbar-brand img {
+    width: 120px;
+    height: 120px;
+  }
+  .nav-item {
+    margin-bottom: 5px;
+  }
+}
 </style>

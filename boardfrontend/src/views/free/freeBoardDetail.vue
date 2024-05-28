@@ -246,6 +246,7 @@
 import FreeBoardService from '@/services/board/free/FreeBoardService';
 import { ref } from "vue";
 
+// 댓글 글자 작성 수 올라가는 것 확인
 export default {
     setup() {
     const text = ref("");

@@ -29,6 +29,11 @@ const routes = [
     path: "/member/join",
     component: () => import("../views/auth/JoinView.vue"),
   },
+   // 회원가입 환영 페이지
+   {
+    path: "/member/join/welcome",
+    component: () => import("../views/auth/WelcomeView.vue"),
+  },
   // 아이디 찾기 페이지
   {
     path: "/member/find-id",
@@ -67,7 +72,7 @@ const routes = [
   },
   // 자유 게시판 -> 상세조회
   {
-    path: "/free/free-boardDetail",
+    path: "/free/free-boardDetail/:freeBoardId",
     component: () => import("../views/free/freeBoardDetail.vue"),
   },
   // 동아리 게시판
