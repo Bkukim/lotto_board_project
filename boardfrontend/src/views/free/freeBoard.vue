@@ -73,12 +73,13 @@
           <th scope="col">제목</th>
           <th scope="col">작성자</th>
           <th scope="col">등록일</th>
+          <th scope="col">좋아요</th>
           <th scope="col">조회수</th>
         </tr>
       </thead>
       <tbody>
         <!-- 반복문 시작할 행 -->
-        <tr v-for="(data, index) in freeList" :key="index">
+        <tr v-for="(data, index) in freeBoardList" :key="index">
           <td>
             {{ index + 1 }}
           </td>
@@ -87,6 +88,13 @@
           <td></td>
           <td></td>
         </tr>
+        <td> {{  (page - 1) * pageSize + index + 1  }}</td>
+        <td>{{data.title}}</td>
+        <td>{{data.userId}}</td>
+        <td>asdf</td>
+        <td>asdf</td>
+        <td>asdf</td>
+        <td>asdf</td>
       </tbody>
     </table>
 
@@ -113,7 +121,7 @@
           v-model="page"
           :total-rows="count"
           :per-page="pageSize"
-          @click="retrieveQna"
+          @click="retrieveFreeBoard"
         ></b-pagination>
       </div>
     </div>
@@ -122,11 +130,43 @@
 </template>
   
   <script>
+import FreeBoardService from "@/services/board/free/FreeBoardService";
+
 export default {
   data() {
     return {
-      freeList: [1, 2, 3, 4],
+      freeBoardList: [],
+      searchTitle:"",
+      page: 1, // 현재페이지번호
+      count: 0, // 전체데이터개수
+      pageSize: 10, // 1페이지당개수(select태그)
     };
+  },
+  methods: {
+        // 전체조회 함수
+    async retrieveFreeBoard() {
+      try {
+        // TODO: 1) 공통 전체조회 함수 실행
+        let response = await FreeBoardService.getAllBoard(
+          this.searchTitle, // 검색어
+          this.page - 1, // 현재페이지번호-1
+          this.pageSize // 1페이지당개수(size)
+        );
+        // TODO: 복습 : 2) 객체분할 할당
+        const { freeBoardList, totalItems } = response.data; // 부서배열(벡엔드 전송)
+        // TODO: 3) 바인딩변수(속성)에 저장
+        this.freeBoardList = freeBoardList; // 부서배열(벡엔드 전송)
+        this.count = totalItems; // 전체페이지수(벡엔드 전송)
+        // TODO: 4) 프론트 로깅 : console.log
+        console.log(response.data);
+      } catch (e) {
+        console.log(e);
+      }
+    },
+  },
+    mounted() {
+    this.retrieveFreeBoard();
+    window.scrollTo(0, 0);
   },
 };
 </script>

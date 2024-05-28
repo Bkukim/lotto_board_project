@@ -3,6 +3,7 @@ package org.example.boardbackend.service.notice;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.example.boardbackend.model.dto.notice.INoticeDto;
+import org.example.boardbackend.model.dto.notice.NoticeAllDto;
 import org.example.boardbackend.model.entity.notice.Notice;
 import org.example.boardbackend.repository.notice.NoticeRepository;
 import org.springframework.cache.annotation.CacheEvict;
@@ -39,6 +40,10 @@ public class NoticeService {
 
         return notices;
     }
+//   public Page<NoticeAllDto> findAllByTitleContaining(String title, Pageable pageable){
+//       Page<NoticeAllDto> notices=noticeRepository.findAllByTitleContaining(title, pageable);
+//       return notices;
+//   }
 
     // todo 상세조회
     public Optional<Notice> findById(long noticeId) {
@@ -54,6 +59,12 @@ public class NoticeService {
         Notice notice2 = noticeRepository.save(notice);
 
         return notice2;
+    }
+// todo 저장함수
+    public Notice save(Notice notice) {
+//        JPA 저장 함수 실행 : return 값 : 저장된 객체
+        Notice notice1 = noticeRepository.save(notice);
+        return notice1;
     }
 
     // todo  삭제 함수

@@ -20,7 +20,7 @@
               <a class="nav-link" aria-current="page" href="/free/free-board">자유 게시판</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="/clud/clud-board">동아리 게시판</a>
+              <a class="nav-link" href="/club/club-board">동아리 게시판</a>
             </li>
             <li class="nav-item">
               <a class="nav-link" href="/complaint/complaint-board">건의 게시판</a>
