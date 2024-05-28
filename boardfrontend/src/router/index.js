@@ -67,7 +67,7 @@ const routes = [
   },
   // 자유 게시판 -> 상세조회
   {
-    path: "/free/free-boardDetail",
+    path: "/free/free-boardDetail/:freeBoardId",
     component: () => import("../views/free/freeBoardDetail.vue"),
   },
   // 동아리 게시판

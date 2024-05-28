@@ -102,6 +102,7 @@
               <div
                 class="router-text"
                 style="margin-right: 20px; margin-top: 10px"
+                @click="deleteFreeBoard"
               >
                 삭제
               </div>
@@ -287,6 +288,23 @@ export default {
         console.log(e);
       }
     },
+    async deleteFreeBoard(){
+            try {
+        let result = confirm("정말로 삭제하시겠습니까?")
+        if (result) {
+            let response = await FreeBoardService.deleteFreeBoard(this.freeBoardList.freeBoardId);
+        // 로깅
+        console.log(response.data);
+        alert("게시글이 삭제되었습니다.");
+        this.$router.push("/free/free-board");
+        } else{
+          return;
+        }
+      
+      } catch (e) {
+        console.log(e);
+      }
+    }
   },
   mounted(){
     this.retrieveGetFreeBoard(this.$route.params.freeBoardId);
