@@ -74,6 +74,7 @@ export default {
         // 공지사항 객체 생성
         const notice = {
           title: this.notice.title,
+          noticeType : this.notice.noticeType,
           content: content,
         };
         // 벡엔드로 공지사항 객체 추가 요청
