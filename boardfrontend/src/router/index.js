@@ -35,6 +35,11 @@ const routes = [
     path: "/notice/notice-board",
     component: () => import("../views/notice/noticeBoard.vue"),
   },
+   // 공지사항 add
+   {
+    path: "/notice-add",
+    component: () => import("../views/notice/AdminNoticeAdd.vue"),
+  },
   // 자유 게시판
   {
     path: "/free/free-board",
@@ -65,6 +70,7 @@ const routes = [
     path: "/complaint/complaint-board",
     component: () => import("../views/complaint/complaintBoard.vue"),
   },
+  
 ];
 
 const router = createRouter({

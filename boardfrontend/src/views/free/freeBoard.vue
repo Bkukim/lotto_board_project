@@ -5,7 +5,7 @@
     <p class="mb-5">
       자유게시판은 자유로운 의견을 남기는 공간으로 건의관련 답변은 드리지
       않습니다. <br />
-      건의관련 문의사항은 건의게시판을 이용해주시길 바랍니다.
+      건의관련 및 문의사항은 건의게시판을 이용해주시길 바랍니다.
     </p>
 
     <!-- 검색 박스 -->
@@ -82,18 +82,32 @@
           <td>
             {{ index + 1 }}
           </td>
-          <td class="col-8">
-          </td>
+          <td class="col-8"></td>
+          <td></td>
           <td></td>
           <td></td>
         </tr>
       </tbody>
     </table>
 
+    <!-- 글쓰기 버튼-->
+    <div class="mt-5">
+        <router-link to="">
+        <button
+          class="btn btn-outline-secondary"
+          type="button"
+          id="button-Writing"
+          style="margin-left: 1220px;"
+        >
+          글쓰기
+        </button>
+      </router-link>
+    </div>
+
     <!-- 페이징 -->
     <!-- {/* paging 시작 */} -->
-    <div class="row justify-content-center mt-4">
-      <div class="col-auto">
+    <div class="row justify-content-center mt-5">
+      <div class="col-auto" style="margin-top: 50px">
         <b-pagination
           class="custom-pagination col-12 mb-3"
           v-model="page"
@@ -167,7 +181,7 @@ p {
   color: #212121;
   border: none;
 }
-#button-search {
+#button-search, #button-Writing {
   background-color: #162b59;
   color: #ffffff;
   border: none;
