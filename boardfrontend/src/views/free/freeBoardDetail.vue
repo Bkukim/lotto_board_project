@@ -3,7 +3,9 @@
   <div class="fbd_all" style="height: 2000px; background-color: #f2f2f2">
     <!-- 해당 게세판 이름 부분 -->
     <div class="container text-center">
+
       <h3 style="text-align: left" id="fbd_h3">자유 게시판 글 상세보기</h3>
+
     </div>
     <!-- 해당 게세판 이름 부분  끝-->
 
@@ -141,12 +143,12 @@
       </div>
     </div>
 
-    <!-- 댓글 -->
+    <!-- 댓글 작성-->
     <div
       class="container text-center mt-5"
       id="comments"
       style="
-        height: 250px;
+        height: 330px;
         border: none;
         border-radius: 50px;
         background-color: #ffffff;
@@ -176,16 +178,63 @@
         <div
           class="lotto_new row row-cols-lg-4 gap-5 justify-content-left mb-3"
         >
-          <div class="col" style="color: #999999">등록자 |</div>
+
+          <div class="col" style="color: #999999">등록자 | {값}</div>
+
           <div class="col" style="color: #999999">날짜 |</div>
         </div>
 
+        <!-- 글쓰기 칸 -->
         <div class="mb-5">
           <textarea
             class="form-control"
             id="exampleFormControlTextarea1"
             rows="3"
+            v-model="text"
+            @input="updateCharacterCount"
+            maxlength="1000"
           ></textarea>
+          <div class="char-count">글자 수: {{ charCount }}/1000</div>
+        </div>
+
+        <!-- 등록 버튼-->
+        <div class="col">
+          <router-link
+            to="/"
+            class="fbd_d container text-center"
+            style="
+              width: 80px;
+              text-decoration: none;
+              background-color: #162b59;
+              font-size: 18px;
+              text-align: center;
+              height: 40px;
+              font-weight: 100;
+              margin-left: 1180px;
+              margin-top: -35px;
+            "
+          >
+            <div
+              style="
+                display: flex;
+                align-items: center;
+                justify-content: center;
+              "
+            >
+              <div
+                class="router-text"
+                style="
+                  margin-right: 5px;
+                  margin-top: 5px;
+                  color: #ffffff;
+                  font-weight: 100;
+                  text-align: center;
+                "
+              >
+                등록
+              </div>
+            </div>
+          </router-link>
         </div>
       </div>
     </div>
@@ -193,8 +242,29 @@
   <!-- 전체 박스 끝 -->
 </template>
 <script>
+
 import FreeBoardService from '@/services/board/free/FreeBoardService';
+import { ref } from "vue";
+
 export default {
+    setup() {
+    const text = ref("");
+    const charCount = ref(0);
+    const maxChars = 1000;
+
+    function updateCharacterCount() {
+      if (text.value.length > maxChars) {
+        text.value = text.value.slice(0, maxChars);
+      }
+      charCount.value = text.value.length;
+    }
+
+    return {
+      text,
+      charCount,
+      updateCharacterCount,
+    };
+  },
   data() {
     return {
       freeBoardList: {
@@ -221,7 +291,7 @@ export default {
   mounted(){
     this.retrieveGetFreeBoard(this.$route.params.freeBoardId);
   }
-};
+}
 </script>
 
 <style>
@@ -238,4 +308,12 @@ export default {
 #comments {
   margin-top: 500px;
 }
+
+.char-count {
+  text-align: right;
+  color: #999999;
+  font-size: 14px;
+  margin-top: 5px;
+}
 </style>
+
