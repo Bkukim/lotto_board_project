@@ -14,17 +14,16 @@ const routes = [
   {
     path: "/member/login",
     component: () => import("../views/auth/LoginView.vue"),
-  },
-  // 회원가입 환영 페이지
-  {
-    path: "/member/join/welcome",
-    component: () => import("../views/auth/WelcomeView.vue"),
-  },
-  // 카카오 소셜 로그인
+
+
+  },  
+  // 카카오 로그인
   {
     path: "/auth-redirect",
     component: () => import("../views/auth/KakaoRedirectView.vue"),
-  },
+  },  
+
+
   // 회원가입 페이지
   {
     path: "/member/join",
