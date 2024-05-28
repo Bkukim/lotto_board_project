@@ -96,7 +96,7 @@
           <td class="col-8">{{ data.title }}</td>
           <td>관리자</td>
           <td>{{ data.insertTime }}</td>
-          <td></td>
+          <td>{{ data.views }}</td>
         </tr>
       </tbody>
     </table>
