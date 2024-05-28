@@ -49,8 +49,8 @@ public class FreeBoard extends BaseTimeEntity {
         , generator = "SQ_FREE_BOARD_GENERATOR"
 )
     private long freeBoardId;
-    private long userId;
+    private String userId;
     private long likes;
-    private long content;
-    private long title;
+    private String content;
+    private String title;
 }

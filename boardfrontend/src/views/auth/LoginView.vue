@@ -270,5 +270,3 @@ export default {
   height: 30px !important;
 }
 </style>
-  
-
