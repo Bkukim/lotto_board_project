@@ -32,12 +32,19 @@ class AuthService {
     return http.get(`/auth/findId/${role}/${userName}/${phoneNum}`);
   }
 
-  // pw새로 만들기 위해서 사용자 확인함수
-  getForPw(role, userId, pwQuestion, pwAnswer) {
-    return http.get(
-      `/auth/getForPw/${role}/${userId}/${pwQuestion}/${pwAnswer}`
-    );
-  }
+  // // pw새로 만들기 위해서 사용자 확인함수
+  // getForPw(role, userId, pwQuestion, pwAnswer) {
+  //   return http.get(
+  //     `/auth/getForPw/${role}/${userId}/${pwQuestion}/${pwAnswer}`
+  //   );
+  // }
+
+  // // pw 변경 : 이메일로 코드 보내기
+  // getForPw(role, userId, email) {
+  //   return http.get(
+  //     `/auth/getForPw/${role}/${userId}/${email}`
+  //   );
+  // }
 
   // 새로운 비밀번호 변경함수
   updatePw(newPw) {

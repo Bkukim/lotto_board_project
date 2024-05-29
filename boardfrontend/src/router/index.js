@@ -67,11 +67,11 @@ const routes = [
     path: "/notice/notice-board",
     component: () => import("../views/notice/noticeBoard.vue"),
   },
-  // 공지사항 add
-  {
-    path: "/notice-add",
-    component: () => import("../views/notice/AdminNoticeAdd.vue"),
-  },
+  // // 공지사항 add
+  // {
+  //   path: "/notice-add",
+  //   component: () => import("../views/notice/AdminNoticeAdd.vue"),
+  // },
   // 자유 게시판
   {
     path: "/free/free-board",
