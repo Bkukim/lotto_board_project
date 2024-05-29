@@ -93,7 +93,11 @@
           <td>
             {{ index + 1 }}
           </td>
-          <td class="col-8">{{ data.title }}</td>
+          <td class="col-8">
+          <router-link :to="`/notice-check/`+data.noticeId">
+            {{ data.title }}
+          </router-link>
+          </td>
           <td>관리자</td>
           <td>{{ data.insertTime }}</td>
           <td>{{ data.views }}</td>
@@ -145,7 +149,7 @@ export default {
           this.page - 1, // 현재페이지번호-1
           this.pageSize // 1페이지당개수(size)
         );
-        console.log("프론트입니다")
+        console.log("프론트입니다");
         const { notices, totalItems } = response.data; // 부서배열(벡엔드 전송)
         this.notices = notices; // 부서배열(벡엔드 전송)
         this.count = totalItems; // 전체페이지수(벡엔드 전송)

@@ -23,5 +23,6 @@ public interface INoticeDto {
     String getEventYn();
     String getInsertTime();
     long getViews();
+    String getNoticeType();
 
 }

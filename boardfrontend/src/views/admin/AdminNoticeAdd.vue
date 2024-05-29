@@ -80,6 +80,8 @@ export default {
         // 벡엔드로 공지사항 객체 추가 요청
         let response = await NoticeService.create(notice);
         // 콘솔에 결과 출력
+        this.$router.push("/notice/notice-board");
+
         console.log(response);
         // TODO: 서버 응답에 따른 후속 처리 추가
       } catch (e) {

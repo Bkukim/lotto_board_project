@@ -9,6 +9,11 @@ class NoticeService {
       return http.get(`/normal/notice/all/${eventYn}?title=${title}&page=${page}&size=${size}`
       );
     }
+    
+    //TODO: 부서만 조회
+    getDept(size) {
+      return http.get(`/admin/notice/master-dept?size=${size}`);
+    }
 
 
 
@@ -16,6 +21,11 @@ class NoticeService {
   create(data) {
     console.log(data);
     return http.post("/admin/notice/notice-add", data);
+  }
+
+  // todo: 상세조회
+  getNotice(noticeId) {
+    return http.get(`/normal/notice/${noticeId}`);
   }
 
   //   // TODO: 수정함수 : qnaId,
