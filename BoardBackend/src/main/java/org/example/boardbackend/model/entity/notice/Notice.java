@@ -47,12 +47,10 @@ public class Notice extends BaseTimeEntity {
     private long noticeId;
     private String title;
     @Lob
+    @Column(name = "CONTENT")
     private String content;
-    private byte[] noticeImg;
-    private String noticeImgUrl;
-    private String noticeImgUuid;
     private String eventYn;
+    private int eventWinnerQuota;
+    private long views;
     private String noticeType;
-    @Lob
-    private String eventWinnerQuota;
 }

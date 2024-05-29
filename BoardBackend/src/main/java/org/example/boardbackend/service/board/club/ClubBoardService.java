@@ -1,4 +1,4 @@
-package org.example.boardbackend.service.board;
+package org.example.boardbackend.service.board.club;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

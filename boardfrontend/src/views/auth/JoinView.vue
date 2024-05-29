@@ -245,17 +245,17 @@
                   aria-label="Default select example"
                   v-model="user.department"
                 >
-                  <option value="Accounting Department">
-                    Accounting Department
+                  <option value="회계부">
+                    회계부
                   </option>
-                  <option selected value="Legal Department">
-                    Legal Department
+                  <option selected value="재정부">
+                    재정부
                   </option>
-                  <option value="Marketing Department">
-                    Marketing Department
+                  <option value="기획부">
+                    기획부
                   </option>
-                  <option selected value="Management Department">
-                    Management Department
+                  <option selected value="홍보부">
+                    홍보부
                   </option>
                 </select>
               </td>

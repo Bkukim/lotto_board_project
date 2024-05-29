@@ -1,11 +1,10 @@
-
 <template>
   <div class="container text-center" id="fb_all">
     <h3 class="mb-5 mt-5">자유게시판</h3>
     <p class="mb-5">
       자유게시판은 자유로운 의견을 남기는 공간으로 건의관련 답변은 드리지
       않습니다. <br />
-      건의관련 문의사항은 건의게시판을 이용해주시길 바랍니다.
+      건의관련 및 문의사항은 건의게시판을 이용해주시길 바랍니다.
     </p>
 
     <!-- 검색 박스 -->
@@ -36,6 +35,7 @@
               aria-label="Sizing example input"
               aria-describedby="inputGroup-sizing-default"
               placeholder="검색어를 입력하세요."
+              v-model="searchTitle"
             />
           </div>
         </div>
@@ -46,6 +46,7 @@
             class="btn btn-outline-secondary"
             type="button"
             id="button-search"
+            @click="searchFreeBoard"
           >
             검색
           </button>
@@ -57,6 +58,7 @@
             class="btn btn-outline-secondary"
             type="button"
             id="button-reset"
+            @click="resetSearch"
           >
             초기화
           </button>
@@ -71,53 +73,119 @@
         <tr>
           <th scope="col">번호</th>
           <th scope="col">제목</th>
+          <th scope="col">내용</th>
           <th scope="col">작성자</th>
           <th scope="col">등록일</th>
-          <th scope="col">조회수</th>
+          <th scope="col">좋아요</th>
+          <!-- <th scope="col">조회수</th> -->
         </tr>
       </thead>
       <tbody>
         <!-- 반복문 시작할 행 -->
-        <tr v-for="(data, index) in freeList" :key="index">
+        <tr v-for="(data, index) in freeBoardList" :key="index">
+          <td>{{ (page - 1) * pageSize + index + 1 }}</td>
+          <td>{{ data.title }}</td>
           <td>
-            {{ index + 1 }}
-          </td>
-          <td class="col-8">
-          </td>
-          <td></td>
-          <td></td>
+
+                          <router-link
+                :to="'/free/free-boardDetail/' + data.freeBoardId"
+                class="router-link-exact-active alltext"
+              >
+            {{ data.content }}
+                          </router-link>
+            </td>
+          <td>{{ data.userId }}</td>
+          <td>{{ data.insertTime }}</td>
+          <td>{{ data.likes }}</td>
+
         </tr>
       </tbody>
     </table>
 
+    <!-- 글쓰기 버튼-->
+    <div class="mt-5">
+        <router-link to="">
+        <button
+          class="btn btn-outline-secondary"
+          type="button"
+          id="button-Writing"
+          style="margin-left: 1220px;"
+        >
+          글쓰기
+        </button>
+      </router-link>
+    </div>
+
     <!-- 페이징 -->
     <!-- {/* paging 시작 */} -->
-    <div class="row justify-content-center mt-4">
-      <div class="col-auto">
+    <div class="row justify-content-center mt-5">
+      <div class="col-auto" style="margin-top: 50px">
         <b-pagination
           class="custom-pagination col-12 mb-3"
           v-model="page"
           :total-rows="count"
           :per-page="pageSize"
-          @click="retrieveQna"
+          @click="retrieveFreeBoard"
         ></b-pagination>
       </div>
     </div>
   </div>
   <!-- 자유게시판 중앙정렬 전체박스 끝 -->
 </template>
-  
-  <script>
+
+<script>
+import FreeBoardService from "@/services/board/free/FreeBoardService";
+
 export default {
   data() {
     return {
-      freeList: [1, 2, 3, 4],
+      freeBoardList: [],
+      searchTitle: "",
+      page: 1, // 현재페이지번호
+      count: 0, // 전체데이터개수
+      pageSize: 10, // 1페이지당개수(select태그)
     };
+  },
+  methods: {
+    // 전체조회 함수
+    async retrieveFreeBoard() {
+      try {
+        // TODO: 1) 공통 전체조회 함수 실행
+        let response = await FreeBoardService.getAllBoard(
+          this.searchTitle, // 검색어
+          this.page - 1, // 현재페이지번호-1
+          this.pageSize // 1페이지당개수(size)
+        );
+        // TODO: 복습 : 2) 객체분할 할당
+        const { freeBoardList, totalItems } = response.data; // 부서배열(벡엔드 전송)
+        // TODO: 3) 바인딩변수(속성)에 저장
+        this.freeBoardList = freeBoardList; // 부서배열(벡엔드 전송)
+        this.count = totalItems; // 전체페이지수(벡엔드 전송)
+        // TODO: 4) 프론트 로깅 : console.log
+        console.log(response.data);
+      } catch (e) {
+        console.log(e);
+      }
+    },
+    // 검색 함수
+    async searchFreeBoard() {
+      console.log("검색 함수 호출");
+      await this.retrieveFreeBoard();
+    },
+    // 초기화 함수
+    resetSearch() {
+      this.searchTitle = "";
+      this.retrieveFreeBoard();
+    },
+  },
+  mounted() {
+    this.retrieveFreeBoard();
+    window.scrollTo(0, 0);
   },
 };
 </script>
-  
-  <style>
+
+<style>
 /* 페이지 전체 높이 */
 #fb_all {
   height: 100vw;
@@ -129,26 +197,26 @@ p {
 
 /* 페이징 번호 디자인 */
 .custom-pagination .page-item.active .page-link {
-  background-color: #342a26;
+  background-color: #162b59;
   border-color: #ffffff;
   color: white;
 }
 
 .custom-pagination .page-link {
-  color: #342a26;
+  color: #162b59;
 }
 
 .custom-pagination .page-link:hover {
   background-color: #ffffff;
   border-color: 1px solid#8f8f8f;
-  color: #342a26;
+  color: #162b59;
   /* border: none; */
 }
 
 .custom-pagination .page-link:focus {
   outline: none;
-  box-shadow: 0 0 0 0.2rem #342a26bf;
-  border-color: #342a26bf;
+  box-shadow: 0 0 0 0.2rem #162b59;
+  border-color: #162b59;
 }
 
 /* 검색버튼 */
@@ -167,7 +235,7 @@ p {
   color: #212121;
   border: none;
 }
-#button-search {
+#button-search, #button-Writing {
   background-color: #162b59;
   color: #ffffff;
   border: none;
@@ -179,5 +247,3 @@ p {
   border: none;
 }
 </style>
-  
-

@@ -138,12 +138,13 @@ export default {
         console.log(e);
       }
     },
-    
-  },mounted() {
+  },
+  mounted() {
     window.scrollTo(0, 0);
   },
 };
 </script>
+
 <style>
 #box {
   border: 1px solid #cccccc;

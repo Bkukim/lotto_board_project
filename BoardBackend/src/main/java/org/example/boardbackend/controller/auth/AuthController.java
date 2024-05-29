@@ -9,7 +9,9 @@ import org.example.boardbackend.model.dto.member.FindId;
 import org.example.boardbackend.model.dto.member.NewPw;
 import org.example.boardbackend.model.entity.auth.User;
 import org.example.boardbackend.security.jwt.JwtUtils;
+import org.example.boardbackend.service.social.SocialLoginService;
 import org.example.boardbackend.service.user.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -44,6 +46,25 @@ public class AuthController {
     private final PasswordEncoder passwordEncoder;
     private final JwtUtils jwtUtils;
     private final AuthenticationManagerBuilder authenticationManagerBuilder;
+    private SocialLoginService socialLoginService;
+    @Autowired
+    public void setSocialLoginService(SocialLoginService socialLoginService) {
+        this.socialLoginService = socialLoginService;
+    }
+
+    //  todo 카카오 로그인
+    @PostMapping("/kakao-login/{code}")
+    public ResponseEntity<Object> kakaoLogin(@PathVariable String code){
+        try {
+            String accessToken = socialLoginService.getAccessToken(code);
+            UserRes userRes = socialLoginService.getUserInfo(accessToken);
+            return new ResponseEntity<>(userRes,HttpStatus.OK);
+        }catch (Exception e){
+            log.debug(e.getMessage());
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+
+    }
 
 //    todo 로그인 함수 : 로그인은 조회. URL에 안뜨게 하려고 GET아니고 POST
     @PostMapping("/login")
@@ -84,6 +105,7 @@ public class AuthController {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
 
     //    todo 회원 가입 함수(insert)
     @PostMapping("/register")

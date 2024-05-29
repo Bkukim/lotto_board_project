@@ -32,10 +32,11 @@ public interface UserRepository extends JpaRepository<User, String> {
 
 
 //    todo 아이디 찾기를 위해 아래 변수를 받아서 일치하는 user반환
-    @Query(value = "SELECT * FROM LOTTO_USER WHERE ROLE = :role AND USER_NAME = :userName AND PHONE_NUM = :phoneNum"
-            , nativeQuery = true)
-    public User findId(@Param("role") String role, @Param("userName") String userName, @Param("phoneNum") String phoneNum);
+//    @Query(value = "SELECT * FROM LOTTO_USER WHERE ROLE = :role AND USER_NAME = :userName AND PHONE_NUM = :phoneNum"
+//            , nativeQuery = true)
+//    public User findId(@Param("role") String role, @Param("userName") String userName, @Param("phoneNum") String phoneNum);
 
+    public User findUserByRoleAndUserNameAndPhoneNum(String role, String userName, String phoneNum);
 
 //    todo 비밀번호 찾기 위한 회원 조회
     @Query(value = "SELECT * FROM LOTTO_USER WHERE ROLE = :role AND USER_ID= :userId AND PW_QUESTION = :pwQuestion AND PW_ANSWER = :pwAnswer"

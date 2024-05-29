@@ -280,7 +280,7 @@ export default {
 
 <style>
 .main-all {
-  height: 130vw;
+  height: 3500px;
 }
 
 /* 메인배너 */
