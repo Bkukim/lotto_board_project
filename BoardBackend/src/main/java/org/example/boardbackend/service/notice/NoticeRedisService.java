@@ -30,7 +30,7 @@ import java.util.Optional;
 
 @Slf4j
 @Service
-@EnableCaching // todo 캐깅 기능을 사용하게 해주는 어노테이션
+
 public class NoticeRedisService extends NoticeService{
 
 
