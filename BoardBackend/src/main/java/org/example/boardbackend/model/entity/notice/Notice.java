@@ -52,6 +52,7 @@ public class Notice extends BaseTimeEntity {
     private String noticeImgUrl;
     private String noticeImgUuid;
     private String eventYn;
+    private String noticeType;
     @Lob
     private String eventWinnerQuota;
 }

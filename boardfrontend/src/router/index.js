@@ -13,7 +13,11 @@ const routes = [
   // 공지사항 add
   {
     path: "/notice-add",
-    component: () => import("../views/notice/AdminNoticeAdd.vue"),
+    component: () => import("../views/admin/AdminNoticeAdd.vue"),
+  },// 각게시판별 공지사항 관리 ::
+  {
+    path: "/notice-master",
+    component: () => import("../views/admin/MasterBoardNoticesAdmin.vue"),
   },
   // 로그인
   {

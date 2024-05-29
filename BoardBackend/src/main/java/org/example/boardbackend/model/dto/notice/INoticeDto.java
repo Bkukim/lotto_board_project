@@ -19,6 +19,7 @@ public interface INoticeDto {
     String getContent();
     String getNoticeImgUrl();
     String getNoticeImgUuid();
+    String getNoticeType();
     String eventYn();
 
 }

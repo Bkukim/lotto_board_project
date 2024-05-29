@@ -30,6 +30,7 @@ public interface NoticeRepository extends JpaRepository<Notice, Long> {
             ", CONTENT AS content\n" +
             ", NOTICE_ING_URL AS noticeImgUrl\n" +
             ", NOTICE_IMG_UUID AS noticeImgUuid\n" +
+            ", NOTICE_TYPE AS noticeType\n" +
             ", EVENT_YN AS eventYn\n" +
             "FROM LOTTO_NOTICE\n" +
             "WHERE TITLE LIKE '%'|| :title ||'%'"
