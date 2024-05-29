@@ -38,12 +38,9 @@ public class AdminNoticeController {
             @RequestBody Notice notice
     ) {
         try {
-            log.debug("컨트롤러");
             Notice notice1 = noticeService.save(notice);
             return new ResponseEntity<>(notice1, HttpStatus.OK);
         } catch (Exception e) {
-            log.debug("컨트롤러1");
-
             log.debug(e.getMessage());
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }

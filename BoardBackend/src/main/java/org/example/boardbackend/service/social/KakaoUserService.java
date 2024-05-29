@@ -1,5 +1,6 @@
 package org.example.boardbackend.service.social;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.example.boardbackend.model.dto.auth.UserRes;
 import org.example.boardbackend.model.entity.auth.User;
@@ -31,6 +32,7 @@ import java.util.Map;
  */
 @Service
 @Slf4j
+@RequiredArgsConstructor
 public class KakaoUserService implements SocialLoginService {
 
     // 속성에 입력한 카카오톡
@@ -67,10 +69,8 @@ public class KakaoUserService implements SocialLoginService {
     @Override
     public String getAccessToken(String code) {
         RestTemplate restTemplate = new RestTemplate();
-        log.debug(code);
         // todo 1) 엑세스 토큰 가져오기
         String url = "https://kauth.kakao.com/oauth/token";
-        log.debug("여기까진 성공2");
         // 바디생성
         MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
         params.add("grant_type", "authorization_code");
@@ -80,7 +80,6 @@ public class KakaoUserService implements SocialLoginService {
         params.add("client_secret", clientSecret);
         params.add("scope", "account_email");
 
-        log.debug("여기까진 성공2.5");
         // 헤더 생성
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
@@ -96,7 +95,6 @@ public class KakaoUserService implements SocialLoginService {
             throw new RuntimeException("Failed to retrieve access token");
         }
         String accessToken = (String) responseBody.get("access_token");
-        log.debug("토큰 ::: " + accessToken);
         return accessToken;
     }
 
@@ -109,11 +107,9 @@ public class KakaoUserService implements SocialLoginService {
         // 헤더 생성
         HttpHeaders headers2 = new HttpHeaders();
         headers2.add("Authorization", "Bearer " + accessToken);
-        log.debug("두번째헤더 :::" + headers2);
         // 요청 생성 : 헤더
         HttpEntity<String> entity = new HttpEntity<>(headers2);
         ResponseEntity<Map> userInfoResponse = restTemplate.exchange(userInfoUrl, HttpMethod.GET, entity, Map.class);
-        log.debug("여기까진 성공 3");
 
         // 받은 정보 사용하기
         Map<String, Object> userInfo = userInfoResponse.getBody();

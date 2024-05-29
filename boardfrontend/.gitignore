@@ -23,4 +23,4 @@ pnpm-debug.log*
 *.sw?
 
 # Ignore router index.js file
-src/router/index.js
+# src/router/index.js
