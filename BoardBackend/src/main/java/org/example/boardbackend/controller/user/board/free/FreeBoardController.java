@@ -96,7 +96,7 @@ public class FreeBoardController {
     //    TODO: 삭제 함수
     @DeleteMapping("/free/deletion/{freeBoardId}")
     public ResponseEntity<Object> delete(
-            @PathVariable int freeBoardId
+            @PathVariable long freeBoardId
     ) {
         try {
 //            DB 서비스 삭제 함수 실행

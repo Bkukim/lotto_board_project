@@ -76,7 +76,7 @@
     <!--  첫번째 게시판 큰 박스 끝-->
 
     <div class="container text-center mt-5">
-      <div class="row" style="margin-top: 100px">
+      <div class="row" style="margin-top: 100px" v-if="freeBoardList.userId=== this.$store.state.user?.userId">
         <!-- 삭제 -->
         <div class="col">
           <router-link
@@ -290,7 +290,7 @@ export default {
       }
     },
     async deleteFreeBoard(){
-            try {
+        try {
         let result = confirm("정말로 삭제하시겠습니까?")
         if (result) {
             let response = await FreeBoardService.deleteFreeBoard(this.freeBoardList.freeBoardId);
@@ -301,7 +301,6 @@ export default {
         } else{
           return;
         }
-      
       } catch (e) {
         console.log(e);
       }
