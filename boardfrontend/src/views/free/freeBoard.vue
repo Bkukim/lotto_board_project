@@ -86,30 +86,29 @@
           <td>{{ (page - 1) * pageSize + index + 1 }}</td>
           <td>{{ data.title }}</td>
           <td>
-
-                          <router-link
-                :to="'/free/free-boardDetail/' + data.freeBoardId"
-                class="router-link-exact-active alltext"
-              >
-            {{ data.content }}
-                          </router-link>
-            </td>
+            <router-link
+              :to="'/free/free-boardDetail/' + data.freeBoardId"
+              class="router-link-exact-active alltext"
+            >
+              {{ data.content }}
+            </router-link>
+          </td>
           <td>{{ data.userId }}</td>
           <td>{{ data.insertTime }}</td>
           <td>{{ data.likes }}</td>
-
         </tr>
       </tbody>
     </table>
 
     <!-- 글쓰기 버튼-->
     <div class="mt-5">
-        <router-link to="">
+      <router-link to="">
         <button
           class="btn btn-outline-secondary"
           type="button"
           id="button-Writing"
-          style="margin-left: 1220px;"
+          style="margin-left: 1220px"
+          @click="writeFreeBoard"
         >
           글쓰기
         </button>
@@ -177,6 +176,10 @@ export default {
       this.searchTitle = "";
       this.retrieveFreeBoard();
     },
+    // 글 쓰러가기 함수
+    writeFreeBoard() {
+      this.$router.push("/free/free-boardAdd");
+    },
   },
   mounted() {
     this.retrieveFreeBoard();
@@ -235,7 +238,8 @@ p {
   color: #212121;
   border: none;
 }
-#button-search, #button-Writing {
+#button-search,
+#button-Writing {
   background-color: #162b59;
   color: #ffffff;
   border: none;

@@ -14,23 +14,20 @@ const routes = [
   {
     path: "/member/login",
     component: () => import("../views/auth/LoginView.vue"),
-
-
-  },  
+  },
   // 카카오 로그인
   {
     path: "/auth-redirect",
     component: () => import("../views/auth/KakaoRedirectView.vue"),
-  },  
-
+  },
 
   // 회원가입 페이지
   {
     path: "/member/join",
     component: () => import("../views/auth/JoinView.vue"),
   },
-   // 회원가입 환영 페이지
-   {
+  // 회원가입 환영 페이지
+  {
     path: "/member/join/welcome",
     component: () => import("../views/auth/WelcomeView.vue"),
   },
@@ -74,6 +71,11 @@ const routes = [
   {
     path: "/free/free-boardDetail/:freeBoardId",
     component: () => import("../views/free/freeBoardDetail.vue"),
+  },
+  // 자유 게시판 add
+  {
+    path: "/free/free-boardAdd",
+    component: () => import("../views/free/freeBoardAdd.vue"),
   },
   // 동아리 게시판
   {
