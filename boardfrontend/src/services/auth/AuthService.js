@@ -17,10 +17,6 @@ class AuthService {
     return http.post(`/auth/kakao-login/${code}`);
   }
 
-  naverLogin(code) {
-    return http.post(`/auth/naver-login/${code}`);
-  }
-
   logout() {
     // 로컬 스토리지의 값을 삭제
     // 사용법 : localStorage.removeIItem("키이름")

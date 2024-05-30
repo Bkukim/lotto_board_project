@@ -25,7 +25,7 @@
           <!-- 성별 선택 -->
           <div class="select-wrapper">
             <select
-              v-model="matchDetails.sex"
+              v-model="matchDetails.gender"
               class="half-width-select"
               style="height: 50px; padding-left: 20px"
             >
@@ -45,7 +45,7 @@
 
               "
             >
-              {{ matchDetails.sex }}
+              {{ matchDetails.gender }}
             </div>
           </div>
 
@@ -197,7 +197,7 @@ export default {
   setup() {
     const matchDetails = ref({
       photo: null,
-      sex: "",
+      gender: "",
       teamSize: "",
       matchType: "",
       totalPlayers: "",
@@ -228,7 +228,6 @@ export default {
 
     function submitForm() {
       console.log(matchDetails.value);
-      
       // 실제 애플리케이션에서는 이 데이터를 서버에 전송하는 로직이 필요합니다.
     }
 

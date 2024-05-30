@@ -2,10 +2,8 @@ package org.example.boardbackend.controller.user.board.club;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import oracle.ucp.proxy.annotation.Post;
 import org.example.boardbackend.model.dto.board.club.CreateClubArticleDto;
 import org.example.boardbackend.model.entity.board.club.ClubBoard;
-import org.example.boardbackend.model.entity.board.club.FieldPic;
 import org.example.boardbackend.service.board.club.ClubBoardService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -74,14 +72,9 @@ public class ClubBoardController {
 //  TODO: 저장 함수
 //    @PostMapping("/club/write/complete")
 //    public ResponseEntity<Object> create
-    @PostMapping("/club/create")
-    public void createClubBoard(@RequestBody ClubBoard clubBoard,
-                                @RequestBody FieldPic fieldPic) {
-        clubBoardService.createClubBoardAndFieldPic(clubBoard, fieldPic);
-    }
 
 //  TODO: 수정 함수
-    @PutMapping("/club/update/{clubBoardId}")
+    @PutMapping("/club/{clubBoardId}")
     public ResponseEntity<Object> update(
             @PathVariable long clubBoardId,
             @RequestBody ClubBoard clubBoard

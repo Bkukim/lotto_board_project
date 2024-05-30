@@ -19,7 +19,7 @@ import org.hibernate.annotations.DynamicUpdate;
  * 2024-05-23         BALLBAT          최초 생성
  */
 @Entity
-@Table(name = "LOTTO_FIELD_PIC")
+@Table(name = "FIELD_PIC")
 @Getter
 @Setter
 @ToString
