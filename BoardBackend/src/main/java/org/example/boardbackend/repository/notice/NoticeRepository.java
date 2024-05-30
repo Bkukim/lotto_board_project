@@ -1,6 +1,7 @@
 package org.example.boardbackend.repository.notice;
 
 import org.example.boardbackend.model.dto.notice.INoticeDto;
+import org.example.boardbackend.model.dto.notice.NoticeAllDto;
 import org.example.boardbackend.model.entity.notice.Notice;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -26,8 +27,10 @@ import org.springframework.stereotype.Repository;
 public interface NoticeRepository extends JpaRepository<Notice, Long> {
     @Query(value = "SELECT NOTICE_ID AS noticeId\n" +
             ", TITLE AS title\n" +
-            ", VIEWS AS views\n" +
-            ", INSERT_TIME AS insertTime\n" +
+            ", CONTENT AS content\n" +
+            ", NOTICE_ING_URL AS noticeImgUrl\n" +
+            ", NOTICE_IMG_UUID AS noticeImgUuid\n" +
+            ", EVENT_YN AS eventYn\n" +
             "FROM LOTTO_NOTICE\n" +
             "WHERE TITLE LIKE '%'|| :title ||'%'"
             , countQuery = "SELECT COUNT(*)\n" +

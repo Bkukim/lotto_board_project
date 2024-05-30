@@ -55,10 +55,10 @@ const routes = [
     component: () => import("../views/user/UserModifyView.vue"),
   },
 
-  // 공지사항
+  // 공지사항 수정 ::
   {
-    path: "/notice/notice-board",
-    component: () => import("../views/notice/noticeBoard.vue"),
+    path: "/admin/notice-update/:noticeId",
+    component: () => import("../views/admin/AdminNoticeUpdate.vue"),
   },
   // 공지사항 add
   {
@@ -95,11 +95,22 @@ const routes = [
     path: "/complaint/complaint-board",
     component: () => import("../views/complaint/complaintBoard.vue"),
   },
+   // 건의 게시판 -> 글쓰기
+   {
+    path: "/complaint/complaint-boardAdd",
+    component: () => import("../views/complaint/complaintBoardAdd.vue"),
+  },
+
   // 각게시판별 공지사항 관리 ::
   {
     path: "/notice-master",
     component: () => import("../views/admin/MasterBoardNoticesAdmin.vue"),
   },
+    // HOT 게시판
+    {
+      path: "/hot/hotBoard",
+      component: () => import("../views/hot/hotBoard.vue"),
+    },
 ];
 
 const router = createRouter({
