@@ -2,8 +2,19 @@ package org.example.boardbackend.service.board.free;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.aspectj.weaver.ast.Not;
+import org.example.boardbackend.config.WebConfig;
+import org.example.boardbackend.model.dto.board.free.FreeBoardCommentDto;
+import org.example.boardbackend.model.entity.auth.User;
 import org.example.boardbackend.model.entity.board.free.FreeBoard;
+import org.example.boardbackend.model.entity.board.free.FreeBoardComment;
+import org.example.boardbackend.model.entity.notify.Notify;
+import org.example.boardbackend.repository.board.free.FreeBoardCommentRepository;
 import org.example.boardbackend.repository.board.free.FreeBoardRepository;
+import org.example.boardbackend.repository.user.UserRepository;
+import org.example.boardbackend.service.notice.NoticeService;
+import org.example.boardbackend.service.notify.NotifyService;
+import org.example.boardbackend.service.user.UserService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -29,6 +40,10 @@ import java.util.Optional;
 public class FreeBoardService {
 
     private final FreeBoardRepository freeBoardRepository;
+    private final UserRepository userRepository;
+    private final NotifyService notifyService;
+    private final FreeBoardCommentRepository freeBoardCommentRepository;
+    private final WebConfig webConfig;
 
 //    todo 전체 조회
     public Page<FreeBoard> selectByTitleContaining(
@@ -50,4 +65,25 @@ public class FreeBoardService {
                 = freeBoardRepository.findById(freeBoardId); //crud레포짓토리
         return freeBoardOptional;
     }
+
+    // TODO 댓글 저장 기능
+    // 1. boardId로 게시글 주인의 객체 가져오기,  1. 댓글을 저장, 2 알림 보내기
+    public void saveComment(FreeBoardCommentDto freeBoardCommentDto){
+        FreeBoard freeBoard = freeBoardRepository.findById(freeBoardCommentDto.getFreeBoardId()).get();
+        User commentWriter = userRepository.findByUserId(freeBoardCommentDto.getUserId());
+        User boardWriter = freeBoard.getWriter();
+
+        FreeBoardComment freeBoardComment = new FreeBoardComment(commentWriter,freeBoard,freeBoardCommentDto.getContent(),freeBoardCommentDto.getSecretCommentYn());
+
+        // 1. 댓글 저장
+        freeBoardCommentRepository.save(freeBoardComment);
+
+        // 2. 알림 보내기
+        String notifyContent = "게시물에 댓글이 달렸습니다.";
+        String notifyUrl = webConfig.getFrontDomain() + "/free/free-board/" + freeBoard.getFreeBoardId();
+        notifyService.send(boardWriter,Notify.NotificationType.COMMENT,notifyContent,notifyUrl);
+
+
+    }
+
 }

@@ -9,22 +9,22 @@ import org.hibernate.annotations.DynamicUpdate;
 
 /**
  * packageName : org.example.boardbackend.model.entity.board.free
- * fileName : FreeBoard
- * author : hayj6
- * date : 2024-05-27(027)
+ * fileName : FreeBoardComment
+ * author : PC
+ * date : 2024-05-30
  * description :
  * 요약 :
  * <p>
  * ===========================================================
  * DATE            AUTHOR             NOTE
  * -----------------------------------------------------------
- * 2024-05-27(027)         hayj6          최초 생성
+ * 2024-05-30         PC          최초 생성
  */
 @Entity
-@Table(name = "LOTTO_FREE_BOARD")
+@Table(name = "LOTTO_FREE_BOARD_COMMENT")
 @SequenceGenerator(
-        name = "SQ_FREE_BOARD_GENERATOR"
-        , sequenceName = "SQ_FREE_BOARD"
+        name = "SQ_FREE_BOARD_COMMENT_GENERATOR"
+        , sequenceName = "SQ_FREE_BOARD_COMMENT"
         , initialValue = 1
         , allocationSize = 1
 )
@@ -36,18 +36,25 @@ import org.hibernate.annotations.DynamicUpdate;
 @AllArgsConstructor
 @DynamicInsert
 @DynamicUpdate
-public class FreeBoard extends BaseTimeEntity {
-
+public class FreeBoardComment extends BaseTimeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE
-            , generator = "SQ_FREE_BOARD_GENERATOR"
+            , generator = "SQ_FREE_BOARD_COMMENT_GENERATOR"
     )
-    private long freeBoardId;
+    private long freeBoardCommentId;
     @ManyToOne
     @JoinColumn(name = "USER_ID")
     private User writer;
-    private long likes;
-    @Column(nullable = false)
+    @ManyToOne
+    @JoinColumn(name = "FREE_BOARD_ID")
+    private FreeBoard freeBoard;
     private String content;
-    private String title;
+    private String secretCommentYn;
+
+    public FreeBoardComment(User writer, FreeBoard freeBoard, String content, String secretCommentYn) {
+        this.writer = writer;
+        this.freeBoard = freeBoard;
+        this.content = content;
+        this.secretCommentYn = secretCommentYn;
+    }
 }

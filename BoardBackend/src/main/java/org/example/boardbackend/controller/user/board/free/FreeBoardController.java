@@ -2,7 +2,9 @@ package org.example.boardbackend.controller.user.board.free;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.example.boardbackend.model.dto.board.free.FreeBoardCommentDto;
 import org.example.boardbackend.model.entity.board.free.FreeBoard;
+import org.example.boardbackend.repository.board.free.FreeBoardCommentRepository;
 import org.example.boardbackend.service.board.free.FreeBoardService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -38,7 +40,7 @@ public class FreeBoardController {
 
     private final FreeBoardService freeBoardService;
 
-//    todo 전체 조회 + 제목 검색 + 페이징
+    //    todo 전체 조회 + 제목 검색 + 페이징
     @GetMapping("/free")
     public ResponseEntity<Object> findAll(
             @RequestParam(defaultValue = "") String title,
@@ -89,6 +91,24 @@ public class FreeBoardController {
                 return new ResponseEntity<>(freeBoardOptional.get(), HttpStatus.OK);
             }
         } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @PostMapping("/free/comment")
+    public ResponseEntity<Object> saveFreeComment() {
+        try {
+            FreeBoardCommentDto freeBoardCommentDto
+                    = new FreeBoardCommentDto(1,
+                    "user12",
+                    2,
+                    "asdfasdf",
+                    "N"
+            );
+            freeBoardService.saveComment(freeBoardCommentDto);
+            return new ResponseEntity<>(HttpStatus.OK);
+        } catch (Exception e) {
+            log.debug(e.getMessage());
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
