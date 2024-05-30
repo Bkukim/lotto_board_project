@@ -59,17 +59,12 @@ class NoticeService {
   //     }
   //     );
   //   }
-  //   // TODO: 삭제함수 : 부서번호(dno)
-  //   // TODO: 삭제(delete) -> delete 방식 -> @DeleteMapping
-  //   // TODO: 사용법 : http.delete(`/컨트롤러함수url/${dno}`)
-  //   delete(faqId) {
-  //     console.log(faqId)
-  //     return http.delete(`/user/member/faq/deletion/${faqId}`,
-  //     {
-  //       headers: AuthHeader()
-  //     }
-  //     );
-  //   }
+    // TODO: 삭제함수 : noticeID
+    delete(noticeId) {
+      console.log(noticeId)
+      return http.delete(`/admin/notice/notice-deletion/${noticeId}`,
+      );
+    }
 }
 
 export default new NoticeService();

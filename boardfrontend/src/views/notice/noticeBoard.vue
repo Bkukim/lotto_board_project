@@ -104,7 +104,19 @@
         </tr>
       </tbody>
     </table>
-
+    <div class="mt-5">
+      <router-link to="">
+        <button
+          class="btn btn-outline-secondary"
+          type="button"
+          id="button-Writing"
+          style="margin-left: 1220px"
+          @click="goNoticeAdd"
+        >
+          글쓰기
+        </button>
+      </router-link>
+    </div>
     <!-- 페이징 -->
     <!-- {/* paging 시작 */} -->
     <div class="row justify-content-center mt-4">
@@ -157,6 +169,9 @@ export default {
       } catch (e) {
         console.log(e);
       }
+    },
+    goNoticeAdd() {
+      this.$router.push("/admin/notice-add");
     },
   },
   mounted() {

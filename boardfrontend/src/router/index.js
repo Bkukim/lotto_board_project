@@ -60,11 +60,11 @@ const routes = [
     path: "/notice/notice-check/:noticeId",
     component: () => import("../views/notice/NoticeCheck.vue"),
   },
-  // // 공지사항 add
-  // {
-  //   path: "/notice-add",
-  //   component: () => import("../views/notice/AdminNoticeAdd.vue"),
-  // },
+  // 공지사항 -> 글쓰기
+  {
+    path: "/admin/notice-add",
+    component: () => import("../views/admin/AdminNoticeAdd.vue"),
+  },
   // 자유 게시판
   {
     path: "/free/free-board",
@@ -112,8 +112,13 @@ const routes = [
   },
   // 각게시판별 공지사항 관리 ::
   {
-    path: "/notice-master",
+    path: "/admin/notice-master",
     component: () => import("../views/admin/MasterBoardNoticesAdmin.vue"),
+  },
+  // 공지사항 수정 ::
+  {
+    path: "/admin/notice-update/:noticeId",
+    component: () => import("../views/admin/AdminNoticeUpdate.vue"),
   },
 ];
 
