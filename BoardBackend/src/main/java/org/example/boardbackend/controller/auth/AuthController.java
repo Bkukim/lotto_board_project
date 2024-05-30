@@ -1,5 +1,6 @@
 package org.example.boardbackend.controller.auth;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.example.boardbackend.model.dto.auth.NewUser;
@@ -22,6 +23,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * packageName : org.example.board_login_in_webtoken.controller.auth
@@ -63,7 +66,19 @@ public class AuthController {
             log.debug(e.getMessage());
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
+    }
 
+    // TODO 네이버 로그인
+    @PostMapping("/naver-login/{code}")
+    public ResponseEntity<Object> naverLogin(@PathVariable String code){
+        try {
+            String accessToken = socialLoginService.getAccessToken(code);
+            UserRes userRes = socialLoginService.getUserInfo(accessToken);
+            return new ResponseEntity<>(userRes,HttpStatus.OK);
+        }catch (Exception e){
+            log.debug(e.getMessage());
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
 //    todo 로그인 함수 : 로그인은 조회. URL에 안뜨게 하려고 GET아니고 POST
