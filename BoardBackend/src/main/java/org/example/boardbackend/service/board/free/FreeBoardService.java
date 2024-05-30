@@ -66,6 +66,7 @@ public class FreeBoardService {
         return freeBoardOptional;
     }
 
+
     // TODO 댓글 저장 기능
     // 1. boardId로 게시글 주인의 객체 가져오기,  1. 댓글을 저장, 2 알림 보내기
     public void saveComment(FreeBoardCommentDto freeBoardCommentDto){
@@ -84,6 +85,27 @@ public class FreeBoardService {
         notifyService.send(boardWriter,Notify.NotificationType.COMMENT,notifyContent,notifyUrl);
 
 
+    }
+    //   todo:  저장 함수
+    public FreeBoard save(FreeBoard freeBoard) {
+//        JPA 저장 함수 실행 : return 값 : 저장된 객체
+        FreeBoard freeBoard1 = freeBoardRepository.save(freeBoard);
+        return freeBoard1;
+    }
+
+    // todo: 삭제
+    public boolean removeById(long freeBoardId) {
+//        JPA 삭제함수 : deleteById(기본키)
+//        1) 먼저 기본키가 테이블에 있으면 삭제, true 리턴
+//           없으면 false 리턴
+//        사용법 : jpa레포지토리.existsById(기본키)
+//         => 기본키가 테이블에 있으지 확인. 있으면 true, 없으면 false
+        if(freeBoardRepository.existsById(freeBoardId) == true) {
+            freeBoardRepository.deleteById(freeBoardId);
+            return true;
+        } else {
+            return false;
+        }
     }
 
 }

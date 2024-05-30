@@ -9,6 +9,8 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 /**
  * packageName : org.example.boardbackend.repository.event
  * fileName : EventRepository
@@ -36,12 +38,23 @@ public interface NoticeRepository extends JpaRepository<Notice, Long> {
             , nativeQuery = true
     )
     Page<INoticeDto> findByTitleContaining(@Param("title") String title, Pageable pageable);
-//    @Query(value = "SELECT NOTICE_ID, TITLE \n" +
-//            "FROM LOTTO_NOTICE\n" +
-//            "WHERE TITLE LIKE '%'||:title||'%'",
-//    countQuery = "SELECT NOTICE_ID, TITLE \n" +
-//            "FROM LOTTO_NOTICE\n" +
-//            "WHERE TITLE LIKE '%h%'",
-//    nativeQuery = true)
-//    Page<NoticeAllDto> findAllByTitleContaining(@Param("title") String title, Pageable pageable);
+
+    // todo: 자유게시판 조회
+    @Query(value = "SELECT NOTICE_ID AS noticeId\n" +
+            ", TITLE AS title" +
+            ", VIEWS AS views" +
+            ", INSERT_TIME AS insertTime" +
+            ", NOTICE_TYPE AS noticeType\n" +
+            "FROM LOTTO_NOTICE\n" +
+            " WHERE NOTICE_TYPE = '부서'",
+            nativeQuery = true)
+    List<INoticeDto> findByNoticeTypeDept(INoticeDto iNoticeDto);
+
+// todo: 부서게시판 조회
+
+// todo: 건의게시판 조회
+
+// todo: 동호회 게시판 조회
+
+
 }

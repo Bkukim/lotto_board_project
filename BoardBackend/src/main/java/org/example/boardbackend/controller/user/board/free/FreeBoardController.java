@@ -95,6 +95,8 @@ public class FreeBoardController {
         }
     }
 
+
+// TODO 댓글 저장 함수
     @PostMapping("/free/comment")
     public ResponseEntity<Object> saveFreeComment() {
         try {
@@ -109,6 +111,57 @@ public class FreeBoardController {
             return new ResponseEntity<>(HttpStatus.OK);
         } catch (Exception e) {
             log.debug(e.getMessage());
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+    //    todo: 문의글 저장함수
+    @PostMapping("/free/save")
+    public ResponseEntity<Object> createFreeBoard(
+            @RequestBody FreeBoard freeBoard
+    ) {
+        try {
+//            DB 서비스 저장 함수 실행
+            FreeBoard freeBoard1 = freeBoardService.save(freeBoard);
+            log.debug("디버그"+freeBoard1.toString());
+//            성공(OK) 메세지 + 저장된객체
+            return new ResponseEntity<>(freeBoard1, HttpStatus.OK);
+        } catch (Exception e) {
+//            500 전송
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    //    TODO: 수정 함수 : 수정 버튼 클릭시 실행될 함수
+    @PutMapping("/free/update/{freeBoardId}")
+    public ResponseEntity<Object> update(
+            @PathVariable long freeBoardId,
+            @RequestBody FreeBoard freeBoard
+    ) {
+        try {
+            FreeBoard freeBoard1 = freeBoardService.save(freeBoard);  // 수정
+            return new ResponseEntity<>(freeBoard1, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    //    TODO: 삭제 함수
+    @DeleteMapping("/free/deletion/{freeBoardId}")
+    public ResponseEntity<Object> delete(
+            @PathVariable long freeBoardId
+    ) {
+        try {
+//            DB 서비스 삭제 함수 실행
+            boolean success = freeBoardService.removeById(freeBoardId);
+
+            if (success == true) {
+                return new ResponseEntity<>(HttpStatus.OK);
+            } else {
+                // 삭제 실행 : 0건 삭제(삭제할 데이터 없음)
+                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+            }
+        } catch (Exception e) {
+//            서버(DB) 에러
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
