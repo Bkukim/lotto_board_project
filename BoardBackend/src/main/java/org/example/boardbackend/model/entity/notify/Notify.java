@@ -62,7 +62,7 @@ public class Notify extends BaseTimeEntity {
     private NotificationType notificationType;
 
     public enum NotificationType{
-        YATA, REVIEW, CHAT
+        REPORT ,CLUB_APPLICATION , CLUB_APPROVAL, COMMENT, COMPLAINT, COMPLAINT_STATUS
     }
 }
 
