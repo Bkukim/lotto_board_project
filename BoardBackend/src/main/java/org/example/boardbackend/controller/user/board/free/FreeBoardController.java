@@ -95,6 +95,7 @@ public class FreeBoardController {
         }
     }
 
+    // TODO 댓글 저장 함수
     @PostMapping("/free/comment")
     public ResponseEntity<Object> saveFreeComment() {
         try {
