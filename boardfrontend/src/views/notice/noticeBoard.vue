@@ -94,7 +94,7 @@
             {{ index + 1 }}
           </td>
           <td class="col-8">
-          <router-link :to="`/notice-check/`+data.noticeId">
+          <router-link :to="`/notice/notice-check/`+data.noticeId">
             {{ data.title }}
           </router-link>
           </td>

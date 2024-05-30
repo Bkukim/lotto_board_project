@@ -51,6 +51,13 @@ public class FreeBoardService {
         return freeBoardOptional;
     }
 
+    //   todo:  저장 함수
+    public FreeBoard save(FreeBoard freeBoard) {
+//        JPA 저장 함수 실행 : return 값 : 저장된 객체
+        FreeBoard freeBoard1 = freeBoardRepository.save(freeBoard);
+        return freeBoard1;
+    }
+
     // todo: 삭제
     public boolean removeById(long freeBoardId) {
 //        JPA 삭제함수 : deleteById(기본키)

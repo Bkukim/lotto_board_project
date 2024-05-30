@@ -93,6 +93,37 @@ public class FreeBoardController {
         }
     }
 
+    //    todo: 문의글 저장함수
+    @PostMapping("/free/save")
+    public ResponseEntity<Object> createFreeBoard(
+            @RequestBody FreeBoard freeBoard
+    ) {
+        try {
+//            DB 서비스 저장 함수 실행
+            FreeBoard freeBoard1 = freeBoardService.save(freeBoard);
+            log.debug("디버그"+freeBoard1.toString());
+//            성공(OK) 메세지 + 저장된객체
+            return new ResponseEntity<>(freeBoard1, HttpStatus.OK);
+        } catch (Exception e) {
+//            500 전송
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    //    TODO: 수정 함수 : 수정 버튼 클릭시 실행될 함수
+    @PutMapping("/free/update/{freeBoardId}")
+    public ResponseEntity<Object> update(
+            @PathVariable long freeBoardId,
+            @RequestBody FreeBoard freeBoard
+    ) {
+        try {
+            FreeBoard freeBoard1 = freeBoardService.save(freeBoard);  // 수정
+            return new ResponseEntity<>(freeBoard1, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
     //    TODO: 삭제 함수
     @DeleteMapping("/free/deletion/{freeBoardId}")
     public ResponseEntity<Object> delete(
