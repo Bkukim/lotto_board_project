@@ -17,6 +17,13 @@ class FreeBoardService {
       headers: AuthHeader(),
     });
   }
+
+  // TODO: 삭제
+  deleteFreeBoard(freeBoardId){
+    return http.delete(`/user/board/free/deletion/${freeBoardId}`, {
+      headers: AuthHeader(),
+    });
+  }
   //   // TODO: 저장
   //   create(data) {
   //     console.log(data);

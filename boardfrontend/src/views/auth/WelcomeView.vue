@@ -5,7 +5,7 @@
     <br />
     <br />
     <br />
-    <h2 class="text-center">회원가입 완료</h2>
+    <h2 class="text-center">회원가입을 환영합니다!</h2>
     <div class="container">
       <div class="row justify-content-md-center">
         <div class="col-8">
@@ -71,7 +71,7 @@ export default {
   padding: 60px 100px 60px 80px;
 }
 .go-login {
-  background-color: #342a26;
+  background-color: #162b59;
   color: white;
   font-size: 20px;
   width: 200px;

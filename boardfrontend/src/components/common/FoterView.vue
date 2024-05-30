@@ -11,7 +11,7 @@
           letter-spacing: -2.5px;
         "
       >
-        COMPANT LOTTO
+        COMPANY LOTTO
       </h3>
 
       <p
