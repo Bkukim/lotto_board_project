@@ -75,4 +75,24 @@ public class AdminNoticeController {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+    
+    
+//    todo: 삭제함수
+@DeleteMapping("/notice-deletion/{noticeId}")
+public ResponseEntity<Object> delete(
+        @PathVariable long noticeId
+) {
+    try {
+        boolean success = noticeService.removeById(noticeId);
+
+        if (success == true) {
+            return new ResponseEntity<>(HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+
+    } catch (Exception e) {
+        return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+}
 }
