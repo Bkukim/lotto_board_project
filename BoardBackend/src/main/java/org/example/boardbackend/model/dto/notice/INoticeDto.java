@@ -17,7 +17,6 @@ public interface INoticeDto {
     long getNoticeId();
     String getTitle();
     String getContent();
-    String eventYn();
     String getEventYn();
     String getNoticeType();
     String getInsertTime();

@@ -1,6 +1,6 @@
 <template>
   <div class="container mt-5 mb-5">
-    <h3 class="mb-5">자유 게시판 작성</h3>
+    <h3 class="mb-5">자유 게시판 수정</h3>
     <!-- 제목 -->
     <div class="col-10 mb-3">
       <input
@@ -28,11 +28,11 @@
         취소
       </button>
       <button
-        @click="createFreeBoard"
+        @click="updateFreeBoard"
         class="btn col-3"
         id="button-cancle-Writing"
       >
-        등록하기
+        수정하기
       </button>
     </div>
   </div>
@@ -50,6 +50,7 @@ export default {
       freeBoard: {
         userId: this.$store.state.user.userId,  // 로그인 된 userId
         title:"",
+        freeBoardId:""
       },
     };
   },
@@ -70,7 +71,7 @@ export default {
           content: content,
         };
         // 벡엔드로 공지사항 객체 추가 요청
-        let response = await FreeBoardService.createFreeBoard(freeBoard);
+        let response = await FreeBoardService.create(freeBoard);
         console.log(response);
         alert("게시글이 저장되었습니다.")
         this.$router.push("/free/free-board");
@@ -80,8 +81,23 @@ export default {
     },
     // 글 작성 취소 함수
     cancelFreeBoard() {
-      if (confirm("글 작성을 취소하시겠습니까?")) {
-        this.$router.push("/free/free-board");
+      if (confirm("글 수정을 취소하시겠습니까?")) {
+        alert(this.freeBoard.freeBoardId)
+        this.$router.push("/free/free-boardDetail/" + this.freeBoard.freeBoardId);
+      }
+    },
+        // 수정 함수
+    async updateFreeBoard() {
+      try {
+          let response = await FreeBoardService.updateFreeBoard(
+            this.freeBoardList.freeBoardId
+          );
+          // 로깅
+          console.log(response.data);
+          alert("게시글이 수정되었습니다.");
+          this.$router.push("/free/free-board/:freeBoardId");
+      } catch (e) {
+        console.log(e);
       }
     },
   },
@@ -106,6 +122,5 @@ export default {
   background-color: #162b59;
   color: #ffffff;
   border: none;
-  width: 200px;
 }
 </style>
