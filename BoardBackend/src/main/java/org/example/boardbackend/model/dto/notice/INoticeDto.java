@@ -18,6 +18,7 @@ public interface INoticeDto {
     String getTitle();
     String getContent();
 
+
     String getEventYn();
     String getInsertTime();
     long getViews();
