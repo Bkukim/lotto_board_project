@@ -14,7 +14,7 @@
             <option value="부서">부서</option>
             <option value="자유">자유</option>
             <option value="건의">건의</option>
-            <option value="동아리">동아리</option>
+            <option value="동호회">동호회</option>
           </select>
         </div>
         <div class="col-4 form-check form-inline">
@@ -66,21 +66,28 @@ export default {
     };
   },
   methods: {
-    async getNotice(noticeId) {
-      try {
-        let response = await NoticeService.getNotice(noticeId);
-        this.notice = response.data;
-        // 에디터가 초기화된 후에 데이터를 설정
-        if (this.editor) {
-          this.editor.setMarkdown(this.notice.content || ""); // 에디터에 불러온 내용 설정
+   async getNotice(noticeId) {
+    try {
+      let response = await NoticeService.getNotice(noticeId);
+      console.log('Notice data:', response.data); // 로그 추가
+      this.notice = response.data;
+
+      // Vue의 nextTick을 사용하여 다음 렌더링 사이클에서 데이터를 설정
+      this.$nextTick(() => {
+        if (this.editor && this.editor.isLoaded) {
+          console.log('Setting markdown:', this.notice.content); // 로그 추가
+          this.editor.setMarkdown(this.notice.content); // 에디터에 불러온 내용 설정
+        } else {
+          console.log('에디터 준비되지않음');
         }
-      } catch (e) {
-        console.log(e);
-      }
-    },
+      });
+    } catch (e) {
+      console.log(e);
+    }
+  },
     async updateNotice() {
       try {
-        this.notice.content = this.editor.getMarkdown(); // 에디터 내용을 notice.content에 설정
+        this.notice.content = this.editor.getHTML(); // 에디터 내용을 notice.content에 설정
         let response = await NoticeService.update(
           this.notice.noticeId,
           this.notice
@@ -95,18 +102,27 @@ export default {
   mounted() {
     this.editor = new Editor({
       el: this.$refs.editor,
-      initialEditType: "wysiwyg",
-      height: "500px",
+      initialEditType: 'wysiwyg',
+      height: '500px',
       events: {
         load: () => {
-          // 에디터가 로드된 후에만 getNotice를 호출
-          this.getNotice(this.$route.params.noticeId); // 임의의 noticeId로 초기 호출 (적절한 noticeId로 변경)
+          console.log('Editor loaded'); // 로그 추가
+          this.editorLoaded = true; // 에디터 로드 상태 플래그 설정
+
+          // 에디터가 로드된 후에 getNotice가 호출되었는지 확인하고 호출되지 않았으면 호출
+          if (this.notice.content) {
+            console.log('Setting markdown after load:', this.notice.content); // 로그 추가
+            this.editor.setMarkdown(this.notice.content); // 에디터에 불러온 내용 설정
+          }
         },
       },
     });
 
-    // this.getNotice(this.$route.params.noticeId);
+    // 페이지가 로드되면 즉시 getNotice를 호출
+    this.getNotice(this.$route.params.noticeId); // 적절한 noticeId로 변경
   },
+
+
 };
 </script>
 

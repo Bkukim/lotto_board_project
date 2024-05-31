@@ -41,9 +41,27 @@ public class NoticeService {
 
         return notices;
     }
-//   todo: 부서조회
+//   todo: 부서조회 , 페이징 없음
     public List<INoticeDto> findByNoticeTypeDept(INoticeDto iNoticeDto) {
         List<INoticeDto> notice = noticeRepository.findByNoticeTypeDept(iNoticeDto);
+        return notice;
+    }
+
+    //   todo: 자유조회 , 페이징 없음
+    public List<INoticeDto> findByNoticeTypeFree(INoticeDto iNoticeDto) {
+        List<INoticeDto> notice = noticeRepository.findByNoticeTypeFree(iNoticeDto);
+        return notice;
+    }
+    
+    //   todo: 건의조회 , 페이징 없음
+    public List<INoticeDto> findByNoticeTypeComplaint(INoticeDto iNoticeDto) {
+        List<INoticeDto> notice = noticeRepository.findByNoticeTypeComplaint(iNoticeDto);
+        return notice;
+    } 
+    
+    //   todo: 동호회 , 페이징 없음
+    public List<INoticeDto> findByNoticeTypeGroup(INoticeDto iNoticeDto) {
+        List<INoticeDto> notice = noticeRepository.findByNoticeTypeGroup(iNoticeDto);
         return notice;
     }
 
