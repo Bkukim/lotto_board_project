@@ -17,15 +17,16 @@ public interface INoticeDto {
     long getNoticeId();
     String getTitle();
     String getContent();
-
-    String getNoticeImgUrl();
-    String getNoticeImgUuid();
     String eventYn();
-
     String getEventYn();
-    String getInsertTime();
-    long getViews();
     String getNoticeType();
+    String getInsertTime();
+    String getUpdateTime();
+    long getViews();
+
+//    todo: 이거 값넣어주는 거 맞나요?
+    long getEventWinnerQuota = 0;
+
 
 
 }
