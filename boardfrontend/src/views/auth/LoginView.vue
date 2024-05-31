@@ -1,4 +1,3 @@
-
 <template>
   <div class="container mt-3">
     <div>
@@ -92,27 +91,33 @@
             <img src="@/assets/img/N.png" /> &nbsp;&nbsp; 네이버 로그인 /
             회원가입
           </button> -->
-          <img src="@/assets/img/btnG_완성형.png" style="width:300px; height:auto;"/>
+
+          <img src="@/assets/img/btnG_완성형.png" style="width:300px; height:auto;" @click="goToNaverLogin"/>
+
         </div>
       </div>
-      <br>
+      <br />
       <!-- 소셜 로그인 : 카카오 -->
       <div class="row text-center">
         <div>
-           <img src="@/assets/img/kakao_login_medium_wide.png" style="width: 300px; height:auto;" @click="goToKakaoAuth"/>
+          <img
+            src="@/assets/img/kakao_login_medium_wide.png"
+            style="width: 300px; height: auto"
+            @click="goToKakaoAuth"
+          />
           <!-- <div v-if="user">
             <h2>{{user.kakao_account.profile.nickname}}님 환영합니다!</h2>
             </div> -->
         </div>
-        <br>
-        <br>
-        <br>
+        <br />
+        <br />
+        <br />
       </div>
     </div>
   </div>
 </template>
-  <script>
-  // TODO: 1) spring 보내준 user 객체(웹토큰있음)를 로컬스토리지에 저장
+<script>
+// TODO: 1) spring 보내준 user 객체(웹토큰있음)를 로컬스토리지에 저장
 // TODO:   사용법 :  localStorage.setItem(키, 값);
 // TODO:     => 단, 값은 문자열만 저장됨
 // TODO:   사용법 : JSON.stringify(객체) => 문자열로 바뀐 객체가 리턴됨
@@ -130,20 +135,38 @@ import AuthService from "@/services/auth/AuthService";
 export default {
   data() {
     return {
+      eventSource: null,
       user: {
         role: "",
-        userId: "",   // 로그인 ID
+        userId: "", // 로그인 ID
         password: "",
       },
     };
   },
   methods: {
     // 카카오 로그인
-   goToKakaoAuth() {
-      const client_id = 	"6a9b8daaeef2609b3db2849d027f6080";         // Rest API 키
-      const redirect_uri = 	"http://localhost:8080/auth-redirect";   // Redirect URI
+    goToKakaoAuth() {
+      const client_id = "6a9b8daaeef2609b3db2849d027f6080"; // Rest API 키
+      const redirect_uri = "http://localhost:8080/auth-redirect"; // Redirect URI
       const kakaoAuthUrl = `https://kauth.kakao.com/oauth/authorize?client_id=${client_id}&redirect_uri=${redirect_uri}&response_type=code`; // response_type=code는 고정
-      window.location.href = kakaoAuthUrl;  // 이 페이지는 카카오에서 제공하는 페이지라 따로 페이지 만들 필요 없음
+      window.location.href = kakaoAuthUrl; // 이 페이지는 카카오에서 제공하는 페이지라 따로 페이지 만들 필요 없음
+    },
+    // 네이버 로그인
+  goToNaverLogin() {
+    const clientId = 'Ipydix8nXe2V9m6KRDom';  // 네이버 개발자 센터에서 발급받은 Client ID
+    const redirectUri = "http://localhost:8080/login/ouath2/code/naver";  // 네이버 개발자 센터에 등록한 Redirect URI
+    const state = this.generateRandomState();  // CSRF 공격 방지를 위한 랜덤 상태 값
+    const naverAuthUrl = `https://nid.naver.com/oauth2.0/authorize?response_type=code&client_id=${clientId}&redirect_uri=${encodeURIComponent(redirectUri)}&state=${state}`;
+    window.location.href = naverAuthUrl;
+  },
+  generateRandomState() {
+    const characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+    let state = "";
+    for (let i = 0; i < 16; i++) {
+      const randomIndex = Math.floor(Math.random() * characters.length);
+      state += characters.charAt(randomIndex);
+    }
+    return state;
     },
     // 아이디 찾기
     goFindId() {
@@ -157,7 +180,76 @@ export default {
     goFindPwd() {
       this.$router.push("/member/find-pwd");
     },
+    // sse 연결 함수
+    connectSse(jwt) {
+      alert(jwt);
+      let subscribeUrl = "http://localhost:8000/api/v1/notify/subscribe";
 
+      if (jwt != null) {
+        let token = jwt;
+        this.eventSource = new EventSource(subscribeUrl + "?token=" + token);
+        this.eventSource.onopen = () => {
+          console.log("SSE 연결이 열렸습니다.");
+          this.isConnected = true;
+        };
+        this.eventSource.addEventListener("connect", function(event) {
+            let message = event.data;
+            alert(message);
+        })
+        this.eventSource.addEventListener("COMMENT", function(event) {
+            let message = event.data;
+            alert(message);
+        })
+        this.eventSource.onmessage = (event) => {
+          console.log("새 알림:", event.data);
+          this.messages.push(event.data);
+        };
+        this.eventSource.onerror = (event) => {
+          console.error("SSE 연결 오류:", event);
+          if (event.readyState == EventSource.CLOSED) {
+            console.log("SSE 연결이 닫혔습니다.");
+            this.isConnected = false;
+          } else {
+            console.log("SSE 연결 오류 발생, 재연결 시도 중...");
+            setTimeout(() => this.connectSSE(), 5000); // 5초 후 재연결 시도
+          }
+        };
+      } else {
+        console.error("JWT 토큰이 없습니다.");
+      }
+    },
+
+    // connectSse(jwt) {
+    //   alert(jwt);
+    //   let subscribeUrl = "http://localhost:8000/api/v1/notify/subscribe";
+
+    //   if (jwt != null) {
+    //     let token = jwt;
+    //     let eventSource = new EventSource(subscribeUrl + "?token=" + token);
+
+    //     alert()
+    //     eventSource.onmessage = function(event) {
+    //     alert("새 알림:", event.data);
+    // };
+    //     // eventSource.addEventListener("connect", (e) => {
+    //     //   const { data: receivedConnectData } = e;
+    //     //   alert("connect event data: ", receivedConnectData); // "connected!"
+    //     // });
+    //     // eventSource.addEventListener('connect', function (event) {
+    //     //   let message = event.data;
+    //     //   alert(message);
+    //     // });
+    //     eventSource.addEventListener("UNSENT_MESSAGE", function (event) {
+    //       let message = event.data;
+    //       alert(message);
+    //     });
+
+    //     eventSource.addEventListener("error", function (event) {
+    //       console.log(event);
+    //       eventSource.close();
+    //     });
+    //   }
+    // },
     async handleLogin() {
       // 공통 로그인 서비스 함수
       // 로그인 성공 =>
@@ -167,18 +259,18 @@ export default {
         console.log(response.data); // response.data == jwt, userId, 권한
         localStorage.setItem("user", JSON.stringify(response.data)); // 로칼호스트는 객체를 저장할 수 없기에 이걸 문자열로 바꿔서 진행해야한다.
         this.$store.commit("loginSuccess", response.data);
-
+        this.connectSse(response.data.accessToken);
         if (this.$store.state.user.role == "ROLE_USER") {
-          alert("로그인에 성공하였습니다.")
+          alert("로그인에 성공하였습니다.");
           this.$router.push("/");
         } else if (this.$store.state.user.role == "ROLE_ADMIN") {
-          alert("관리자 로그인에 성공하였습니다.")
+          alert("관리자 로그인에 성공하였습니다.");
           this.$router.push("/shop/admin/order");
         }
       } catch (e) {
         // 로그인 실패시 에러가 뜨므로 로그인 실패 공유함수를 실행
         alert("로그인 정보가 일치하지 않습니다.");
-        this.$store.commit("loginFailure"); // 공유함수의 mutation함수는commit으로 실행한다.
+        this.$store.commit("loginFailure");
         console.log(e);
       }
     },
@@ -198,7 +290,7 @@ export default {
   },
 };
 </script>
-  <style>
+<style>
 #login-role {
   width: 483px;
 }

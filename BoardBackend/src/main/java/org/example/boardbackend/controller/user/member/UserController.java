@@ -35,6 +35,7 @@ public class UserController {
 
     private final UserService userService;
 
+//    todo : userId 상세 조회
     @GetMapping("{userId}")
     public ResponseEntity<Object> findByUserID(@PathVariable String userId){
         try {

@@ -38,16 +38,13 @@ import java.util.Optional;
 public class NormalNoticeController {
 
     private final NoticeRedisService noticeRedisService;
-//todo: 공지사항 clob이 string 변환이 안되어서
-//      문제 되어서 조회가 안되는거라고 합니다...
-//      아직 못찾았어요 그래서 타이틀만 조회하려고 하니까 레디스 어캐 조회하는지 몰라서 일단 둬요..ㅠ
+//todo: 공지사항 clob이 string 변환 => entity에 컬럼추가해 주니 됨 @Column(name = "CONTENT")
     @GetMapping("/all/{eventYn}")
     public ResponseEntity<Object> getAllNotice(@PathVariable String eventYn, // 이벤트 가 존재하면 true 보내게
                                                @RequestParam String title,
                                                @RequestParam int page,
                                                @RequestParam int size) {
         try {
-            log.debug("실행시작");
             Pageable pageable = PageRequest.of(page, size);
             Map<String, Object> response = new HashMap<>();
             Page<INoticeDto> notices;
@@ -62,11 +59,8 @@ public class NormalNoticeController {
             response.put("currentPage", notices.getNumber());
             response.put("totalItems", notices.getTotalElements());
             response.put("totalPages", notices.getTotalPages());
-            log.debug("실행다됨"+response);
-
             return new ResponseEntity<>(response, HttpStatus.OK);
         } catch (Exception e) {
-            log.debug("실행중"+e.getMessage());
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
@@ -89,5 +83,30 @@ public class NormalNoticeController {
         }
     }
 
+    //    todo: 상세조회 만들기
+//    조회(select) -> get 방식 -> @GetMapping
+    @GetMapping("/{noticeId}")
+    public ResponseEntity<Object> findById(
+            @PathVariable int noticeId
+    ) {
+        log.debug("컨트롤러1");
+        try {
+//            상세조회 서비스 실행
+            Optional<Notice> noticeOptional
+                    = noticeRedisService.findById(noticeId);
 
+            if (noticeOptional.isEmpty() == true) {
+//                데이터 없음
+                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+            } else {
+//                조회 성공
+                return new ResponseEntity<>(noticeOptional.get(), HttpStatus.OK);
+
+            }
+        } catch (Exception e) {
+            log.debug("컨트롤러2");
+
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
 }

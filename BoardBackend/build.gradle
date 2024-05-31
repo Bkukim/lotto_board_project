@@ -24,6 +24,10 @@ repositories {
 
 dependencies {
 
+//  TODO: OAuth2 설정을 위한 라이브러리
+	implementation 'org.springframework.boot:spring-boot-starter-security'
+	implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
+
 	//  TODO: model mapper : entity 에서 dto 로 변환하는 라이브러리 (entity <-> dto)
 	implementation 'org.modelmapper:modelmapper:2.4.2'
 

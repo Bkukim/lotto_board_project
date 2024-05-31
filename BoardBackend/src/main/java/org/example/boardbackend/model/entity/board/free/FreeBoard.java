@@ -3,6 +3,7 @@ package org.example.boardbackend.model.entity.board.free;
 import jakarta.persistence.*;
 import lombok.*;
 import org.example.boardbackend.model.common.BaseTimeEntity;
+import org.example.boardbackend.model.entity.auth.User;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 
@@ -36,21 +37,17 @@ import org.hibernate.annotations.DynamicUpdate;
 @DynamicInsert
 @DynamicUpdate
 public class FreeBoard extends BaseTimeEntity {
-//    free_board_id	number
-//    user_id	varchar2(16 byte)
-//    likes	number
-//    content	clob
-//    insert_time	varchar2(20 byte)
-//    update_time	varchar2(20 byte)
-//    title	varchar2(255 byte)
 
-@Id
-@GeneratedValue(strategy = GenerationType.SEQUENCE
-        , generator = "SQ_FREE_BOARD_GENERATOR"
-)
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE
+            , generator = "SQ_FREE_BOARD_GENERATOR"
+    )
     private long freeBoardId;
-    private String userId;
+    @ManyToOne
+    @JoinColumn(name = "USER_ID")
+    private User writer;
     private long likes;
+    @Column(nullable = false)
     private String content;
     private String title;
 }

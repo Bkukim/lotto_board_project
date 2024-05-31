@@ -1,8 +1,10 @@
-
 <template>
   <div class="container text-center" id="fb_all">
-    <h3 class="mb-5 mt-5">건의/ 문의사항</h3>
-  
+    <h3 class="mb-5 mt-5">건의 / 문의사항 게시판</h3>
+        <p class="mb-5">
+      건의 게시판은 전달하고 싶은 다양한 의견이나 아이디어를 익명으로 전달하는 게시판입니다. 
+    </p>
+
     <!-- 검색 박스 -->
     <div class="container text-center" style="gap: 5px" id="search_box">
       <div class="row">
@@ -41,6 +43,7 @@
             class="btn btn-outline-secondary"
             type="button"
             id="button-search"
+            @click="searchComplaintBoard"
           >
             검색
           </button>
@@ -52,6 +55,7 @@
             class="btn btn-outline-secondary"
             type="button"
             id="button-reset"
+            @click="resetComplaintSearch"
           >
             초기화
           </button>
@@ -68,31 +72,37 @@
           <th scope="col">제목</th>
           <th scope="col">작성자</th>
           <th scope="col">등록일</th>
-          <th scope="col">조회수</th>
+          <th scope="col">좋아요</th>
         </tr>
       </thead>
       <tbody>
         <!-- 반복문 시작할 행 -->
-        <tr v-for="(data, index) in freeList" :key="index">
+        <tr v-for="(data, index) in complaintBoardList" :key="index">
+          <td>{{ (page - 1) * pageSize + index + 1 }}</td>
           <td>
-            {{ index + 1 }}
+            <router-link
+              :to="'/free/free-boardDetail/' + data.freeBoardId"
+              class="router-link-exact-active alltext"
+            >
+              {{ data.title }}
+            </router-link>
           </td>
-          <td class="col-8"></td>
-          <td></td>
-          <td></td>
-          <td></td>
+          <td>{{ data.userId }}</td>
+          <td>{{ data.insertTime }}</td>
+          <td>{{ data.likes }}</td>
         </tr>
       </tbody>
     </table>
 
     <!-- 글쓰기 버튼-->
     <div class="mt-5">
-        <router-link to="">
+      <router-link to="">
         <button
           class="btn btn-outline-secondary"
           type="button"
           id="button-Writing"
-          style="margin-left: 1220px;"
+          style="margin-left: 1220px"
+          @click="writeComplaintBoard"
         >
           글쓰기
         </button>
@@ -108,25 +118,71 @@
           v-model="page"
           :total-rows="count"
           :per-page="pageSize"
-          @click="retrieveQna"
+          @click="retrieveComplaintBoard"
         ></b-pagination>
       </div>
     </div>
   </div>
   <!-- 자유게시판 중앙정렬 전체박스 끝 -->
 </template>
-  
-  <script>
+
+<script>
+import ComplaintBoardService from "@/services/board/complaint/ComplaintBoardService";
+
 export default {
   data() {
     return {
-      freeList: [1, 2, 3, 4],
+      complaintBoardList: [],
+      searchTitle: "",
+      page: 1, // 현재페이지번호
+      count: 0, // 전체데이터개수
+      pageSize: 10, // 1페이지당개수(select태그)
     };
+  },
+  methods: {
+    // 전체조회 함수
+    async retrieveComplaintBoard() {
+      try {
+        // TODO: 1) 공통 전체조회 함수 실행
+        let response = await ComplaintBoardService.getAllComplaintBoard(
+          this.searchTitle, // 검색어
+          this.page - 1, // 현재페이지번호-1
+          this.pageSize // 1페이지당개수(size)
+        );
+        // TODO: 복습 : 2) 객체분할 할당
+        const { complaintBoardList, totalItems } = response.data; // 부서배열(벡엔드 전송)
+        // TODO: 3) 바인딩변수(속성)에 저장
+        this.complaintBoardList = complaintBoardList; // 부서배열(벡엔드 전송)
+        this.count = totalItems; // 전체페이지수(벡엔드 전송)
+        // TODO: 4) 프론트 로깅 : console.log
+        console.log(response.data);
+      } catch (e) {
+        console.log(e);
+      }
+    },
+        // 검색 함수
+    async searchComplaintBoard() {
+      console.log("검색 함수 호출");
+      await this.retrieveComplaintBoard();
+    },
+        // 초기화 함수
+    resetComplaintSearch() {
+      this.searchTitle = "";
+      this.retrieveFreeBoard();
+    },
+    // 글 쓰러가기 함수
+    writeComplaintBoard() {
+      this.$router.push("/complaint/complaint-boardAdd");
+    },
+  },
+  mounted() {
+    this.retrieveComplaintBoard();
+    window.scrollTo(0, 0);
   },
 };
 </script>
-  
-  <style>
+
+<style>
 /* 페이지 전체 높이 */
 #fb_all {
   height: 100vw;
@@ -138,7 +194,7 @@ p {
 
 /* 페이징 번호 디자인 */
 .custom-pagination .page-item.active .page-link {
-  background-color: #342a26;
+  background-color: #162b59;
   border-color: #ffffff;
   color: white;
 }
@@ -156,8 +212,8 @@ p {
 
 .custom-pagination .page-link:focus {
   outline: none;
-  box-shadow: 0 0 0 0.2rem #342a26bf;
-  border-color: #342a26bf;
+  box-shadow: 0 0 0 0.2rem #162b59;
+  border-color: #162b59;
 }
 
 /* 검색버튼 */
@@ -176,7 +232,8 @@ p {
   color: #212121;
   border: none;
 }
-#button-search, #button-Writing {
+#button-search,
+#button-Writing {
   background-color: #162b59;
   color: #ffffff;
   border: none;
@@ -188,5 +245,3 @@ p {
   border: none;
 }
 </style>
-  
-
