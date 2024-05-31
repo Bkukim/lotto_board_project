@@ -1,7 +1,5 @@
 package org.example.boardbackend.model.dto.notice;
 
-import jakarta.persistence.Lob;
-
 /**
  * packageName : org.example.boardbackend.model.dto.notice
  * fileName : INoticeDto
@@ -17,12 +15,17 @@ import jakarta.persistence.Lob;
  */
 public interface INoticeDto {
     long getNoticeId();
-
     String getTitle();
     String getContent();
+
+    String getNoticeImgUrl();
+    String getNoticeImgUuid();
+    String eventYn();
+
     String getEventYn();
     String getInsertTime();
     long getViews();
     String getNoticeType();
+
 
 }
