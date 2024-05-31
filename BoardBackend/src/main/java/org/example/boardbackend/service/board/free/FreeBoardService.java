@@ -2,9 +2,9 @@ package org.example.boardbackend.service.board.free;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.aspectj.weaver.ast.Not;
 import org.example.boardbackend.config.WebConfig;
 import org.example.boardbackend.model.dto.board.free.FreeBoardCommentDto;
+import org.example.boardbackend.model.dto.board.free.FreeBoardDto;
 import org.example.boardbackend.model.entity.auth.User;
 import org.example.boardbackend.model.entity.board.free.FreeBoard;
 import org.example.boardbackend.model.entity.board.free.FreeBoardComment;
@@ -12,9 +12,7 @@ import org.example.boardbackend.model.entity.notify.Notify;
 import org.example.boardbackend.repository.board.free.FreeBoardCommentRepository;
 import org.example.boardbackend.repository.board.free.FreeBoardRepository;
 import org.example.boardbackend.repository.user.UserRepository;
-import org.example.boardbackend.service.notice.NoticeService;
 import org.example.boardbackend.service.notify.NotifyService;
-import org.example.boardbackend.service.user.UserService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -46,11 +44,11 @@ public class FreeBoardService {
     private final WebConfig webConfig;
 
 //    todo 전체 조회
-    public Page<FreeBoard> selectByTitleContaining(
+    public Page<FreeBoardDto> selectByTitleContaining(
             String title,
             Pageable pageable
     ) {
-        Page<FreeBoard> page
+        Page<FreeBoardDto> page
                 = freeBoardRepository.findAllByTitleContaining(
                 title,
                 pageable
@@ -72,7 +70,7 @@ public class FreeBoardService {
     public void saveComment(FreeBoardCommentDto freeBoardCommentDto){
         FreeBoard freeBoard = freeBoardRepository.findById(freeBoardCommentDto.getFreeBoardId()).get();
         User commentWriter = userRepository.findByUserId(freeBoardCommentDto.getUserId());
-        User boardWriter = freeBoard.getWriter();
+        User boardWriter = freeBoard.getUserId();
 
         FreeBoardComment freeBoardComment = new FreeBoardComment(commentWriter,freeBoard,freeBoardCommentDto.getContent(),freeBoardCommentDto.getSecretCommentYn());
 

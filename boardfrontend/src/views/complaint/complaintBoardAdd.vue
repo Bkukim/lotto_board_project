@@ -7,31 +7,11 @@
         type="text"
         class="form-control"
         placeholder="제목을 적어주세요"
-        v-model="notice.title"
+        v-model="complaintBoard.title"
       />
     </div>
     <div class="col-12 mt-3 mb-3">
       <div class="row">
-        <!-- <div class="col-4"> -->
-        <!-- 유형선택 -->
-        <!-- <select class="form-select" v-model="notice.noticeType">
-            <option value="전체">전체</option>
-            <option value="부서">부서</option>
-            <option value="자유">자유</option>
-            <option value="건의">건의</option>
-            <option value="동아리">동아리</option>
-          </select> -->
-        <!-- </div> -->
-        <!-- <div class="col-4 form-check form-inline"> -->
-        <!-- 체크박스 -->
-        <!-- <input
-            type="checkbox"
-            class="form-check-input"
-            id="event"
-            name="event"
-          /> -->
-        <!-- <label class="form-check-label" for="event">이벤트</label> -->
-        <!-- </div> -->
       </div>
     </div>
 
@@ -41,14 +21,14 @@
     <!-- 버튼 -->
     <div class="row mt-3">
       <button
-        @click="cancelFreeBoard"
+        @click="cancelComplaintBoard"
         class="btn col-3"
         id="button-cancle-Writing"
       >
         취소
       </button>
       <button
-        @click="createFreeBoard"
+        @click="createComplaintBoard"
         class="btn col-3"
         id="button-cancle-Writing"
       >
@@ -61,20 +41,20 @@
 <script>
 import Editor from "@toast-ui/editor";
 import "@toast-ui/editor/dist/toastui-editor.css";
-import NoticeService from "@/services/notice/NoticeService";
+import ComplaintBoardService from '@/services/board/complaint/ComplaintBoardService';
 
 export default {
   data() {
     return {
       editor: null,
-      notice: {
-        title: "",
-        noticeType: "",
+      complaintBoard: {
+        userId: this.$store.state.user.userId,  // 로그인 된 userId
+        title:"",
       },
     };
   },
   methods: {
-    async createNotice() {
+    async createComplaintBoard() {
       if (!this.editor) {
         console.error("에디터가 초기화되지 않았습니다.");
         return;
@@ -84,24 +64,26 @@ export default {
         const content = this.editor.getHTML();
 
         // 공지사항 객체 생성
-        const notice = {
-          title: this.notice.title,
-          noticeType: this.notice.noticeType,
+        const complaintBoard = {
+          userId: this.$store.state.user.userId, // Vuex 스토어에서 userId를 직접 가져오기
+          title: this.complaintBoard.title,
           content: content,
         };
         // 벡엔드로 공지사항 객체 추가 요청
-        let response = await NoticeService.create(notice);
+        let response = await ComplaintBoardService.createComplaintBoard(complaintBoard);
         // 콘솔에 결과 출력
         console.log(response);
+        alert("게시글이 저장되었습니다.")
+        this.$router.push("/complaint/complaint-board");
         // TODO: 서버 응답에 따른 후속 처리 추가
       } catch (e) {
         console.log(e);
       }
     },
     // 글 작성 취소 함수
-    cancelFreeBoard() {
+    cancelComplaintBoard() {
       if (confirm("글 작성을 취소하시겠습니까?")) {
-        this.$router.push("/free/free-board");
+        this.$router.push("/complaint/complaint-board");
       }
     },
   },

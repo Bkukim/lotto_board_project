@@ -51,10 +51,9 @@ const routes = [
     component: () => import("../views/user/UserModifyView.vue"),
   },
   // 공지사항
-
   {
-    path: "/admin/notice-update/:noticeId",
-    component: () => import("../views/admin/AdminNoticeUpdate.vue"),
+    path: "/notice/notice-board",
+    component: () => import("../views/notice/noticeBoard.vue"),
   },
   // 공지사항 -> 상세조회
   {
@@ -67,13 +66,11 @@ const routes = [
     path: "/admin/notice-add",
     component: () => import("../views/admin/AdminNoticeAdd.vue"),
   },
-
-  // // 공지사항 수정 ::
-  // {
-  //   path: "/admin/notice-update/:noticeId",
-  //   component: () => import("../views/admin/AdminNoticeUpdate.vue"),
-  // },
-
+  // 공지사항 수정 ::
+  {
+    path: "/admin/notice-update/:noticeId",
+    component: () => import("../views/admin/AdminNoticeUpdate.vue"),
+  },
   // 자유 게시판
   {
     path: "/free/free-board",
@@ -114,12 +111,9 @@ const routes = [
     path: "/complaint/complaint-board",
     component: () => import("../views/complaint/complaintBoard.vue"),
   },
-
-
-
   // 건의 게시판 -> 상세조회
   {
-    path: "/complaint/complaint-board/:complaintBoardId",
+    path: "/complaint/complaint-boardDetail/:complaintBoardId",
     component: () => import("../views/complaint/complaintDetail.vue"),
   },
   // 건의 게시판 -> 글쓰기
@@ -127,28 +121,21 @@ const routes = [
     path: "/complaint/complaint-boardAdd",
     component: () => import("../views/complaint/complaintBoardAdd.vue"),
   },
-
-
+  // 건의 게시판 -> 수정하기
+  {
+    path: "/complaint/complaint-board/Update/:complaintBoardId",
+    component: () => import("../views/complaint/complaintBoardUpdate.vue"),
+  },
   // 각게시판별 공지사항 관리 ::
   {
     path: "/admin/notice-master",
     component: () => import("../views/admin/MasterBoardNoticesAdmin.vue"),
   },
-
-
-    // HOT 게시판
-    {
-      path: "/hot/hotBoard",
-      component: () => import("../views/hot/hotBoard.vue"),
-    },
-
-  // 공지사항 수정 ::
+  // HOT 게시판
   {
-    path: "/admin/notice-update/:noticeId",
-    component: () => import("../views/admin/AdminNoticeUpdate.vue"),
+    path: "/hot/hotBoard",
+    component: () => import("../views/hot/hotBoard.vue"),
   },
-
-
 ];
 
 const router = createRouter({

@@ -3,6 +3,7 @@ package org.example.boardbackend.controller.user.board.free;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.example.boardbackend.model.dto.board.free.FreeBoardCommentDto;
+import org.example.boardbackend.model.dto.board.free.FreeBoardDto;
 import org.example.boardbackend.model.entity.board.free.FreeBoard;
 import org.example.boardbackend.repository.board.free.FreeBoardCommentRepository;
 import org.example.boardbackend.service.board.free.FreeBoardService;
@@ -52,7 +53,7 @@ public class FreeBoardController {
             Pageable pageable = PageRequest.of(page, size);
 
 //            전체 조회 서비스 실행
-            Page<FreeBoard> freeBoard
+            Page<FreeBoardDto> freeBoard
                     = freeBoardService
                     .selectByTitleContaining(title, pageable);
 
@@ -64,13 +65,13 @@ public class FreeBoardController {
             response.put("totalPages", freeBoard.getTotalPages());    // 총페이지수
 
             if (freeBoard.isEmpty() == false) {
+
 //                조회 성공
                 return new ResponseEntity<>(response, HttpStatus.OK);
             } else {
 //                데이터 없음
                 return new ResponseEntity<>(HttpStatus.NO_CONTENT);
             }
-
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
@@ -115,7 +116,7 @@ public class FreeBoardController {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-    //    todo: 문의글 저장함수
+    //    todo: 저장함수
     @PostMapping("/free/save")
     public ResponseEntity<Object> createFreeBoard(
             @RequestBody FreeBoard freeBoard

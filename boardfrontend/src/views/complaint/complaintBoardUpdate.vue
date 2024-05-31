@@ -1,13 +1,13 @@
 <template>
   <div class="container mt-5 mb-5">
-    <h3 class="mb-5">자유 게시판 수정</h3>
+    <h3 class="mb-5">건의 게시판 수정</h3>
     <!-- 제목 -->
     <div class="col-10 mb-3">
       <input
         type="text"
         class="form-control"
         placeholder="제목을 적어주세요"
-        v-model="freeBoardList.title"
+        v-model="complaintBoardList.title"
       />
     </div>
     <div class="col-12 mt-3 mb-3">
@@ -20,14 +20,14 @@
     <!-- 버튼 -->
     <div class="row mt-3">
       <button
-        @click="cancelFreeBoard"
+        @click="cancelComplaintBoard"
         class="btn col-3"
         id="button-cancle-Writing"
       >
         취소
       </button>
       <button
-        @click="updateFreeBoard"
+        @click="updateComplaintBoard"
         class="btn col-3"
         id="button-cancle-Writing"
       >
@@ -40,26 +40,26 @@
 <script>
 import Editor from "@toast-ui/editor";
 import "@toast-ui/editor/dist/toastui-editor.css";
-import FreeBoardService from "@/services/board/free/FreeBoardService";
+import ComplaintBoardService from '@/services/board/complaint/ComplaintBoardService';
 
 export default {
   data() {
     return {
       editor: null,
-      freeBoardList: {
+      complaintBoardList: {
         userId: this.$store.state.user.userId, // 로그인 된 userId
         title: "",
-        freeBoardId: "",
+        complaintBoardId: "",
         content: "",
       },
     };
   },
   methods: {
-    // freeBoardId로 상세조회
-    async retrieveGetFreeBoard(freeBoardId) {
+    // complaintBoardId로 상세조회
+    async retrieveGetComplaintBoard(complaintBoardId) {
       try {
-        let response = await FreeBoardService.getFreeBoardId(freeBoardId);
-        this.freeBoardList = response.data;
+        let response = await ComplaintBoardService.getComplaintBoardId(complaintBoardId);
+        this.complaintBoardList = response.data;
         console.log(response.data);
       } catch (e) {
         alert("에러");
@@ -69,22 +69,22 @@ export default {
     // 글 수정 취소 함수
     cancelFreeBoard() {
       if (confirm("글 수정을 취소하시겠습니까?")) {
-        alert(this.freeBoardList.freeBoardId);
+        alert(this.complaintBoardList.complaintBoardId);
         this.$router.push(
-          "/free/free-boardDetail/" + this.freeBoardList.freeBoardId
+          "/complaint/complaint-boardDetail/" + this.complaintBoardList.complaintBoardId
         );
       }
     },
     // 수정 함수
-    async updateFreeBoard() {
+    async updateComplaintBoard() {
       try {
-        let response = await FreeBoardService.updateFreeBoard(
-          this.freeBoardList.freeBoardId
+        let response = await ComplaintBoardService.updateComplaintBoard(
+          this.complaintBoardList.complaintBoardId
         );
         // 로깅
         console.log(response.data);
         alert("게시글이 수정되었습니다.");
-        this.$router.push("/free/free-board/:freeBoardId");
+        this.$router.push("/complaint/complaint-board/:complaintBoardId");
       } catch (e) {
         console.log(e);
       }
@@ -102,7 +102,7 @@ export default {
       //   },
       // },
     });
-    this.retrieveGetFreeBoard(this.$route.params.freeBoardId);
+    this.retrieveGetComplaintBoard(this.$route.params.complaintBoardId);
   },
 };
 </script>
