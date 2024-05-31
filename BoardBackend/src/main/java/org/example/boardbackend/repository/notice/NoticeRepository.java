@@ -29,10 +29,11 @@ import java.util.List;
 public interface NoticeRepository extends JpaRepository<Notice, Long> {
     @Query(value = "SELECT NOTICE_ID AS noticeId\n" +
             ", TITLE AS title\n" +
-            ", CONTENT AS content\n" +
-            ", NOTICE_ING_URL AS noticeImgUrl\n" +
-            ", NOTICE_IMG_UUID AS noticeImgUuid\n" +
+            ", NOTICE_TYPE AS noticeType\n" +
+            ", VIEWS AS views\n" +
             ", EVENT_YN AS eventYn\n" +
+            ", UPDATE_TIME AS updateTime\n" +
+            ", INSERT_TIME AS insertTime\n" +
             "FROM LOTTO_NOTICE\n" +
             "WHERE TITLE LIKE '%'|| :title ||'%'"
             , countQuery = "SELECT COUNT(*)\n" +

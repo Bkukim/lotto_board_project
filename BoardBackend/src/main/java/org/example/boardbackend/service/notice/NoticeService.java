@@ -41,7 +41,7 @@ public class NoticeService {
 
         return notices;
     }
-//    부서조회
+//   todo: 부서조회
     public List<INoticeDto> findByNoticeTypeDept(INoticeDto iNoticeDto) {
         List<INoticeDto> notice = noticeRepository.findByNoticeTypeDept(iNoticeDto);
         return notice;
