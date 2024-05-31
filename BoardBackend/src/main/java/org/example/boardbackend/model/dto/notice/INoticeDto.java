@@ -18,9 +18,6 @@ public interface INoticeDto {
     String getTitle();
     String getContent();
 
-    String getNoticeImgUrl();
-    String getNoticeImgUuid();
-    String eventYn();
 
     String getEventYn();
     String getInsertTime();

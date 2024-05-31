@@ -61,6 +61,11 @@ const routes = [
     path: "/notice/notice-check/:noticeId",
     component: () => import("../views/notice/NoticeCheck.vue"),
   },
+  // 공지사항 수정 ::
+  {
+    path: "/admin/notice-update/:noticeId",
+    component: () => import("../views/admin/AdminNoticeUpdate.vue"),
+  },
   // 공지사항 -> 글쓰기
   {
     path: "/admin/notice-add",
@@ -102,29 +107,26 @@ const routes = [
     component: () => import("../views/complaint/complaintBoard.vue"),
   },
 
-   // 건의 게시판 -> 글쓰기
-   {
-    path: "/complaint/complaint-boardAdd",
-    component: () => import("../views/complaint/complaintBoardAdd.vue"),
-  },
 
 
   // 건의 게시판 -> 상세조회
   {
     path: "/complaint/complaint-board/:complaintBoardId",
     component: () => import("../views/complaint/complaintDetail.vue"),
-  },  
+  },
   // 건의 게시판 -> 글쓰기
   {
     path: "/complaint/complaint-boardAdd",
     component: () => import("../views/complaint/complaintBoardAdd.vue"),
   },
 
+
   // 각게시판별 공지사항 관리 ::
   {
     path: "/admin/notice-master",
     component: () => import("../views/admin/MasterBoardNoticesAdmin.vue"),
   },
+
 
     // HOT 게시판
     {
@@ -137,6 +139,7 @@ const routes = [
     path: "/admin/notice-update/:noticeId",
     component: () => import("../views/admin/AdminNoticeUpdate.vue"),
   },
+
 
 ];
 
