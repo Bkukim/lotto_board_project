@@ -185,5 +185,6 @@ export default {
   font-size: 20px;
   width: 200px;
   height: 50px;
+  border: none;
 }
 </style>

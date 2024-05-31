@@ -103,6 +103,7 @@
           id="go-login"
           type="submit"
           @click="goLogin"
+         style="border: 1px solid #cccccc;"
         >
           <p>로그인</p>
         </button>
@@ -170,7 +171,7 @@ export default {
   padding: 60px 100px 60px 80px;
 }
 .FindIdBtn {
-  background-color: #342a26;
+  background-color: #162b59;
   color: white;
   font-size: 20px;
   width: 200px;
@@ -182,8 +183,14 @@ export default {
   width: 200px;
   height: 50px;
 }
+
+#go-login:hover{
+  background-color: #cccccc;
+  color: #162b59;
+  border: none;
+}
 #go-login > p {
   padding-top: 6px ;
-  color: #342a26;
+  color: #2b2b2b;
 }
 </style>

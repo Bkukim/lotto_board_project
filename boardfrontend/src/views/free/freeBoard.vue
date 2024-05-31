@@ -72,7 +72,7 @@
       <thead>
         <tr>
           <th scope="col">번호</th>
-          <th scope="col">제목</th>
+          <th scope="col" style="text-align: left; padding-left: 100px">제목</th>
           <th scope="col">작성자</th>
           <th scope="col">등록일</th>
           <th scope="col">좋아요</th>
@@ -83,8 +83,8 @@
         <!-- 반복문 시작할 행 -->
         <tr v-for="(data, index) in freeBoardList" :key="index">
           <td>{{ (page - 1) * pageSize + index + 1 }}</td>
-          <td>
-            <router-link
+          <td id="router_hv" style="text-align: left; padding-left: 100px;" >
+            <router-link style="color: #444444; font-weight: bold; text-decoration:none ;"
               :to="'/free/free-boardDetail/' + data.freeBoardId"
               class="router-link-exact-active alltext"
             >
@@ -228,7 +228,7 @@ p {
 /* 검색 전체 배경 */
 #search_box {
   background-color: #e2e2e28c;
-  height: 4vw;
+  height: 75PX;
   padding: 20px;
 }
 #search_ck {
@@ -247,5 +247,8 @@ p {
   background-color: #162b59;
   color: #ffffff;
   border: none;
+}
+#router_hv:hover{
+text-decoration: underline 1px solid;
 }
 </style>

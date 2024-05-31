@@ -287,7 +287,7 @@ export default {
 .main-banner {
   height: 20vh;
   width: auto;
-  background-image: url("@/assets/img/MAIN_BN3.jpg"); /* 배경 이미지 설정 */
+  background-image: url("@/assets/img/MAIN_BN3.jpg") ; /* 배경 이미지 설정 */
   background-size: 100%; /* 요소에 맞게 이미지 확대 */
   background-position: center; /* 이미지 중앙 정렬 */
   display: flex;

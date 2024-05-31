@@ -1,5 +1,6 @@
 package org.example.boardbackend.repository.board.complaint;
 
+import org.example.boardbackend.model.dto.board.complaint.ComplaintBoardDto;
 import org.example.boardbackend.model.entity.board.complaint.ComplaintBoard;
 import org.example.boardbackend.model.entity.board.free.FreeBoard;
 import org.springframework.data.domain.Page;
@@ -25,7 +26,12 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface ComplaintBoardRepository extends JpaRepository<ComplaintBoard, Long> {
 
-    Page<ComplaintBoard> findComplaintBoardByTitleContaining(@Param("title") String title,
-                                                             Pageable pageable
+    @Query(value = "SELECT COMPLAINT_BOARD_ID AS complaintBoardId, TITLE AS title, USER_ID AS userId, INSERT_TIME AS insertTime, LIKES AS likes, STATUS AS status FROM LOTTO_COMPLAINT_BOARD\n" +
+            "WHERE TITLE LIKE '%'|| :title ||'%'"
+            , countQuery = "SELECT count(*)FROM LOTTO_COMPLAINT_BOARD\n" +
+            "WHERE TITLE LIKE '%'|| :title ||'%'"
+            , nativeQuery = true)
+    Page<ComplaintBoardDto> findComplaintBoardByTitleContaining(@Param("title") String title,
+                                                                Pageable pageable
     );
 }

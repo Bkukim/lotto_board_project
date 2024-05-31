@@ -53,7 +53,7 @@
       <div
         style="
           text-align: left;
-          border-bottom: #cccccc solid 1px;
+          /* border-bottom: #cccccc solid 1px; */
           padding: 20px 0 20px 30px;
           font-size: 15px;
           font-weight: 600;
@@ -81,8 +81,7 @@
       >
         <!-- 삭제 -->
         <div class="col">
-          <router-link
-            to="/"
+          <button
             class="fbd_d container text-center"
             style="
               width: 300px;
@@ -93,6 +92,7 @@
               height: 50px;
               border-radius: 20px;
             "
+            @click="deleteFreeBoard"
           >
             <div
               style="
@@ -104,18 +104,18 @@
               <div
                 class="router-text"
                 style="margin-right: 20px; margin-top: 10px"
-                @click.prevent="deleteFreeBoard"
+                
               >
                 삭제
               </div>
             </div>
-          </router-link>
+          </button>
         </div>
 
         <!-- 수정 -->
         <div class="col mb-5">
           <router-link
-            to="/"
+            :to="'/free/free-board/Update/'+ this.$route.params.freeBoardId"
             class="fbd_d container text-center"
             style="
               width: 300px;
@@ -137,7 +137,6 @@
               <div
                 class="router-text"
                 style="margin-right: 20px; margin-top: 10px; color: #ffffff"
-                @click="goupdateFreeBoard"
               >
                 수정
               </div>
@@ -293,7 +292,7 @@ export default {
     // 삭제 함수
     async deleteFreeBoard() {
       try {
-        // if (confirm("정말로 삭제하시겠습니까?")) {
+        if (confirm("정말로 삭제하시겠습니까?")) {
         let response = await FreeBoardService.deleteFreeBoard(
           this.freeBoardList.freeBoardId
         );
@@ -301,16 +300,12 @@ export default {
         console.log(response.data);
         alert("게시글이 삭제되었습니다.");
         this.$router.push("/free/free-board");
-        // } else {
-        //   return;
-        // }
+        } else {
+          return;
+        }
       } catch (e) {
         console.log(e);
       }
-    },
-    // 수정하러 가는 함수
-    goUpdateFreeBoard() {
-      this.$router.push("/free/free-board/Update/"+ this.$route.params.freeBoardId);
     },
   },
   mounted() {

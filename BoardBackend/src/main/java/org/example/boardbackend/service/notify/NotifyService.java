@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.Map;
 
 @Service
@@ -29,70 +30,91 @@ public class NotifyService {
         // 오류 발생시 삭제
         sseEmitter.onCompletion(() -> emitterRepository.deleteById(userId));
         sseEmitter.onTimeout(() -> emitterRepository.deleteById(userId));
-        log.debug(emitter1.toString());
+
         try {
             sseEmitter.send(SseEmitter.event().name("connect").data("로그인 성공"));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        if (emitterRepository.findAllEventCacheStartWithByUserId(userId) != null) { // 전송되지 않은 신호가 있다면 보내주기
-            Map<String, SseEmitter> emitters = emitterRepository.findAllEventCacheStartWithByUserId(userId);
-            emitters.forEach(
-                    (key, emitter) -> {
-                        try {
-                            sseEmitter.send(SseEmitter.event().name("UNSENT_MESSAGE").data("확인하지 않은 알람이 있습니다."));
-                        } catch (IOException e) {
-                            throw new RuntimeException(e);
-                        }
-                    }
-            );
-        }else{
-            try {
-                sseEmitter.send(SseEmitter.event().name("connect").data("로그인 성공"));
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-        }
-
-
-
+//        if (emitterRepository.findAllEventCacheStartWithByUserId(userId) != null) { // 전송되지 않은 신호가 있다면 보내주기
+//            List<Map<String,SseEmitter>> list = emitterRepository.findAllEventCacheStartWithByUserId(userId);
+//            log.debug(list.toString());
+//            for (int i = 0; i < list.size(); i++) {
+//                try {
+//                    SseEmitter sseEmitter1 = new SseEmitter(DEFAULT_TIMEOUT); // emitter 생성
+//                    sseEmitter1.send(SseEmitter.event().name("UNSENT_MESSAGE").data("확인하지 않은 알림이 있습니다."));
+//                } catch (IOException e) {
+//                    throw new RuntimeException(e);
+//                }
+//            }
+//            emitters.forEach(
+//                    (key, emitter) -> {
+//                        try {
+//                            emitter.send(SseEmitter.event().name("UNSENT_MESSAGE").data("확인하지 않은 알람이 있습니다."));
+//                        } catch (IOException e) {
+//                            throw new RuntimeException(e);
+//                        }
+//                    }
+//            );
+//            emitterRepository.deleteAllEventCacheStartWithId(userId);
+//        }else{
+//            try {
+//                sseEmitter.send(SseEmitter.event().name("connect").data("로그인 성공"));
+//            } catch (IOException e) {
+//                throw new RuntimeException(e);
+//            }
+//        }
         return sseEmitter;
     }
 
     // 알림 보내기 함수
-    public void send(User receiver, Notify.NotificationType notificationType, String content, String url) {
-        Notify notification = notifyRepository.save(createNotification(receiver, notificationType, content, url)); // 알림 객체 생성 및 저장
-        String userId = receiver.getUserId();
-        log.debug("여기까진 들옴");
-        log.debug(receiver.getUserId());
+    public void send(String userId, Notify.NotificationType notificationType, String content, String url) {
+        Notify notification = notifyRepository.save(createNotification(userId, notificationType, content, url)); // 알림 객체 생성 및 저장
+        log.debug("send 함수 들옴");
+        log.debug(userId);
         SseEmitter sseEmitter = emitterRepository.findByUserId(userId);
-        log.debug(sseEmitter.toString());
-        sendNotification(userId,sseEmitter,notificationType, content);
-
+//        if (sseEmitter == null) {
+//            log.debug("send 함수 : 로그인 안된 상태");
+//            emitterRepository.deleteAllEmitterStartWithId(userId);
+//            emitterRepository.saveEventCache(userId,new SseEmitter()); // 전달 되지 못한 emitter 들 저장
+//            List<Map<String,SseEmitter>> list = emitterRepository.findAllEventCacheStartWithByUserId(userId);
+//            log.debug("캐쉬 에 들어있는 알림들" + list.toString());
+//        }else {
+            log.debug("보낼 알림 "+sseEmitter.toString());
+            sendNotification(userId, sseEmitter, notificationType, content);
+//        }
     }
 
     private void sendNotification(String userId, SseEmitter emitter, Notify.NotificationType notificationType, String content) {
+
         try {
             emitter.send(SseEmitter.event()
-                    .name("connect")
+                    .name(notificationType.toString())
                     .data(content)
             );
-
-        } catch (Exception e) {
-            log.debug("NotifyService Error");
-            emitterRepository.deleteAllEmitterStartWithId(userId);
-            emitterRepository.saveEventCache(userId,emitter); // 전달 되지 못한 emitter 들 저장
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
     }
 
 
-    private Notify createNotification(User receiver, Notify.NotificationType notificationType, String content, String url) {
+    private Notify createNotification(String userId, Notify.NotificationType notificationType, String content, String url) {
         return Notify.builder()
-                .receiver(receiver)
+                .userId(userId)
                 .notificationType(notificationType)
                 .content(content)
                 .url(url)
                 .isRead("N")
                 .build();
+    }
+
+    // todo 읽지 않은 알림 조회
+    public List<Notify> findUnReadNotify(String userId) throws IOException{
+        List<Notify> list = notifyRepository.findByUserIdAndIsRead(userId,"N");
+        return list;
+    }
+    // todo 읽음 변경함수
+    public void updateIsRead(String  userId) throws IOException{
+        notifyRepository.updateByUserId(userId);
     }
 }

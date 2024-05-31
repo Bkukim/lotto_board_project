@@ -31,7 +31,7 @@
       <div class="club-board">
         <h3 class="mb-5">동아리 게시판</h3>
         <p class="mb-5">
-          자유게시판은 자유로운 의견을 남기는 공간으로 건의관련 답변은 드리지
+          동아리 게시판은 자유로운 공간으로 건의관련 답변은 드리지
           않습니다. <br />
           건의관련 문의사항은 건의게시판을 이용해주시길 바랍니다.
         </p>
@@ -187,6 +187,7 @@ export default {
       forecast: null,
       loading: true,
       error: null,
+      freeList: [1,2,3,4,5]
     };
   },
   created() {
@@ -284,7 +285,7 @@ p {
 /* 검색 전체 배경 */
 #search_box {
   background-color: #e2e2e28c;
-  height: 4vw;
+  height: 75PX;
   padding: 20px;
   margin-bottom: 20px; /* 날씨 부분과의 간격 조정 */
 }

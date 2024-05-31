@@ -1,4 +1,5 @@
 <template>
+  <AdminHeaderCom />
   <div class="container mt-5 mb-5">
     <h3 class="mb-5">공지사항 등록</h3>
     <!-- 제목 -->
@@ -48,11 +49,15 @@
 </template>
 
 <script>
+import AdminHeaderCom from "@/components/common/AdminHeaderCom.vue";
 import Editor from "@toast-ui/editor";
 import "@toast-ui/editor/dist/toastui-editor.css";
 import NoticeService from "@/services/notice/NoticeService";
 
 export default {
+  components: {
+    AdminHeaderCom,
+  },
   data() {
     return {
       editor: null,
