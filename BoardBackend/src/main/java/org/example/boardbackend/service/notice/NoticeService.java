@@ -13,6 +13,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -34,16 +35,17 @@ import java.util.Optional;
 public class NoticeService {
     private final NoticeRepository noticeRepository;
 
-    // todo 공지사항 제목으로 검색 페이지
+    // todo 공지사항 제목으로 검색 페이지 ::전체조회
     public Page<INoticeDto> findByTitleContaining(String title, Pageable pageable) {
         Page<INoticeDto> notices = noticeRepository.findByTitleContaining(title,pageable);
 
         return notices;
     }
-//   public Page<NoticeAllDto> findAllByTitleContaining(String title, Pageable pageable){
-//       Page<NoticeAllDto> notices=noticeRepository.findAllByTitleContaining(title, pageable);
-//       return notices;
-//   }
+//    부서조회
+    public List<INoticeDto> findByNoticeTypeDept(INoticeDto iNoticeDto) {
+        List<INoticeDto> notice = noticeRepository.findByNoticeTypeDept(iNoticeDto);
+        return notice;
+    }
 
     // todo 상세조회
     public Optional<Notice> findById(long noticeId) {
