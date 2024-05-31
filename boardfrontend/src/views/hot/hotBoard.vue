@@ -227,7 +227,7 @@
   /* 검색 전체 배경 */
   #search_box {
     background-color: #e2e2e28c;
-    height: 4vw;
+    height: 75PX;
     padding: 20px;
   }
   #search_ck {

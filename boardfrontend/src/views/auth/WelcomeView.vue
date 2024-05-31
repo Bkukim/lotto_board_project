@@ -1,26 +1,24 @@
 <template>
-  <div class="container">
+  <div class="container text-center">
     <br />
     <br />
     <br />
     <br />
     <br />
-    <h2 class="text-center">회원가입을 환영합니다!</h2>
+
+    <img src="@/assets/img/join_ok.png" style="width: 70px; height: 70px" />
+    <br />
+    <br />
+    <h2 class="text-center" style="letter-spacing: -3px; color: #00479d">
+      회원가입 완료!
+    </h2>
+   
+    <br />
+    <br />
+    <br />
     <div class="container">
       <div class="row justify-content-md-center">
-        <div class="col-8">
-        
-          <!-- <div class="mt-5" id="box"> -->
-            <!-- 로고 이미지 -->
-            <!-- <div class="text-center">
-              <img src="@/assets/images/ROUTTO_logo_wh.png">
-            </div> -->
-            <!-- 루또에 오신 것을 환영합니다 . 시작  -->
-           <!-- <div class="text-center">
-            <h3>루또에 오신 것을 환영합니다.</h3>
-           </div> -->
-          <!-- </div> -->
-        </div>
+        <div class="col-8">로또에 회원가입이 성공적으로 완료되었습니다.</div>
       </div>
     </div>
     <div class="col"></div>
@@ -39,7 +37,6 @@
           로그인 하러 가기
         </button>
       </div>
-      
     </div>
   </div>
   <br />
@@ -53,14 +50,12 @@
 </template>
 <script>
 export default {
-  
   methods: {
-  
-    goLogin(){
-      this.$router.push("/member/login")
-    }
-  },mounted() {
-    
+    goLogin() {
+      this.$router.push("/member/login");
+    },
+  },
+  mounted() {
     window.scrollTo(0, 0);
   },
 };
@@ -77,5 +72,4 @@ export default {
   width: 200px;
   height: 50px;
 }
-
 </style>

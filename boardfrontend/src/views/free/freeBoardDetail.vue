@@ -53,7 +53,7 @@
       <div
         style="
           text-align: left;
-          border-bottom: #cccccc solid 1px;
+          /* border-bottom: #cccccc solid 1px; */
           padding: 20px 0 20px 30px;
           font-size: 15px;
           font-weight: 600;
