@@ -44,9 +44,7 @@ public class Notify extends BaseTimeEntity {
     )
     private long notifyId;
 
-    @ManyToOne
-    @JoinColumn(name = "USER_ID")
-    private User receiver;
+    private String userId;
 
 
     private String url;

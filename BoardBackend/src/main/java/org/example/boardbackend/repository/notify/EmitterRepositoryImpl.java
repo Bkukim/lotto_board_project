@@ -3,13 +3,16 @@ package org.example.boardbackend.repository.notify;
 import org.springframework.stereotype.Repository;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.stream.Collectors;
 @Repository
 public class EmitterRepositoryImpl implements EmitterRepository{
    private final Map<String, SseEmitter> emitters = new ConcurrentHashMap<>();
-   private final Map<String, SseEmitter> eventCache = new ConcurrentHashMap<>();
+   private final List<Map<String,SseEmitter>> eventCache = new CopyOnWriteArrayList<>();
 
    @Override
    public SseEmitter save(String userId, SseEmitter sseEmitter) {
@@ -23,9 +26,13 @@ public class EmitterRepositoryImpl implements EmitterRepository{
       return sseEmitter;
    }
 
+
+
    @Override
    public void saveEventCache(String userId, SseEmitter sseEmitter) {
-      eventCache.put(userId, sseEmitter);
+      Map<String,SseEmitter> emitterMap = new ConcurrentHashMap<>();
+      emitterMap.put(userId,sseEmitter);
+      eventCache.add(emitterMap);
    }
 
    @Override
@@ -36,10 +43,14 @@ public class EmitterRepositoryImpl implements EmitterRepository{
    }
 
    @Override
-   public Map<String, SseEmitter> findAllEventCacheStartWithByUserId(String userId) {
-      return eventCache.entrySet().stream()
-              .filter(entry -> entry.getKey().equals(userId))
-              .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
+   public  List<Map<String,SseEmitter>> findAllEventCacheStartWithByUserId(String userId) {
+      List list = new ArrayList<>();
+      for (int i = 0; i < eventCache.size(); i++) {
+         if (eventCache.get(i).containsKey(userId)) {
+            list.add(eventCache.get(i));
+         }
+      }
+      return list;
    }
 
    @Override
@@ -60,12 +71,11 @@ public class EmitterRepositoryImpl implements EmitterRepository{
 
    @Override
    public void deleteAllEventCacheStartWithId(String userId) {
-      eventCache.forEach(
-              (key, emitter) -> {
-                 if (key.startsWith(userId)) {
-                    eventCache.remove(key);
-                 }
-              }
-      );
+      for (int i = 0; i < eventCache.size(); i++) {
+         if (eventCache.get(i).containsKey(userId)) {
+            Map<String ,SseEmitter> emitterMap = eventCache.get(i);
+            eventCache.remove(emitterMap);
+         }
+      }
    }
 }

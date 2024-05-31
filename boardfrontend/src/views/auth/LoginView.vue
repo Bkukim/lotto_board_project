@@ -182,17 +182,21 @@ export default {
     },
     // sse 연결 함수
     connectSse(jwt) {
-      alert(jwt);
       let subscribeUrl = "http://localhost:8000/api/v1/notify/subscribe";
 
       if (jwt != null) {
-        let token = jwt;
+        try {
+          let token = jwt;
         this.eventSource = new EventSource(subscribeUrl + "?token=" + token);
         this.eventSource.onopen = () => {
           console.log("SSE 연결이 열렸습니다.");
           this.isConnected = true;
         };
-        this.eventSource.addEventListener("connect", function(event) {
+        // this.eventSource.addEventListener("connect", function(event) {
+        //     let message = event.data;
+        //     alert(message);
+        // })
+        this.eventSource.addEventListener("UNSENT_MESSAGE", function(event) {
             let message = event.data;
             alert(message);
         })
@@ -214,6 +218,10 @@ export default {
             setTimeout(() => this.connectSSE(), 5000); // 5초 후 재연결 시도
           }
         };
+        } catch (error) {
+          console.log(error);
+        }
+       
       } else {
         console.error("JWT 토큰이 없습니다.");
       }

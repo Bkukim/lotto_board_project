@@ -43,9 +43,7 @@ public class FreeBoard extends BaseTimeEntity {
             , generator = "SQ_FREE_BOARD_GENERATOR"
     )
     private long freeBoardId;
-    @ManyToOne
-    @JoinColumn(name = "USER_ID")
-    private User writer;
+    private String userId;
     private long likes;
     @Column(nullable = false)
     private String content;
