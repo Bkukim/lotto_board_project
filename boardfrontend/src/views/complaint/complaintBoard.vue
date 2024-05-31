@@ -73,6 +73,7 @@
           <th scope="col">작성자</th>
           <th scope="col">등록일</th>
           <th scope="col">좋아요</th>
+          <th scope="col">상태</th>
         </tr>
       </thead>
       <tbody>
@@ -81,15 +82,16 @@
           <td>{{ (page - 1) * pageSize + index + 1 }}</td>
           <td>
             <router-link
-              :to="'/free/free-boardDetail/' + data.freeBoardId"
+              :to="'/complaint/complaint-boardDetail/' + data.complaintBoardId"
               class="router-link-exact-active alltext"
             >
               {{ data.title }}
             </router-link>
           </td>
-          <td>{{ data.userId }}</td>
+          <td>익명</td>
           <td>{{ data.insertTime }}</td>
           <td>{{ data.likes }}</td>
+          <td>{{ data.status }}</td>
         </tr>
       </tbody>
     </table>
