@@ -16,10 +16,11 @@
           <!-- 유형선택 -->
           <select class="form-select" v-model="notice.noticeType">
             <option value="전체">전체</option>
+            <option value="전체">이벤트</option>
             <option value="부서">부서</option>
             <option value="자유">자유</option>
             <option value="건의">건의</option>
-            <option value="동아리">동아리</option>
+            <option value="동호회">동호회</option>
           </select>
         </div>
         <div class="col-4 form-check form-inline">
