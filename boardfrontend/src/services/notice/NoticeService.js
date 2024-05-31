@@ -13,6 +13,20 @@ class NoticeService {
     //TODO: 부서만 조회
     getDept(size) {
       return http.get(`/admin/notice/master-dept?size=${size}`);
+    } 
+    
+    //TODO: 자유만 조회
+    getFree(size) {
+      return http.get(`/admin/notice/master-free?size=${size}`);
+    }
+    
+    //TODO: 건의만 조회
+    getComplaint(size) {
+      return http.get(`/admin/notice/master-complaint?size=${size}`);
+    } 
+    //TODO: 동호회만 조회
+    getGroup(size) {
+      return http.get(`/admin/notice/master-group?size=${size}`);
     }
 
 
@@ -61,7 +75,7 @@ class NoticeService {
   //   }
     // TODO: 삭제함수 : noticeID
     delete(noticeId) {
-      console.log(noticeId)
+      console.log("여긴서비스노티스아이디"+noticeId)
       return http.delete(`/admin/notice/notice-deletion/${noticeId}`,
       );
     }

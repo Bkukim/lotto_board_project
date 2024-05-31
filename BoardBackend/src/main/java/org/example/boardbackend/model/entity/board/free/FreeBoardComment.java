@@ -42,17 +42,15 @@ public class FreeBoardComment extends BaseTimeEntity {
             , generator = "SQ_FREE_BOARD_COMMENT_GENERATOR"
     )
     private long freeBoardCommentId;
-    @ManyToOne
-    @JoinColumn(name = "USER_ID")
-    private User writer;
+    private String userId;
     @ManyToOne
     @JoinColumn(name = "FREE_BOARD_ID")
     private FreeBoard freeBoard;
     private String content;
     private String secretCommentYn;
 
-    public FreeBoardComment(User writer, FreeBoard freeBoard, String content, String secretCommentYn) {
-        this.writer = writer;
+    public FreeBoardComment(String userId, FreeBoard freeBoard, String content, String secretCommentYn) {
+        this.userId = userId;
         this.freeBoard = freeBoard;
         this.content = content;
         this.secretCommentYn = secretCommentYn;

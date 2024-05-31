@@ -63,7 +63,7 @@
     </div>
     <!--  첫번째 게시판 큰 박스 끝-->
     <!-- v-if="freeBoardList.userId=== this.$store.state.user?.userId" -->
-    <div class="container text-center mt-5">
+    <div class="container text-center mt-5"  v-if="this.$store.state.user?.role=='ROLE_ADMIN'">
       <div class="row" style="margin-top: 100px">
         <!-- 삭제 -->
         <div class="col">
@@ -79,6 +79,7 @@
               text-align: center;
               height: 50px;
               border-radius: 20px;
+              line-height: 50px;
             "
           >
             <div
@@ -109,6 +110,7 @@
                 text-align: center;
                 height: 50px;
                 border-radius: 20px;
+                line-height: 50px;
               "
               @click="goUpdate"
             >
@@ -246,7 +248,6 @@ export default {
     async deleteNotice() {
       try {
         alert("정말로 삭제하시겠습니까?");
-        // todo: 공통 장바구니 삭제 서비스 함수 실행
         let response = await NoticeService.delete(this.notice.noticeId);
 
         // 로깅

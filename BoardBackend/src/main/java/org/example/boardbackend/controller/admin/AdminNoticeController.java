@@ -38,8 +38,7 @@ import java.util.Map;
 public class AdminNoticeController {
     private final NoticeService noticeService;
 
-//    todo: dept, free, group, complaint
-
+    //    todo: 조회 4개 있음 master 사용 dept, free, group, complaint
     @GetMapping("/master-dept")
     public ResponseEntity<Object> findDept(INoticeDto iNoticeDto) {
         try {
@@ -62,6 +61,74 @@ public class AdminNoticeController {
         }
     }
 
+    //  Todo: 자유
+    @GetMapping("/master-free")
+    public ResponseEntity<Object> findFree(INoticeDto iNoticeDto) {
+        try {
+            // 전체 조회 서비스 실행
+            List<INoticeDto> noticeFree = noticeService.findByNoticeTypeFree(iNoticeDto);
+
+            Map<String, Object> response = new HashMap<>();
+            response.put("noticeFree", noticeFree);
+            response.put("totalItems", noticeFree.size()); // 총건수(개수)
+
+            if (!noticeFree.isEmpty()) {
+                // 조회 성공
+                return new ResponseEntity<>(response, HttpStatus.OK);
+            } else {
+                // 데이터 없음
+                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+            }
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    //  Todo: 건의
+    @GetMapping("/master-complaint")
+    public ResponseEntity<Object> findComplaint(INoticeDto iNoticeDto) {
+        try {
+            // 전체 조회 서비스 실행
+            List<INoticeDto> noticeComplaint = noticeService.findByNoticeTypeComplaint(iNoticeDto);
+
+            Map<String, Object> response = new HashMap<>();
+            response.put("noticeComplaint", noticeComplaint);
+            response.put("totalItems", noticeComplaint.size()); // 총건수(개수)
+
+            if (!noticeComplaint.isEmpty()) {
+                // 조회 성공
+                return new ResponseEntity<>(response, HttpStatus.OK);
+            } else {
+                // 데이터 없음
+                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+            }
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+ @GetMapping("/master-group")
+    public ResponseEntity<Object> findGroup(INoticeDto iNoticeDto) {
+        try {
+            // 전체 조회 서비스 실행
+            List<INoticeDto> noticeGroup = noticeService.findByNoticeTypeGroup(iNoticeDto);
+
+            Map<String, Object> response = new HashMap<>();
+            response.put("noticeGroup", noticeGroup);
+            response.put("totalItems", noticeGroup.size()); // 총건수(개수)
+
+            if (!noticeGroup.isEmpty()) {
+                // 조회 성공
+                return new ResponseEntity<>(response, HttpStatus.OK);
+            } else {
+                // 데이터 없음
+                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+            }
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+
     //   todo: 저장함수 editor
     @PostMapping("/notice-add")
     public ResponseEntity<Object> createNotice(
@@ -75,24 +142,24 @@ public class AdminNoticeController {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-    
-    
-//    todo: 삭제함수
-@DeleteMapping("/notice-deletion/{noticeId}")
-public ResponseEntity<Object> delete(
-        @PathVariable long noticeId
-) {
-    try {
-        boolean success = noticeService.removeById(noticeId);
 
-        if (success == true) {
-            return new ResponseEntity<>(HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+
+    //    todo: 삭제함수
+    @DeleteMapping("/notice-deletion/{noticeId}")
+    public ResponseEntity<Object> delete(
+            @PathVariable long noticeId
+    ) {
+        try {
+            boolean success = noticeService.removeById(noticeId);
+
+            if (success == true) {
+                return new ResponseEntity<>(HttpStatus.OK);
+            } else {
+                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+            }
+
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
-
-    } catch (Exception e) {
-        return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
     }
-}
 }

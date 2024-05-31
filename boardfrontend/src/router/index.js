@@ -113,7 +113,7 @@ const routes = [
   },
   // 건의 게시판 -> 상세조회
   {
-    path: "/complaint/complaint-board/:complaintBoardId",
+    path: "/complaint/complaint-boardDetail/:complaintBoardId",
     component: () => import("../views/complaint/complaintDetail.vue"),
   },
   // 건의 게시판 -> 글쓰기
@@ -121,6 +121,13 @@ const routes = [
     path: "/complaint/complaint-boardAdd",
     component: () => import("../views/complaint/complaintBoardAdd.vue"),
   },
+
+  // 건의 게시판 -> 수정하기
+  {
+    path: "/complaint/complaint-board/Update/:complaintBoardId",
+    component: () => import("../views/complaint/complaintBoardUpdate.vue"),
+  },
+
   // 각게시판별 공지사항 관리 ::
   {
     path: "/admin/notice-master",
