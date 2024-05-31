@@ -92,7 +92,7 @@
             회원가입
           </button> -->
 
-          <img src="@/assets/img/btnG_완성형.png" style="width:300px; height:auto;" @click="goToNaverLogin"/>
+          <img src="@/assets/img/btnG_완성형.png" style="width:300px; height:100px;" @click="goToNaverLogin"/>
 
         </div>
       </div>
