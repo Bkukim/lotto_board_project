@@ -2,6 +2,7 @@ package org.example.boardbackend.controller.user.board.complaint;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.example.boardbackend.model.dto.board.complaint.ComplaintBoardDto;
 import org.example.boardbackend.model.entity.board.complaint.ComplaintBoard;
 import org.example.boardbackend.model.entity.board.free.FreeBoard;
 import org.example.boardbackend.service.board.complaint.ComplaintBoardService;
@@ -10,13 +11,11 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 /**
  * packageName : org.example.boardbackend.controller.user.board.complaint
@@ -51,7 +50,7 @@ public class ComplaintBoardController {
             Pageable pageable = PageRequest.of(page, size);
 
 //            전체 조회 서비스 실행
-            Page<ComplaintBoard> complaintBoard
+            Page<ComplaintBoardDto> complaintBoard
                     = complaintBoardService
                     .findComplaintBoardByTitleContaining(title, pageable);
 
@@ -71,6 +70,77 @@ public class ComplaintBoardController {
             }
 
         } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    //    todo: 상세조회
+    @GetMapping("/complaint/{complaintBoardId}")
+    public ResponseEntity<Object> findById(
+            @PathVariable long complaintBoardId
+    ) {
+        try {
+//            상세조회 서비스 실행
+            Optional<ComplaintBoard> complaintBoardOptional
+                    = complaintBoardService.findById(complaintBoardId);
+            if (complaintBoardOptional.isEmpty() == true) {
+                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+            } else {
+                return new ResponseEntity<>(complaintBoardOptional.get(), HttpStatus.OK);
+            }
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    //    todo:  저장함수
+    @PostMapping("/complaint/save")
+    public ResponseEntity<Object> createFreeBoard(
+            @RequestBody ComplaintBoard complaintBoard
+    ) {
+        try {
+//            DB 서비스 저장 함수 실행
+            ComplaintBoard complaintBoard1 = complaintBoardService.save(complaintBoard);
+            log.debug("디버그"+complaintBoard1.toString());
+//            성공(OK) 메세지 + 저장된객체
+            return new ResponseEntity<>(complaintBoard1, HttpStatus.OK);
+        } catch (Exception e) {
+            log.debug(e.getMessage());
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    //    TODO: 수정 함수 : 수정 버튼 클릭시 실행될 함수
+    @PutMapping("/complaint/update/{complaintBoardId}")
+    public ResponseEntity<Object> update(
+            @PathVariable long complaintBoardId,
+            @RequestBody ComplaintBoard complaintBoard
+    ) {
+        try {
+            ComplaintBoard complaintBoard1 = complaintBoardService.save(complaintBoard);  // 수정
+            return new ResponseEntity<>(complaintBoard1, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    //    TODO: 삭제 함수
+    @DeleteMapping("/complaint/deletion/{complaintBoardId}")
+    public ResponseEntity<Object> delete(
+            @PathVariable long complaintBoardId
+    ) {
+        try {
+//            DB 서비스 삭제 함수 실행
+            boolean success = complaintBoardService.removeById(complaintBoardId);
+
+            if (success == true) {
+                return new ResponseEntity<>(HttpStatus.OK);
+            } else {
+                // 삭제 실행 : 0건 삭제(삭제할 데이터 없음)
+                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+            }
+        } catch (Exception e) {
+//            서버(DB) 에러
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }

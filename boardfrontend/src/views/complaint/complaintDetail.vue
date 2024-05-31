@@ -4,7 +4,7 @@
     <!-- 해당 게세판 이름 부분 -->
     <div class="container text-center">
 
-      <h3 style="text-align: left" id="fbd_h3">자유 게시판 글 상세보기</h3>
+      <h3 style="text-align: left" id="fbd_h3">건의 게시판 글 상세보기</h3>
 
     </div>
     <!-- 해당 게세판 이름 부분  끝-->
@@ -29,7 +29,7 @@
           color: #595959;
         "
       >
-        {{ freeBoardList.title }}
+        {{ complaintBoardList.title }}
       </div>
 
       <div
@@ -43,10 +43,10 @@
       >
         <div class="lotto_new row row-cols-lg-4 gap-5 justify-content-left">
           <div class="col" style="color: #999999">
-            등록일 | {{ freeBoardList.insertTime }}
+            등록일 | {{ complaintBoardList.insertTime }}
           </div>
           <div class="col" style="color: #999999">
-            등록자 | {{ freeBoardList.userId }}
+            등록자 | 익명
           </div>
         </div>
       </div>
@@ -60,27 +60,27 @@
           font-weight: 600;
           height: 450px;
         "
+        v-html="complaintBoardList.content"
       >
-      {{freeBoardList.content}}</div>
+      </div>
 
       <!-- 파일첨부 -->
-      <div class="mt-5" style="width: 500px">
+      <!-- <div class="mt-5" style="width: 500px">
         <input
           class="form-control form-control-sm"
           id="formFileSm"
           type="file"
           style="margin-left: 20px"
         />
-      </div>
+      </div> -->
     </div>
     <!--  첫번째 게시판 큰 박스 끝-->
 
     <div class="container text-center mt-5">
-      <div class="row" style="margin-top: 100px" v-if="freeBoardList.userId=== this.$store.state.user?.userId">
+      <div class="row" style="margin-top: 100px" v-if="complaintBoardList.userId=== this.$store.state.user?.userId">
         <!-- 삭제 -->
         <div class="col">
-          <router-link
-            to="/"
+          <button
             class="fbd_d container text-center"
             style="
               width: 300px;
@@ -91,6 +91,7 @@
               height: 50px;
               border-radius: 20px;
             "
+            @click="deleteComplaintBoard"
           >
             <div
               style="
@@ -102,18 +103,17 @@
               <div
                 class="router-text"
                 style="margin-right: 20px; margin-top: 10px"
-                @click="deleteFreeBoard"
               >
                 삭제
               </div>
             </div>
-          </router-link>
+          </button>
         </div>
 
         <!-- 수정 -->
         <div class="col mb-5">
           <router-link
-            to="/"
+            :to="'/complaint/complaint-board/Update/'+ this.$route.params.complaintBoardId"
             class="fbd_d container text-center"
             style="
               width: 300px;
@@ -244,8 +244,8 @@
 </template>
 <script>
 
-import FreeBoardService from '@/services/board/free/FreeBoardService';
 import { ref } from "vue";
+import ComplaintBoardService from '@/services/board/complaint/ComplaintBoardService';
 
 // 댓글 글자 작성 수 올라가는 것 확인
 export default {
@@ -269,8 +269,8 @@ export default {
   },
   data() {
     return {
-      freeBoardList: {
-        freeBoardId: this.$route.params.freeBoardId,
+      complaintBoardList: {
+        complaintBoardId: this.$route.params.complaintBoardId,
         userId: "",
         content: "",
         title: "",
@@ -279,25 +279,25 @@ export default {
   },
   methods: {
     // freeBoardId로 상세조회 : 화면뜰때 실행
-    async retrieveGetFreeBoard(freeBoardId) {
+    async retrieveGetComplaintBoard(complaintBoardId) {
       try {
-        let response = await FreeBoardService.getFreeBoardId(freeBoardId);
-        this.freeBoardList = response.data;
+        let response = await ComplaintBoardService.getComplaintBoardId(complaintBoardId);
+        this.complaintBoardList = response.data;
         console.log(response.data);
       } catch (e) {
         alert("에러");
         console.log(e);
       }
     },
-    async deleteFreeBoard(){
+    async deleteComplaintBoard(){
         try {
         let result = confirm("정말로 삭제하시겠습니까?")
         if (result) {
-            let response = await FreeBoardService.deleteFreeBoard(this.freeBoardList.freeBoardId);
+            let response = await ComplaintBoardService.deleteComplaintBoard(this.complaintBoardList.complaintBoardId);
         // 로깅
         console.log(response.data);
         alert("게시글이 삭제되었습니다.");
-        this.$router.push("/free/free-board");
+        this.$router.push("/complaint/complaint-board");
         } else{
           return;
         }
@@ -307,7 +307,7 @@ export default {
     }
   },
   mounted(){
-    this.retrieveGetFreeBoard(this.$route.params.freeBoardId);
+    this.retrieveGetComplaintBoard(this.$route.params.complaintBoardId);
   }
 }
 </script>

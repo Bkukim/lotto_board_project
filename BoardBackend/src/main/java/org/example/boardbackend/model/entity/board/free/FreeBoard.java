@@ -6,6 +6,7 @@ import org.example.boardbackend.model.common.BaseTimeEntity;
 import org.example.boardbackend.model.entity.auth.User;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
+import org.hibernate.annotations.Fetch;
 
 /**
  * packageName : org.example.boardbackend.model.entity.board.free
@@ -46,6 +47,7 @@ public class FreeBoard extends BaseTimeEntity {
     private String userId;
     private long likes;
     @Column(nullable = false)
+    @Lob
     private String content;
     private String title;
 }
