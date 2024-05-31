@@ -2,6 +2,7 @@ package org.example.boardbackend.controller.notify;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.example.boardbackend.model.entity.notify.Notify;
 import org.example.boardbackend.security.jwt.JwtUtils;
 import org.example.boardbackend.service.notify.NotifyService;
 import org.springframework.http.HttpStatus;
@@ -11,6 +12,8 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
+
+import java.util.List;
 
 /**
  * packageName : org.example.boardbackend.controller.notify
@@ -40,12 +43,23 @@ public class NotifyController {
 //                                @RequestHeader(value = "Last-Event-ID", required = false, defaultValue = "") String lastEventId
     ) {
         try {
-            log.debug("진입 성공");
              SseEmitter sseEmitter = notifyService.subscribe(jwtUtils.getUserNameFromJwtToken(token));
             return new ResponseEntity<>(sseEmitter, HttpStatus.OK);
         }catch (Exception e){
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
+    }
+
+    @GetMapping("/unread-messages/{userId}")
+    public ResponseEntity<Object> findUnReadNotify(@PathVariable String userId){
+        try {
+            List<Notify> notifies = notifyService.findUnReadNotify(userId);
+            notifyService.updateIsRead(userId);
+            return new ResponseEntity<>(notifies,HttpStatus.OK);
+        }catch (Exception e){
+            log.debug(e.getMessage());
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 }

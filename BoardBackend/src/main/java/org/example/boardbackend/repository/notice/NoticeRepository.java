@@ -29,10 +29,11 @@ import java.util.List;
 public interface NoticeRepository extends JpaRepository<Notice, Long> {
     @Query(value = "SELECT NOTICE_ID AS noticeId\n" +
             ", TITLE AS title\n" +
-            ", CONTENT AS content\n" +
-            ", NOTICE_ING_URL AS noticeImgUrl\n" +
-            ", NOTICE_IMG_UUID AS noticeImgUuid\n" +
+            ", NOTICE_TYPE AS noticeType\n" +
+            ", VIEWS AS views\n" +
             ", EVENT_YN AS eventYn\n" +
+            ", UPDATE_TIME AS updateTime\n" +
+            ", INSERT_TIME AS insertTime\n" +
             "FROM LOTTO_NOTICE\n" +
             "WHERE TITLE LIKE '%'|| :title ||'%'"
             , countQuery = "SELECT COUNT(*)\n" +
@@ -41,8 +42,8 @@ public interface NoticeRepository extends JpaRepository<Notice, Long> {
             , nativeQuery = true
     )
     Page<INoticeDto> findByTitleContaining(@Param("title") String title, Pageable pageable);
+// todo: 부서게시판 조회
 
-    // todo: 자유게시판 조회
     @Query(value = "SELECT NOTICE_ID AS noticeId\n" +
             ", TITLE AS title" +
             ", VIEWS AS views" +
@@ -53,11 +54,39 @@ public interface NoticeRepository extends JpaRepository<Notice, Long> {
             nativeQuery = true)
     List<INoticeDto> findByNoticeTypeDept(INoticeDto iNoticeDto);
 
-// todo: 부서게시판 조회
+    // todo: 자유게시판 조회
+
+@Query(value = "SELECT NOTICE_ID AS noticeId\n" +
+        ", TITLE AS title" +
+        ", VIEWS AS views" +
+        ", INSERT_TIME AS insertTime" +
+        ", NOTICE_TYPE AS noticeType\n" +
+        "FROM LOTTO_NOTICE\n" +
+        " WHERE NOTICE_TYPE = '자유'",
+        nativeQuery = true)
+List<INoticeDto> findByNoticeTypeFree(INoticeDto iNoticeDto);
 
 // todo: 건의게시판 조회
+@Query(value = "SELECT NOTICE_ID AS noticeId\n" +
+        ", TITLE AS title" +
+        ", VIEWS AS views" +
+        ", INSERT_TIME AS insertTime" +
+        ", NOTICE_TYPE AS noticeType\n" +
+        "FROM LOTTO_NOTICE\n" +
+        " WHERE NOTICE_TYPE = '건의'",
+        nativeQuery = true)
+List<INoticeDto> findByNoticeTypeComplaint(INoticeDto iNoticeDto);
 
 // todo: 동호회 게시판 조회
+@Query(value = "SELECT NOTICE_ID AS noticeId\n" +
+        ", TITLE AS title" +
+        ", VIEWS AS views" +
+        ", INSERT_TIME AS insertTime" +
+        ", NOTICE_TYPE AS noticeType\n" +
+        "FROM LOTTO_NOTICE\n" +
+        " WHERE NOTICE_TYPE = '동호회'",
+        nativeQuery = true)
+List<INoticeDto> findByNoticeTypeGroup(INoticeDto iNoticeDto);
 
 
 }
