@@ -71,10 +71,9 @@ public class FreeBoardService {
     // 1. boardId로 게시글 주인의 객체 가져오기,  1. 댓글을 저장, 2 알림 보내기
     public void saveComment(FreeBoardCommentDto freeBoardCommentDto){
         FreeBoard freeBoard = freeBoardRepository.findById(freeBoardCommentDto.getFreeBoardId()).get();
-        User commentWriter = userRepository.findByUserId(freeBoardCommentDto.getUserId());
-        User boardWriter = freeBoard.getWriter();
+        String boardWriter = freeBoard.getUserId();
 
-        FreeBoardComment freeBoardComment = new FreeBoardComment(commentWriter,freeBoard,freeBoardCommentDto.getContent(),freeBoardCommentDto.getSecretCommentYn());
+        FreeBoardComment freeBoardComment = new FreeBoardComment(freeBoardCommentDto.getUserId(),freeBoard,freeBoardCommentDto.getContent(),freeBoardCommentDto.getSecretCommentYn());
 
         // 1. 댓글 저장
         freeBoardCommentRepository.save(freeBoardComment);

@@ -19,7 +19,7 @@ public class NotifyDto {
             return Response.builder()
                     .content(notify.getContent())
                     .notifyId(String.valueOf(notify.getNotifyId()))
-                    .userId(notify.getReceiver().getUserId())
+                    .userId(notify.getUserId())
                     .insertTime(notify.getInsertTime())
                     .build();
 
