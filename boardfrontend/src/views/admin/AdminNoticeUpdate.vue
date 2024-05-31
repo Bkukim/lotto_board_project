@@ -1,14 +1,9 @@
 <template>
   <div class="container mt-5 mb-5">
-    <h3 class="mb-5">공지사항 등록</h3>
+    <h3 class="mb-5">공지사항 수정</h3>
     <!-- 제목 -->
     <div class="col-10 mb-3">
-      <input
-        type="text"
-        class="form-control"
-        placeholder="제목을 적어주세요"
-        v-model="notice.title"
-      />
+      <input type="text" class="form-control" v-model="notice.title" />
     </div>
     <div class="col-12 mt-3 mb-3">
       <div class="row">
@@ -37,11 +32,19 @@
 
     <!-- 본문 -->
     <div ref="editor"></div>
-    
+    <div v-html="notice.content"></div>
     <!-- 버튼 -->
     <div class="row mt-3">
-      <button @click="cancel" id="button-cancle-Writing" class="btn col-3">취소</button>
-      <button @click="createNotice" id="button-cancle-Writing" class="btn col-3">등록하기</button>
+      <button @click="cancel" id="button-cancle-Writing" class="btn col-3">
+        취소
+      </button>
+      <button
+        @click="createNotice"
+        id="button-cancle-Writing"
+        class="btn col-3"
+      >
+        수정하기
+      </button>
     </div>
   </div>
 </template>
@@ -55,35 +58,35 @@ export default {
   data() {
     return {
       editor: null,
-      notice: {
-        title: "",
-        noticeType: "",
-      },
+      // notice: {
+      //   title: "",
+      //   noticeType: "",
+      // },
+      notice: {},
     };
   },
   methods: {
-    async createNotice() {
-      if (!this.editor) {
-        console.error("에디터가 초기화되지 않았습니다.");
-        return;
-      }
+    async getNotice(noticeId) {
       try {
-        // 에디터의 HTML 내용 가져오기
-        const content = this.editor.getHTML();
-
-        // 공지사항 객체 생성
-        const notice = {
-          title: this.notice.title,
-          noticeType : this.notice.noticeType,
-          content: content,
-        };
-        // 벡엔드로 공지사항 객체 추가 요청
-        let response = await NoticeService.create(notice);
-        // 콘솔에 결과 출력
-        this.$router.push("/notice/notice-board");
-
-        console.log(response);
-        // TODO: 서버 응답에 따른 후속 처리 추가
+        let response = await NoticeService.getNotice(noticeId);
+        this.notice = response.data;
+        // 에디터가 초기화된 후에 데이터를 설정
+        if (this.editor) {
+          this.editor.setMarkdown(this.notice.content || ""); // 에디터에 불러온 내용 설정
+        }
+      } catch (e) {
+        console.log(e);
+      }
+    },
+    async updateNotice() {
+      try {
+        this.notice.content = this.editor.getMarkdown(); // 에디터 내용을 notice.content에 설정
+        let response = await NoticeService.update(
+          this.notice.noticeId,
+          this.notice
+        );
+        console.log(response.data);
+        this.message = "수정에 성공했습니다.";
       } catch (e) {
         console.log(e);
       }
@@ -94,14 +97,15 @@ export default {
       el: this.$refs.editor,
       initialEditType: "wysiwyg",
       height: "500px",
-      // hooks: {
-      //   addImageBlobHook: async (blob, callback) => {
-      //     const imageUrl = await this.uploadImage(blob);
-      //     callback(imageUrl, blob.name);
-      //   },
-      // },
+      events: {
+        load: () => {
+          // 에디터가 로드된 후에만 getNotice를 호출
+          this.getNotice(this.$route.params.noticeId); // 임의의 noticeId로 초기 호출 (적절한 noticeId로 변경)
+        },
+      },
     });
-    window.scrollTo(0, 0);
+
+    // this.getNotice(this.$route.params.noticeId);
   },
 };
 </script>

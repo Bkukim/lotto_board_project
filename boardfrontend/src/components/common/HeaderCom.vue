@@ -36,9 +36,9 @@
             <li class="nav-item">
               <a class="nav-link" href="/complaint/complaint-board">건의 게시판</a>
             </li>
-            <li class="nav-item">
+            <!-- <li class="nav-item">
               <a class="nav-link" href="#">이벤트</a>
-            </li>
+            </li> -->
             <li class="nav-item dropdown">
               <a
                 class="nav-link dropdown-toggle"
@@ -200,4 +200,27 @@ export default {};
     margin-bottom: 5px;
   }
 }
+
+@media (max-width: 576px) {
+  .navbar-brand img {
+    width: 100px;
+    height: 100px;
+  }
+  .nav-item {
+    margin-bottom: 5px;
+  }
+  .search-bar {
+    display: none;
+  }
+  .navbar {
+    padding: 5px 0;
+  }
+  .navbar-nav {
+    gap: 5px;
+  }
+  .nav-link {
+    font-size: 14px;
+  }
+}
+
 </style>

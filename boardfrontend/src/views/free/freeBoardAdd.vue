@@ -106,5 +106,6 @@ export default {
   background-color: #162b59;
   color: #ffffff;
   border: none;
+  width: 200px;
 }
 </style>

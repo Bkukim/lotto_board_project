@@ -2,7 +2,7 @@ package org.example.boardbackend.service.notify;
 
 
 import lombok.RequiredArgsConstructor;
-import org.example.boardbackend.model.dto.notify.NotifyDto;
+import lombok.extern.slf4j.Slf4j;
 import org.example.boardbackend.model.entity.auth.User;
 import org.example.boardbackend.model.entity.notify.Notify;
 import org.example.boardbackend.repository.notify.EmitterRepository;
@@ -14,6 +14,7 @@ import java.io.IOException;
 import java.util.Map;
 
 @Service
+@Slf4j
 @RequiredArgsConstructor
 public class NotifyService {
     private static final Long DEFAULT_TIMEOUT = 60L * 1000 * 60; // 연결 지속 시간
@@ -23,67 +24,67 @@ public class NotifyService {
 
     // 구독함수
     public SseEmitter subscribe(String userId) {
-        String emitterId = makeTimeIncludeId(userId);
-        SseEmitter emitter = emitterRepository.save(emitterId, new SseEmitter(DEFAULT_TIMEOUT));
-        emitter.onCompletion(() -> emitterRepository.deleteById(emitterId));
-        emitter.onTimeout(() -> emitterRepository.deleteById(emitterId));
+        SseEmitter sseEmitter = new SseEmitter(DEFAULT_TIMEOUT); // emitter 생성
+        SseEmitter emitter1 = emitterRepository.save(userId, sseEmitter);
+        // 오류 발생시 삭제
+        sseEmitter.onCompletion(() -> emitterRepository.deleteById(userId));
+        sseEmitter.onTimeout(() -> emitterRepository.deleteById(userId));
+        log.debug(emitter1.toString());
+        try {
+            sseEmitter.send(SseEmitter.event().name("connect").data("로그인 성공"));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        if (emitterRepository.findAllEventCacheStartWithByUserId(userId) != null) { // 전송되지 않은 신호가 있다면 보내주기
+            Map<String, SseEmitter> emitters = emitterRepository.findAllEventCacheStartWithByUserId(userId);
+            emitters.forEach(
+                    (key, emitter) -> {
+                        try {
+                            sseEmitter.send(SseEmitter.event().name("UNSENT_MESSAGE").data("확인하지 않은 알람이 있습니다."));
+                        } catch (IOException e) {
+                            throw new RuntimeException(e);
+                        }
+                    }
+            );
+        }else{
+            try {
+                sseEmitter.send(SseEmitter.event().name("connect").data("로그인 성공"));
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        }
 
 
-        // 503 에러를 방지하기 위한 더미 이벤트 전송
-        String eventId = makeTimeIncludeId(userId);
-        sendNotification(emitter, eventId, emitterId, "EventStream Created. [userId=" + userId + "]");
 
-//        // 클라이언트가 미수신한 Event 목록이 존재할 경우 전송하여 Event 유실을 예방
-//        if (hasLostData(lastEventId)) {
-//            sendLostData(lastEventId, userId, emitterId, emitter);
-//        }
-
-        return emitter;
+        return sseEmitter;
     }
 
-    // emitter Id 만들어주는 함수
-    private String makeTimeIncludeId(String email) {
-        return email + "_" + System.currentTimeMillis();
+    // 알림 보내기 함수
+    public void send(User receiver, Notify.NotificationType notificationType, String content, String url) {
+        Notify notification = notifyRepository.save(createNotification(receiver, notificationType, content, url)); // 알림 객체 생성 및 저장
+        String userId = receiver.getUserId();
+        log.debug("여기까진 들옴");
+        log.debug(receiver.getUserId());
+        SseEmitter sseEmitter = emitterRepository.findByUserId(userId);
+        log.debug(sseEmitter.toString());
+        sendNotification(userId,sseEmitter,notificationType, content);
+
     }
 
-    private void sendNotification(SseEmitter emitter, String eventId, String emitterId, Object data) {
+    private void sendNotification(String userId, SseEmitter emitter, Notify.NotificationType notificationType, String content) {
         try {
             emitter.send(SseEmitter.event()
-                    .id(eventId)
-                    .name("sse")
-                    .data(data)
+                    .name("connect")
+                    .data(content)
             );
-        } catch (IOException exception) {
-            emitterRepository.deleteById(emitterId);
+
+        } catch (Exception e) {
+            log.debug("NotifyService Error");
+            emitterRepository.deleteAllEmitterStartWithId(userId);
+            emitterRepository.saveEventCache(userId,emitter); // 전달 되지 못한 emitter 들 저장
         }
     }
 
-    private boolean hasLostData(String lastEventId) {
-        return !lastEventId.isEmpty();
-    }
-
-    private void sendLostData(String lastEventId, String userEmail, String emitterId, SseEmitter emitter) {
-        Map<String, Object> eventCaches = emitterRepository.findAllEventCacheStartWithByUserId(String.valueOf(userEmail));
-        eventCaches.entrySet().stream()
-                .filter(entry -> lastEventId.compareTo(entry.getKey()) < 0)
-                .forEach(entry -> sendNotification(emitter, entry.getKey(), emitterId, entry.getValue()));
-    }
-
-    // [2] send()
-    //@Override
-    public void send(User receiver, Notify.NotificationType notificationType, String content, String url) {
-        Notify notification = notifyRepository.save(createNotification(receiver, notificationType, content, url)); // 알림 객체 생성 및 저장
-
-        String receiverId = receiver.getUserId(); // 수신자의 이메일을 receiverEmail 변수에 저장
-        String eventId = receiverId + "_" + System.currentTimeMillis(); // 이벤트 ID 생성
-        Map<String, SseEmitter> emitters = emitterRepository.findAllEmitterStartWithByUserId(receiverId); // 수신자에 연결된 모든 SseEmitter 객체를 emitters 변수에 가져옴
-        emitters.forEach( // emitters를 순환하며 각 SseEmitter 객체에 알림 전송
-                (key, emitter) -> {
-                    emitterRepository.saveEventCache(key, notification);
-                    sendNotification(emitter, eventId, key, NotifyDto.Response.createResponse(notification));
-                }
-        );
-    }
 
     private Notify createNotification(User receiver, Notify.NotificationType notificationType, String content, String url) {
         return Notify.builder()
@@ -94,6 +95,4 @@ public class NotifyService {
                 .isRead("N")
                 .build();
     }
-
-
 }

@@ -68,15 +68,15 @@ public class NormalNoticeController {
 
     @GetMapping("/{noticeId}/{eventYn}")
     public ResponseEntity<Object> getNoticeByNoticeId(@PathVariable long noticeId,
-                                                      @PathVariable String eventYn) {
+                                                      @PathVariable boolean eventYn) {
         try {
             Optional<Notice> notice;
-            if (eventYn.equals("y")) {
+            if (eventYn) {
                 notice = noticeRedisService.redisFindById(noticeId);
             } else {
                 notice = noticeRedisService.findById(noticeId);
             }
-            return new ResponseEntity<>(notice.get(), HttpStatus.OK);
+            return new ResponseEntity<>(notice, HttpStatus.OK);
         } catch (Exception e) {
             log.debug(e.getMessage());
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);

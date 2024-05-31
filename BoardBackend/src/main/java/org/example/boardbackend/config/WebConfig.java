@@ -1,5 +1,6 @@
 package org.example.boardbackend.config;
 
+import lombok.Getter;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
@@ -26,13 +27,15 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
  * 2024-04-02         GGG          최초 생성
  */
 @Configuration
+@Getter
 public class WebConfig implements WebMvcConfigurer {
-
+    private final String frontDomain = "http://localhost:8080";
 //    함수 재정의 : alt + insert
     @Override
     public void addCorsMappings(CorsRegistry registry) {
+
         registry.addMapping("/**")              // spring 모든 경로(접근)
-                .allowedOrigins("http://localhost:8080")  // vue 의 주소
+                .allowedOrigins(frontDomain)  // vue 의 주소
                 .allowedMethods(                          // 방식 : get/post/put/delete
                         HttpMethod.GET.name(),
                         HttpMethod.POST.name(),
