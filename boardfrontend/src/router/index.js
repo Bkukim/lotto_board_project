@@ -61,16 +61,19 @@ const routes = [
     path: "/notice/notice-check/:noticeId",
     component: () => import("../views/notice/NoticeCheck.vue"),
   },
-  // 공지사항 수정 ::
-  {
-    path: "/admin/notice-update/:noticeId",
-    component: () => import("../views/admin/AdminNoticeUpdate.vue"),
-  },
+
   // 공지사항 -> 글쓰기
   {
     path: "/admin/notice-add",
     component: () => import("../views/admin/AdminNoticeAdd.vue"),
   },
+
+  // // 공지사항 수정 ::
+  // {
+  //   path: "/admin/notice-update/:noticeId",
+  //   component: () => import("../views/admin/AdminNoticeUpdate.vue"),
+  // },
+
   // 자유 게시판
   {
     path: "/free/free-board",
@@ -85,6 +88,11 @@ const routes = [
   {
     path: "/free/free-boardAdd",
     component: () => import("../views/free/freeBoardAdd.vue"),
+  },
+  // 자유 게시판 -> 수정하기
+  {
+    path: "/free/free-board/Update/:freeBoardId",
+    component: () => import("../views/free/freeBoardUpdate.vue"),
   },
   // 동아리 게시판
   {

@@ -73,7 +73,6 @@
         <tr>
           <th scope="col">번호</th>
           <th scope="col">제목</th>
-          <th scope="col">내용</th>
           <th scope="col">작성자</th>
           <th scope="col">등록일</th>
           <th scope="col">좋아요</th>
@@ -84,13 +83,12 @@
         <!-- 반복문 시작할 행 -->
         <tr v-for="(data, index) in freeBoardList" :key="index">
           <td>{{ (page - 1) * pageSize + index + 1 }}</td>
-          <td>{{ data.title }}</td>
           <td>
             <router-link
               :to="'/free/free-boardDetail/' + data.freeBoardId"
               class="router-link-exact-active alltext"
             >
-              {{ data.content }}
+              {{ data.title }}
             </router-link>
           </td>
           <td>{{ data.userId }}</td>

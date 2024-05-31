@@ -25,12 +25,15 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface FreeBoardRepository extends JpaRepository<FreeBoard, Long> {
 
-    @Query(value = "SELECT * FROM LOTTO_FREE_BOARD\n" +
-            "WHERE TITLE LIKE '%'|| :title ||'%'"
-            ,countQuery = "SELECT count (*) FROM LOTTO_FREE_BOARD\n" +
-            "WHERE TITLE LIKE '%'|| :title ||'%'"
-            ,nativeQuery = true)
-    Page<FreeBoard> findAllByTitleContaining(@Param("title") String title,
-                                       Pageable pageable
-    );
+//    @Query(value = "SELECT * FROM LOTTO_FREE_BOARD\n" +
+//            "WHERE TITLE LIKE '%'|| :title ||'%'"
+//            ,countQuery = "SELECT count (*) FROM LOTTO_FREE_BOARD\n" +
+//            "WHERE TITLE LIKE '%'|| :title ||'%'"
+//            ,nativeQuery = true)
+//    Page<FreeBoard> findAllByTitleContaining(@Param("title") String title,
+//                                       Pageable pageable
+//    );
+
+
+    Page<FreeBoard> findAllByTitleContaining(@Param("title") String title,Pageable pageable);
 }
