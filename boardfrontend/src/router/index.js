@@ -60,10 +60,15 @@ const routes = [
     path: "/notice/notice-check/:noticeId",
     component: () => import("../views/notice/NoticeCheck.vue"),
   },
-  // // 공지사항 add
+  // 공지사항 -> 글쓰기
+  {
+    path: "/admin/notice-add",
+    component: () => import("../views/admin/AdminNoticeAdd.vue"),
+  },
+  // // 공지사항 수정 ::
   // {
-  //   path: "/notice-add",
-  //   component: () => import("../views/notice/AdminNoticeAdd.vue"),
+  //   path: "/admin/notice-update/:noticeId",
+  //   component: () => import("../views/admin/AdminNoticeUpdate.vue"),
   // },
   // 자유 게시판
   {
@@ -79,6 +84,11 @@ const routes = [
   {
     path: "/free/free-boardAdd",
     component: () => import("../views/free/freeBoardAdd.vue"),
+  },
+  // 자유 게시판 -> 수정하기
+  {
+    path: "/free/free-board/Update/:freeBoardId",
+    component: () => import("../views/free/freeBoardUpdate.vue"),
   },
   // 동아리 게시판
   {
@@ -104,7 +114,7 @@ const routes = [
   {
     path: "/complaint/complaint-board/:complaintBoardId",
     component: () => import("../views/complaint/complaintDetail.vue"),
-  },  
+  },
   // 건의 게시판 -> 글쓰기
   {
     path: "/complaint/complaint-boardAdd",
@@ -112,7 +122,7 @@ const routes = [
   },
   // 각게시판별 공지사항 관리 ::
   {
-    path: "/notice-master",
+    path: "/admin/notice-master",
     component: () => import("../views/admin/MasterBoardNoticesAdmin.vue"),
   },
 ];

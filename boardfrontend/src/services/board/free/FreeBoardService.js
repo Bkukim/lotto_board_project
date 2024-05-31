@@ -11,7 +11,7 @@ class FreeBoardService {
       }
     );
   }
-//   TODO: 상세 조회
+  //   TODO: 상세 조회
   getFreeBoardId(freeBoardId) {
     return http.get(`/user/board/free/${freeBoardId}`, {
       headers: AuthHeader(),
@@ -19,16 +19,24 @@ class FreeBoardService {
   }
 
   // TODO: 삭제
-  deleteFreeBoard(freeBoardId){
+  deleteFreeBoard(freeBoardId) {
     return http.delete(`/user/board/free/deletion/${freeBoardId}`, {
       headers: AuthHeader(),
     });
   }
-  //   // TODO: 저장
-  //   create(data) {
-  //     console.log(data);
-  //     return http.post("/admin/notice/notice-add", data);
-  //   }
+  // TODO: 저장
+  createFreeBoard(data) {
+    console.log(data);
+    return http.post("/user/board/free/save", data, {
+      headers: AuthHeader(),
+    });
+  }
+  // TODO: 수정함수 : qnaId,
+  updateFreeBoard(freeBoardId, data) {
+    return http.put(`/user/board/free/update/${freeBoardId}`, data, {
+      headers: AuthHeader(),
+    });
+  }
 }
 
 export default new FreeBoardService();

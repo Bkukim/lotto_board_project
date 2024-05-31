@@ -3,9 +3,7 @@
   <div class="fbd_all" style="height: 2000px; background-color: #f2f2f2">
     <!-- 해당 게세판 이름 부분 -->
     <div class="container text-center">
-
       <h3 style="text-align: left" id="fbd_h3">자유 게시판 글 상세보기</h3>
-
     </div>
     <!-- 해당 게세판 이름 부분  끝-->
 
@@ -17,6 +15,7 @@
         border: none;
         border-radius: 50px;
         background-color: #ffffff;
+        height: auto;
       "
     >
       <div
@@ -58,25 +57,28 @@
           padding: 20px 0 20px 30px;
           font-size: 15px;
           font-weight: 600;
-          height: 450px;
         "
-      >
-      {{freeBoardList.content}}</div>
+        v-html="freeBoardList.content"
+      ></div>
 
       <!-- 파일첨부 -->
-      <div class="mt-5" style="width: 500px">
+      <!-- <div class="mt-5" style="width: 500px">
         <input
           class="form-control form-control-sm"
           id="formFileSm"
           type="file"
           style="margin-left: 20px"
         />
-      </div>
+      </div> -->
     </div>
     <!--  첫번째 게시판 큰 박스 끝-->
 
     <div class="container text-center mt-5">
-      <div class="row" style="margin-top: 100px" v-if="freeBoardList.userId=== this.$store.state.user?.userId">
+      <div
+        class="row"
+        style="margin-top: 100px"
+        v-if="freeBoardList.userId === this.$store.state.user?.userId"
+      >
         <!-- 삭제 -->
         <div class="col">
           <router-link
@@ -102,7 +104,7 @@
               <div
                 class="router-text"
                 style="margin-right: 20px; margin-top: 10px"
-                @click="deleteFreeBoard"
+                @click.prevent="deleteFreeBoard"
               >
                 삭제
               </div>
@@ -135,6 +137,7 @@
               <div
                 class="router-text"
                 style="margin-right: 20px; margin-top: 10px; color: #ffffff"
+                @click="goupdateFreeBoard"
               >
                 수정
               </div>
@@ -179,7 +182,6 @@
         <div
           class="lotto_new row row-cols-lg-4 gap-5 justify-content-left mb-3"
         >
-
           <div class="col" style="color: #999999">등록자 | {값}</div>
 
           <div class="col" style="color: #999999">날짜 |</div>
@@ -243,13 +245,12 @@
   <!-- 전체 박스 끝 -->
 </template>
 <script>
-
-import FreeBoardService from '@/services/board/free/FreeBoardService';
+import FreeBoardService from "@/services/board/free/FreeBoardService";
 import { ref } from "vue";
 
 // 댓글 글자 작성 수 올라가는 것 확인
 export default {
-    setup() {
+  setup() {
     const text = ref("");
     const charCount = ref(0);
     const maxChars = 1000;
@@ -289,27 +290,33 @@ export default {
         console.log(e);
       }
     },
-    async deleteFreeBoard(){
-        try {
-        let result = confirm("정말로 삭제하시겠습니까?")
-        if (result) {
-            let response = await FreeBoardService.deleteFreeBoard(this.freeBoardList.freeBoardId);
+    // 삭제 함수
+    async deleteFreeBoard() {
+      try {
+        // if (confirm("정말로 삭제하시겠습니까?")) {
+        let response = await FreeBoardService.deleteFreeBoard(
+          this.freeBoardList.freeBoardId
+        );
         // 로깅
         console.log(response.data);
         alert("게시글이 삭제되었습니다.");
         this.$router.push("/free/free-board");
-        } else{
-          return;
-        }
+        // } else {
+        //   return;
+        // }
       } catch (e) {
         console.log(e);
       }
-    }
+    },
+    // 수정하러 가는 함수
+    goUpdateFreeBoard() {
+      this.$router.push("/free/free-board/Update/"+ this.$route.params.freeBoardId);
+    },
   },
-  mounted(){
+  mounted() {
     this.retrieveGetFreeBoard(this.$route.params.freeBoardId);
-  }
-}
+  },
+};
 </script>
 
 <style>
@@ -334,4 +341,3 @@ export default {
   margin-top: 5px;
 }
 </style>
-

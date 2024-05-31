@@ -105,7 +105,7 @@ public class FreeBoardController {
 //            성공(OK) 메세지 + 저장된객체
             return new ResponseEntity<>(freeBoard1, HttpStatus.OK);
         } catch (Exception e) {
-//            500 전송
+            log.debug(e.getMessage());
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
