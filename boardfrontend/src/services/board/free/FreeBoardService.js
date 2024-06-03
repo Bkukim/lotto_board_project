@@ -36,6 +36,13 @@ class FreeBoardService {
     return http.put(`/user/board/free/update/${freeBoardId}`, data, {
       headers: AuthHeader(),
     });
+  } 
+  
+  // TODO: 수정함수 : qnaId,
+  updateLike(freeBoardId, data) {
+    return http.put(`/user/board/free/update/${freeBoardId}`, data, {
+      headers: AuthHeader(),
+    });
   }
 }
 
