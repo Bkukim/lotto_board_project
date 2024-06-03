@@ -73,6 +73,11 @@
     </div>
     <!--  첫번째 게시판 큰 박스 끝-->
 
+    <!-- TODO: 좋아요버튼 -->
+    <div class="d-flex justify-content-center mt-3">
+      <button type="button" class="btn btn-primary" @click="likeUp">공감해요 {{ this.freeBoardList.likes }}</button>
+    </div>
+
     <div class="container text-center mt-5">
       <div
         class="row"
@@ -104,7 +109,6 @@
               <div
                 class="router-text"
                 style="margin-right: 20px; margin-top: 10px"
-                
               >
                 삭제
               </div>
@@ -115,7 +119,7 @@
         <!-- 수정 -->
         <div class="col mb-5">
           <router-link
-            :to="'/free/free-board/Update/'+ this.$route.params.freeBoardId"
+            :to="'/free/free-board/Update/' + this.$route.params.freeBoardId"
             class="fbd_d container text-center"
             style="
               width: 300px;
@@ -274,6 +278,7 @@ export default {
         userId: "",
         content: "",
         title: "",
+        likes:0,
       },
     };
   },
@@ -293,13 +298,13 @@ export default {
     async deleteFreeBoard() {
       try {
         if (confirm("정말로 삭제하시겠습니까?")) {
-        let response = await FreeBoardService.deleteFreeBoard(
-          this.freeBoardList.freeBoardId
-        );
-        // 로깅
-        console.log(response.data);
-        alert("게시글이 삭제되었습니다.");
-        this.$router.push("/free/free-board");
+          let response = await FreeBoardService.deleteFreeBoard(
+            this.freeBoardList.freeBoardId
+          );
+          // 로깅
+          console.log(response.data);
+          alert("게시글이 삭제되었습니다.");
+          this.$router.push("/free/free-board");
         } else {
           return;
         }
@@ -307,10 +312,25 @@ export default {
         console.log(e);
       }
     },
+    // 수정 함수
+    async likeUp() {
+      this.freeBoardList.likes=+1;
+
+      try {
+        let response = await FreeBoardService.updateFreeBoard(
+          this.freeBoardList.likes
+        );
+        // 로깅
+        console.log(response.data);
+        this.$router.push("/free/free-board/:freeBoardId");
+      } catch (e) {
+        console.log(e);
+      }
+    },
   },
   mounted() {
     this.retrieveGetFreeBoard(this.$route.params.freeBoardId);
-        window.scrollTo(0, 0);
+    window.scrollTo(0, 0);
   },
 };
 </script>
