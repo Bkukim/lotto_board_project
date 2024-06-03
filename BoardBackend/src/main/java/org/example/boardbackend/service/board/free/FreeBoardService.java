@@ -107,4 +107,6 @@ public class FreeBoardService {
         }
     }
 
+    // todo 신고함수
+
 }
