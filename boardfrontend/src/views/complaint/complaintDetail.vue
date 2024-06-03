@@ -308,6 +308,7 @@ export default {
   },
   mounted(){
     this.retrieveGetComplaintBoard(this.$route.params.complaintBoardId);
+        window.scrollTo(0, 0);
   }
 }
 </script>
