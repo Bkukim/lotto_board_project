@@ -2,6 +2,7 @@ package org.example.boardbackend.repository.board.club;
 
 import org.example.boardbackend.model.entity.board.club.ClubBoard;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
 /**
  * packageName : org.example.boardbackend.repository.board
@@ -16,5 +17,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
  * -----------------------------------------------------------
  * 2024-05-23         BALLBAT          최초 생성
  */
+@Repository
 public interface ClubBoardRepository extends JpaRepository<ClubBoard, Long> {
 }

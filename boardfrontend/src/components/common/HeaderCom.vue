@@ -119,18 +119,16 @@
             <ul class="dropdown-menu dropdown-menu-end" style="height: auto; width: 300px;">
               <table class="table mt-5">
                 <p style="text-align: center;">알림</p>
-
-
-                <tbody>
-                  <tr v-for="(data, index) in NotificationList" :key="index">
-                    <td style="font-size: 15px">
-                      {{ index + 1 }}
-                    </td>
-                    <td class="col-8"></td>
-                  </tr>
-                </tbody>
-              </table>
-
+      
+              <tbody>
+                <!-- 반복문 시작할 행 -->
+                <tr v-for="(data, index) in notificationList" :key="index">
+                  <td style="font-size: 15px">
+                  </td>
+                  <td class="col-8">{{ data.content }}</td>
+                </tr>
+              </tbody>
+            </table>
 
               <li><hr class="dropdown-divider" /></li>
 
