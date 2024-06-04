@@ -1,7 +1,7 @@
 <template>
   <AdminHeaderCom />
-  <div class="container mt-5 mb-5">
-    <h3 class="mb-5">공지사항 등록</h3>
+  <div class="container mt-5 mb-5" style="height: auto;">
+    <h3 class="mb-5" style="font-weight: bold;">공지사항 등록</h3>
     <!-- 제목 -->
     <div class="col-10 mb-3">
       <input
@@ -41,10 +41,15 @@
     <div ref="editor"></div>
     
     <!-- 버튼 -->
-    <div class="row mt-3">
-      <button @click="cancel" id="button-cancle-Writing" class="btn col-3">취소</button>
+    <div class="row mt-3 container text-center" style="text-align: center;">
+      <button @click="cancel" id="button-cancle-Writing" class="btn col-3" style="margin-right: 10px; background-color: #cccccc;">취소</button>
       <button @click="createNotice" id="button-cancle-Writing" class="btn col-3">등록하기</button>
     </div>
+
+    <br>
+    <br>
+    <br>
+    <br>
   </div>
 </template>
 

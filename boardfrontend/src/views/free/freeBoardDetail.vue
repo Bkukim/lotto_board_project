@@ -1,8 +1,8 @@
 <template>
   <!-- 전체 박스스 -->
-  <div class="fbd_all" style="height: 2000px; background-color: #f2f2f2">
+  <div class="fbd_all" style="height: 2000px">
     <!-- 해당 게세판 이름 부분 -->
-    <div class="container text-center">
+    <div class="container text-center mb-5">
       <h3 style="text-align: left" id="fbd_h3">자유 게시판 글 상세보기</h3>
     </div>
     <!-- 해당 게세판 이름 부분  끝-->
@@ -11,7 +11,7 @@
     <div
       class="container text-center mt-5"
       style="
-        height: 700px;
+        height: auto;
         border: none;
         border-radius: 50px;
         background-color: #ffffff;
@@ -23,9 +23,11 @@
           text-align: left;
           border-bottom: #cccccc solid 1px;
           padding: 20px 0 20px 30px;
-          font-size: 20px;
+          font-size: 25px;
+          font-weight: bolder;
           font-weight: 600;
           color: #595959;
+          background-color: #f2f2f2;
         "
       >
         {{ freeBoard.title }}
@@ -57,10 +59,23 @@
           padding: 20px 0 20px 30px;
           font-size: 15px;
           font-weight: 600;
+          border-bottom: 1px solid #cccccc;
         "
         v-html="freeBoard.content"
       ></div>
 
+      <div class="mt-5">
+        <button style="border: none; text-align: left;"> 
+          <img
+                src="@/assets/img/like_icon.png"
+                width="40"
+                height="40"
+              />
+        </button>
+    
+        <button>신고</button>
+
+      </div>
       <!-- 파일첨부 -->
       <!-- <div class="mt-5" style="width: 500px">
         <input
@@ -72,6 +87,11 @@
       </div> -->
     </div>
     <!--  첫번째 게시판 큰 박스 끝-->
+
+    <!-- TODO: 좋아요버튼 -->
+    <div class="d-flex justify-content-center mt-3">
+      <button type="button" class="btn btn-primary" @click="likeUp">공감해요 {{ this.freeBoardList.likes }}</button>
+    </div>
 
     <div class="container text-center mt-5">
       <div
@@ -86,11 +106,11 @@
             style="
               width: 300px;
               text-decoration: none;
-              background-color: #ffffff;
+              background-color: #cccccc;
               font-size: 20px;
-              text-align: center;
               height: 50px;
               border-radius: 20px;
+              border: none;
             "
             @click="deleteFreeBoard"
           >
@@ -103,7 +123,18 @@
             >
               <div
                 class="router-text"
-                style="margin-right: 20px; margin-top: 10px"
+
+
+                style="
+                  margin-right: 20px;
+                  margin-top: 10px;
+                  color: #ffffff;
+                  text-align: center;
+                "
+
+
+
+
               >
                 삭제
               </div>
@@ -330,6 +361,7 @@ export default {
         userId: "",
         content: "",
         title: "",
+        likes:0,
       },
       freeBoardComments: [], // 기존 댓글 목록
       newComment: {
@@ -398,7 +430,9 @@ export default {
       try {
         if (confirm("정말로 삭제하시겠습니까?")) {
           let response = await FreeBoardService.deleteFreeBoard(
+
             this.freeBoard.freeBoardId
+
           );
           // 로깅
           console.log(response.data);
@@ -411,10 +445,28 @@ export default {
         console.log(e);
       }
     },
+    // 수정 함수
+    async likeUp() {
+      this.freeBoardList.likes=+1;
+
+      try {
+        let response = await FreeBoardService.updateFreeBoard(
+          this.freeBoardList.likes
+        );
+        // 로깅
+        console.log(response.data);
+        this.$router.push("/free/free-board/:freeBoardId");
+      } catch (e) {
+        console.log(e);
+      }
+    },
   },
   mounted() {
     this.retrieveGetFreeBoard(this.$route.params.freeBoardId);
+
     this.retrieveFreeBoardComment(this.$route.params.freeBoardId);
+
+
     window.scrollTo(0, 0);
   },
 };

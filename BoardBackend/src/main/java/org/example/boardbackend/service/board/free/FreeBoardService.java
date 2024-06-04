@@ -110,8 +110,13 @@ public class FreeBoardService {
         }
     }
 
+
     //    todo: 댓글 조회 함수
     public Page<FreeBoardComment> getCommentByFreeBoardId(long freeBoardId, Pageable pageable) {
         return freeBoardCommentRepository.findFreeBoardCommentsByFreeBoardId(freeBoardId, pageable);
     }
+
+    // todo 신고함수
+
+
 }
