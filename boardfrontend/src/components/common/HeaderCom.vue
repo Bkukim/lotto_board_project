@@ -31,17 +31,13 @@
               <a class="nav-link" href="/notice/notice-board">공지사항</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" aria-current="page" href="/free/free-board"
-                >자유 게시판</a
-              >
+              <a class="nav-link" aria-current="page" href="/free/free-board">자유 게시판</a>
             </li>
             <li class="nav-item">
               <a class="nav-link" href="/club/club-board">동아리 게시판</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="/complaint/complaint-board"
-                >건의 게시판</a
-              >
+              <a class="nav-link" href="/complaint/complaint-board">건의 게시판</a>
             </li>
             <li class="nav-item dropdown">
               <a
@@ -100,7 +96,7 @@
           </nav>
 
           <!-- 알림 아이콘 -->
-          <div class="nav-item dropdown notification-dropdown" style="margin-right: 7px;">
+          <div class="nav-item dropdown notification-dropdown" style="position: relative; margin-right: 7px;">
             <a 
               class="nav-link"
               href="#"
@@ -115,13 +111,15 @@
                 width="30"
                 height="30"
                 class="d-inline-block align-text-top"
-                
               />
+              <span v-if="notificationCount > 0" class="badge bg-danger notification-badge">
+                {{ notificationCount }}
+              </span>
             </a>
-            <ul class="dropdown-menu dropdown-menu-end" style="height: auto;  width: 300px;">
+            <ul class="dropdown-menu dropdown-menu-end" style="height: auto; width: 300px;">
               <table class="table mt-5">
                 <p style="text-align: center;">알림</p>
-           
+      
               <tbody>
                 <!-- 반복문 시작할 행 -->
                 <tr v-for="(data, index) in notificationList" :key="index">
@@ -131,15 +129,19 @@
                 </tr>
               </tbody>
             </table>
+
               <li><hr class="dropdown-divider" /></li>
+
+ 
+
+
               <li><a class="dropdown-item" href="#">모든 알림 보기</a></li>
             </ul>
           </div>
 
           <!-- 로그인 아이콘 -->
-          <div class="hd_r"  v-if="!this.$store.state.loggedIn">
-            <router-link 
-            to="/member/login">
+          <div class="hd_r" v-if="!this.$store.state.loggedIn">
+            <router-link to="/member/login">
               <img
                 src="@/assets/img/login_icon.png"
                 alt="Loo"
@@ -153,11 +155,7 @@
           <!-- 로그인 상태일 시 -->
           <div class="hd_r" style="text-align: center;" v-else>
             <!-- 마이페이지 아이콘 -->
-            <router-link  style="margin-top: -5px; margin-right: 3px;"
-              to="/member/mypage"
-              class="d-inline-block align-text-top"
-             
-            >
+            <router-link style="margin-top: -5px; margin-right: 3px;" to="/member/mypage" class="d-inline-block align-text-top">
               <img 
                 src="@/assets/img/mypage_icon.png"
                 alt="Loo"
@@ -195,8 +193,11 @@ import NotifyService from "@/services/notify/NotifyService";
 export default {
   data() {
     return {
+
+
       notificationList: [],
       notifyCount:this.$store.state.notifyCount
+
     };
   },
   methods: {
@@ -288,8 +289,18 @@ export default {
 }
 .notification-dropdown:hover {
   border: none;
-  /* background-color: #2d61d056;
-  border-radius: 20px; */
+}
+
+/* 알림 배지 */
+.notification-badge {
+  position: absolute;
+  top: -1px;
+  right: -8px;
+  font-size: 12px;
+  padding: 2px 5px;
+  border-radius: 50%;
+  background-color: red;
+  color: white;
 }
 
 /* 반응형 스타일 */

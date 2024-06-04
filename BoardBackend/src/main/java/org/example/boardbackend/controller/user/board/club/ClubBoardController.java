@@ -114,7 +114,9 @@ public class ClubBoardController {
         }
     }
 
+
     // todo 게시글 신고함수
+
 //    @PostMapping("/report")
 //    public ResponseEntity<Object> saveReport(@RequestBody FreeBoard freeBoard,
 //                                             @RequestParam String reporterUserId){

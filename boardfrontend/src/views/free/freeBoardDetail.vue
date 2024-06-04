@@ -332,28 +332,10 @@
 </template>
 <script>
 import FreeBoardService from "@/services/board/free/FreeBoardService";
-import { ref } from "vue";
+// import { ref } from "vue";
 
 // 댓글 글자 작성 수 올라가는 것 확인
 export default {
-  setup() {
-    const text = ref("");
-    const charCount = ref(0);
-    const maxChars = 1000;
-
-    function updateCharacterCount() {
-      if (text.value.length > maxChars) {
-        text.value = text.value.slice(0, maxChars);
-      }
-      charCount.value = text.value.length;
-    }
-
-    return {
-      text,
-      charCount,
-      updateCharacterCount,
-    };
-  },
   data() {
     return {
       freeBoard: {
@@ -372,9 +354,23 @@ export default {
       page: 1, // 현재페이지번호
       count: 0, // 전체데이터개수
       pageSize: 5, // 1페이지당개수(select태그)
+
+      charCount:0
     };
   },
+  watch: {
+    "newComment.content"(newVal) {
+      this.charCount = newVal.length;
+    }
+  },
   methods: {
+    // 댓글 작성 시 글자 수 세기
+    updateCharacterCount() {
+      if (this.newComment.content.length > 1000) {
+        this.newComment.content = this.newComment.content.slice(0, 1000);
+      }
+      this.charCount = this.newComment.content.length;
+    },
     // freeBoardId로 상세조회 : 화면뜰때 실행
     async retrieveGetFreeBoard(freeBoardId) {
       try {
@@ -416,14 +412,16 @@ export default {
           content:this.newComment.content,
           secretCommentYn : "N"
         }
-        let response = await FreeBoardService.createFreeBoardComment(data);
-        this.freeBoardComments.push(response.data);
-        this.newComment.content = "";
-        this.charCount = 0;
-      } catch (e) {
-        alert("댓글 등록 중 에러가 발생했습니다.");
+         await FreeBoardService.createFreeBoardComment(data);
+        } catch (e) {
+        // alert("댓글 등록 중 에러가 발생했습니다.");
         console.log(e);
       }
+        this.newComment.content = "";
+        this.charCount = 0;
+        alert("댓글이 등록되었습니다.");
+        this.retrieveFreeBoardComment(this.$route.params.freeBoardId);
+     
     },
     // 삭제 함수
     async deleteFreeBoard() {
@@ -463,10 +461,7 @@ export default {
   },
   mounted() {
     this.retrieveGetFreeBoard(this.$route.params.freeBoardId);
-
     this.retrieveFreeBoardComment(this.$route.params.freeBoardId);
-
-
     window.scrollTo(0, 0);
   },
 };
