@@ -2,10 +2,16 @@ package org.example.boardbackend.service.board.complaint;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.example.boardbackend.config.WebConfig;
 import org.example.boardbackend.model.dto.board.complaint.ComplaintBoardDto;
 import org.example.boardbackend.model.entity.board.complaint.ComplaintBoard;
+import org.example.boardbackend.model.entity.board.complaint.ComplaintBoardComment;
 import org.example.boardbackend.model.entity.board.free.FreeBoard;
+import org.example.boardbackend.model.entity.board.free.FreeBoardComment;
+import org.example.boardbackend.model.entity.notify.Notify;
+import org.example.boardbackend.repository.board.complaint.ComplaintBoardCommentRepository;
 import org.example.boardbackend.repository.board.complaint.ComplaintBoardRepository;
+import org.example.boardbackend.service.notify.NotifyService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -31,6 +37,9 @@ import java.util.Optional;
 public class ComplaintBoardService {
 
     private final ComplaintBoardRepository complaintBoardRepository;
+    private final ComplaintBoardCommentRepository complaintBoardCommentRepository;
+    private final NotifyService notifyService;
+    private final WebConfig webConfig;
 
     //    todo 전체 조회
     public Page<ComplaintBoardDto> findComplaintBoardByTitleContaining(
@@ -53,6 +62,27 @@ public class ComplaintBoardService {
         return complaintBoardOptional;
     }
 
+    // TODO 댓글 저장 기능
+    // 1. boardId로 게시글 주인의 객체 가져오기,  1. 댓글을 저장, 2 알림 보내기
+    public void saveComment(ComplaintBoardComment complaintBoardComment){
+        ComplaintBoard complaintBoard = complaintBoardRepository.findById(complaintBoardComment.getComplaintBoardId()).get();
+
+
+        String boardWriter = complaintBoard.getUserId();
+        log.debug("여기는 서비스1");
+
+//        FreeBoardComment freeBoardComment = new FreeBoardComment(freeBoardComment.getUserId(),freeBoard.getFreeBoardId(),freeBoardComment.getContent(),freeBoardComment.getSecretCommentYn());
+
+        // 1. 댓글 저장
+        complaintBoardCommentRepository.save(complaintBoardComment);
+        log.debug("여기는 서비스2");
+
+        // 2. 알림 보내기
+        String notifyContent = "게시물에 댓글이 달렸습니다.";
+        String notifyUrl = webConfig.getFrontDomain() + "/complaint/complaint-board/" + complaintBoard.getComplaintBoardId();
+        notifyService.send(boardWriter, Notify.NotificationType.COMMENT,notifyContent,notifyUrl);
+    }
+
     //   todo:  저장 함수
     public ComplaintBoard save(ComplaintBoard complaintBoard) {
 //        JPA 저장 함수 실행 : return 값 : 저장된 객체
@@ -73,5 +103,10 @@ public class ComplaintBoardService {
         } else {
             return false;
         }
+    }
+
+    //    todo: 댓글 조회 함수
+    public Page<ComplaintBoardComment> getCommentByComplaintBoardId(long complaintBoardId, Pageable pageable) {
+        return complaintBoardCommentRepository.findComplaintBoardCommentsByComplaintBoardId(complaintBoardId, pageable);
     }
 }
