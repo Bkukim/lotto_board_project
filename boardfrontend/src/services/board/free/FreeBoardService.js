@@ -31,9 +31,21 @@ class FreeBoardService {
       headers: AuthHeader(),
     });
   }
-  // TODO: 수정함수 : qnaId,
+  // TODO: 수정함수 : qnaId
   updateFreeBoard(freeBoardId, data) {
     return http.put(`/user/board/free/update/${freeBoardId}`, data, {
+      headers: AuthHeader(),
+    });
+  }
+  // TODO: 댓글 조회 : freeBoardId
+  getFreeBoardComment(freeBoardId, page, size){
+    return http.get(`/user/board/free/${freeBoardId}/comments?page=${page}&size=${size}`, {
+      headers: AuthHeader(),
+    });
+  }
+  // TODO: 댓글 저장 함수
+  createFreeBoardComment(data){
+    return http.post(`/user/board/free/save/comment`, data, {
       headers: AuthHeader(),
     });
   }

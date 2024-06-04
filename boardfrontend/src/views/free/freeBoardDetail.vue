@@ -28,7 +28,7 @@
           color: #595959;
         "
       >
-        {{ freeBoardList.title }}
+        {{ freeBoard.title }}
       </div>
 
       <div
@@ -42,10 +42,10 @@
       >
         <div class="lotto_new row row-cols-lg-4 gap-5 justify-content-left">
           <div class="col" style="color: #999999">
-            등록일 | {{ freeBoardList.insertTime }}
+            등록일 | {{ freeBoard.insertTime }}
           </div>
           <div class="col" style="color: #999999">
-            등록자 | {{ freeBoardList.userId }}
+            등록자 | {{ freeBoard.userId }}
           </div>
         </div>
       </div>
@@ -58,7 +58,7 @@
           font-size: 15px;
           font-weight: 600;
         "
-        v-html="freeBoardList.content"
+        v-html="freeBoard.content"
       ></div>
 
       <!-- 파일첨부 -->
@@ -77,7 +77,7 @@
       <div
         class="row"
         style="margin-top: 100px"
-        v-if="freeBoardList.userId === this.$store.state.user?.userId"
+        v-if="freeBoard.userId === this.$store.state.user?.userId"
       >
         <!-- 삭제 -->
         <div class="col">
@@ -104,7 +104,6 @@
               <div
                 class="router-text"
                 style="margin-right: 20px; margin-top: 10px"
-                
               >
                 삭제
               </div>
@@ -115,7 +114,7 @@
         <!-- 수정 -->
         <div class="col mb-5">
           <router-link
-            :to="'/free/free-board/Update/'+ this.$route.params.freeBoardId"
+            :to="'/free/free-board/Update/' + this.$route.params.freeBoardId"
             class="fbd_d container text-center"
             style="
               width: 300px;
@@ -146,12 +145,12 @@
       </div>
     </div>
 
-    <!-- 댓글 작성-->
+    <!-- 댓글 조회-->
     <div
       class="container text-center mt-5"
       id="comments"
       style="
-        height: 330px;
+        height: auto;
         border: none;
         border-radius: 50px;
         background-color: #ffffff;
@@ -179,30 +178,73 @@
         "
       >
         <div
-          class="lotto_new row row-cols-lg-4 gap-5 justify-content-left mb-3"
+          v-for="(data,index) in freeBoardComments"
+          :key="index"
         >
-          <div class="col" style="color: #999999">등록자 | {값}</div>
+          <div
+            class="lotto_new row row-cols-lg-4 gap-5 justify-content-left mb-3"
+          >
+            <div class="col" style="color: #999999">
+              등록자 | {{ data.userId }}
+            </div>
 
-          <div class="col" style="color: #999999">날짜 |</div>
+            <div class="col" style="color: #999999">
+              날짜 | {{ data.insertTime }}
+            </div>
+          </div>
+
+          <!-- 글쓰기 칸 -->
+          <div class="mb-5">
+            <!-- <textarea
+              class="form-control"
+              id="exampleFormControlTextarea1"
+              rows="3"
+            ></textarea> -->
+            <div
+              style="
+                padding-left: 30px;
+                padding-bottom: 30px;
+                border: 1px solid #ccc;
+                border-radius: 5px;
+              "
+            >
+              {{ data.content }}
+            </div>
+          </div>
         </div>
 
-        <!-- 글쓰기 칸 -->
-        <div class="mb-5">
-          <textarea
-            class="form-control"
-            id="exampleFormControlTextarea1"
-            rows="3"
-            v-model="text"
-            @input="updateCharacterCount"
-            maxlength="1000"
-          ></textarea>
-          <div class="char-count">글자 수: {{ charCount }}/1000</div>
+        <!-- 댓글 입력 -->
+        <div>
+          <div
+            class="lotto_new row row-cols-lg-4 gap-5 justify-content-left mb-3"
+          >
+            <div class="col" style="color: #999999">
+              등록자 | {{ newComment.userId }}
+            </div>
+
+            <div class="col" style="color: #999999">
+              날짜 | {{ newComment.insertTime }}
+            </div>
+          </div>
+
+          <!-- 글쓰기 칸 -->
+          <div class="mb-5">
+            <textarea
+              class="form-control"
+              id="exampleFormControlTextarea1"
+              rows="3"
+              v-model="newComment.content"
+              @input="updateCharacterCount"
+              maxlength="1000"
+            ></textarea>
+            <div class="char-count">글자 수: {{ charCount }}/1000</div>
+          </div>
         </div>
 
         <!-- 등록 버튼-->
         <div class="col">
-          <router-link
-            to="/"
+          <button
+            @click="submitComment()"
             class="fbd_d container text-center"
             style="
               width: 80px;
@@ -236,7 +278,21 @@
                 등록
               </div>
             </div>
-          </router-link>
+          </button>
+        </div>
+
+        <!-- 페이징 -->
+        <!-- {/* paging 시작 */} -->
+        <div class="row justify-content-center mt-5">
+          <div class="col-auto" style="margin-top: 50px">
+            <b-pagination
+              class="custom-pagination col-12 mb-3"
+              v-model="page"
+              :total-rows="count"
+              :per-page="pageSize"
+              @click="retrieveFreeBoardComment(this.$route.params.freeBoardId)"
+            ></b-pagination>
+          </div>
         </div>
       </div>
     </div>
@@ -269,12 +325,21 @@ export default {
   },
   data() {
     return {
-      freeBoardList: {
+      freeBoard: {
         freeBoardId: this.$route.params.freeBoardId,
         userId: "",
         content: "",
         title: "",
       },
+      freeBoardComments: [], // 기존 댓글 목록
+      newComment: {
+        // 새로 작성할 댓글
+        userId: this.$store.state.user?.userId, // 로그인된 사용자 ID
+        content: "",
+      },
+      page: 1, // 현재페이지번호
+      count: 0, // 전체데이터개수
+      pageSize: 5, // 1페이지당개수(select태그)
     };
   },
   methods: {
@@ -282,10 +347,49 @@ export default {
     async retrieveGetFreeBoard(freeBoardId) {
       try {
         let response = await FreeBoardService.getFreeBoardId(freeBoardId);
-        this.freeBoardList = response.data;
+        this.freeBoard = response.data;
         console.log(response.data);
       } catch (e) {
         alert("에러");
+        console.log(e);
+      }
+    },
+    // freeBoardId로 댓글조회 : 화면뜰때 실행
+    async retrieveFreeBoardComment(freeBoardId) {
+      try {
+        let response = await FreeBoardService.getFreeBoardComment(
+          freeBoardId,
+          this.page - 1,
+          this.pageSize
+        );
+        // TODO: 복습 : 2) 객체분할 할당
+        const { freeBoardComments, totalItems } = response.data; // 부서배열(벡엔드 전송)
+        // TODO: 3) 바인딩변수(속성)에 저장
+        this.freeBoardComments = freeBoardComments; // 부서배열(벡엔드 전송)
+        this.count = totalItems; // 전체페이지수(벡엔드 전송)
+        // TODO: 4) 프론트 로깅 : console.log
+        // console.log("response.data",response.data);
+        // console.log("this.comments" ,this.freeBoardComments);
+      } catch (e) {
+        alert("페이징 에러");
+        console.log(e);
+      }
+    },
+    // 댓글 등록 함수
+    async submitComment() {
+      try {
+        let data = {
+          userId: this.newComment.userId,
+          freeBoardId : this.freeBoard.freeBoardId,
+          content:this.newComment.content,
+          secretCommentYn : "N"
+        }
+        let response = await FreeBoardService.createFreeBoardComment(data);
+        this.freeBoardComments.push(response.data);
+        this.newComment.content = "";
+        this.charCount = 0;
+      } catch (e) {
+        alert("댓글 등록 중 에러가 발생했습니다.");
         console.log(e);
       }
     },
@@ -293,13 +397,13 @@ export default {
     async deleteFreeBoard() {
       try {
         if (confirm("정말로 삭제하시겠습니까?")) {
-        let response = await FreeBoardService.deleteFreeBoard(
-          this.freeBoardList.freeBoardId
-        );
-        // 로깅
-        console.log(response.data);
-        alert("게시글이 삭제되었습니다.");
-        this.$router.push("/free/free-board");
+          let response = await FreeBoardService.deleteFreeBoard(
+            this.freeBoard.freeBoardId
+          );
+          // 로깅
+          console.log(response.data);
+          alert("게시글이 삭제되었습니다.");
+          this.$router.push("/free/free-board");
         } else {
           return;
         }
@@ -310,12 +414,37 @@ export default {
   },
   mounted() {
     this.retrieveGetFreeBoard(this.$route.params.freeBoardId);
-        window.scrollTo(0, 0);
+    this.retrieveFreeBoardComment(this.$route.params.freeBoardId);
+    window.scrollTo(0, 0);
   },
 };
 </script>
 
 <style>
+/* 페이징 번호 디자인 */
+.custom-pagination .page-item.active .page-link {
+  background-color: #162b59;
+  border-color: #ffffff;
+  color: white;
+}
+
+.custom-pagination .page-link {
+  color: #162b59;
+}
+
+.custom-pagination .page-link:hover {
+  background-color: #ffffff;
+  border-color: 1px solid#8f8f8f;
+  color: #162b59;
+  /* border: none; */
+}
+
+.custom-pagination .page-link:focus {
+  outline: none;
+  box-shadow: 0 0 0 0.2rem #162b59;
+  border-color: #162b59;
+}
+
 #fbd_h3 {
   color: #424242e8;
   text-align: center;
