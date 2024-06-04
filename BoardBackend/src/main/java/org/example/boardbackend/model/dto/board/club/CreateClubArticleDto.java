@@ -1,5 +1,10 @@
 package org.example.boardbackend.model.dto.board.club;
 
+import lombok.*;
+import org.example.boardbackend.model.entity.board.club.FieldPic;
+
+import java.util.List;
+
 /**
  * packageName : org.example.boardbackend.model.dto.board.club
  * fileName : CreateClubArticleDto
@@ -13,11 +18,15 @@ package org.example.boardbackend.model.dto.board.club;
  * -----------------------------------------------------------
  * 2024-05-23         BALLBAT          최초 생성
  */
+@Getter
+@Setter
+@ToString
+@AllArgsConstructor
+@NoArgsConstructor
 public class CreateClubArticleDto {
     private long clubBoardId; // 동아리 게시판 번호, 기본키, 시퀀스
-
     private String userId; // userId, 참조키
-    private long like; // 좋아요 개수
+    private long likes; // 좋아요 개수
     private String content; // 내용
     private String location; // 장소명
     private String address; // 주소
@@ -32,28 +41,5 @@ public class CreateClubArticleDto {
     private String sex; // 성별
     private String matchForm; // 경기 형식
     private String title; // 제목
-    private String imgUrl;
-    private byte[] imgFile;
-
-    public CreateClubArticleDto(long clubBoardId, String userId, long like, String content, String location, String address, long participationFee, String startTime, String endTime, String recruitmentDeadline, long maxQuota, long minQuota, String peoplesMatch, String material, String sex, String matchForm, String title, String imgUrl, byte[] imgFile) {
-        this.clubBoardId = clubBoardId;
-        this.userId = userId;
-        this.like = like;
-        this.content = content;
-        this.location = location;
-        this.address = address;
-        this.participationFee = participationFee;
-        this.startTime = startTime;
-        this.endTime = endTime;
-        this.recruitmentDeadline = recruitmentDeadline;
-        this.maxQuota = maxQuota;
-        this.minQuota = minQuota;
-        this.peoplesMatch = peoplesMatch;
-        this.material = material;
-        this.sex = sex;
-        this.matchForm = matchForm;
-        this.title = title;
-        this.imgUrl = imgUrl;
-        this.imgFile = imgFile;
-    }
+    private List<FieldPicDto> fieldPics; // List of FieldPicDto
 }
