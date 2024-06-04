@@ -88,6 +88,11 @@
     </div>
     <!--  첫번째 게시판 큰 박스 끝-->
 
+    <!-- TODO: 좋아요버튼 -->
+    <div class="d-flex justify-content-center mt-3">
+      <button type="button" class="btn btn-primary" @click="likeUp">공감해요 {{ this.freeBoardList.likes }}</button>
+    </div>
+
     <div class="container text-center mt-5">
       <div
         class="row"
@@ -118,12 +123,16 @@
             >
               <div
                 class="router-text"
+
                 style="
                   margin-right: 20px;
                   margin-top: 10px;
                   color: #ffffff;
                   text-align: center;
                 "
+
+
+
               >
                 삭제
               </div>
@@ -293,6 +302,7 @@ export default {
         userId: "",
         content: "",
         title: "",
+        likes:0,
       },
     };
   },
@@ -326,9 +336,25 @@ export default {
         console.log(e);
       }
     },
+    // 수정 함수
+    async likeUp() {
+      this.freeBoardList.likes=+1;
+
+      try {
+        let response = await FreeBoardService.updateFreeBoard(
+          this.freeBoardList.likes
+        );
+        // 로깅
+        console.log(response.data);
+        this.$router.push("/free/free-board/:freeBoardId");
+      } catch (e) {
+        console.log(e);
+      }
+    },
   },
   mounted() {
     this.retrieveGetFreeBoard(this.$route.params.freeBoardId);
+    window.scrollTo(0, 0);
   },
 };
 </script>

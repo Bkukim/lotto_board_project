@@ -6,6 +6,7 @@ import oracle.ucp.proxy.annotation.Post;
 import org.example.boardbackend.model.dto.board.club.CreateClubArticleDto;
 import org.example.boardbackend.model.entity.board.club.ClubBoard;
 import org.example.boardbackend.model.entity.board.club.FieldPic;
+import org.example.boardbackend.model.entity.board.free.FreeBoard;
 import org.example.boardbackend.service.board.club.ClubBoardService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -111,5 +112,12 @@ public class ClubBoardController {
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
+    }
+
+    // todo 게시글 신고함수
+    @PostMapping("/report")
+    public ResponseEntity<Object> saveReport(@RequestBody FreeBoard freeBoard,
+                                             @RequestParam String reporterUserId){
+
     }
 }

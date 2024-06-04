@@ -103,6 +103,7 @@ export default {
       // },
     });
     this.retrieveGetFreeBoard(this.$route.params.freeBoardId);
+        window.scrollTo(0, 0);
   },
 };
 </script>

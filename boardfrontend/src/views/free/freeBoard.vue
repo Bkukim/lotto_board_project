@@ -11,20 +11,20 @@
     <div class="container text-center" style="gap: 5px" id="search_box">
       <div class="row">
         <div class="col">
-          <button
+          <!-- <button
             class="btn btn-primary dropdown-toggle"
             type="button"
             data-bs-toggle="dropdown"
             aria-expanded="false"
             id="search_ck"
           >
-            -- 검색 선택 ---
-          </button>
-          <ul class="dropdown-menu">
+            
+          </button> -->
+          <!-- <ul class="dropdown-menu">
             <li><a class="dropdown-item" href="#">Action</a></li>
             <li><a class="dropdown-item" href="#">Another action</a></li>
             <li><a class="dropdown-item" href="#">Something else here</a></li>
-          </ul>
+          </ul> -->
         </div>
         <div class="col">
           <!-- 검색어를 입력하세요 -->

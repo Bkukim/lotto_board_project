@@ -80,8 +80,8 @@
         <!-- 반복문 시작할 행 -->
         <tr v-for="(data, index) in complaintBoardList" :key="index">
           <td>{{ (page - 1) * pageSize + index + 1 }}</td>
-          <td>
-            <router-link
+          <td id="router_hv" style="text-align: left; padding-left: 100px;">
+            <router-link style="color: #444444; font-weight: bold; text-decoration:none ;"
               :to="'/complaint/complaint-boardDetail/' + data.complaintBoardId"
               class="router-link-exact-active alltext"
             >

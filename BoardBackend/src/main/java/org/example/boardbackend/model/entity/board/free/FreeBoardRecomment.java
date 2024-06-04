@@ -3,7 +3,6 @@ package org.example.boardbackend.model.entity.board.free;
 import jakarta.persistence.*;
 import lombok.*;
 import org.example.boardbackend.model.common.BaseTimeEntity;
-import org.example.boardbackend.model.entity.auth.User;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 
@@ -21,10 +20,10 @@ import org.hibernate.annotations.DynamicUpdate;
  * 2024-05-30         PC          최초 생성
  */
 @Entity
-@Table(name = "LOTTO_FREE_BOARD_COMMENT")
+@Table(name = "LOTTO_FREE_BOARD_RECOMMENT")
 @SequenceGenerator(
-        name = "SQ_FREE_BOARD_COMMENT_GENERATOR"
-        , sequenceName = "SQ_FREE_BOARD_COMMENT"
+        name = "SQ_FREE_BOARD_RECOMMENT_GENERATOR"
+        , sequenceName = "SQ_FREE_BOARD_RECOMMENT"
         , initialValue = 1
         , allocationSize = 1
 )
@@ -36,21 +35,14 @@ import org.hibernate.annotations.DynamicUpdate;
 @AllArgsConstructor
 @DynamicInsert
 @DynamicUpdate
-public class FreeBoardComment extends BaseTimeEntity {
+public class FreeBoardRecomment extends BaseTimeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE
-            , generator = "SQ_FREE_BOARD_COMMENT_GENERATOR"
+            , generator = "SQ_FREE_BOARD_RECOMMENT_GENERATOR"
     )
-    private long freeBoardCommentId;
+    private long freeBoardRecommentId;
     private String userId;
-    private long freeBoardId;
+    private long freeBoardCommentId;
     private String content;
     private String secretCommentYn;
-
-//    public FreeBoardComment(String userId, FreeBoard freeBoard, String content, String secretCommentYn) {
-//        this.userId = userId;
-//        this.freeBoard = freeBoard;
-//        this.content = content;
-//        this.secretCommentYn = secretCommentYn;
-//    }
 }
