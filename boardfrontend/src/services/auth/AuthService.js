@@ -51,8 +51,8 @@ class AuthService {
   // }
 
   // 새로운 비밀번호 변경함수
-  updatePw(newPw) {
-    return http.put("/auth/new-pw", newPw);
+  updatePw(userId, newPw) {
+    return http.put(`/auth/new-pw/${userId}`, newPw);
   }
 
   // 아이디 중복확인함수

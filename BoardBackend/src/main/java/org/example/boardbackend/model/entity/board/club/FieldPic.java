@@ -32,7 +32,11 @@ public class FieldPic {
     @Id
     private String uuid;
 
-    private long clubBoardId; // 동아리 게시판 번호, 참조키
+    @ManyToOne
+    @JoinColumn(name = "CLUB_BOARD_ID", nullable = false)
+    private ClubBoard clubBoard; // 동아리 게시판 번호, 참조키
+
     private String imgUrl; // 이미지 url
+    @Lob
     private byte[] imgFile;
 }

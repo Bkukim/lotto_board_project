@@ -28,38 +28,42 @@
             style="gap: 10px; display: block; display: flex"
           >
             <li class="nav-item">
-              <a class="nav-link" href="/notice/notice-board">공지사항</a>
+              <router-link class="nav-link" to="/notice/notice-board">공지사항</router-link>
             </li>
             <li class="nav-item">
-              <a class="nav-link" aria-current="page" href="/free/free-board"
-                >자유 게시판</a
+
+              <router-link class="nav-link" aria-current="page" to="/free/free-board"
+                >자유 게시판</router-link
+
               >
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="/club/club-board">동아리 게시판</a>
+              <router-link class="nav-link" to="/club/club-board">동아리 게시판</router-link>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="/complaint/complaint-board"
-                >건의 게시판</a
+
+              <router-link class="nav-link" to="/complaint/complaint-board"
+                >건의 게시판</router-link
+
               >
             </li>
             <li class="nav-item dropdown">
-              <a
+              <router-link
                 class="nav-link dropdown-toggle"
-                href="#"
+                to="#"
                 role="button"
                 data-bs-toggle="dropdown"
                 aria-expanded="false"
               >
                 부서 게시판
-              </a>
+              </router-link>
               <ul class="dropdown-menu">
                 <li>
-                  <a class="dropdown-item" href="#">동아리 매칭 게시판</a>
+                  <router-link class="dropdown-item" to="#">동아리 매칭 게시판</router-link>
                 </li>
-                <li><a class="dropdown-item" href="#">자유 게시판</a></li>
-                <li><a class="dropdown-item" href="#">공지 게시판</a></li>
-                <li><a class="dropdown-item" href="#">건의 익명 게시판</a></li>
+                <li><router-link class="dropdown-item" to="#">자유 게시판</router-link></li>
+                <li><router-link class="dropdown-item" to="#">공지 게시판</router-link></li>
+                <li><router-link class="dropdown-item" to="#">건의 익명 게시판</router-link></li>
               </ul>
             </li>
           </ul>
@@ -101,12 +105,14 @@
 
           <!-- 알림 아이콘 -->
           <div
-            class="nav-item dropdown notification-dropdown"
+
+            class="nav-item dropdown notification-dropdown "
             style="position: relative; margin-right: 7px"
           >
-            <a
+            <router-link
+
               class="nav-link"
-              href="#"
+              to="#"
               role="button"
               data-bs-toggle="dropdown"
               aria-expanded="false"
@@ -119,32 +125,39 @@
                 height="30"
                 class="d-inline-block align-text-top"
               />
+
               <span
                 v-if="notificationCount > 0"
                 class="badge bg-danger notification-badge"
               >
+
+
                 {{ notificationCount }}
               </span>
-            </a>
+            </router-link>
+
             <ul
               class="dropdown-menu dropdown-menu-end"
               style="height: auto; width: 300px"
             >
               <table class="table mt-5">
-                <p style="text-align: center">알림</p>
 
-                <tbody>
-                  <!-- 반복문 시작할 행 -->
-                  <tr v-for="(data, index) in notificationList" :key="index">
-                    <td style="font-size: 15px"></td>
-                    <td class="col-8">{{ data.content }}</td>
-                  </tr>
-                </tbody>
-              </table>
+
+                <p style="text-align: center;">알림</p>
+      
+              <tbody>
+                <!-- 반복문 시작할 행 -->
+                <tr v-for="(data, index) in notificationList" :key="index">
+                  <td style="font-size: 15px">
+                  </td>
+                  <td class="col-8">{{ data.content }}</td>
+                </tr>
+              </tbody>
+            </table>
 
               <li><hr class="dropdown-divider" /></li>
 
-              <li><a class="dropdown-item" href="#">모든 알림 보기</a></li>
+              <li><router-link class="dropdown-item" to="#">모든 알림 보기</router-link></li>
             </ul>
           </div>
 
@@ -206,6 +219,7 @@ import NotifyService from "@/services/notify/NotifyService";
 export default {
   data() {
     return {
+
       notificationList: [],
       notificationCount: undefined,
     };
@@ -222,17 +236,7 @@ export default {
         console.log(error);
       }
     },
-    async getUnreadtNotify() {
-      try {
-        let response = await NotifyService.getUnreadNotify(
-          this.$store.state.user.userId
-        );
-        this.notificationList = response.data;
-        console.log("알림들", response.data);
-      } catch (error) {
-        console.log(error);
-      }
-    },
+
     handleLogout() {
       let result = confirm("정말로 로그아웃 하시겠습니까?");
       if (result) {
