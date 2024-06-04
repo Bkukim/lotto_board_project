@@ -38,6 +38,9 @@
       <button @click="cancel" id="button-cancle-Writing" class="btn col-3">
         취소
       </button>
+       <button @click="setEditor" id="button-cancle-Writing" class="btn col-3">
+        dfa
+      </button>
       <button
         @click="createNotice"
         id="button-cancle-Writing"
@@ -62,10 +65,12 @@ export default {
     };
   },
   methods: {
+
     // 공지사항 ID로 상세 정보를 가져오는 메서드
     async getNotice(noticeId) {
       try {
         this.editor = new Editor({
+
           el: this.$refs.editor, // HTML 요소 참조
           initialEditType: "wysiwyg", // 초기 에디터 타입 설정 (WYSIWYG)
           height: "500px", // 에디터 높이 설정
@@ -94,6 +99,7 @@ export default {
       }
     },
     // 공지사항을 업데이트하는 메서드
+
     async updateNotice() {
       try {
         this.notice.content = this.editor.getHTML(); // 에디터 내용을 notice.content에 설정

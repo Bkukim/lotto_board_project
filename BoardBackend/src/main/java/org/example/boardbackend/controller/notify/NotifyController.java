@@ -62,4 +62,15 @@ public class NotifyController {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
+    @GetMapping("/count-unread/{userId}")
+    public ResponseEntity<Object> countUnread(@PathVariable String userId){
+        try {
+            long count = notifyService.countUnread(userId);
+            return new ResponseEntity<>(count,HttpStatus.OK);
+        }catch (Exception e){
+            log.debug(e.getMessage());
+            return new ResponseEntity<>(e.getMessage(),HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
 }
