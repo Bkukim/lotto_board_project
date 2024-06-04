@@ -51,6 +51,7 @@ public class ComplaintBoard extends BaseTimeEntity {
     private long complaintBoardId;
     private String userId;
     private long likes;
+    @Lob
     private String content;
     private String status;
     private String title;

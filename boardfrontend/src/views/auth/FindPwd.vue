@@ -160,8 +160,9 @@ export default {
     // },
     async sendCode() {
       try {
-        await PasswordResetService.sendCode(this.role, this.email, this.userId);
+        await PasswordResetService.sendCode(this.email, this.userId);
         alert("인증 코드가 이메일로 전송되었습니다.");
+        this.$router.push("/member/login");
       } catch (error) {
         console.log(error);
         alert("인증 코드를 보내는 데 실패했습니다.");

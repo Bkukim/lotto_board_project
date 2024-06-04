@@ -107,7 +107,7 @@ export default {
       // 비밀번호 확인이 같으면 true
       passwordMatchError: false,
 
-      userId: this.$store.state.userId,
+      userId: this.$store.state.user.userId,
       newPw: "",
       newPwCheck: "",
       result: false,
@@ -124,9 +124,9 @@ export default {
         console.log(data);
         if (this.newPw == this.newPwCheck) {
           // 비밀번호 확인이 같을때만 실행
-          let response = await AuthService.updatePw(data); // 수정이 되면  true를 반환하고 안되면 false를 반환
+          let response = await AuthService.updatePw(this.$store.state.user.userId, data); // 수정이 되면  true를 반환하고 안되면 false를 반환
           if (response.data) {
-            this.$store.state.userId = "";
+            this.$store.state.user.userId = "";
             this.result = true;
           } else {
             alert("세션이 만료되었습니다. 로그인 창으로 이동합니다.");
@@ -163,7 +163,7 @@ export default {
   padding: 60px 100px 60px 80px;
 }
 .findPwdBtn {
-  background-color: #342a26;
+  background-color: #162b59;
   color: white;
   font-size: 20px;
   width: 200px;
