@@ -120,6 +120,7 @@
               <table class="table mt-5">
                 <p style="text-align: center;">알림</p>
 
+
                 <tbody>
                   <tr v-for="(data, index) in NotificationList" :key="index">
                     <td style="font-size: 15px">
@@ -132,6 +133,10 @@
 
 
               <li><hr class="dropdown-divider" /></li>
+
+ 
+
+
               <li><a class="dropdown-item" href="#">모든 알림 보기</a></li>
             </ul>
           </div>
