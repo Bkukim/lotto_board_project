@@ -151,7 +151,7 @@
       class="container text-center mt-5"
       id="comments"
       style="
-        height: 330px;
+        height: auto;
         border: none;
         border-radius: 50px;
         background-color: #ffffff;
@@ -178,10 +178,7 @@
           font-weight: 600;
         "
       >
-              <div
-          v-for="(data,index) in complaintBoardComments"
-          :key="index"
-        >
+        <div v-for="(data, index) in complaintBoardComments" :key="index">
           <div
             class="lotto_new row row-cols-lg-4 gap-5 justify-content-left mb-3"
           >
@@ -213,22 +210,21 @@
             </div>
           </div>
         </div>
-      <!-- 댓글 입력 -->
+
+        <!-- 댓글 입력 -->
         <div>
           <div
             class="lotto_new row row-cols-lg-4 gap-5 justify-content-left mb-3"
           >
-            <div class="col" style="color: #999999">
-              등록자 | 익명
-            </div>
+            <div class="col" style="color: #999999">등록자 | 익명</div>
 
             <div class="col" style="color: #999999">
               날짜 | {{ newComment.insertTime }}
             </div>
-          </div>
+        </div>
 
-          <!-- 글쓰기 칸 -->
-          <div class="mb-5">
+        <!-- 글쓰기 칸 -->
+        <div class="mb-5">
             <textarea
               class="form-control"
               id="exampleFormControlTextarea1"
@@ -291,7 +287,9 @@
               :total-rows="count"
               :per-page="pageSize"
               @click="
-                retrieveComplaintBoardComment(this.$route.params.complaintBoardId)
+                retrieveComplaintBoardComment(
+                  this.$route.params.complaintBoardId
+                )
               "
             ></b-pagination>
           </div>
@@ -302,29 +300,10 @@
   <!-- 전체 박스 끝 -->
 </template>
 <script>
-import { ref } from "vue";
 import ComplaintBoardService from "@/services/board/complaint/ComplaintBoardService";
 
 // 댓글 글자 작성 수 올라가는 것 확인
 export default {
-  setup() {
-    const text = ref("");
-    const charCount = ref(0);
-    const maxChars = 1000;
-
-    function updateCharacterCount() {
-      if (text.value.length > maxChars) {
-        text.value = text.value.slice(0, maxChars);
-      }
-      charCount.value = text.value.length;
-    }
-
-    return {
-      text,
-      charCount,
-      updateCharacterCount,
-    };
-  },
   data() {
     return {
       complaintBoard: {
@@ -342,13 +321,29 @@ export default {
       page: 1, // 현재페이지번호
       count: 0, // 전체데이터개수
       pageSize: 5, // 1페이지당개수(select태그)
+
+      charCount: 0,
     };
   },
+  watch: {
+    "newComment.content"(newVal) {
+      this.charCount = newVal.length;
+    },
+  },
   methods: {
+    // 댓글 작성 시 글자 수 세기
+    updateCharacterCount() {
+      if (this.newComment.content.length > 1000) {
+        this.newComment.content = this.newComment.content.slice(0, 1000);
+      }
+      this.charCount = this.newComment.content.length;
+    },
     // complaintBoardId로 상세조회 : 화면뜰때 실행
     async retrieveGetComplaintBoard(complaintBoardId) {
       try {
-        let response = await ComplaintBoardService.getComplaintBoardId(complaintBoardId);
+        let response = await ComplaintBoardService.getComplaintBoardId(
+          complaintBoardId
+        );
         this.complaintBoard = response.data;
         console.log(response.data);
       } catch (e) {
@@ -385,14 +380,15 @@ export default {
           complaintBoardId: this.complaintBoard.complaintBoardId,
           content: this.newComment.content,
         };
-        let response = await ComplaintBoardService.createComplaintBoardComment(data);
-        this.complaintBoardComments.push(response.data);
-        this.newComment.content = "";
-        this.charCount = 0;
+        await ComplaintBoardService.createComplaintBoardComment(data);
       } catch (e) {
         alert("댓글 등록 중 에러가 발생했습니다.");
         console.log(e);
       }
+      this.newComment.content = "";
+      this.charCount = 0;
+      alert("댓글이 등록되었습니다.");
+      this.retrieveComplaintBoardComment(this.$route.params.complaintBoardId);
     },
     // 삭제 함수
     async deleteComplaintBoard() {
