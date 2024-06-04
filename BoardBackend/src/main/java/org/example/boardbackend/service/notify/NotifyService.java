@@ -93,7 +93,7 @@ public class NotifyService {
                     .data(content)
             );
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            log.debug("회원이 로그아웃 상태입니다.");
         }
     }
 
@@ -110,11 +110,17 @@ public class NotifyService {
 
     // todo 읽지 않은 알림 조회
     public List<Notify> findUnReadNotify(String userId) throws IOException{
-        List<Notify> list = notifyRepository.findByUserIdAndIsRead(userId,"N");
+        List<Notify> list = notifyRepository.findTop8ByUserIdOrderByIsReadAscInsertTimeDesc(userId/*,"N"*/);
         return list;
     }
     // todo 읽음 변경함수
     public void updateIsRead(String  userId) throws IOException{
         notifyRepository.updateByUserId(userId);
+    }
+
+    // todo 읽지 않은 알림 갯수 구하기
+    public long countUnread(String userId)throws IOException{
+        long count = notifyRepository.countByUserIdAndIsRead(userId,"N");
+        return count;
     }
 }

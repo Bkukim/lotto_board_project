@@ -103,6 +103,7 @@
               role="button"
               data-bs-toggle="dropdown"
               aria-expanded="false"
+              @click="getUnreadtNotify"
             >
               <img 
                 src="@/assets/img/Notification_icon.png"
@@ -118,6 +119,7 @@
             <ul class="dropdown-menu dropdown-menu-end" style="height: auto; width: 300px;">
               <table class="table mt-5">
                 <p style="text-align: center;">알림</p>
+
                 <tbody>
                   <tr v-for="(data, index) in NotificationList" :key="index">
                     <td style="font-size: 15px">
@@ -127,6 +129,8 @@
                   </tr>
                 </tbody>
               </table>
+
+
               <li><hr class="dropdown-divider" /></li>
               <li><a class="dropdown-item" href="#">모든 알림 보기</a></li>
             </ul>
@@ -181,15 +185,28 @@
 
 <script>
 import AuthService from "@/services/auth/AuthService";
+import NotifyService from "@/services/notify/NotifyService";
 
 export default {
   data() {
     return {
-      NotificationList: [1, 2, 3, 4, 5],
-      notificationCount: 5,
+
+
+      notificationList: [],
+      notifyCount:this.$store.state.notifyCount
+
     };
   },
   methods: {
+   async getUnreadtNotify(){
+    try {
+      let response = await NotifyService.getUnreadNotify(this.$store.state.user.userId);
+      this.notificationList = response.data
+      console.log("알림들",response.data)
+    } catch (error) {
+      console.log(error);
+    }
+  },
     handleLogout() {
       let result = confirm("정말로 로그아웃 하시겠습니까?");
       if (result) {
