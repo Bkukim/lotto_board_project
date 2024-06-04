@@ -445,11 +445,11 @@ export default {
     },
     // 수정 함수
     async likeUp() {
-      this.freeBoardList.likes=+1;
+      this.freeBoard.likes=+1;
 
       try {
         let response = await FreeBoardService.updateFreeBoard(
-          this.freeBoardList.likes
+          this.freeBoard.likes
         );
         // 로깅
         console.log(response.data);

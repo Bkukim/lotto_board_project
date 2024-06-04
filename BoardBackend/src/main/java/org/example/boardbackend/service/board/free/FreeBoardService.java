@@ -67,6 +67,7 @@ public class FreeBoardService {
 
 
 
+
 //    // TODO 댓글 저장 기능
 public void saveComment(FreeBoardComment freeBoardComment){
     FreeBoard freeBoard = freeBoardRepository.findById(freeBoardComment.getFreeBoardId()).get();
@@ -86,6 +87,7 @@ public void saveComment(FreeBoardComment freeBoardComment){
     String notifyUrl = webConfig.getFrontDomain() + "/free/free-board/" + freeBoard.getFreeBoardId();
     notifyService.send(boardWriter,Notify.NotificationType.COMMENT,notifyContent,notifyUrl);
 }
+
 
     //   todo:  저장 함수
     public FreeBoard save(FreeBoard freeBoard) {
