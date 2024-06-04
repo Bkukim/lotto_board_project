@@ -132,6 +132,7 @@
 // TODO:   - created()(1번, 뷰만 생성되면 실행) -> mounted()(2번, html 태그까지 모두 뜰때)
 // TODO:     예) destoryed() : 뷰가 삭제될때 실행 (거의 사
 import AuthService from "@/services/auth/AuthService";
+import NotifyService from "@/services/notify/NotifyService";
 export default {
   data() {
     return {
@@ -201,6 +202,8 @@ export default {
             alert(message);
         })
         this.eventSource.addEventListener("COMMENT", function(event) {
+            let response = NotifyService.countNotify(this.$store.state.user.userId);
+            this.$store.state.notifyCount = response;
             let message = event.data;
             alert(message);
         })
