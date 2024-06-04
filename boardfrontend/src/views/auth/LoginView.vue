@@ -91,8 +91,8 @@
             <img src="@/assets/img/N.png" /> &nbsp;&nbsp; 네이버 로그인 /
             회원가입
           </button> -->
-
-          <img src="@/assets/img/btnG_완성형.png" style="width:300px; height:100px;" @click="goToNaverLogin"/>
+          
+          <img src="@/assets/img/btnG_완성형.png" style="width:300px; height:auto;" @click="goToNaverLogin"/>
 
         </div>
       </div>
@@ -133,6 +133,7 @@
 // TODO:     예) destoryed() : 뷰가 삭제될때 실행 (거의 사
 import AuthService from "@/services/auth/AuthService";
 import NotifyService from "@/services/notify/NotifyService";
+// import NotifyService from "@/services/notify/NotifyService";
 export default {
   data() {
     return {
@@ -202,8 +203,9 @@ export default {
             alert(message);
         })
         this.eventSource.addEventListener("COMMENT", function(event) {
-            let response = NotifyService.countNotify(this.$store.state.user.userId);
-            this.$store.state.notifyCount = response;
+            // let response = NotifyService.countNotify(this.$store.state.user.userId);
+            // console.log(response);
+            // this.$store.state.notifyCount = response;
             let message = event.data;
             alert(message);
         })
@@ -273,6 +275,7 @@ export default {
         this.connectSse(response.data.accessToken);
         if (this.$store.state.user.role == "ROLE_USER") {
           alert("로그인에 성공하였습니다.");
+          this.$store.state.notifyCount = await NotifyService.countNotify(this.$store.state.user.userId);
           this.$router.push("/");
         } else if (this.$store.state.user.role == "ROLE_ADMIN") {
           alert("관리자 로그인에 성공하였습니다.");

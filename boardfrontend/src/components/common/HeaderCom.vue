@@ -31,16 +31,20 @@
               <router-link class="nav-link" to="/notice/notice-board">공지사항</router-link>
             </li>
             <li class="nav-item">
+
               <router-link class="nav-link" aria-current="page" to="/free/free-board"
                 >자유 게시판</router-link
+
               >
             </li>
             <li class="nav-item">
               <router-link class="nav-link" to="/club/club-board">동아리 게시판</router-link>
             </li>
             <li class="nav-item">
+
               <router-link class="nav-link" to="/complaint/complaint-board"
                 >건의 게시판</router-link
+
               >
             </li>
             <li class="nav-item dropdown">
@@ -101,10 +105,12 @@
 
           <!-- 알림 아이콘 -->
           <div
+
             class="nav-item dropdown notification-dropdown "
             style="position: relative; margin-right: 7px"
           >
             <router-link
+
               class="nav-link"
               to="#"
               role="button"
@@ -125,14 +131,17 @@
                 class="badge bg-danger notification-badge"
               >
 
+
                 {{ notificationCount }}
               </span>
             </router-link>
+
             <ul
               class="dropdown-menu dropdown-menu-end"
               style="height: auto; width: 300px"
             >
               <table class="table mt-5">
+
 
                 <p style="text-align: center;">알림</p>
       
@@ -145,7 +154,6 @@
                 </tr>
               </tbody>
             </table>
-
 
               <li><hr class="dropdown-divider" /></li>
 
@@ -212,36 +220,38 @@ export default {
   data() {
     return {
 
-
-
       notificationList: [],
-      notificationCount:this.$store.state.notifyCount
-
-
+      notificationCount: undefined,
     };
   },
   methods: {
-    async getUnreadtNotify() {
+    async countUnreadNotify() {
       try {
-        let response = await NotifyService.getUnreadNotify(
+        let notifyCount = await NotifyService.countNotify(
           this.$store.state.user.userId
         );
-        this.notificationList = response.data;
-        console.log("알림들", response.data);
+        console.log("백엔드에서 받아온 알림",notifyCount);
+        this.notificationCount = notifyCount.data;
       } catch (error) {
         console.log(error);
       }
     },
+
     handleLogout() {
       let result = confirm("정말로 로그아웃 하시겠습니까?");
       if (result) {
         AuthService.logout(); // LOCAL저장소에서 USER객체 삭제해주기
         this.$store.commit("logout"); //
+        this.$store.state.notifyCount = 0;
         this.$router.push("/member/login");
       } else {
         return;
       }
     },
+  },
+  mounted() {
+    this.countUnreadNotify();
+    console.log("알림 갯수",this.notificationCount);
   },
 };
 </script>

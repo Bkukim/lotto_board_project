@@ -19,6 +19,7 @@ export default {
       localStorage.setItem("user", JSON.stringify(user));
       this.$store.commit("loginSuccess", user);
       this.connectSse(response.data.accessToken);
+      
       this.$router.push("/");
         } catch (e) {
           console.log(e);
