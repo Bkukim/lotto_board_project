@@ -98,6 +98,8 @@ public class WebSecurityConfig {
 //                .requestMatchers("/api/auth/**").permitAll()       // 로그인 및 회원가입 함수
 //                .requestMatchers("/api/user/**").hasRole("USER")       // user관련 모든 함수
 //                .requestMatchers("/api/admin/**").hasRole("ADMIN")       // 관리자의 모든 함수
+//                .requestMatchers("/api/v1/notify/").hasRole("USER")
+//                .requestMatchers("/api/v1/notify/").hasRole("ADMIN")
 //                .requestMatchers("/api/normal/**").permitAll()       // 관리자의 모든 함수
 
                 .anyRequest()

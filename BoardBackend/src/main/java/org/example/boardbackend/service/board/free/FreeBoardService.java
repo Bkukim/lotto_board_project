@@ -66,25 +66,25 @@ public class FreeBoardService {
 
 
 //    // TODO 댓글 저장 기능
-//    // 1. boardId로 게시글 주인의 객체 가져오기,  1. 댓글을 저장, 2 알림 보내기
-//    public void saveComment(FreeBoardCommentDto freeBoardCommentDto){
-//        FreeBoard freeBoard = freeBoardRepository.findById(freeBoardCommentDto.getFreeBoardId()).get();
-//
-//        String boardWriter = freeBoard.getUserId();
-//
-//
-//        FreeBoardComment freeBoardComment = new FreeBoardComment(freeBoardCommentDto.getUserId(),freeBoard,freeBoardCommentDto.getContent(),freeBoardCommentDto.getSecretCommentYn());
-//
-//        // 1. 댓글 저장
-//        freeBoardCommentRepository.save(freeBoardComment);
-//
-//        // 2. 알림 보내기
-//        String notifyContent = "게시물에 댓글이 달렸습니다.";
-//        String notifyUrl = webConfig.getFrontDomain() + "/free/free-board/" + freeBoard.getFreeBoardId();
-//        notifyService.send(boardWriter,Notify.NotificationType.COMMENT,notifyContent,notifyUrl);
-//
-//
-//    }
+    // 1. boardId로 게시글 주인의 객체 가져오기,  1. 댓글을 저장, 2 알림 보내기
+    public void saveComment(FreeBoardCommentDto freeBoardCommentDto){
+        FreeBoard freeBoard = freeBoardRepository.findById(freeBoardCommentDto.getFreeBoardId()).get();
+
+        String boardWriter = freeBoard.getUserId();
+
+
+        FreeBoardComment freeBoardComment = new FreeBoardComment(freeBoardCommentDto.getUserId(),freeBoardCommentDto.getFreeBoardId(), freeBoardCommentDto.getContent(),freeBoardCommentDto.getSecretCommentYn());
+
+        // 1. 댓글 저장
+        freeBoardCommentRepository.save(freeBoardComment);
+
+        // 2. 알림 보내기
+        String notifyContent = "회원님의 게시물에 댓글이 달렸습니다. \n" + "\"" + freeBoardCommentDto.getContent() + "\"" ;
+        String notifyUrl = webConfig.getFrontDomain() + "/free/free-board/" + freeBoard.getFreeBoardId();
+        notifyService.send(boardWriter,Notify.NotificationType.COMMENT,notifyContent,notifyUrl);
+
+
+    }
     //   todo:  저장 함수
     public FreeBoard save(FreeBoard freeBoard) {
 //        JPA 저장 함수 실행 : return 값 : 저장된 객체

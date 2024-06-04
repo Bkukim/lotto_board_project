@@ -107,6 +107,7 @@
               role="button"
               data-bs-toggle="dropdown"
               aria-expanded="false"
+              @click="getUnreadtNotify"
             >
               <img 
                 src="@/assets/img/Notification_icon.png"
@@ -121,17 +122,16 @@
               <table class="table mt-5">
               <thead>
                 <tr>
-                  <th scope="col" style="font-size: 14px">작성자</th>
-                  <th scope="col" style="font-size: 14px">제목</th>
+                  <!-- <th scope="col" style="font-size: 14px">작성자</th> -->
+                  <!-- <th scope="col" style="font-size: 14px">제목</th> -->
                 </tr>
               </thead>
               <tbody>
                 <!-- 반복문 시작할 행 -->
-                <tr v-for="(data, index) in NotificationList" :key="index">
+                <tr v-for="(data, index) in notificationList" :key="index">
                   <td style="font-size: 15px">
-                    {{ index + 1 }}
                   </td>
-                  <td class="col-8"></td>
+                  <td class="col-8">{{ data.content }}</td>
                 </tr>
               </tbody>
             </table>
@@ -194,14 +194,25 @@
 
 <script>
 import AuthService from "@/services/auth/AuthService";
+import NotifyService from "@/services/notify/NotifyService";
 
 export default {
   data() {
     return {
-      NotificationList: [1, 2, 3, 4, 5],
+      notificationList: [],
+      notifyCount:this.$store.state.notifyCount
     };
   },
   methods: {
+   async getUnreadtNotify(){
+    try {
+      let response = await NotifyService.getUnreadNotify(this.$store.state.user.userId);
+      this.notificationList = response.data
+      console.log("알림들",response.data)
+    } catch (error) {
+      console.log(error);
+    }
+  },
     handleLogout() {
       let result = confirm("정말로 로그아웃 하시겠습니까?");
       if (result) {

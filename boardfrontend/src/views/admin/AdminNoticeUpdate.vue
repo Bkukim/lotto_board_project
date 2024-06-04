@@ -38,6 +38,9 @@
       <button @click="cancel" id="button-cancle-Writing" class="btn col-3">
         취소
       </button>
+       <button @click="setEditor" id="button-cancle-Writing" class="btn col-3">
+        dfa
+      </button>
       <button
         @click="createNotice"
         id="button-cancle-Writing"
@@ -68,7 +71,14 @@ export default {
   methods: {
    async getNotice(noticeId) {
     try {
+       this.editor = new Editor({
+          el: this.$refs.editor, // HTML 요소 참조
+          initialEditType: "wysiwyg", // 초기 에디터 타입 설정 (WYSIWYG)
+          height: "500px", // 에디터 높이 설정
+        });
+
       let response = await NoticeService.getNotice(noticeId);
+      console.log('this.editor:', this.editor); // 로그 추가
       console.log('Notice data:', response.data); // 로그 추가
       this.notice = response.data;
 
@@ -76,14 +86,15 @@ export default {
       this.$nextTick(() => {
         if (this.editor && this.editor.isLoaded) {
           console.log('Setting markdown:', this.notice.content); // 로그 추가
-          this.editor.setMarkdown(this.notice.content); // 에디터에 불러온 내용 설정
-        } else {
-          console.log('에디터 준비되지않음');
-        }
+          this.editor.setHTML(this.notice.content); // 에디터에 불러온 내용 설정
+        } 
       });
     } catch (e) {
       console.log(e);
     }
+  },
+  setEditor(){
+    this.editor.setHTML(this.notice.content);
   },
     async updateNotice() {
       try {
