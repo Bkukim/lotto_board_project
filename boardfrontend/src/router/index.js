@@ -45,11 +45,17 @@ const routes = [
     path: "/member/new-pw",
     component: () => import("../views/auth/NewPwdView.vue"),
   },
+  // 마이페이지
+  {
+    path: "/member/mypage",
+    component: () => import("../views/auth/MyPage.vue"),
+  },
   // 회원정보 수정 페이지
   {
     path: "/member/user-modify",
     component: () => import("../views/user/UserModifyView.vue"),
   },
+
   // 공지사항
   {
     path: "/notice/notice-board",

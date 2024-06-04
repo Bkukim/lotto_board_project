@@ -37,6 +37,18 @@ class ComplaintService {
       headers: AuthHeader(),
     });
   }
+    // TODO: 댓글 조회 : complaintBoardId
+    getComplaintBoardComment(complaintBoardId, page, size){
+      return http.get(`/user/board/complaint/${complaintBoardId}/comments?page=${page}&size=${size}`, {
+        headers: AuthHeader(),
+      });
+    }
+    // TODO: 댓글 저장 함수
+    createComplaintBoardComment(data){
+      return http.post(`/user/board/complaint/save/comment`, data, {
+        headers: AuthHeader(),
+      });
+    }
 }
 
 export default new ComplaintService();

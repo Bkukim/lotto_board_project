@@ -1,13 +1,11 @@
-package org.example.boardbackend.repository.board.free;
+package org.example.boardbackend.repository.board.complaint;
 
-import org.example.boardbackend.model.entity.board.free.FreeBoard;
+import org.example.boardbackend.model.entity.board.complaint.ComplaintBoardComment;
 import org.example.boardbackend.model.entity.board.free.FreeBoardComment;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
-
-import java.util.List;
 
 /**
  * packageName : org.example.boardbackend.repository.board.free
@@ -23,6 +21,6 @@ import java.util.List;
  * 2024-05-30         PC          최초 생성
  */
 @Repository
-public interface FreeBoardCommentRepository extends JpaRepository<FreeBoardComment,Long> {
-    Page<FreeBoardComment> findFreeBoardCommentsByFreeBoardId(long freeBoardId, Pageable pageable);
+public interface ComplaintBoardCommentRepository extends JpaRepository<ComplaintBoardComment,Long> {
+    Page<ComplaintBoardComment> findComplaintBoardCommentsByComplaintBoardId(long complaintBoardId, Pageable pageable);
 }

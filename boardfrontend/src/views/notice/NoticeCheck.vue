@@ -12,7 +12,7 @@
     <div
       class="container text-center mt-5"
       style="
-        height: 70vh;
+        height: auto;
         border: none;
         border-radius: 50px;
         background-color: #ffffff;
@@ -55,7 +55,7 @@
           padding: 20px 0 20px 30px;
           font-size: 15px;
           font-weight: 600;
-          height: 45vh;
+          height: auto;
         "
         class="notice-content"
         v-html="notice.content"

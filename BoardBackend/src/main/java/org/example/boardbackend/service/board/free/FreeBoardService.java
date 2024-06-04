@@ -17,6 +17,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -43,7 +44,7 @@ public class FreeBoardService {
     private final FreeBoardCommentRepository freeBoardCommentRepository;
     private final WebConfig webConfig;
 
-//    todo 전체 조회
+    //    todo 전체 조회
     public Page<FreeBoardDto> selectByTitleContaining(
             String title,
             Pageable pageable
@@ -59,10 +60,11 @@ public class FreeBoardService {
     //   todo 상세조회
     public Optional<FreeBoard> findById(long freeBoardId) {
 //        DB 상세조회 실행
-        Optional<FreeBoard> freeBoardOptional
+    Optional<FreeBoard> freeBoardOptional
                 = freeBoardRepository.findById(freeBoardId); //crud레포짓토리
         return freeBoardOptional;
     }
+
 
 
 //    // TODO 댓글 저장 기능
@@ -85,6 +87,7 @@ public class FreeBoardService {
 
 
     }
+
     //   todo:  저장 함수
     public FreeBoard save(FreeBoard freeBoard) {
 //        JPA 저장 함수 실행 : return 값 : 저장된 객체
@@ -99,7 +102,7 @@ public class FreeBoardService {
 //           없으면 false 리턴
 //        사용법 : jpa레포지토리.existsById(기본키)
 //         => 기본키가 테이블에 있으지 확인. 있으면 true, 없으면 false
-        if(freeBoardRepository.existsById(freeBoardId) == true) {
+        if (freeBoardRepository.existsById(freeBoardId) == true) {
             freeBoardRepository.deleteById(freeBoardId);
             return true;
         } else {
@@ -107,6 +110,13 @@ public class FreeBoardService {
         }
     }
 
+
+    //    todo: 댓글 조회 함수
+    public Page<FreeBoardComment> getCommentByFreeBoardId(long freeBoardId, Pageable pageable) {
+        return freeBoardCommentRepository.findFreeBoardCommentsByFreeBoardId(freeBoardId, pageable);
+    }
+
     // todo 신고함수
+
 
 }
