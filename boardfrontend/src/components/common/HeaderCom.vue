@@ -112,7 +112,7 @@
                 height="30"
                 class="d-inline-block align-text-top"
               />
-              <span v-if="notificationCount > 0" class="badge bg-danger notification-badge">
+              <span v-if="notificationCount >= 0" class="badge bg-danger notification-badge">
                 {{ notificationCount }}
               </span>
             </a>
@@ -196,7 +196,7 @@ export default {
 
 
       notificationList: [],
-      notifyCount:this.$store.state.notifyCount
+      notificationCount:this.$store.state.notifyCount
 
     };
   },

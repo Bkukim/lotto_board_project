@@ -8,8 +8,10 @@ import org.example.boardbackend.model.dto.board.free.FreeBoardDto;
 import org.example.boardbackend.model.entity.auth.User;
 import org.example.boardbackend.model.entity.board.free.FreeBoard;
 import org.example.boardbackend.model.entity.board.free.FreeBoardComment;
+import org.example.boardbackend.model.entity.board.free.FreeBoardRecomment;
 import org.example.boardbackend.model.entity.notify.Notify;
 import org.example.boardbackend.repository.board.free.FreeBoardCommentRepository;
+import org.example.boardbackend.repository.board.free.FreeBoardRecommentRepository;
 import org.example.boardbackend.repository.board.free.FreeBoardRepository;
 import org.example.boardbackend.repository.user.UserRepository;
 import org.example.boardbackend.service.notify.NotifyService;
@@ -42,6 +44,7 @@ public class FreeBoardService {
     private final UserRepository userRepository;
     private final NotifyService notifyService;
     private final FreeBoardCommentRepository freeBoardCommentRepository;
+    private final FreeBoardRecommentRepository freeBoardRecommentRepository;
     private final WebConfig webConfig;
 
     //    todo 전체 조회
@@ -60,33 +63,54 @@ public class FreeBoardService {
     //   todo 상세조회
     public Optional<FreeBoard> findById(long freeBoardId) {
 //        DB 상세조회 실행
-    Optional<FreeBoard> freeBoardOptional
+        Optional<FreeBoard> freeBoardOptional
                 = freeBoardRepository.findById(freeBoardId); //crud레포짓토리
         return freeBoardOptional;
     }
 
 
 
+    // TODO 댓글 저장 기능
+    // 1. boardId로 게시글 주인의 객체 가져오기,  1. 댓글을 저장, 2 알림 보내기
+    public void saveComment(FreeBoardComment freeBoardComment){
+        FreeBoard freeBoard = freeBoardRepository.findById(freeBoardComment.getFreeBoardId()).get();
 
-//    // TODO 댓글 저장 기능
-public void saveComment(FreeBoardComment freeBoardComment){
-    FreeBoard freeBoard = freeBoardRepository.findById(freeBoardComment.getFreeBoardId()).get();
 
 
-    String boardWriter = freeBoard.getUserId();
-    log.debug("여기는 서비스1");
+        String boardWriter = freeBoard.getUserId();
+        log.debug("여기는 서비스1");
+
 
 //        FreeBoardComment freeBoardComment = new FreeBoardComment(freeBoardComment.getUserId(),freeBoard.getFreeBoardId(),freeBoardComment.getContent(),freeBoardComment.getSecretCommentYn());
 
-    // 1. 댓글 저장
-    freeBoardCommentRepository.save(freeBoardComment);
-    log.debug("여기는 서비스2");
+        // 1. 댓글 저장
+        freeBoardCommentRepository.save(freeBoardComment);
+        log.debug("여기는 서비스2");
 
-    // 2. 알림 보내기
-    String notifyContent = "게시물에 댓글이 달렸습니다.";
-    String notifyUrl = webConfig.getFrontDomain() + "/free/free-board/" + freeBoard.getFreeBoardId();
-    notifyService.send(boardWriter,Notify.NotificationType.COMMENT,notifyContent,notifyUrl);
-}
+        // 2. 알림 보내기
+        String notifyContent = "게시물에 댓글이 달렸습니다.";
+        String notifyUrl = webConfig.getFrontDomain() + "/free/free-board/" + freeBoard.getFreeBoardId();
+        notifyService.send(boardWriter,Notify.NotificationType.COMMENT,notifyContent,notifyUrl);
+    }
+
+    // TODO 대댓글 저장 기능
+    // 1. boardId로 게시글 주인의 객체 가져오기,  1. 댓글을 저장, 2 알림 보내기
+    public void saveRecomment(FreeBoardRecomment freeBoardRecomment){
+        FreeBoardComment freeBoardComment = freeBoardCommentRepository.findById(freeBoardRecomment.getFreeBoardCommentId()).get();
+
+        String commentWriter = freeBoardComment.getUserId();
+        log.debug("여기는 대댓글1");
+
+        // 1. 댓글 저장
+        freeBoardRecommentRepository.save(freeBoardRecomment);
+        log.debug("여기는 대댓글2");
+
+        // 2. 알림 보내기
+        String notifyContent = "게시물에 댓글이 달렸습니다.";
+        String notifyUrl = webConfig.getFrontDomain() + "/free/free-board/" + freeBoardComment.getFreeBoardId();
+        notifyService.send(commentWriter,Notify.NotificationType.COMMENT,notifyContent,notifyUrl);
+    }
+
 
 
     //   todo:  저장 함수
@@ -111,13 +135,13 @@ public void saveComment(FreeBoardComment freeBoardComment){
         }
     }
 
-
     //    todo: 댓글 조회 함수
     public Page<FreeBoardComment> getCommentByFreeBoardId(long freeBoardId, Pageable pageable) {
         return freeBoardCommentRepository.findFreeBoardCommentsByFreeBoardIdOrderByInsertTimeDesc(freeBoardId, pageable);
     }
 
-    // todo 신고함수
-
-
+    //    todo: 대댓글 조회 함수
+    public Page<FreeBoardRecomment> getRecommentByFreeBoardId(long freeBoardCommentId, Pageable pageable) {
+        return freeBoardRecommentRepository.findFreeBoardRecommentsByFreeBoardCommentIdOrderByInsertTimeDesc(freeBoardCommentId, pageable);
+    }
 }

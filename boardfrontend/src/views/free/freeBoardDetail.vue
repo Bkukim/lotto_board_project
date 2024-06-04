@@ -131,10 +131,6 @@
                   color: #ffffff;
                   text-align: center;
                 "
-
-
-
-
               >
                 삭제
               </div>

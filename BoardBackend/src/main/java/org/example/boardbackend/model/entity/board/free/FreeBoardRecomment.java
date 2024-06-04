@@ -43,6 +43,7 @@ public class FreeBoardRecomment extends BaseTimeEntity {
     private long freeBoardRecommentId;
     private String userId;
     private long freeBoardCommentId;
+    @Lob
     private String content;
     private String secretCommentYn;
 }
