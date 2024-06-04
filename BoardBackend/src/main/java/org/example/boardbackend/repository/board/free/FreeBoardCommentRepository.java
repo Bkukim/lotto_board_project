@@ -24,5 +24,5 @@ import java.util.List;
  */
 @Repository
 public interface FreeBoardCommentRepository extends JpaRepository<FreeBoardComment,Long> {
-    Page<FreeBoardComment> findFreeBoardCommentsByFreeBoardId(long freeBoardId, Pageable pageable);
+    Page<FreeBoardComment> findFreeBoardCommentsByFreeBoardIdOrderByInsertTimeDesc(long freeBoardId, Pageable pageable);
 }

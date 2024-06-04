@@ -93,6 +93,7 @@ public class NotifyService {
                     .data(content)
             );
         } catch (IOException e) {
+            log.debug(e.getMessage());
             log.debug("회원이 로그아웃 상태입니다.");
         }
     }
