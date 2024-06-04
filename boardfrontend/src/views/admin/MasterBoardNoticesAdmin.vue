@@ -1,7 +1,8 @@
 <!-- 관리자 :: 각 게시판별 공지사항 조회 :MasterBoardNoticesAdmin.vue -->
 <template>
-  <div class="container">
-    <h2 class="mt-3">공지사항 통합관리</h2>
+  <AdminHeaderCom />
+  <div class="container" style="height: 1700px;">
+    <h2 class="mt-5 mb-5"  style="text-align: center; font-weight: 500;" >공지사항 통합관리</h2>
     <!-- 테이블 옆 버튼 3개 -->
     <div class="col-12 d-flex align-items-start justify-content-end">
       <div class="d-flex flex-column">
@@ -173,9 +174,13 @@
   </div>
 </template>
 <script>
+import AdminHeaderCom from "@/components/common/AdminHeaderCom.vue";
 import NoticeService from "@/services/notice/NoticeService";
 
 export default {
+  components: {
+    AdminHeaderCom,
+  },
   data() {
     return {
       // 받아올 각 부서의 공지사항 목록들

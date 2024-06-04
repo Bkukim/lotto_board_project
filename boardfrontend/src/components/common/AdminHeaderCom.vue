@@ -2,7 +2,7 @@
   <div>
     <nav class="navbar bg-light fixed-top">
       <div class="container-fluid">
-        <a class="navbar-brand" href="#" style="font-weight: bold; color: #162b59; font-size: 50px;">LOTTO</a>
+        <a class="navbar-brand" href="#" style="font-weight: bold; color: #162b59; font-size: 50px;">LOTTO ADMIN</a>
         <button
           class="navbar-toggler"
           type="button"
@@ -28,7 +28,7 @@
             ></button>
           </div>
           <div class="offcanvas-body">
-            <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
+            <ul class="navbar-nav justify-content-end flex-grow-1 pe-3 mt-5" style="font-size: 23px; gap: 25px; letter-spacing: -1px;">
               <li class="nav-item">
                 <a class="nav-link active" aria-current="page" href="#" style="font-weight: 100;">공지사항 관리</a>
               </li>

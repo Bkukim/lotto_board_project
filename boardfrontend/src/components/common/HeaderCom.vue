@@ -119,12 +119,13 @@
             </a>
             <ul class="dropdown-menu dropdown-menu-end" style="height: auto;  width: 300px;">
               <table class="table mt-5">
-              <thead>
+                <p style="text-align: center;">알림</p>
+              <!-- <thead>
                 <tr>
                   <th scope="col" style="font-size: 14px">작성자</th>
                   <th scope="col" style="font-size: 14px">제목</th>
                 </tr>
-              </thead>
+              </thead> -->
               <tbody>
                 <!-- 반복문 시작할 행 -->
                 <tr v-for="(data, index) in NotificationList" :key="index">
@@ -158,9 +159,9 @@
           <div class="hd_r" style="text-align: center;" v-else>
             <!-- 마이페이지 아이콘 -->
             <router-link  style="margin-top: -5px; margin-right: 3px;"
-              to="#"
+              to="/member/mypage"
               class="d-inline-block align-text-top"
-              @click.prevent="handleLogout"
+             
             >
               <img 
                 src="@/assets/img/mypage_icon.png"
