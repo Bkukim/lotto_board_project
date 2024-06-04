@@ -101,23 +101,23 @@ public class FreeBoardController {
 
 //    // TODO 댓글 저장 함수
 
-    @PostMapping("/free/comment")
-    public ResponseEntity<Object> saveFreeComment() {
-        try {
-            FreeBoardCommentDto freeBoardCommentDto
-                    = new FreeBoardCommentDto(1,
-                    "user12",
-                    2,
-                    "asdfasdf",
-                    "N"
-            );
-            freeBoardService.saveComment(freeBoardCommentDto);
-            return new ResponseEntity<>(HttpStatus.OK);
-        } catch (Exception e) {
-            log.debug(e.getMessage());
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-    }
+//    @PostMapping("/free/comment")
+//    public ResponseEntity<Object> saveFreeComment() {
+//        try {
+//            FreeBoardCommentDto freeBoardCommentDto
+//                    = new FreeBoardCommentDto(1,
+//                    "user12",
+//                    2,
+//                    "asdfasdf",
+//                    "N"
+//            );
+//            freeBoardService.saveComment(freeBoardCommentDto);
+//            return new ResponseEntity<>(HttpStatus.OK);
+//        } catch (Exception e) {
+//            log.debug(e.getMessage());
+//            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+//        }
+//    }
     //    todo: 저장함수
     @PostMapping("/free/save")
     public ResponseEntity<Object> createFreeBoard(
