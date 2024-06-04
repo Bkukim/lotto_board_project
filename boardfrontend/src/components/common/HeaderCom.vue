@@ -121,12 +121,7 @@
             <ul class="dropdown-menu dropdown-menu-end" style="height: auto;  width: 300px;">
               <table class="table mt-5">
                 <p style="text-align: center;">알림</p>
-              <!-- <thead>
-                <tr>
-                  <!-- <th scope="col" style="font-size: 14px">작성자</th> -->
-                  <!-- <th scope="col" style="font-size: 14px">제목</th> -->
-                </tr>
-              </thead> -->
+           
               <tbody>
                 <!-- 반복문 시작할 행 -->
                 <tr v-for="(data, index) in notificationList" :key="index">

@@ -90,7 +90,7 @@
 
     <!-- TODO: 좋아요버튼 -->
     <div class="d-flex justify-content-center mt-3">
-      <button type="button" class="btn btn-primary" @click="likeUp">공감해요 {{ this.freeBoardList.likes }}</button>
+      <button type="button" class="btn btn-primary" @click="likeUp">공감해요 {{ this.freeBoard.likes }}</button>
     </div>
 
     <div class="container text-center mt-5">
@@ -447,11 +447,11 @@ export default {
     },
     // 수정 함수
     async likeUp() {
-      this.freeBoardList.likes=+1;
+      this.freeBoard.likes=+1;
 
       try {
         let response = await FreeBoardService.updateFreeBoard(
-          this.freeBoardList.likes
+          this.freeBoard.likes
         );
         // 로깅
         console.log(response.data);

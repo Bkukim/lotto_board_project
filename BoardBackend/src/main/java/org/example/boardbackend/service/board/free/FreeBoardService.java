@@ -67,25 +67,25 @@ public class FreeBoardService {
 
 
 
-//    // TODO 댓글 저장 기능
+            // TODO 댓글 저장 기능
     // 1. boardId로 게시글 주인의 객체 가져오기,  1. 댓글을 저장, 2 알림 보내기
-    public void saveComment(FreeBoardCommentDto freeBoardCommentDto){
-        FreeBoard freeBoard = freeBoardRepository.findById(freeBoardCommentDto.getFreeBoardId()).get();
+    public void saveComment(FreeBoardComment freeBoardComment){
+        FreeBoard freeBoard = freeBoardRepository.findById(freeBoardComment.getFreeBoardId()).get();
+
 
         String boardWriter = freeBoard.getUserId();
+        log.debug("여기는 서비스1");
 
-
-        FreeBoardComment freeBoardComment = new FreeBoardComment(freeBoardCommentDto.getUserId(),freeBoardCommentDto.getFreeBoardId(), freeBoardCommentDto.getContent(),freeBoardCommentDto.getSecretCommentYn());
+//        FreeBoardComment freeBoardComment = new FreeBoardComment(freeBoardComment.getUserId(),freeBoard.getFreeBoardId(),freeBoardComment.getContent(),freeBoardComment.getSecretCommentYn());
 
         // 1. 댓글 저장
         freeBoardCommentRepository.save(freeBoardComment);
+        log.debug("여기는 서비스2");
 
         // 2. 알림 보내기
-        String notifyContent = "회원님의 게시물에 댓글이 달렸습니다. \n" + "\"" + freeBoardCommentDto.getContent() + "\"" ;
+        String notifyContent = "게시물에 댓글이 달렸습니다.";
         String notifyUrl = webConfig.getFrontDomain() + "/free/free-board/" + freeBoard.getFreeBoardId();
         notifyService.send(boardWriter,Notify.NotificationType.COMMENT,notifyContent,notifyUrl);
-
-
     }
 
     //   todo:  저장 함수
@@ -113,7 +113,7 @@ public class FreeBoardService {
 
     //    todo: 댓글 조회 함수
     public Page<FreeBoardComment> getCommentByFreeBoardId(long freeBoardId, Pageable pageable) {
-        return freeBoardCommentRepository.findFreeBoardCommentsByFreeBoardId(freeBoardId, pageable);
+        return freeBoardCommentRepository.findFreeBoardCommentsByFreeBoardIdOrderByInsertTimeDesc(freeBoardId, pageable);
     }
 
     // todo 신고함수
