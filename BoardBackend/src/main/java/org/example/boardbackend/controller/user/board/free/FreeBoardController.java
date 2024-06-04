@@ -205,8 +205,8 @@ public class FreeBoardController {
     //    TODO: 대댓글 조회 함수
     @GetMapping("/free/{freeBoardCommentId}/recomments")
     public ResponseEntity<Object> getCommentsByFreeBoardCoId(@PathVariable long freeBoardCommentId,
-                                                           @RequestParam(defaultValue = "0") int page,
-                                                           @RequestParam(defaultValue = "5") int size) {
+                                                             @RequestParam(defaultValue = "0") int page,
+                                                             @RequestParam(defaultValue = "5") int size) {
         try {
             Pageable pageable = PageRequest.of(page, size);
 
