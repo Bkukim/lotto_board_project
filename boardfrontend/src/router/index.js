@@ -45,11 +45,17 @@ const routes = [
     path: "/member/new-pw",
     component: () => import("../views/auth/NewPwdView.vue"),
   },
+  // 마이페이지
+  {
+    path: "/member/mypage",
+    component: () => import("../views/auth/MyPage.vue"),
+  },
   // 회원정보 수정 페이지
   {
     path: "/member/user-modify",
     component: () => import("../views/user/UserModifyView.vue"),
   },
+
   // 공지사항
   {
     path: "/notice/notice-board",
@@ -121,13 +127,11 @@ const routes = [
     path: "/complaint/complaint-boardAdd",
     component: () => import("../views/complaint/complaintBoardAdd.vue"),
   },
-
   // 건의 게시판 -> 수정하기
   {
     path: "/complaint/complaint-board/Update/:complaintBoardId",
     component: () => import("../views/complaint/complaintBoardUpdate.vue"),
   },
-
   // 각게시판별 공지사항 관리 ::
   {
     path: "/admin/notice-master",

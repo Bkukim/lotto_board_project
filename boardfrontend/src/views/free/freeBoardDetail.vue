@@ -1,8 +1,8 @@
 <template>
   <!-- 전체 박스스 -->
-  <div class="fbd_all" style="height: 2000px; background-color: #f2f2f2">
+  <div class="fbd_all" style="height: 2000px">
     <!-- 해당 게세판 이름 부분 -->
-    <div class="container text-center">
+    <div class="container text-center mb-5">
       <h3 style="text-align: left" id="fbd_h3">자유 게시판 글 상세보기</h3>
     </div>
     <!-- 해당 게세판 이름 부분  끝-->
@@ -11,7 +11,7 @@
     <div
       class="container text-center mt-5"
       style="
-        height: 700px;
+        height: auto;
         border: none;
         border-radius: 50px;
         background-color: #ffffff;
@@ -23,9 +23,11 @@
           text-align: left;
           border-bottom: #cccccc solid 1px;
           padding: 20px 0 20px 30px;
-          font-size: 20px;
+          font-size: 25px;
+          font-weight: bolder;
           font-weight: 600;
           color: #595959;
+          background-color: #f2f2f2;
         "
       >
         {{ freeBoardList.title }}
@@ -57,10 +59,23 @@
           padding: 20px 0 20px 30px;
           font-size: 15px;
           font-weight: 600;
+          border-bottom: 1px solid #cccccc;
         "
         v-html="freeBoardList.content"
       ></div>
 
+      <div class="mt-5">
+        <button style="border: none; text-align: left;"> 
+          <img
+                src="@/assets/img/like_icon.png"
+                width="40"
+                height="40"
+              />
+        </button>
+    
+        <button>신고</button>
+
+      </div>
       <!-- 파일첨부 -->
       <!-- <div class="mt-5" style="width: 500px">
         <input
@@ -86,11 +101,11 @@
             style="
               width: 300px;
               text-decoration: none;
-              background-color: #ffffff;
+              background-color: #cccccc;
               font-size: 20px;
-              text-align: center;
               height: 50px;
               border-radius: 20px;
+              border: none;
             "
             @click="deleteFreeBoard"
           >
@@ -103,8 +118,12 @@
             >
               <div
                 class="router-text"
-                style="margin-right: 20px; margin-top: 10px"
-                
+                style="
+                  margin-right: 20px;
+                  margin-top: 10px;
+                  color: #ffffff;
+                  text-align: center;
+                "
               >
                 삭제
               </div>
@@ -115,7 +134,7 @@
         <!-- 수정 -->
         <div class="col mb-5">
           <router-link
-            :to="'/free/free-board/Update/'+ this.$route.params.freeBoardId"
+            :to="'/free/free-board/Update/' + this.$route.params.freeBoardId"
             class="fbd_d container text-center"
             style="
               width: 300px;
@@ -293,13 +312,13 @@ export default {
     async deleteFreeBoard() {
       try {
         if (confirm("정말로 삭제하시겠습니까?")) {
-        let response = await FreeBoardService.deleteFreeBoard(
-          this.freeBoardList.freeBoardId
-        );
-        // 로깅
-        console.log(response.data);
-        alert("게시글이 삭제되었습니다.");
-        this.$router.push("/free/free-board");
+          let response = await FreeBoardService.deleteFreeBoard(
+            this.freeBoardList.freeBoardId
+          );
+          // 로깅
+          console.log(response.data);
+          alert("게시글이 삭제되었습니다.");
+          this.$router.push("/free/free-board");
         } else {
           return;
         }
