@@ -1,7 +1,7 @@
 <template>
   <div style="border-bottom: 1px solid #cccccc">
     <nav class="navbar navbar-expand-lg bg-dark-light">
-      <a class="navbar-brand" href="/">
+      <router-link class="navbar-brand" to="/">
         <img
           src="@/assets/img/LOTTO_LOGO.png"
           alt="Logo"
@@ -9,7 +9,7 @@
           height="200"
           class="d-inline-block align-text-top"
         />
-      </a>
+      </router-link>
       <div class="container">
         <button
           class="navbar-toggler"
@@ -31,13 +31,17 @@
               <a class="nav-link" href="/notice/notice-board">공지사항</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" aria-current="page" href="/free/free-board">자유 게시판</a>
+              <a class="nav-link" aria-current="page" href="/free/free-board"
+                >자유 게시판</a
+              >
             </li>
             <li class="nav-item">
               <a class="nav-link" href="/club/club-board">동아리 게시판</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="/complaint/complaint-board">건의 게시판</a>
+              <a class="nav-link" href="/complaint/complaint-board"
+                >건의 게시판</a
+              >
             </li>
             <li class="nav-item dropdown">
               <a
@@ -96,8 +100,11 @@
           </nav>
 
           <!-- 알림 아이콘 -->
-          <div class="nav-item dropdown notification-dropdown" style="position: relative; margin-right: 7px;">
-            <a 
+          <div
+            class="nav-item dropdown notification-dropdown"
+            style="position: relative; margin-right: 7px"
+          >
+            <a
               class="nav-link"
               href="#"
               role="button"
@@ -105,35 +112,37 @@
               aria-expanded="false"
               @click="getUnreadtNotify"
             >
-              <img 
+              <img
                 src="@/assets/img/Notification_icon.png"
                 alt="Loo"
                 width="30"
                 height="30"
                 class="d-inline-block align-text-top"
               />
-              <span v-if="notificationCount > 0" class="badge bg-danger notification-badge">
+              <span
+                v-if="notificationCount > 0"
+                class="badge bg-danger notification-badge"
+              >
                 {{ notificationCount }}
               </span>
             </a>
-            <ul class="dropdown-menu dropdown-menu-end" style="height: auto; width: 300px;">
+            <ul
+              class="dropdown-menu dropdown-menu-end"
+              style="height: auto; width: 300px"
+            >
               <table class="table mt-5">
-                <p style="text-align: center;">알림</p>
-      
-              <tbody>
-                <!-- 반복문 시작할 행 -->
-                <tr v-for="(data, index) in notificationList" :key="index">
-                  <td style="font-size: 15px">
-                  </td>
-                  <td class="col-8">{{ data.content }}</td>
-                </tr>
-              </tbody>
-            </table>
+                <p style="text-align: center">알림</p>
+
+                <tbody>
+                  <!-- 반복문 시작할 행 -->
+                  <tr v-for="(data, index) in notificationList" :key="index">
+                    <td style="font-size: 15px"></td>
+                    <td class="col-8">{{ data.content }}</td>
+                  </tr>
+                </tbody>
+              </table>
 
               <li><hr class="dropdown-divider" /></li>
-
- 
-
 
               <li><a class="dropdown-item" href="#">모든 알림 보기</a></li>
             </ul>
@@ -153,10 +162,14 @@
           </div>
 
           <!-- 로그인 상태일 시 -->
-          <div class="hd_r" style="text-align: center;" v-else>
+          <div class="hd_r" style="text-align: center" v-else>
             <!-- 마이페이지 아이콘 -->
-            <router-link style="margin-top: -5px; margin-right: 3px;" to="/member/mypage" class="d-inline-block align-text-top">
-              <img 
+            <router-link
+              style="margin-top: -5px; margin-right: 3px"
+              to="/member/mypage"
+              class="d-inline-block align-text-top"
+            >
+              <img
                 src="@/assets/img/mypage_icon.png"
                 alt="Loo"
                 width="40"
@@ -166,7 +179,7 @@
             </router-link>
 
             <!-- 로그아웃 아이콘 -->
-            <router-link 
+            <router-link
               to="#"
               class="d-inline-block align-text-top"
               @click.prevent="handleLogout"
@@ -193,33 +206,48 @@ import NotifyService from "@/services/notify/NotifyService";
 export default {
   data() {
     return {
-
-
       notificationList: [],
-      notifyCount:this.$store.state.notifyCount
-
+      notificationCount: undefined,
     };
   },
   methods: {
-   async getUnreadtNotify(){
-    try {
-      let response = await NotifyService.getUnreadNotify(this.$store.state.user.userId);
-      this.notificationList = response.data
-      console.log("알림들",response.data)
-    } catch (error) {
-      console.log(error);
-    }
-  },
+    async countUnreadNotify() {
+      try {
+        let notifyCount = await NotifyService.countNotify(
+          this.$store.state.user.userId
+        );
+        console.log("백엔드에서 받아온 알림",notifyCount);
+        this.notificationCount = notifyCount.data;
+      } catch (error) {
+        console.log(error);
+      }
+    },
+    async getUnreadtNotify() {
+      try {
+        let response = await NotifyService.getUnreadNotify(
+          this.$store.state.user.userId
+        );
+        this.notificationList = response.data;
+        console.log("알림들", response.data);
+      } catch (error) {
+        console.log(error);
+      }
+    },
     handleLogout() {
       let result = confirm("정말로 로그아웃 하시겠습니까?");
       if (result) {
         AuthService.logout(); // LOCAL저장소에서 USER객체 삭제해주기
         this.$store.commit("logout"); //
+        this.$store.state.notifyCount = 0;
         this.$router.push("/member/login");
       } else {
         return;
       }
     },
+  },
+  mounted() {
+    this.countUnreadNotify();
+    console.log("알림 갯수",this.notificationCount);
   },
 };
 </script>

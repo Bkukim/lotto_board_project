@@ -15,7 +15,7 @@
         <!-- 이달의 HOT -->
         <div class="col">
           <router-link
-            to="/hot/hotBoard"
+            to="/free/free-board"
             class="hot_cm container text-center"
             style="width: 500px; text-decoration: none"
           >
@@ -274,6 +274,9 @@ export default {
       hotList: [1, 2, 3, 4, 5],
       communityList: [1, 2, 3, 4, 5],
     };
+  },
+  mounted() {
+    console.log(this.$store.state.notifyCount);
   },
 };
 </script>
