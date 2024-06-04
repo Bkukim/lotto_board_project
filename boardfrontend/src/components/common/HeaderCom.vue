@@ -1,7 +1,7 @@
 <template>
   <div style="border-bottom: 1px solid #cccccc">
     <nav class="navbar navbar-expand-lg bg-dark-light">
-      <a class="navbar-brand" href="/">
+      <router-link class="navbar-brand" to="/">
         <img
           src="@/assets/img/LOTTO_LOGO.png"
           alt="Logo"
@@ -9,7 +9,7 @@
           height="200"
           class="d-inline-block align-text-top"
         />
-      </a>
+      </router-link>
       <div class="container">
         <button
           class="navbar-toggler"
@@ -28,34 +28,38 @@
             style="gap: 10px; display: block; display: flex"
           >
             <li class="nav-item">
-              <a class="nav-link" href="/notice/notice-board">공지사항</a>
+              <router-link class="nav-link" to="/notice/notice-board">공지사항</router-link>
             </li>
             <li class="nav-item">
-              <a class="nav-link" aria-current="page" href="/free/free-board">자유 게시판</a>
+              <router-link class="nav-link" aria-current="page" to="/free/free-board"
+                >자유 게시판</router-link
+              >
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="/club/club-board">동아리 게시판</a>
+              <router-link class="nav-link" to="/club/club-board">동아리 게시판</router-link>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="/complaint/complaint-board">건의 게시판</a>
+              <router-link class="nav-link" to="/complaint/complaint-board"
+                >건의 게시판</router-link
+              >
             </li>
             <li class="nav-item dropdown">
-              <a
+              <router-link
                 class="nav-link dropdown-toggle"
-                href="#"
+                to="#"
                 role="button"
                 data-bs-toggle="dropdown"
                 aria-expanded="false"
               >
                 부서 게시판
-              </a>
+              </router-link>
               <ul class="dropdown-menu">
                 <li>
-                  <a class="dropdown-item" href="#">동아리 매칭 게시판</a>
+                  <router-link class="dropdown-item" to="#">동아리 매칭 게시판</router-link>
                 </li>
-                <li><a class="dropdown-item" href="#">자유 게시판</a></li>
-                <li><a class="dropdown-item" href="#">공지 게시판</a></li>
-                <li><a class="dropdown-item" href="#">건의 익명 게시판</a></li>
+                <li><router-link class="dropdown-item" to="#">자유 게시판</router-link></li>
+                <li><router-link class="dropdown-item" to="#">공지 게시판</router-link></li>
+                <li><router-link class="dropdown-item" to="#">건의 익명 게시판</router-link></li>
               </ul>
             </li>
           </ul>
@@ -96,28 +100,40 @@
           </nav>
 
           <!-- 알림 아이콘 -->
-          <div class="nav-item dropdown notification-dropdown" style="position: relative; margin-right: 7px;">
-            <a 
+          <div
+            class="nav-item dropdown notification-dropdown "
+            style="position: relative; margin-right: 7px"
+          >
+            <router-link
               class="nav-link"
-              href="#"
+              to="#"
               role="button"
               data-bs-toggle="dropdown"
               aria-expanded="false"
               @click="getUnreadtNotify"
             >
-              <img 
+              <img
                 src="@/assets/img/Notification_icon.png"
                 alt="Loo"
                 width="30"
                 height="30"
                 class="d-inline-block align-text-top"
               />
-              <span v-if="notificationCount >= 0" class="badge bg-danger notification-badge">
+
+              <span
+                v-if="notificationCount > 0"
+                class="badge bg-danger notification-badge"
+              >
+
                 {{ notificationCount }}
               </span>
-            </a>
-            <ul class="dropdown-menu dropdown-menu-end" style="height: auto; width: 300px;">
+            </router-link>
+            <ul
+              class="dropdown-menu dropdown-menu-end"
+              style="height: auto; width: 300px"
+            >
               <table class="table mt-5">
+
                 <p style="text-align: center;">알림</p>
       
               <tbody>
@@ -130,12 +146,10 @@
               </tbody>
             </table>
 
+
               <li><hr class="dropdown-divider" /></li>
 
- 
-
-
-              <li><a class="dropdown-item" href="#">모든 알림 보기</a></li>
+              <li><router-link class="dropdown-item" to="#">모든 알림 보기</router-link></li>
             </ul>
           </div>
 
@@ -153,10 +167,14 @@
           </div>
 
           <!-- 로그인 상태일 시 -->
-          <div class="hd_r" style="text-align: center;" v-else>
+          <div class="hd_r" style="text-align: center" v-else>
             <!-- 마이페이지 아이콘 -->
-            <router-link style="margin-top: -5px; margin-right: 3px;" to="/member/mypage" class="d-inline-block align-text-top">
-              <img 
+            <router-link
+              style="margin-top: -5px; margin-right: 3px"
+              to="/member/mypage"
+              class="d-inline-block align-text-top"
+            >
+              <img
                 src="@/assets/img/mypage_icon.png"
                 alt="Loo"
                 width="40"
@@ -166,7 +184,7 @@
             </router-link>
 
             <!-- 로그아웃 아이콘 -->
-            <router-link 
+            <router-link
               to="#"
               class="d-inline-block align-text-top"
               @click.prevent="handleLogout"
@@ -195,21 +213,25 @@ export default {
     return {
 
 
+
       notificationList: [],
       notificationCount:this.$store.state.notifyCount
+
 
     };
   },
   methods: {
-   async getUnreadtNotify(){
-    try {
-      let response = await NotifyService.getUnreadNotify(this.$store.state.user.userId);
-      this.notificationList = response.data
-      console.log("알림들",response.data)
-    } catch (error) {
-      console.log(error);
-    }
-  },
+    async getUnreadtNotify() {
+      try {
+        let response = await NotifyService.getUnreadNotify(
+          this.$store.state.user.userId
+        );
+        this.notificationList = response.data;
+        console.log("알림들", response.data);
+      } catch (error) {
+        console.log(error);
+      }
+    },
     handleLogout() {
       let result = confirm("정말로 로그아웃 하시겠습니까?");
       if (result) {

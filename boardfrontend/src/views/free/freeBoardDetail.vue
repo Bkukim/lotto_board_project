@@ -1,11 +1,11 @@
 <template>
-  <!-- 전체 박스스 -->
-  <div class="fbd_all" style="height: 2000px">
-    <!-- 해당 게세판 이름 부분 -->
+  <!-- 전체 박스 -->
+  <div class="fbd_all" style="height: auto">
+    <!-- 해당 게시판 이름 부분 -->
     <div class="container text-center mb-5">
       <h3 style="text-align: left" id="fbd_h3">자유 게시판 글 상세보기</h3>
     </div>
-    <!-- 해당 게세판 이름 부분  끝-->
+    <!-- 해당 게시판 이름 부분  끝-->
 
     <!--  첫번째 게시판 큰 박스-->
     <div
@@ -15,7 +15,6 @@
         border: none;
         border-radius: 50px;
         background-color: #ffffff;
-        height: auto;
       "
     >
       <div
@@ -55,26 +54,22 @@
       <div
         style="
           text-align: left;
-          /* border-bottom: #cccccc solid 1px; */
           padding: 20px 0 20px 30px;
           font-size: 15px;
           font-weight: 600;
           border-bottom: 1px solid #cccccc;
+          word-wrap: break-word;
+          word-break: break-all;
         "
         v-html="freeBoard.content"
       ></div>
 
       <div class="mt-5">
-        <button style="border: none; text-align: left;"> 
-          <img
-                src="@/assets/img/like_icon.png"
-                width="40"
-                height="40"
-              />
+        <button style="border: none; text-align: left">
+          <img src="@/assets/img/like_icon.png" width="40" height="40" />
         </button>
-    
-        <button>신고</button>
 
+        <button>신고</button>
       </div>
       <!-- 파일첨부 -->
       <!-- <div class="mt-5" style="width: 500px">
@@ -90,7 +85,9 @@
 
     <!-- TODO: 좋아요버튼 -->
     <div class="d-flex justify-content-center mt-3">
+
       <button type="button" class="btn btn-primary" @click="likeUp">공감해요 {{ this.freeBoard.likes }}</button>
+
     </div>
 
     <div class="container text-center mt-5">
@@ -123,8 +120,6 @@
             >
               <div
                 class="router-text"
-
-
                 style="
                   margin-right: 20px;
                   margin-top: 10px;
@@ -172,7 +167,9 @@
       </div>
     </div>
 
-    <!-- 댓글 조회-->
+    <!-- --------------------------------------------------- -->
+
+    <!-- 댓글 작성 및 조회/대댓글-->
     <div
       class="container text-center mt-5"
       id="comments"
@@ -196,83 +193,48 @@
         댓글
       </div>
 
+      <!-- 댓글 입력하기 -->
       <div
-        style="
-          text-align: left;
-          padding: 20px 0 20px 30px;
-          font-size: 15px;
-          font-weight: 600;
-        "
+        class="lotto_new row row-cols-lg-4 gap-5 justify-content-left mb-3 mt-5"
       >
-        <div
-          v-for="(data,index) in freeBoardComments"
-          :key="index"
-        >
-          <div
-            class="lotto_new row row-cols-lg-4 gap-5 justify-content-left mb-3"
-          >
-            <div class="col" style="color: #999999">
-              등록자 | {{ data.userId }}
-            </div>
-
-            <div class="col" style="color: #999999">
-              날짜 | {{ data.insertTime }}
-            </div>
-          </div>
-
-          <!-- 글쓰기 칸 -->
-          <div class="mb-5">
-            <!-- <textarea
-              class="form-control"
-              id="exampleFormControlTextarea1"
-              rows="3"
-            ></textarea> -->
-            <div
-              style="
-                padding-left: 30px;
-                padding-bottom: 30px;
-                border: 1px solid #ccc;
-                border-radius: 5px;
-              "
-            >
-              {{ data.content }}
-            </div>
-          </div>
+        <div class="col" style="color: #595959; font-weight: bold">
+          <span style="color: #999999; font-weight: 200">등록자 |</span>
+          {{ newComment.userId }}
         </div>
 
-        <!-- 댓글 입력 -->
-        <div>
-          <div
-            class="lotto_new row row-cols-lg-4 gap-5 justify-content-left mb-3"
-          >
-            <div class="col" style="color: #999999">
-              등록자 | {{ newComment.userId }}
-            </div>
-
-            <div class="col" style="color: #999999">
-              날짜 | {{ newComment.insertTime }}
-            </div>
-          </div>
-
-          <!-- 글쓰기 칸 -->
-          <div class="mb-5">
-            <textarea
-              class="form-control"
-              id="exampleFormControlTextarea1"
-              rows="3"
-              v-model="newComment.content"
-              @input="updateCharacterCount"
-              maxlength="1000"
-            ></textarea>
-            <div class="char-count">글자 수: {{ charCount }}/1000</div>
-          </div>
+        <div class="col" style="color: #999999">
+          날짜 | {{ newComment.insertTime }}
         </div>
+      </div>
 
-        <!-- 등록 버튼-->
-        <div class="col">
+      <!-- 댓글 글쓰기 칸 -->
+      <div class="mb-5 comment-box" style="border: #595959 1.5px solid">
+        <div class="comment-input">
+          <textarea
+            class="form-control"
+            id="exampleFormControlTextarea1"
+            rows="3"
+            v-model="newComment.content"
+            @input="updateCharacterCount"
+            maxlength="1000"
+            placeholder="댓글을 입력하세요."
+            style="
+              height: 150px;
+              border-bottom: #cccccc 1px solid;
+              word-wrap: break-word;
+              word-break: break-all;
+            "
+          ></textarea>
+          <div
+            class="char-count"
+            style="text-align: left; padding: 10px 0 20px 10px"
+          >
+            글자 수: {{ charCount }}/300
+          </div>
+          <!-- (댓글작성) 등록 버튼-->
           <button
             @click="submitComment()"
-            class="fbd_d container text-center"
+            class="fbd_d container text-center mt-3"
             style="
               width: 80px;
               text-decoration: none;
@@ -281,8 +243,9 @@
               text-align: center;
               height: 40px;
               font-weight: 100;
-              margin-left: 1180px;
-              margin-top: -35px;
+              position: absolute;
+              bottom: 10px;
+              right: 10px;
             "
           >
             <div
@@ -307,23 +270,174 @@
             </div>
           </button>
         </div>
+      </div>
 
-        <!-- 페이징 -->
-        <!-- {/* paging 시작 */} -->
-        <div class="row justify-content-center mt-5">
-          <div class="col-auto" style="margin-top: 50px">
-            <b-pagination
-              class="custom-pagination col-12 mb-3"
-              v-model="page"
-              :total-rows="count"
-              :per-page="pageSize"
-              @click="retrieveFreeBoardComment(this.$route.params.freeBoardId)"
-            ></b-pagination>
+      <!-- 댓글들 -->
+      <div
+        class="container text-left"
+        v-for="(data, index) in freeBoardComments"
+        :key="index"
+      >
+        <div
+          class="lotto_new col row-cols-lg-4 gap-5 justify-content-left mb-3"
+        >
+          <!-- 아이디 -->
+          <div
+            class="row mt-5"
+            style="color: #333333; text-align: left; font-weight: bold"
+          >
+            <div
+              style="
+                background: #162b59;
+                height: 30px;
+                width: 30px;
+                border-radius: 50%;
+                margin-right: 5px;
+              "
+            ></div>
+            {{ data.userId }}
+          </div>
+
+          <!-- 시간 -->
+          <div
+            class="row"
+            style="color: #999999; text-align: left; margin-left: 22px"
+          >
+            {{ data.insertTime }}
+          </div>
+        </div>
+        <!-- 답변 -->
+        <div
+          style="
+            padding-bottom: 30px;
+            border-bottom: 1px solid #cccccc;
+            text-align: left;
+            word-wrap: break-word;
+            word-break: break-all;
+            margin-left: 22px;
+          "
+        >
+          {{ data.content }}
+          <br />
+          <button
+            style="border: none; margin-top: 15px"
+            @click="toggleReplyForm(data.commentId)"
+          >
+          {{
+              replyVisible && replyToCommentId === data.commentId
+                ? "답글접기"
+                : "답글"
+            }}
+          </button>
+
+          <!-- 답글 버튼 클릭 시 답글 입력 폼이 열리도록 수정 -->
+          <!-- <button
+            style="border: none; margin-top: 15px"
+            @click="toggleReplyForm(data.commentId)"
+          >
+            {{
+              replyVisible && replyToCommentId === data.commentId
+                ? "접기"
+                : "답글"
+            }}
+          </button> -->
+
+          <!-- 답변(대댓글) 폼 -->
+          <div v-if="replyVisible && replyToCommentId === data.commentId">
+            <div
+              class="lotto_new row row-cols-lg-4 gap-5 justify-content-left mb-3 mt-5"
+            >
+              <div class="col" style="color: #595959; font-weight: bold">
+                <span style="color: #999999; font-weight: 200">등록자 |</span>
+                {{ newReply.userId }}
+              </div>
+              <div class="col" style="color: #999999">
+                날짜 | {{ newReply.insertTime }}
+              </div>
+            </div>
+
+            <!-- 답변(대댓글) 입력 칸 -->
+            <div class="mb-5 comment-box" style="border: #595959 1.5px solid">
+              <div class="comment-input">
+                <textarea
+                  class="form-control"
+                  id="replyTextarea"
+                  rows="3"
+                  v-model="newReply.content"
+                  @input="updateReplyCharacterCount"
+                  maxlength="1000"
+                  placeholder="댓글을 입력하세요."
+                  style="
+                    height: 150px;
+                    border-bottom: #cccccc 1px solid;
+                    word-wrap: break-word;
+                    word-break: break-all;
+                  "
+                ></textarea>
+                <div
+                  class="char-count"
+                  style="text-align: left; padding: 10px 0 20px 10px"
+                >
+                  글자 수: {{ charCountReply }}/300
+                </div>
+                <!-- (답변(대댓글)) 등록 버튼-->
+                <button
+                  @click="submitReply()"
+                  class="fbd_d container text-center mt-3"
+                  style="
+                    width: 60px;
+                    text-decoration: none;
+                    background-color: #ccc;
+                    border: none;
+                    font-size: 15px;
+                    text-align: center;
+                    height: 40px;
+                    font-weight: 100;
+                    position: absolute;
+                    bottom: 10px;
+                    right: 10px;
+                  "
+                >
+                  <div
+                    style="
+                      display: flex;
+                      align-items: center;
+                      justify-content: center;
+                    "
+                  >
+                    <div
+                      class="router-text"
+                      style="
+                        margin-right: 5px;
+                        margin-top: 5px;
+                        color: #ffffff;
+                        font-weight: 100;
+                        text-align: center;
+                      "
+                    >
+                      등록
+                    </div>
+                  </div>
+                </button>
+              </div>
+            </div>
           </div>
         </div>
       </div>
     </div>
   </div>
+
+  <br />
+  <br />
+  <br />
+  <br />
+  <br />
+  <br />
+  <br />
+  <br />
+  <br />
+  <br />
+  <br />
   <!-- 전체 박스 끝 -->
 </template>
 <script>
@@ -334,12 +448,20 @@ import FreeBoardService from "@/services/board/free/FreeBoardService";
 export default {
   data() {
     return {
+      replyVisible: false, // 답글 입력 폼의 표시 여부를 관리하는 변수
+      replyToCommentId: null, // 어떤 댓글에 대한 답글인지 식별하기 위한 변수
+      newReply: {
+        // 새로 작성할 답글
+        userId: this.$store.state.user?.userId,
+        content: "",
+      },
+      charCountReply: 0, // 답글 글자 수
       freeBoard: {
         freeBoardId: this.$route.params.freeBoardId,
         userId: "",
         content: "",
         title: "",
-        likes:0,
+        likes: 0,
       },
       freeBoardComments: [], // 기존 댓글 목록
       newComment: {
@@ -351,19 +473,32 @@ export default {
       count: 0, // 전체데이터개수
       pageSize: 5, // 1페이지당개수(select태그)
 
+
       charCount:0
+
     };
   },
   watch: {
     "newComment.content"(newVal) {
       this.charCount = newVal.length;
-    }
+
+    },
   },
   methods: {
+
+    toggleReplyForm(commentId) {
+    // 클릭된 답글 버튼이 이미 열려있는 상태이면 폼을 닫고, 그렇지 않으면 엽니다.
+    this.replyVisible = this.replyVisible && this.replyToCommentId === commentId ? false : true;
+    this.replyToCommentId = commentId; // 현재 선택된 댓글 ID 업데이트
+    this.newReply.content = ""; // 입력 폼 내용 초기화
+    this.charCountReply = 0; // 글자 수 초기화
+  },
+  
     // 댓글 작성 시 글자 수 세기
     updateCharacterCount() {
-      if (this.newComment.content.length > 1000) {
-        this.newComment.content = this.newComment.content.slice(0, 1000);
+      if (this.newComment.content.length > 300) {
+        this.newComment.content = this.newComment.content.slice(0, 300);
+
       }
       this.charCount = this.newComment.content.length;
     },
@@ -404,6 +539,7 @@ export default {
       try {
         let data = {
           userId: this.newComment.userId,
+
           freeBoardId : this.freeBoard.freeBoardId,
           content:this.newComment.content,
           secretCommentYn : "N"
@@ -418,15 +554,14 @@ export default {
         alert("댓글이 등록되었습니다.");
         this.retrieveFreeBoardComment(this.$route.params.freeBoardId);
      
+
     },
     // 삭제 함수
     async deleteFreeBoard() {
       try {
         if (confirm("정말로 삭제하시겠습니까?")) {
           let response = await FreeBoardService.deleteFreeBoard(
-
             this.freeBoard.freeBoardId
-
           );
           // 로깅
           console.log(response.data);
@@ -441,7 +576,9 @@ export default {
     },
     // 수정 함수
     async likeUp() {
+
       this.freeBoard.likes=+1;
+
 
       try {
         let response = await FreeBoardService.updateFreeBoard(
@@ -453,6 +590,40 @@ export default {
       } catch (e) {
         console.log(e);
       }
+    },
+    // 답글 버튼 클릭 시 호출되는 메소드
+    showReplyForm(commentId) {
+      this.replyVisible = true;
+      this.replyToCommentId = commentId;
+    },
+
+    // 답글 글자 수 세기
+    updateReplyCharacterCount() {
+      if (this.newReply.content.length > 300) {
+        this.newReply.content = this.newReply.content.slice(0, 300);
+      }
+      this.charCountReply = this.newReply.content.length;
+    },
+
+    // 답글 제출
+    async submitReply() {
+      try {
+        let data = {
+          userId: this.newReply.userId,
+          freeBoardId: this.freeBoard.freeBoardId,
+          parentCommentId: this.replyToCommentId, // 부모 댓글 ID
+          content: this.newReply.content,
+          secretCommentYn: "N",
+        };
+        await FreeBoardService.createFreeBoardComment(data);
+      } catch (e) {
+        console.log(e);
+      }
+      this.newReply.content = "";
+      this.charCountReply = 0;
+      this.replyVisible = false; // 답글 입력 폼 숨기기
+      alert("답글이 등록되었습니다.");
+      this.retrieveFreeBoardComment(this.$route.params.freeBoardId);
     },
   },
   mounted() {
@@ -507,5 +678,56 @@ export default {
   color: #999999;
   font-size: 14px;
   margin-top: 5px;
+}
+
+.comment-box {
+  border: #595959 solid 2px;
+}
+
+.comment-box textarea {
+  border: none;
+  width: 100%;
+  word-wrap: break-word;
+  word-break: break-all;
+}
+
+.comment-box textarea:focus {
+  outline: none;
+  box-shadow: none;
+}
+
+.comment-box div {
+  word-wrap: break-word;
+  word-break: break-all;
+}
+
+.comment-box textarea {
+  border: none;
+  width: 100%;
+  word-wrap: break-word;
+  word-break: break-all;
+  padding-right: 90px; /* Ensure space for button */
+}
+
+.comment-box textarea:focus {
+  outline: none;
+  box-shadow: none;
+}
+
+.comment-box div {
+  word-wrap: break-word;
+  word-break: break-all;
+}
+
+.comment-input {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+
+.comment-input button {
+  position: absolute;
+  bottom: 20px;
+  right: 10px;
 }
 </style>
