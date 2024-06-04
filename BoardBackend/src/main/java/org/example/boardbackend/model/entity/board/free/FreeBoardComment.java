@@ -47,10 +47,10 @@ public class FreeBoardComment extends BaseTimeEntity {
     private String content;
     private String secretCommentYn;
 
-//    public FreeBoardComment(String userId, FreeBoard freeBoard, String content, String secretCommentYn) {
-//        this.userId = userId;
-//        this.freeBoard = freeBoard;
-//        this.content = content;
-//        this.secretCommentYn = secretCommentYn;
-//    }
+    public FreeBoardComment(String userId, long freeBoardId, String content, String secretCommentYn) {
+        this.freeBoardId=freeBoardId;
+        this.userId = userId;
+        this.content = content;
+        this.secretCommentYn = secretCommentYn;
+    }
 }
