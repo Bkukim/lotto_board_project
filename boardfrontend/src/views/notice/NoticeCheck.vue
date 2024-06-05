@@ -63,7 +63,10 @@
     </div>
     <!--  첫번째 게시판 큰 박스 끝-->
     <!-- v-if="freeBoardList.userId=== this.$store.state.user?.userId" -->
-    <div class="container text-center mt-5"  v-if="this.$store.state.user?.role=='ROLE_ADMIN'">
+    <div
+      class="container text-center mt-5"
+      v-if="this.$store.state.user?.role == 'ROLE_ADMIN'"
+    >
       <div class="row" style="margin-top: 100px">
         <!-- 삭제 -->
         <div class="col">
@@ -229,6 +232,7 @@ export default {
         noticeType: "",
         title: "",
         content: "",
+        views:0,
       },
     };
   },
@@ -261,10 +265,29 @@ export default {
     goUpdate() {
       this.$router.push(`/admin/notice-update/${this.notice.noticeId}`);
     },
+    async viewsUp() {
+      try {
+        // +하고 이동
+
+        let data = {
+          veiws: this.notice.views,
+          noticeId: this.notice.noticeId,
+          title: this.notice.title,
+          noticeType:this.notice.noticeType,
+          content: this.notice.content,
+        };
+        console.log(data);
+        let response = await NoticeService.updateVeiws(this.notice.noticeId, data);
+        console.log(response.data);
+      } catch (e) {
+        console.log(e);
+      }
+    },
   },
-  mounted() {
+  async mounted() {
     // 상세조회 실행
-    this.get(this.$route.params.noticeId);
+   await this.get(this.$route.params.noticeId);
+    this.viewsUp();
     window.scrollTo(0, 0);
   },
 };
