@@ -59,11 +59,11 @@
               </router-link>
               <ul class="dropdown-menu">
                 <li>
-                  <router-link class="dropdown-item" to="#">동아리 매칭 게시판</router-link>
+                  <router-link class="dropdown-item" to="/department/accountingboard">회계부 게시판</router-link>
                 </li>
-                <li><router-link class="dropdown-item" to="#">자유 게시판</router-link></li>
-                <li><router-link class="dropdown-item" to="#">공지 게시판</router-link></li>
-                <li><router-link class="dropdown-item" to="#">건의 익명 게시판</router-link></li>
+                <li><router-link class="dropdown-item" to="/department/fnanceboard">재정부 게시판</router-link></li>
+                <li><router-link class="dropdown-item" to="/department/Planningboard">기획부 게시판</router-link></li>
+                <li><router-link class="dropdown-item" to="/department/promotionboard">홍보부 게시판</router-link></li>
               </ul>
             </li>
           </ul>
@@ -116,7 +116,7 @@
               role="button"
               data-bs-toggle="dropdown"
               aria-expanded="false"
-              @click="getUnreadtNotify"
+              @click="getUnreadNotify"
             >
               <img
                 src="@/assets/img/Notification_icon.png"
@@ -225,6 +225,15 @@ export default {
     };
   },
   methods: {
+    async getUnreadNotify(){
+      try {
+        let response = await NotifyService.getUnreadNotify(this.$store.state.user.userId);
+        this.notificationList = response.data;
+        console.log( "알림들",response.data);
+      } catch (error) {
+        console.log(error);
+      }
+    },
     async countUnreadNotify() {
       try {
         let notifyCount = await NotifyService.countNotify(
