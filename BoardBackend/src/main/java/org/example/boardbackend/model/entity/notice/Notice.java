@@ -52,5 +52,6 @@ public class Notice extends BaseTimeEntity {
     private String eventYn;
     private String noticeType;
     private long eventWinnerQuota;
+    @Column(name = "VIEWS")
     private long views;
 }
