@@ -38,11 +38,12 @@ import org.hibernate.annotations.DynamicUpdate;
 public class ClubBoard extends BaseTimeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE,
-    generator = "SQ_LOTTO_CLUB_BOARD_GENERATOR")
+            generator = "SQ_LOTTO_CLUB_BOARD_GENERATOR")
     private long clubBoardId; // 동아리 게시판 번호, 기본키, 시퀀스
 
     private String userId; // userId, 참조키
-    private long like; // 좋아요 개수
+    private long likes; // 좋아요 개수
+    @Lob
     private String content; // 내용
     private String location; // 장소명
     private String address; // 주소

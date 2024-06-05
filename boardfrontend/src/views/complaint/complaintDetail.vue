@@ -382,7 +382,7 @@ export default {
         };
         await ComplaintBoardService.createComplaintBoardComment(data);
       } catch (e) {
-        alert("댓글 등록 중 에러가 발생했습니다.");
+        // alert("댓글 등록 중 에러가 발생했습니다.");
         console.log(e);
       }
       this.newComment.content = "";

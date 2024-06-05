@@ -68,8 +68,8 @@ public class NotifyService {
     }
 
     // 알림 보내기 함수
-    public void send(String userId, Notify.NotificationType notificationType, String content, String url) {
-        Notify notification = notifyRepository.save(createNotification(userId, notificationType, content, url)); // 알림 객체 생성 및 저장
+    public void send(String userId, Notify.NotificationType notificationType, String notifyContent, String url) {
+        Notify notification = notifyRepository.save(createNotification(userId, notificationType, notifyContent, url)); // 알림 객체 생성 및 저장
         log.debug("send 함수 들옴");
         log.debug(userId);
         SseEmitter sseEmitter = emitterRepository.findByUserId(userId);
@@ -81,18 +81,22 @@ public class NotifyService {
 //            log.debug("캐쉬 에 들어있는 알림들" + list.toString());
 //        }else {
             log.debug("보낼 알림 "+sseEmitter.toString());
-            sendNotification(userId, sseEmitter, notificationType, content);
+            sendNotification(userId, sseEmitter, notificationType, notifyContent);
 //        }
     }
 
-    private void sendNotification(String userId, SseEmitter emitter, Notify.NotificationType notificationType, String content) {
+    private void sendNotification(String userId, SseEmitter emitter, Notify.NotificationType notificationType, String notifyContent) {
 
         try {
+            log.debug(emitter.toString());
+            log.debug(notificationType.toString());
+            log.debug(notifyContent);
             emitter.send(SseEmitter.event()
                     .name(notificationType.toString())
-                    .data(content)
+                    .data(notifyContent)
             );
         } catch (IOException e) {
+            log.debug(e.getMessage());
             log.debug("회원이 로그아웃 상태입니다.");
         }
     }

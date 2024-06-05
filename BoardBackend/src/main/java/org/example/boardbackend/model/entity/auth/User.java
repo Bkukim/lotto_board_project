@@ -37,6 +37,7 @@ import org.hibernate.annotations.Where;
 public class User extends BaseTimeEntity2 {
 
     @Id
+    @Column(name = "USER_ID")
     private String userId;
     private String password;
     private String userName;

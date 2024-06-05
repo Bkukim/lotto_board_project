@@ -14,7 +14,6 @@ export default createStore({
     // orderAmount: 1,
 
     selectedOption: '', // 라디오 버튼에서 선택된 옵션
-    notifyCount:0
   },
 
   // 공유 속성의 값을 조회하는 함수

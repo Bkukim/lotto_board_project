@@ -67,6 +67,7 @@ public class NotifyController {
     public ResponseEntity<Object> countUnread(@PathVariable String userId){
         try {
             long count = notifyService.countUnread(userId);
+            log.debug(String.valueOf(count));
             return new ResponseEntity<>(count,HttpStatus.OK);
         }catch (Exception e){
             log.debug(e.getMessage());
