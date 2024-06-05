@@ -268,6 +268,7 @@ export default {
         );
         this.notificationList = response.data;
         console.log("알림들", response.data);
+
       } catch (error) {
         console.log(error);
       }

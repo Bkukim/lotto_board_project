@@ -3,6 +3,7 @@ import AuthHeader from "@/services/auth/AuthHeader";
 
 class ClubBoardService {
     // TODO: 전체 조회
+    // TODO: 전체 조회 (페이징 처리 포함)
     getAllClub() {
         return http.get(`/user/board/club`, { headers: AuthHeader() });
     }

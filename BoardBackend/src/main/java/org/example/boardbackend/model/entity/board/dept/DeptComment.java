@@ -1,4 +1,4 @@
-package org.example.boardbackend.model.entity.notice;
+package org.example.boardbackend.model.entity.board.dept;
 
 import jakarta.persistence.*;
 import lombok.*;
@@ -6,27 +6,24 @@ import org.example.boardbackend.model.common.BaseTimeEntity;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 
-import java.sql.Blob;
-import java.sql.Clob;
-
 /**
- * packageName : org.example.boardbackend.model.entity
- * fileName : Event
+ * packageName : org.example.boardbackend.model.entity.board.dept
+ * fileName : DeptBoard
  * author : PC
- * date : 2024-05-21
+ * date : 2024-06-05
  * description :
  * 요약 :
  * <p>
  * ===========================================================
  * DATE            AUTHOR             NOTE
  * -----------------------------------------------------------
- * 2024-05-21         PC          최초 생성
+ * 2024-06-05         PC          최초 생성
  */
 @Entity
-@Table(name = "LOTTO_NOTICE")
+@Table(name = "LOTTO_DEPT_BOARD_COMMENT")
 @SequenceGenerator(
-        name = "SQ_NOTICE_GENERATOR"
-        , sequenceName = "SQ_NOTICE"
+        name = "SQ_DEPT_BOARD_COMMENT_GENERATOR"
+        , sequenceName = "SQ_DEPT_BOARD_COMMENT"
         , initialValue = 1
         , allocationSize = 1
 )
@@ -38,20 +35,15 @@ import java.sql.Clob;
 @AllArgsConstructor
 @DynamicInsert
 @DynamicUpdate
-public class Notice extends BaseTimeEntity {
-
+public class DeptComment extends BaseTimeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE
-            , generator = "SQ_NOTICE_GENERATOR"
+            , generator = "SQ_DEPT_BOARD_COMMENT_GENERATOR"
     )
-    private long noticeId;
-    private String title;
-    @Lob
-    @Column(name = "CONTENT")
+    private long deptBoardCommentId;
+    private String userId;
+    private long deptBoardId;
     private String content;
-    private String eventYn;
-    private String noticeType;
-    private long eventWinnerQuota;
-    @Column(name = "VIEWS")
-    private long views;
+    private String secretCommentYN;
+
 }
