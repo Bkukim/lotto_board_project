@@ -112,6 +112,9 @@ public class FreeBoardService {
     String notifyUrl = webConfig.getFrontDomain() + "/free/free-board/" + freeBoardComment.getFreeBoardId();
     notifyService.send(commentWriter,Notify.NotificationType.COMMENT,notifyContent,notifyUrl);
 
+
+
+
 }
 
 
