@@ -85,9 +85,9 @@
 
     <!-- TODO: 좋아요버튼 -->
     <div class="d-flex justify-content-center mt-3">
-
-      <button type="button" class="btn btn-primary" @click="likeUp">공감해요 {{ this.freeBoard.likes }}</button>
-
+      <button type="button" class="btn btn-primary" @click="likeUp">
+        공감해요 {{ this.freeBoard.likes }}
+      </button>
     </div>
 
     <div class="container text-center mt-5">
@@ -323,27 +323,11 @@
             style="border: none; margin-top: 15px"
             @click="toggleReplyForm(data.commentId)"
           >
-          {{
-              replyVisible && replyToCommentId === data.commentId
-                ? "답글접기"
-                : "답글"
-            }}
+            {{ replyToCommentId === data.commentId ? "답글접기" : "답글" }}
           </button>
 
-          <!-- 답글 버튼 클릭 시 답글 입력 폼이 열리도록 수정 -->
-          <!-- <button
-            style="border: none; margin-top: 15px"
-            @click="toggleReplyForm(data.commentId)"
-          >
-            {{
-              replyVisible && replyToCommentId === data.commentId
-                ? "접기"
-                : "답글"
-            }}
-          </button> -->
-
           <!-- 답변(대댓글) 폼 -->
-          <div v-if="replyVisible && replyToCommentId === data.commentId">
+          <div v-if="replyToCommentId === data.commentId">
             <div
               class="lotto_new row row-cols-lg-4 gap-5 justify-content-left mb-3 mt-5"
             >
@@ -387,7 +371,7 @@
                   style="
                     width: 60px;
                     text-decoration: none;
-                    background-color: #ccc;
+                    background-color: #999;
                     border: none;
                     font-size: 15px;
                     text-align: center;
@@ -422,6 +406,20 @@
               </div>
             </div>
           </div>
+        </div>
+      </div>
+
+      <!-- 페이징 -->
+      <!-- {/* paging 시작 */} -->
+      <div class="row justify-content-center mt-5">
+        <div class="col-auto" style="margin-top: 50px">
+          <b-pagination
+            class="custom-pagination col-12 mb-3"
+            v-model="page"
+            :total-rows="count"
+            :per-page="pageSize"
+            @click="retrieveFreeBoardComment(this.$route.params.freeBoardId)"
+          ></b-pagination>
         </div>
       </div>
     </div>
@@ -473,32 +471,30 @@ export default {
       count: 0, // 전체데이터개수
       pageSize: 5, // 1페이지당개수(select태그)
 
-
-      charCount:0
-
+      charCount: 0,
     };
   },
   watch: {
     "newComment.content"(newVal) {
       this.charCount = newVal.length;
-
     },
   },
   methods: {
-
     toggleReplyForm(commentId) {
-    // 클릭된 답글 버튼이 이미 열려있는 상태이면 폼을 닫고, 그렇지 않으면 엽니다.
-    this.replyVisible = this.replyVisible && this.replyToCommentId === commentId ? false : true;
-    this.replyToCommentId = commentId; // 현재 선택된 댓글 ID 업데이트
+     // 클릭된 답글 버튼이 이미 열려있는 상태이면 폼을 닫고, 그렇지 않으면 엽니다.
+    this.replyVisible =
+      this.replyVisible && this.replyToCommentId === commentId ? false : true;
+    this.replyToCommentId = this.replyToCommentId === commentId ? null : commentId;
+
+    // 현재 선택된 댓글 ID 업데이트
     this.newReply.content = ""; // 입력 폼 내용 초기화
     this.charCountReply = 0; // 글자 수 초기화
-  },
-  
+    },
+
     // 댓글 작성 시 글자 수 세기
     updateCharacterCount() {
       if (this.newComment.content.length > 300) {
         this.newComment.content = this.newComment.content.slice(0, 300);
-
       }
       this.charCount = this.newComment.content.length;
     },
@@ -540,21 +536,19 @@ export default {
         let data = {
           userId: this.newComment.userId,
 
-          freeBoardId : this.freeBoard.freeBoardId,
-          content:this.newComment.content,
-          secretCommentYn : "N"
-        }
-         await FreeBoardService.createFreeBoardComment(data);
-        } catch (e) {
+          freeBoardId: this.freeBoard.freeBoardId,
+          content: this.newComment.content,
+          secretCommentYn: "N",
+        };
+        await FreeBoardService.createFreeBoardComment(data);
+      } catch (e) {
         // alert("댓글 등록 중 에러가 발생했습니다.");
         console.log(e);
       }
-        this.newComment.content = "";
-        this.charCount = 0;
-        alert("댓글이 등록되었습니다.");
-        this.retrieveFreeBoardComment(this.$route.params.freeBoardId);
-     
-
+      this.newComment.content = "";
+      this.charCount = 0;
+      alert("댓글이 등록되었습니다.");
+      this.retrieveFreeBoardComment(this.$route.params.freeBoardId);
     },
     // 삭제 함수
     async deleteFreeBoard() {
@@ -576,9 +570,7 @@ export default {
     },
     // 수정 함수
     async likeUp() {
-
-      this.freeBoard.likes=+1;
-
+      this.freeBoard.likes = +1;
 
       try {
         let response = await FreeBoardService.updateFreeBoard(

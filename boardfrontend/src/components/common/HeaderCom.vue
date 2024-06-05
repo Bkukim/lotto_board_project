@@ -55,11 +55,11 @@
               </router-link>
               <ul class="dropdown-menu">
                 <li>
-                  <router-link class="dropdown-item" to="#">동아리 매칭 게시판</router-link>
+                  <router-link class="dropdown-item" to="/department/accountingboard">회계부 게시판</router-link>
                 </li>
-                <li><router-link class="dropdown-item" to="#">자유 게시판</router-link></li>
-                <li><router-link class="dropdown-item" to="#">공지 게시판</router-link></li>
-                <li><router-link class="dropdown-item" to="#">건의 익명 게시판</router-link></li>
+                <li><router-link class="dropdown-item" to="/department/fnanceboard">재정부 게시판</router-link></li>
+                <li><router-link class="dropdown-item" to="/department/Planningboard">기획부 게시판</router-link></li>
+                <li><router-link class="dropdown-item" to="/department/promotionboard">홍보부 게시판</router-link></li>
               </ul>
             </li>
           </ul>

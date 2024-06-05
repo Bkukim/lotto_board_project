@@ -142,6 +142,26 @@ const routes = [
     path: "/hot/hotBoard",
     component: () => import("../views/hot/hotBoard.vue"),
   },
+  // 부서게시판 -> 회계부 게시판
+  {
+    path: "/department/accountingboard",
+    component: () => import("../views/department/accountingBoard.vue"),
+  },
+   // 부서게시판 -> 재정부 게시판
+   {
+    path: "/department/fnanceboard",
+    component: () => import("../views/department/fnanceBoard.vue"),
+  },
+    // 부서게시판 -> 기획부 게시판
+    {
+      path: "/department/Planningboard",
+      component: () => import("../views/department/PlanningBoard.vue"),
+    },
+       // 부서게시판 -> 홍보부 게시판
+       {
+        path: "/department/promotionboard",
+        component: () => import("../views/department/promotionBoard.vue"),
+      },
 ];
 
 const router = createRouter({
