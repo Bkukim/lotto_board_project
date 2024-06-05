@@ -12,6 +12,7 @@ export default {
     };
   },
   methods: {
+  
       async kakaoLogin(code) {
         try {
           let response = await AuthService.socialLogin(code);

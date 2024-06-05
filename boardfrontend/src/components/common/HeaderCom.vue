@@ -116,7 +116,7 @@
               role="button"
               data-bs-toggle="dropdown"
               aria-expanded="false"
-              @click="getUnreadtNotify"
+              @click="getUnreadNotify"
             >
               <img
                 src="@/assets/img/Notification_icon.png"
@@ -225,6 +225,15 @@ export default {
     };
   },
   methods: {
+    async getUnreadNotify(){
+      try {
+        let response = await NotifyService.getUnreadNotify(this.$store.state.user.userId);
+        this.notificationList = response.data;
+        console.log( "알림들",response.data);
+      } catch (error) {
+        console.log(error);
+      }
+    },
     async countUnreadNotify() {
       try {
         let notifyCount = await NotifyService.countNotify(

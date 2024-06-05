@@ -11,6 +11,7 @@ import org.springframework.data.redis.cache.RedisCacheConfiguration;
 import org.springframework.data.redis.cache.RedisCacheManager;
 import org.springframework.data.redis.connection.RedisStandaloneConfiguration;
 import org.springframework.data.redis.connection.lettuce.LettuceConnectionFactory;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.serializer.GenericJackson2JsonRedisSerializer;
 import org.springframework.data.redis.serializer.RedisSerializationContext.SerializationPair;
 
@@ -66,6 +67,14 @@ public class RedisConfig {
                 .defaultCacheConfig()
                 .entryTtl(duration)         // ttl(만료시간) 설정
                 .serializeValuesWith(SerializationPair.fromSerializer(new GenericJackson2JsonRedisSerializer())); // Value 를 직렬화할 때 사용하는 규칙. Jackson2 를 많이 사용함
+    }
+
+    // TODO SORTED SET 사용 설정
+    @Bean
+    public RedisTemplate<?, ?> redisTemplate() {
+        RedisTemplate<?, ?> redisTemplate = new RedisTemplate<>();
+        redisTemplate.setConnectionFactory(redisConnectionFactory());
+        return redisTemplate;
     }
 }
 
