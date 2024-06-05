@@ -119,7 +119,10 @@ public class NormalNoticeController {
     ) {
         try {
             log.debug("컨트롤러" + notice.getViews());
-            notice.setViews(notice.getViews() + 1);
+            log.debug("컨트롤러" + notice.getNoticeId());
+            log.debug("컨트롤러" + notice.getTitle());
+            log.debug("컨트롤러" + notice);
+//            notice.setViews(notice.getViews() + 1);
             noticeRedisService.save(notice);
             return new ResponseEntity<>(HttpStatus.OK);
         } catch (Exception e) {

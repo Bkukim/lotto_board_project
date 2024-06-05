@@ -67,6 +67,7 @@ class NoticeService {
     
     // TODO: 조회수update
     updateVeiws(noticeId, data) {
+      console.log("서비스", data);
       return http.put(`/normal/notice/notice-update-views/${noticeId}`, data,
   // {
   //   headers: AuthHeader()

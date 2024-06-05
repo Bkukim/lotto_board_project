@@ -232,7 +232,7 @@ export default {
         noticeType: "",
         title: "",
         content: "",
-        views:0,
+        views: 0,
       },
     };
   },
@@ -244,7 +244,7 @@ export default {
         let response = await NoticeService.getNotice(noticeId);
         this.notice = response.data;
         // 로깅
-        console.log(response.data);
+        console.log(response.data.views);
       } catch (e) {
         console.log(e);
       }
@@ -268,16 +268,20 @@ export default {
     async viewsUp() {
       try {
         // +하고 이동
-
+        let views = (this.notice.views = this.notice.views + 1);
+        // todo: 오타였음, views
         let data = {
-          veiws: this.notice.views,
+          views: views,
           noticeId: this.notice.noticeId,
           title: this.notice.title,
-          noticeType:this.notice.noticeType,
+          noticeType: this.notice.noticeType,
           content: this.notice.content,
         };
         console.log(data);
-        let response = await NoticeService.updateVeiws(this.notice.noticeId, data);
+        let response = await NoticeService.updateVeiws(
+          this.notice.noticeId,
+          data
+        );
         console.log(response.data);
       } catch (e) {
         console.log(e);
@@ -286,7 +290,7 @@ export default {
   },
   async mounted() {
     // 상세조회 실행
-   await this.get(this.$route.params.noticeId);
+    await this.get(this.$route.params.noticeId);
     this.viewsUp();
     window.scrollTo(0, 0);
   },

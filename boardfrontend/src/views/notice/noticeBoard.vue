@@ -92,20 +92,22 @@
         <tr v-for="(data, index) in notices" :key="index">
           <td class="text-center">
             {{ index + 1 }}
-            {{ data.noticeId }}
           </td>
           <td
             @click="viewsUp"
             class="col-5"
+            
+          >
+            <router-link :to="`/notice/notice-check/` + data.noticeId"
             style="
               color: #444444;
               font-weight: bold;
               text-decoration: none;
               text-align: left;
               padding-left: 5vw;
-            "
-          >
-            [{{ data.noticeType }}] {{ data.title }}
+            ">
+              [{{ data.noticeType }}] {{ data.title }}
+            </router-link>
           </td>
           <td class="text-center">관리자</td>
           <td class="text-center">{{ data.insertTime }}</td>
