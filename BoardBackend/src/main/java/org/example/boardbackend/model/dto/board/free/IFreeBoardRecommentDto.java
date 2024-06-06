@@ -17,6 +17,7 @@ package org.example.boardbackend.model.dto.board.free;
 public interface IFreeBoardRecommentDto {
      Long getFreeBoardRecommentId();
      Long getFreeBoardId();
+     Long getFreeBoardCommentId();
      String getUserId();
      String getContent();
      String getInsertTime();
