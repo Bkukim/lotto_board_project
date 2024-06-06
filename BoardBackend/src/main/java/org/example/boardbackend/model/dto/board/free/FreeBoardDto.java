@@ -28,10 +28,10 @@ public interface FreeBoardDto {
 //    modelMapper 사용
 //    인터페이스 Dto : projection. dto를 확장한 기능
 
-     long getFreeBoardId();
+     Long getFreeBoardId();
      String getUserId();
      String getTitle();
      String getInsertTime();
-     long getLikes();
+     Long getLikes();
 
 }

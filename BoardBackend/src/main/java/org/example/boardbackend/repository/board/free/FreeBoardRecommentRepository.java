@@ -1,11 +1,13 @@
 package org.example.boardbackend.repository.board.free;
 
-import org.example.boardbackend.model.entity.board.free.FreeBoardComment;
+import org.example.boardbackend.model.dto.board.free.IFreeBoardRecommentDto;
 import org.example.boardbackend.model.entity.board.free.FreeBoardRecomment;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
+
+import java.util.List;
 
 /**
  * packageName : org.example.boardbackend.repository.board.free
@@ -22,5 +24,12 @@ import org.springframework.stereotype.Repository;
  */
 @Repository
 public interface FreeBoardRecommentRepository extends JpaRepository<FreeBoardRecomment,Long> {
-    Page<FreeBoardRecomment> findFreeBoardRecommentsByFreeBoardCommentIdOrderByInsertTimeDesc(long freeBoardCommentId, Pageable pageable);
+    @Query(value = "SELECT FR.CONTENT AS content, FR.INSERT_TIME AS insertTime \n" +
+            "FROM LOTTO_FREE_BOARD FB, LOTTO_FREE_BOARD_COMMENT FC, LOTTO_FREE_BOARD_RECOMMENT FR\n" +
+            "WHERE FB.FREE_BOARD_ID = FC.FREE_BOARD_ID\n" +
+            "AND FC.FREE_BOARD_COMMENT_ID = FR.FREE_BOARD_COMMENT_ID\n" +
+            "AND FB.FREE_BOARD_ID = :freeBoardId \n" +
+            "ORDER BY FR.INSERT_TIME DESC",
+            nativeQuery = true)
+    List<IFreeBoardRecommentDto> findFreeBoardRecommentsByFreeBoardCommentIdOrderByInsertTimeDesc(@Param("freeBoardId") long freeBoardId);
 }
