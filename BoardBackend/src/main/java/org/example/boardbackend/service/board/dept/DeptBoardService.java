@@ -1,18 +1,24 @@
-package org.example.boardbackend.repositorytest.board.dept;
+package org.example.boardbackend.service.board.dept;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.example.boardbackend.config.WebConfig;
 import org.example.boardbackend.model.dto.board.dept.DeptBoardDto;
+import org.example.boardbackend.model.dto.board.free.FreeBoardDto;
 import org.example.boardbackend.model.entity.board.dept.DeptBoard;
 import org.example.boardbackend.model.entity.board.dept.DeptComment;
-import org.example.boardbackend.model.entity.board.dept.DeptRecomment;
+import org.example.boardbackend.model.entity.board.free.FreeBoard;
+import org.example.boardbackend.model.entity.board.free.FreeBoardComment;
+import org.example.boardbackend.model.entity.board.free.FreeBoardRecomment;
 import org.example.boardbackend.model.entity.notify.Notify;
 import org.example.boardbackend.repository.board.dept.DeptBoardRepository;
 import org.example.boardbackend.repository.board.dept.DeptCommentRepository;
 import org.example.boardbackend.repository.board.dept.DeptRecommentRepository;
+import org.example.boardbackend.repository.board.free.FreeBoardCommentRepository;
+import org.example.boardbackend.repository.board.free.FreeBoardRecommentRepository;
+import org.example.boardbackend.repository.board.free.FreeBoardRepository;
 import org.example.boardbackend.repository.user.UserRepository;
-import org.example.boardbackend.repositorytest.notify.NotifyService;
+import org.example.boardbackend.service.notify.NotifyService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -91,21 +97,24 @@ public class DeptBoardService {
         notifyService.send(boardWriter, Notify.NotificationType.COMMENT, notifyContent, notifyUrl);
     }
 
-    // TODO 대댓글 저장 기능
-    // 1. boardId로 게시글 주인의 객체 가져오기,  1. 댓글을 저장, 2 알림 보내기
-    @Transactional
-    public void saveRecomment(DeptRecomment deptRecomment){
-        DeptComment deptComment = deptCommentRepository.findById(deptRecomment.getDeptBoardCommentId()).get();
-
-        String commentWriter = deptComment.getUserId();
-        // 1. 댓글 저장
-        deptRecommentRepository.save(deptRecomment);
-
-        // 2. 알림 보내기
-        String notifyContent = "회원님의 댓글에 또 다른 댓글이 달렸습니다.    "  + "\"" + deptRecomment.getContent() + "\"";
-        String notifyUrl = webConfig.getFrontDomain() + "/free/free-board/" + deptComment.getDeptBoardId();
-        notifyService.send(commentWriter,Notify.NotificationType.COMMENT,notifyContent,notifyUrl);
-    }
+//    // TODO 대댓글 저장 기능
+//    // 1. boardId로 게시글 주인의 객체 가져오기,  1. 댓글을 저장, 2 알림 보내기
+//    public void saveRecomment(FreeBoardRecomment freeBoardRecomment) {
+//        FreeBoardComment freeBoardComment = freeBoardCommentRepository.findById(freeBoardRecomment.getFreeBoardCommentId()).get();
+//
+//        String commentWriter = freeBoardComment.getUserId();
+//        log.debug("여기는 대댓글1");
+//
+//        // 1. 댓글 저장
+//        freeBoardRecommentRepository.save(freeBoardRecomment);
+//        log.debug("여기는 대댓글2");
+//
+//
+//        // 2. 알림 보내기
+////    String notifyContent = "회원님의 댓글에 또다른 댓글이 달렸습니다." + /*\n" + "\"" +*/ freeBoardRecomment.getContent() /*+ "\""*/;
+////    String notifyUrl = webConfig.getFrontDomain() + "/free/free-board/" + freeBoard.getFreeBoardId();
+////    notifyService.send(boardWriter,Notify.NotificationType.COMMENT,notifyContent,notifyUrl);
+//    }
 
 
     //   todo:  저장 함수

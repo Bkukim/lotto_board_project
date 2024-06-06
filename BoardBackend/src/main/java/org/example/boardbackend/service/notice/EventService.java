@@ -1,4 +1,4 @@
-package org.example.boardbackend.repositorytest.notice;
+package org.example.boardbackend.service.notice;
 
 
 import lombok.RequiredArgsConstructor;

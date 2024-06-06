@@ -1,4 +1,4 @@
-package org.example.boardbackend.repositorytest.social;
+package org.example.boardbackend.service.social;
 
 import org.example.boardbackend.model.dto.auth.UserRes;
 

@@ -1,4 +1,4 @@
-package org.example.boardbackend.repositorytest.board.complaint;
+package org.example.boardbackend.service.board.complaint;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -6,10 +6,12 @@ import org.example.boardbackend.config.WebConfig;
 import org.example.boardbackend.model.dto.board.complaint.ComplaintBoardDto;
 import org.example.boardbackend.model.entity.board.complaint.ComplaintBoard;
 import org.example.boardbackend.model.entity.board.complaint.ComplaintBoardComment;
+import org.example.boardbackend.model.entity.board.free.FreeBoard;
+import org.example.boardbackend.model.entity.board.free.FreeBoardComment;
 import org.example.boardbackend.model.entity.notify.Notify;
 import org.example.boardbackend.repository.board.complaint.ComplaintBoardCommentRepository;
 import org.example.boardbackend.repository.board.complaint.ComplaintBoardRepository;
-import org.example.boardbackend.repositorytest.notify.NotifyService;
+import org.example.boardbackend.service.notify.NotifyService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
