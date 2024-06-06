@@ -1,4 +1,4 @@
-package org.example.boardbackend.model.dto.board.free;
+package org.example.boardbackend.model.entity.board.free;
 
 import static com.querydsl.core.types.PathMetadataFactory.*;
 
@@ -15,7 +15,7 @@ import com.querydsl.core.types.Path;
 @Generated("com.querydsl.codegen.DefaultEntitySerializer")
 public class QFreeBoardLike extends EntityPathBase<FreeBoardLike> {
 
-    private static final long serialVersionUID = -1574796355L;
+    private static final long serialVersionUID = -152021333L;
 
     public static final QFreeBoardLike freeBoardLike = new QFreeBoardLike("freeBoardLike");
 
