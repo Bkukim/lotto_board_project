@@ -69,13 +69,25 @@
           type="button"
           class="btn btn-light"
           @click="likeUp"
-          style="border: none; text-align:center; height: 8vh; width: 18vw; padding: 1vw; "
+          style="
+            border: none;
+            text-align: center;
+            height: 8vh;
+            width: 18vw;
+            padding: 1vw;
+          "
         >
           <img src="@/assets/img/like_icon.png" width="40" height="40" />
           공감해요
           {{ this.freeBoard.likes }}
         </button>
-        <button type="button" class="btn btn-light" style="margin-left: 3vh; height: 8vh; width: 10vw; padding: 1vw;">신고</button>
+        <button
+          type="button"
+          class="btn btn-light"
+          style="margin-left: 3vh; height: 8vh; width: 10vw; padding: 1vw"
+        >
+          신고
+        </button>
       </div>
       <!-- 파일첨부 -->
       <!-- <div class="mt-5" style="width: 500px">
@@ -88,7 +100,6 @@
       </div> -->
     </div>
     <!--  첫번째 게시판 큰 박스 끝-->
-
 
     <!-- TODO: 좋아요버튼 -->
     <div class="d-flex justify-content-center mt-3">
@@ -330,25 +341,16 @@
             @click="toggleReplyForm(data.freeBoardCommentId)"
           >
             {{
-              replyVisible && freeBoardCommentId === data.freeBoardCommentId
-                ? "답글접기"
-                : "답글"
+              replyToCommentId === data.freeBoardCommentId ? "답글접기" : "답글"
             }}
           </button>
 
-
-
-          </button>
-
-
-
           <!-- 답변(대댓글)들 -->
-          <div
-            v-if="
-              replyVisible && freeBoardCommentId === data.freeBoardCommentId
-            "
-          >
-            <div v-for="(data, index) in freeBoardRecomments" :key="index">
+          <div v-if="replyToCommentId === data.freeBoardCommentId">
+            <div
+              v-for="(data, index) in data.freeBoardRecomments"
+              :key="index"
+            >
               <div
                 class="lotto_new row row-cols-lg-4 gap-5 justify-content-left mb-3 mt-5"
               >
@@ -368,11 +370,8 @@
 
           <!-- 답변(대댓글) 다는 곳 -->
           <div
-            v-if="
-              replyVisible && freeBoardCommentId === data.freeBoardCommentId
-            "
+            v-if="replyVisible && replyToCommentId === data.freeBoardCommentId"
           >
-
             <div
               class="lotto_new row row-cols-lg-4 gap-5 justify-content-left mb-3 mt-5"
             >
@@ -490,8 +489,8 @@ import FreeBoardService from "@/services/board/free/FreeBoardService";
 export default {
   data() {
     return {
-      replyVisible: false, // 답글 입력 폼의 표시 여부를 관리하는 변수
-      freeBoardCommentId: null, // 어떤 댓글에 대한 답글인지 식별하기 위한 변수
+      // replyVisible: false, // 답글 입력 폼의 표시 여부를 관리하는 변수
+      replyToCommentId: null, // 어떤 댓글에 대한 답글인지 식별하기 위한 변수
 
       // 새로 작성할 답글
       newReply: {
@@ -539,17 +538,16 @@ export default {
     },
   },
   methods: {
-    toggleReplyForm(freeBoardCommentId) {
+    toggleReplyForm(commentId) {
+      // 클릭된 답글 버튼이 이미 열려있는 상태이면 폼을 닫고, 그렇지 않으면 엽니다.
+      this.replyVisible =
+        this.replyVisible && this.replyToCommentId === commentId ? false : true;
+      this.replyToCommentId =
+        this.replyToCommentId === commentId ? null : commentId;
 
-     // 클릭된 답글 버튼이 이미 열려있는 상태이면 폼을 닫고, 그렇지 않으면 엽니다.
-    this.replyVisible =
-      this.replyVisible && this.replyToCommentId === freeBoardCommentId ? false : true;
-    this.replyToCommentId = this.replyToCommentId === freeBoardCommentId ? null : freeBoardCommentId;
-
-      this.freeBoardCommentId = commentId; // 현재 선택된 댓글 ID 업데이트
+      // 현재 선택된 댓글 ID 업데이트
       this.newReply.content = ""; // 입력 폼 내용 초기화
       this.charCountReply = 0; // 글자 수 초기화
-
     },
 
     // 댓글 작성 시 글자 수 세기
@@ -585,6 +583,7 @@ export default {
         // TODO: 3) 바인딩변수(속성)에 저장
         this.freeBoardComments = freeBoardComments; // 부서배열(벡엔드 전송)
         this.count = totalItems; // 전체페이지수(벡엔드 전송)
+        this.retrieveFreeBoardRecomment(freeBoardId);
         // TODO: 4) 프론트 로깅 : console.log
         // console.log("response.data",response.data);
         // console.log("this.comments" ,this.freeBoardComments);
@@ -615,7 +614,6 @@ export default {
       }
       this.newComment.content = "";
       this.charCount = 0;
-
 
       this.retrieveFreeBoardComment(this.$route.params.freeBoardId);
     },
@@ -678,7 +676,15 @@ export default {
         );
         this.freeBoardRecomments = response.data; // 부서배열(벡엔드 전송)
 
-        console.log("대댓글들", response.data);
+        console.log("댓글들", this.freeBoardComments);
+        console.log("대댓글들", this.freeBoardRecomments);
+        // 댓글 배열에 대댓글 속성을 추가하는 함수
+        this.freeBoardComments.forEach((comment) => {
+          comment.freeBoardRecomments = this.freeBoardRecomments.filter(
+            (reply) => reply.freeBoardCommentId === comment.freeBoardCommentId
+          );
+        });
+        console.log("댓글마다 대댓글 잘 드갔나", this.freeBoardComments);
         // TODO: 4) 프론트 로깅 : console.log
         // console.log("response.data",response.data);
         // console.log("this.comments" ,this.freeBoardComments);
@@ -712,10 +718,10 @@ export default {
       this.retrieveFreeBoardComment(this.$route.params.freeBoardId);
     },
   },
-  mounted() {
+  async mounted() {
     this.retrieveGetFreeBoard(this.$route.params.freeBoardId);
     this.retrieveFreeBoardComment(this.$route.params.freeBoardId);
-    this.retrieveFreeBoardRecomment(this.$route.params.freeBoardId);
+    // this.retrieveFreeBoardRecomment(this.$route.params.freeBoardId);
     window.scrollTo(0, 0);
   },
 };
