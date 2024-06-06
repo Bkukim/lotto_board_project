@@ -15,6 +15,11 @@ class NoticeService {
   getNotice(noticeId) {
     return http.get(`/normal/notice/${noticeId}`);
   }
+  
+  // todo: 관리자 권한 상세조회
+  getAdminNotice(noticeId) {
+    return http.get(`/admin/notice/${noticeId}`);
+  }
 
   //TODO: 부서만 조회
   getDept(size) {
@@ -51,16 +56,24 @@ class NoticeService {
     });
   }
 
-  //   // TODO: 수정함수 : qnaId,
-  //   update(faqId, data) {
-  //     // TODO: 수정(update) -> put 방식 -> @PutMapping
-  //     // TODO: 사용법 : http.put(`/컨트롤러함수url/${dno}`, 수정할객체)
-  //     return http.put(`/user/mdember/faq/update/${faqId}`, data,
+    // TODO: 수정함수
+    update(noticeId, data) {
+      return http.put(`/admin/notice/notice-update/${noticeId}`, data,
   // {
   //   headers: AuthHeader()
   // }
-  //     );
-  //   }
+      );
+    }  
+    
+    // TODO: 조회수update
+    updateVeiws(noticeId, data) {
+      console.log("서비스", data);
+      return http.put(`/normal/notice/notice-update-views/${noticeId}`, data,
+  // {
+  //   headers: AuthHeader()
+  // }
+      );
+    }
 
   //   // TODO: 관리자 :: 답변으로 수정함수 : qnaId,
   //   updateAnswer(faqId, data) {

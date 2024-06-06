@@ -38,7 +38,8 @@ import java.util.Optional;
 public class NormalNoticeController {
 
     private final NoticeRedisService noticeRedisService;
-//todo: 공지사항 clob이 string 변환 => entity에 컬럼추가해 주니 됨 @Column(name = "CONTENT")
+
+    //todo: 공지사항 clob이 string 변환 => entity에 컬럼추가해 주니 됨 @Column(name = "CONTENT")
     @GetMapping("/all/{eventYn}")
     public ResponseEntity<Object> getAllNotice(@PathVariable String eventYn, // 이벤트 가 존재하면 true 보내게
                                                @RequestParam String title,
@@ -106,6 +107,26 @@ public class NormalNoticeController {
         } catch (Exception e) {
             log.debug("컨트롤러2");
 
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    //    todo: 조회수 update
+    @PutMapping("/notice-update-views/{noticeId}")
+    public ResponseEntity<Object> update(
+            @PathVariable long noticeId
+            , @RequestBody Notice notice
+    ) {
+        try {
+            log.debug("컨트롤러" + notice.getViews());
+            log.debug("컨트롤러" + notice.getNoticeId());
+            log.debug("컨트롤러" + notice.getTitle());
+            log.debug("컨트롤러" + notice);
+//            notice.setViews(notice.getViews() + 1);
+            noticeRedisService.save(notice);
+            return new ResponseEntity<>(HttpStatus.OK);
+        } catch (Exception e) {
+            log.debug(e.getMessage());
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }

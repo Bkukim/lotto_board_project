@@ -31,18 +31,16 @@
     </div>
 
     <!-- 본문 -->
-    <div ref="editor"></div>
-    <div v-html="notice.content"></div>
+    <!-- todo: ref가 아니라 id로 가져와야함, ref로 가져오면 뭐가 안되던데 이유는 모르겠음, 
+              editor data에 넣어줬는데로 되는지 한번더 확인하기 -->
+    <div id="editor"></div>
     <!-- 버튼 -->
     <div class="row mt-3">
       <button @click="cancel" id="button-cancle-Writing" class="btn col-3">
         취소
       </button>
-       <button @click="setEditor" id="button-cancle-Writing" class="btn col-3">
-        dfa
-      </button>
       <button
-        @click="createNotice"
+        @click="updateNotice"
         id="button-cancle-Writing"
         class="btn col-3"
       >
@@ -60,67 +58,58 @@ import NoticeService from "@/services/notice/NoticeService";
 export default {
   data() {
     return {
-      editor: null, // 에디터 인스턴스를 참조할 변수
+      editor: undefined, // null보다 에러가 적음 이거 사용
       notice: {}, // 공지사항 정보를 저장할 객체
     };
   },
   methods: {
-
-    // 공지사항 ID로 상세 정보를 가져오는 메서드
+    // 상세조회 요청함수
     async getNotice(noticeId) {
       try {
-        this.editor = new Editor({
-
-          el: this.$refs.editor, // HTML 요소 참조
-          initialEditType: "wysiwyg", // 초기 에디터 타입 설정 (WYSIWYG)
-          height: "500px", // 에디터 높이 설정
-        });
-          console.log("dataddd", this.editor);
-        // 공지사항 데이터를 가져옴
-        let response = await NoticeService.getNotice(noticeId);
-        console.log("Notice data:", response.data); // 가져온 데이터 로그 출력
-        this.notice = response.data; // 가져온 데이터를 notice 객체에 할당
-        console.log("this.notice", this.notice); // 가져온 데이터 로그 출력
-
-        this.editor.setHTML(this.notice.content, false); // 에디터에 불러온 내용 설정
-
-        // Vue의 nextTick을 사용하여 다음 렌더링 사이클에서 데이터를 설정
-        // this.$nextTick(() => {
-        //   if (this.editor && this.editor.isLoaded) {
-        //     // 에디터가 로드되었는지 확인(isLoaded는 일반적으로 특정 객체나 요소가 완전히 로드되었는지를 나타내는 플래그(flag))
-        //     console.log("Setting markdown:", this.notice.content); // 에디터에 설정할 내용 로그 출력
-        //     this.editor.setHTML(this.notice.content); // 에디터에 불러온 내용 설정
-        //   } else {
-        //     console.log("에디터 준비되지 않음"); // 에디터가 준비되지 않은 경우 로그 출력
-        //   }
-        // });
+        let response = await NoticeService.getAdminNotice(noticeId);
+        this.notice = response.data;
+        console.log(response.data);
       } catch (e) {
-        console.log(e); // 에러 발생 시 로그 출력
+        console.log(e);
       }
     },
-    // 공지사항을 업데이트하는 메서드
-
+    // toastUi 에디터 생성
+    createEditor(content) {
+      this.editor=new Editor({
+        el: document.querySelector("#editor"),
+        initialEditType: "wysiwyg",
+        initialValue: content, // TODO: 중요 : 여기 content 넣기 , 에디터에 content 보임 =>내용
+      });
+    },
+    // 수정함수
     async updateNotice() {
       try {
-        this.notice.content = this.editor.getHTML(); // 에디터 내용을 notice.content에 설정
-        let response = await NoticeService.update(
-          this.notice.noticeId, // 공지사항 ID
-          this.notice // 업데이트할 공지사항 데이터
-        );
-        console.log(response.data); // 응답 데이터 로그 출력
-        this.message = "수정에 성공했습니다."; // 수정 성공 메시지 설정
+        let temp = {
+          noticeId: this.notice.noticeId,
+          title: this.notice.title,
+          noticeType:this.notice.noticeType,
+          content: this.editor.getHTML(), // TODO: 중요 : 에디터의 글 content 가져오기
+          // 선생님 예시에는 
+          // loc: this.toastEditor.getHTML() 되어있었으나 
+          // 여기서 toastEditor가 없어서 editor를 create해줄때랑 같이 undefined로 해서 넣어줌
+        };
+        console.log(temp);
+        let response = await NoticeService.update(this.notice.noticeId, temp);
+        console.log(response.data);
+        alert("수정이 성공했습니다.");
+        // 다시 상세조회
+        this.getNotice(this.notice.noticeId);
+        this.$router.push(`/notice/notice-check/`+this.notice.noticeId);
+
       } catch (e) {
-        console.log(e); // 에러 발생 시 로그 출력
+        console.log(e);
       }
     },
   },
-  // 컴포넌트가 마운트된 후 호출되는 라이프사이클 훅
-  mounted() {
-    // 지정된 옵션으로 에디터 초기화
-
-    this.getNotice(this.$route.params.noticeId); // 라우트 파라미터에서 noticeId를 사용해 공지사항 정보 가져오기
-
-    // 페이지가 로드되면 즉시 getNotice를 호출
+  async mounted() {
+    // 비동기
+    await this.getNotice(this.$route.params.noticeId);
+    this.createEditor(this.notice.content);
   },
 };
 </script>

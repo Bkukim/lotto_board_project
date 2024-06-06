@@ -63,13 +63,19 @@
         "
         v-html="freeBoard.content"
       ></div>
-
-      <div class="mt-5">
-        <button style="border: none; text-align: left">
+      <!-- TODO: 좋아요버튼 -->
+      <div class="mt-5 text-center">
+        <button
+          type="button"
+          class="btn btn-light"
+          @click="likeUp"
+          style="border: none; text-align:center; height: 8vh; width: 18vw; padding: 1vw; "
+        >
           <img src="@/assets/img/like_icon.png" width="40" height="40" />
+          공감해요
+          {{ this.freeBoard.likes }}
         </button>
-
-        <button>신고</button>
+        <button type="button" class="btn btn-light" style="margin-left: 3vh; height: 8vh; width: 10vw; padding: 1vw;">신고</button>
       </div>
       <!-- 파일첨부 -->
       <!-- <div class="mt-5" style="width: 500px">
@@ -83,13 +89,13 @@
     </div>
     <!--  첫번째 게시판 큰 박스 끝-->
 
+
     <!-- TODO: 좋아요버튼 -->
     <div class="d-flex justify-content-center mt-3">
       <button type="button" class="btn btn-primary" @click="likeUp">
         공감해요 {{ this.freeBoard.likes }}
       </button>
     </div>
-
     <div class="container text-center mt-5">
       <div
         class="row"
@@ -330,17 +336,10 @@
             }}
           </button>
 
-          <!-- 답글 버튼 클릭 시 답글 입력 폼이 열리도록 수정 -->
-          <!-- <button
-            style="border: none; margin-top: 15px"
-            @click="toggleReplyForm(data.commentId)"
-          >
-            {{
-              replyVisible && replyToCommentId === data.commentId
-                ? "접기"
-                : "답글"
-            }}
-          </button> -->
+
+
+          </button>
+
 
           <!-- 답변(대댓글)들 -->
           <div
@@ -372,6 +371,7 @@
               replyVisible && freeBoardCommentId === data.freeBoardCommentId
             "
           >
+
             <div
               class="lotto_new row row-cols-lg-4 gap-5 justify-content-left mb-3 mt-5"
             >
@@ -414,7 +414,7 @@
                   style="
                     width: 60px;
                     text-decoration: none;
-                    background-color: #ccc;
+                    background-color: #999;
                     border: none;
                     font-size: 15px;
                     text-align: center;
@@ -449,6 +449,20 @@
               </div>
             </div>
           </div>
+        </div>
+      </div>
+
+      <!-- 페이징 -->
+      <!-- {/* paging 시작 */} -->
+      <div class="row justify-content-center mt-5">
+        <div class="col-auto" style="margin-top: 50px">
+          <b-pagination
+            class="custom-pagination col-12 mb-3"
+            v-model="page"
+            :total-rows="count"
+            :per-page="pageSize"
+            @click="retrieveFreeBoardComment(this.$route.params.freeBoardId)"
+          ></b-pagination>
         </div>
       </div>
     </div>
@@ -514,6 +528,7 @@ export default {
       pageSize: 5, // 1페이지당개수(select태그)
 
       // 댓글 글자수
+
       charCount: 0,
     };
   },
@@ -523,6 +538,7 @@ export default {
     },
   },
   methods: {
+
     // 답글 폼 토글
     toggleReplyForm(commentId) {
       // 클릭된 답글 버튼이 이미 열려있는 상태이면 폼을 닫고, 그렇지 않으면 엽니다.
@@ -533,6 +549,7 @@ export default {
       this.freeBoardCommentId = commentId; // 현재 선택된 댓글 ID 업데이트
       this.newReply.content = ""; // 입력 폼 내용 초기화
       this.charCountReply = 0; // 글자 수 초기화
+
     },
 
     // 댓글 작성 시 글자 수 세기
@@ -586,6 +603,7 @@ export default {
       try {
         let data = {
           userId: this.newComment.userId,
+
           freeBoardId: this.freeBoard.freeBoardId,
           content: this.newComment.content,
           secretCommentYn: "N",
@@ -597,7 +615,8 @@ export default {
       }
       this.newComment.content = "";
       this.charCount = 0;
-      // alert("댓글이 등록되었습니다.");
+
+
       this.retrieveFreeBoardComment(this.$route.params.freeBoardId);
     },
 

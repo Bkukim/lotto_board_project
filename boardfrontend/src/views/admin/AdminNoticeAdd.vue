@@ -65,7 +65,7 @@ export default {
   },
   data() {
     return {
-      editor: null,
+      editor: undefined,
       notice: {
         title: "",
         noticeType: "",

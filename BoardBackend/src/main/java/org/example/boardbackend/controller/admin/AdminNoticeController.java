@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 /**
  * packageName : org.example.boardbackend.controller.admin
@@ -141,6 +142,43 @@ public class AdminNoticeController {
             log.debug(e.getMessage());
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
+    }
+
+// todo: 관리자 권한 상세조회
+// todo: 관리자 권한 상세조회
+//    todo: 상세조회 만들기
+//    조회(select) -> get 방식 -> @GetMapping
+@GetMapping("/{noticeId}")
+public ResponseEntity<Object> findById(
+        @PathVariable int noticeId
+) {
+    try {
+//            상세조회 서비스 실행
+        Optional<Notice> noticeOptional
+                = noticeService.findById(noticeId);
+
+        if (noticeOptional.isEmpty() == true) {
+//                데이터 없음
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        } else {
+//                조회 성공
+            return new ResponseEntity<>(noticeOptional.get(), HttpStatus.OK);
+
+        }
+    } catch (Exception e) {
+
+        return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+}
+
+//todo: 수정함수
+    @PutMapping("notice-update/{noticeId}")
+    public  ResponseEntity<Object> update(
+            @PathVariable long noticeId
+            , @RequestBody Notice notice
+    ){
+        noticeService.save(notice);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
 

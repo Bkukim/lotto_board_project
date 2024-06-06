@@ -6,6 +6,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import oracle.ucp.proxy.annotation.Post;
+
+import org.example.boardbackend.model.dto.board.club.ClubBoardWithPicsDto;
+
 import org.example.boardbackend.model.dto.board.club.CreateClubArticleDto;
 import org.example.boardbackend.model.dto.board.club.FieldPicDto;
 import org.example.boardbackend.model.entity.board.club.ClubBoard;
@@ -14,6 +17,8 @@ import org.example.boardbackend.model.entity.board.free.FreeBoard;
 import org.example.boardbackend.service.board.club.ClubBoardService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -42,129 +47,23 @@ import java.util.*;
 public class ClubBoardController {
     private final ClubBoardService clubBoardService;
 
-    private static final Logger logger = LoggerFactory.getLogger(ClubBoardController.class);
 
-//  TODO: 전체 조회 함수
-    @GetMapping("/club")
-    public List<ClubBoard> findAll() {
-        return clubBoardService.findAll();
-    }
+//  TODO: 전체 조회 함수 : 페이징 처리
+@GetMapping("/club")
+public ResponseEntity<List<ClubBoard>> getAllClubs() {
+    List<ClubBoard> clubBoards = clubBoardService.getAllClub();
+    return ResponseEntity.ok(clubBoards);
+}
 
-//  TODO: 저장 함수
-//    @PostMapping("/club")
-//    public ResponseEntity<Object> create(
-//            @RequestBody CreateClubArticleDto createClubArticleDto
-//            ) {
-//        try {
-//            if (createClubArticleDto == null) {
-//                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-//            } else {
-//                ClubBoard clubBoard2 = clubBoardService.save(createClubArticleDto);
-//                return new ResponseEntity<>(clubBoard2, HttpStatus.OK);
-//            }
-//        } catch (Exception e) {
-//            log.debug("로깅 :::" + e.getMessage());
-//            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-//        }
-//    }
 
 //  TODO: 상세 조회 함수
     @GetMapping("/club/{clubBoardId}")
-    public ResponseEntity<Object> findById(
-            @PathVariable long clubBoardId
-    ) {
-        try {
-            Optional<ClubBoard> optionalClubBoard = clubBoardService.findById(clubBoardId);
-
-            if (optionalClubBoard.isEmpty() == true) {
-                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-            } else {
-                return new ResponseEntity<>(optionalClubBoard.get(), HttpStatus.OK);
-            }
-        } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+    public ResponseEntity<List<ClubBoardWithPicsDto>> getClubBoard(@PathVariable long clubBoardId) {
+        List<ClubBoardWithPicsDto> result = clubBoardService.getClubBoardWithPics(clubBoardId);
+        return ResponseEntity.ok(result);
     }
 
-//  TODO: 저장 함수
-//    @PostMapping("/club/write/complete")
-//    public ResponseEntity<Object> create
-//    @PostMapping("/club/create")
-//    public void createClubBoard(@RequestBody ClubBoard clubBoard,
-//                                @RequestBody FieldPic fieldPic) {
-//        clubBoardService.createClubBoardAndFieldPic(clubBoard, fieldPic);
-//    }
-
-//    @PostMapping("/club/create")
-//    public ResponseEntity<ClubBoard> createClubArticle(@RequestBody CreateClubArticleDto dto) {
-//        ClubBoard clubBoard = clubBoardService.createClubArticle(dto);
-//        return ResponseEntity.ok(clubBoard);
-//    }
-//@PostMapping("/club/create")
-//public ResponseEntity<Object> createClub(
-//        @RequestParam("content") String content,
-//        @RequestParam("location") String location,
-//        @RequestParam("address") String address,
-//        @RequestParam("participationFee") String participationFee,
-//        @RequestParam("startTime") String startTime,
-//        @RequestParam("endTime") String endTime,
-//        @RequestParam("recruitmentDeadline") String recruitmentDeadline,
-//        @RequestParam("maxQuota") String maxQuota,
-//        @RequestParam("minQuota") String minQuota,
-//        @RequestParam("peoplesMatch") String peoplesMatch,
-//        @RequestParam("material") String material,
-//        @RequestParam("matchForm") String matchForm,
-//        @RequestParam("title") String title,
-//        @RequestParam("imgFile") MultipartFile imgFile
-//) {
-//    // 데이터 처리 및 저장 로직
-//    // 예시로 데이터 출력을 해봅니다.
-//    System.out.println("뭔데 도대체::::::::::: " + content);
-//    System.out.println("로케이션은 뭐야:::::::::::::::: " + location);
-//    // ... 다른 필드들도 출력
-//
-//    // 실제로는 데이터 저장 로직을 여기에 작성합니다.
-//    // 예외가 발생할 경우, 적절한 에러 메시지와 함께 ResponseEntity를 반환합니다.
-//
-//    return ResponseEntity.ok("Success");
-//}
-//@PostMapping("/club/create")
-//public ResponseEntity<Object> createClub(
-//        @RequestBody CreateClubArticleDto dto) {
-//
-//    try {
-//        ClubBoard createdClub = clubBoardService.createClubArticle(dto);
-//        return ResponseEntity.ok("Club created successfully");
-//    } catch (Exception e) {
-//        log.debug("로깅이요 ::::" + e.getMessage());
-//        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to create club: " + e.getMessage());
-//    }
-//}
-
-////  TODO: 저장 함수
-//@PostMapping("/club/create")
-//public ResponseEntity<String> createClubArticle(
-//        @RequestPart("data") String data,
-//        @RequestPart(value = "imgFile", required = false) MultipartFile imgFile) {
-//    try {
-//        ObjectMapper objectMapper = new ObjectMapper();
-//        CreateClubArticleDto dto = objectMapper.readValue(data, CreateClubArticleDto.class);
-//
-//        if (imgFile != null && !imgFile.isEmpty()) {
-//            FieldPicDto fieldPicDto = new FieldPicDto();
-//            fieldPicDto.setImgUrl(imgFile.getOriginalFilename());
-//            fieldPicDto.setImgFile(Base64.getEncoder().encodeToString(imgFile.getBytes()));
-//            dto.setFieldPics(Collections.singletonList(fieldPicDto));
-//        }
-//
-//        clubBoardService.save(dto);
-//        return ResponseEntity.status(HttpStatus.CREATED).body("Club article created successfully.");
-//    } catch (Exception e) {
-//        e.printStackTrace();
-//        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to create club article: " + e.getMessage());
-//    }
-//}
-
+//  TODO: 저장 함수 : ClubBoardEntity + FieldPic 동시에 생성
     @PostMapping("/club/create")
     public ResponseEntity<String> createClubArticle(
             @RequestPart("data") String data,

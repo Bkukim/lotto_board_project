@@ -1,5 +1,5 @@
 <template>
-  <div class="container text-center" id="fb_all">
+  <div class="container" id="fb_all">
     <h3
       class="mb-5 mt-5"
       style="
@@ -78,7 +78,7 @@
 
     <!-- 테이블 -->
     <table class="table mt-5">
-      <thead>
+      <thead class="text-center">
         <tr>
           <th scope="col">번호</th>
           <th scope="col">제목</th>
@@ -90,17 +90,28 @@
       <tbody>
         <!-- 반복문 시작할 행 -->
         <tr v-for="(data, index) in notices" :key="index">
-          <td>
+          <td class="text-center">
             {{ index + 1 }}
           </td>
-          <td class="col-8">
-          <router-link :to="`/notice/notice-check/`+data.noticeId">
-          [{{ data.noticeType }}]  {{ data.title }}
-          </router-link>
+          <td
+            @click="viewsUp"
+            class="col-5"
+            
+          >
+            <router-link :to="`/notice/notice-check/` + data.noticeId"
+            style="
+              color: #444444;
+              font-weight: bold;
+              text-decoration: none;
+              text-align: left;
+              padding-left: 5vw;
+            ">
+              [{{ data.noticeType }}] {{ data.title }}
+            </router-link>
           </td>
-          <td>관리자</td>
-          <td>{{ data.insertTime }}</td>
-          <td>{{ data.views }}</td>
+          <td class="text-center">관리자</td>
+          <td class="text-center">{{ data.insertTime }}</td>
+          <td class="text-center">{{ data.views }}</td>
         </tr>
       </tbody>
     </table>
@@ -170,6 +181,8 @@ export default {
         console.log(e);
       }
     },
+    // 상세조회 이동+조회수
+
     goNoticeAdd() {
       this.$router.push("/admin/notice-add");
     },
@@ -231,7 +244,7 @@ p {
 /* 검색 전체 배경 */
 #search_box {
   /* background-color: #e2e2e28c; */
-  height: 75PX;
+  height: 75px;
   padding: 20px;
 }
 #search_ck {

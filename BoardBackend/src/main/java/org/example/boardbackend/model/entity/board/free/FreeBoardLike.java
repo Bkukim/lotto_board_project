@@ -1,4 +1,4 @@
-package org.example.boardbackend.model.dto.board.free;
+package org.example.boardbackend.model.entity.board.free;
 
 import jakarta.persistence.*;
 import lombok.*;
@@ -42,4 +42,10 @@ public class FreeBoardLike {
 
     @JoinColumn(name = "FREE_BOARD_ID")
     private long freeBoardId;
+//@AllArgsConstructor이거 있으면 생성자 안해줘도 되는것?
+//    public FreeBoardLike(long likeId, String userId, long freeBoardId) {
+//        this.likeId = likeId;
+//        this.userId = userId;
+//        this.freeBoardId = freeBoardId;
+//    }
 }

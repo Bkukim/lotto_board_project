@@ -87,7 +87,7 @@ public class FreeBoardService {
         log.debug("여기는 서비스2");
 
         // 2. 알림 보내기
-        String notifyContent = "게시물에 댓글이 달렸습니다.";
+        String notifyContent = "회원님의 게시물에 댓글이 달렸습니다." + /*\n" + "\"" +*/ freeBoardComment.getContent() /*+ "\""*/;
         String notifyUrl = webConfig.getFrontDomain() + "/free/free-board/" + freeBoard.getFreeBoardId();
         notifyService.send(boardWriter,Notify.NotificationType.COMMENT,notifyContent,notifyUrl);
     }
@@ -106,9 +106,11 @@ public class FreeBoardService {
 
   
     // 2. 알림 보내기
+
     String notifyContent = "회원님의 댓글에 또 다른 댓글이 달렸습니다.    "  + "\"" + freeBoardRecomment.getContent() + "\"";
     String notifyUrl = webConfig.getFrontDomain() + "/free/free-board/" + freeBoardComment.getFreeBoardId();
     notifyService.send(commentWriter,Notify.NotificationType.COMMENT,notifyContent,notifyUrl);
+
 }
 
 
