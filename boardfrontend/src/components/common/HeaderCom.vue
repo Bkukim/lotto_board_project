@@ -28,23 +28,26 @@
             style="gap: 10px; display: block; display: flex"
           >
             <li class="nav-item">
-              <router-link class="nav-link" to="/notice/notice-board">공지사항</router-link>
-            </li>
-            <li class="nav-item">
-
-              <router-link class="nav-link" aria-current="page" to="/free/free-board"
-                >자유 게시판</router-link
-
+              <router-link class="nav-link" to="/notice/notice-board"
+                >공지사항</router-link
               >
             </li>
             <li class="nav-item">
-              <router-link class="nav-link" to="/club/club-board">동아리 게시판</router-link>
+              <router-link
+                class="nav-link"
+                aria-current="page"
+                to="/free/free-board"
+                >자유 게시판</router-link
+              >
             </li>
             <li class="nav-item">
-
+              <router-link class="nav-link" to="/club/club-board"
+                >동아리 게시판</router-link
+              >
+            </li>
+            <li class="nav-item">
               <router-link class="nav-link" to="/complaint/complaint-board"
                 >건의 게시판</router-link
-
               >
             </li>
             <li class="nav-item dropdown">
@@ -59,11 +62,33 @@
               </router-link>
               <ul class="dropdown-menu">
                 <li>
-                  <router-link class="dropdown-item" to="/department/accountingboard">회계부 게시판</router-link>
+                  <router-link
+                    class="dropdown-item"
+                    to="/department/accountingboard"
+                    >회계부 게시판</router-link
+                  >
                 </li>
-                <li><router-link class="dropdown-item" to="/department/fnanceboard">재정부 게시판</router-link></li>
-                <li><router-link class="dropdown-item" to="/department/Planningboard">기획부 게시판</router-link></li>
-                <li><router-link class="dropdown-item" to="/department/promotionboard">홍보부 게시판</router-link></li>
+                <li>
+                  <router-link
+                    class="dropdown-item"
+                    to="/department/fnanceboard"
+                    >재정부 게시판</router-link
+                  >
+                </li>
+                <li>
+                  <router-link
+                    class="dropdown-item"
+                    to="/department/Planningboard"
+                    >기획부 게시판</router-link
+                  >
+                </li>
+                <li>
+                  <router-link
+                    class="dropdown-item"
+                    to="/department/promotionboard"
+                    >홍보부 게시판</router-link
+                  >
+                </li>
               </ul>
             </li>
           </ul>
@@ -105,12 +130,10 @@
 
           <!-- 알림 아이콘 -->
           <div
-
-            class="nav-item dropdown notification-dropdown "
+            class="nav-item dropdown notification-dropdown"
             style="position: relative; margin-right: 7px"
           >
             <router-link
-
               class="nav-link"
               to="#"
               role="button"
@@ -130,34 +153,48 @@
                 v-if="notificationCount > 0"
                 class="badge bg-danger notification-badge"
               >
-
-
                 {{ notificationCount }}
               </span>
             </router-link>
 
             <ul
-              class="dropdown-menu dropdown-menu-end"
-              style="height: auto; width: 300px"
+              class="dropdown-menu dropdown-menu-end " 
+              style="height: auto; width: 300px; text-align: left;"
             >
-              <table class="table mt-5">
+              <p style="text-align: center">알림</p>
 
-
-                <p style="text-align: center;">알림</p>
-      
-              <tbody>
-                <!-- 반복문 시작할 행 -->
-                <tr v-for="(data, index) in notificationList" :key="index">
-                  <td style="font-size: 15px">
-                  </td>
-                  <td class="col-8">{{ data.content }}</td>
-                </tr>
-              </tbody>
-            </table>
+              <table class="table mt-3">
+                <tbody>
+                  <!-- 반복문 시작할 행 -->
+                  <tr
+                    v-for="(data, index) in notificationList"
+                    :key="index"
+                    style="display: flex; align-items: center"
+                  >
+                    <td
+                      style="
+                        width:2px;
+                        height: 2px;
+                        background-color: #162b59;
+                        border-radius: 50%;
+                        display: flex;
+                        justify-content: center;
+                        align-items: center;
+                        margin-left: 10px;
+                      "
+                    ></td>
+                    <td class="col-12" style="word-wrap: break-word; white-space: normal; max-width: 250px;">{{ data.content }}</td>
+                  </tr>
+                </tbody>
+              </table>
 
               <li><hr class="dropdown-divider" /></li>
 
-              <li><router-link class="dropdown-item" to="#">모든 알림 보기</router-link></li>
+              <li>
+                <router-link class="dropdown-item" to="#"
+                  >모든 알림 보기</router-link
+                >
+              </li>
             </ul>
           </div>
 
@@ -219,17 +256,19 @@ import NotifyService from "@/services/notify/NotifyService";
 export default {
   data() {
     return {
-
       notificationList: [],
       notificationCount: undefined,
     };
   },
   methods: {
-    async getUnreadNotify(){
+    async getUnreadNotify() {
       try {
-        let response = await NotifyService.getUnreadNotify(this.$store.state.user.userId);
+        let response = await NotifyService.getUnreadNotify(
+          this.$store.state.user.userId
+        );
         this.notificationList = response.data;
-        console.log( "알림들",response.data);
+        console.log("알림들", response.data);
+
       } catch (error) {
         console.log(error);
       }
@@ -239,7 +278,7 @@ export default {
         let notifyCount = await NotifyService.countNotify(
           this.$store.state.user.userId
         );
-        console.log("백엔드에서 받아온 알림",notifyCount);
+        console.log("백엔드에서 받아온 알림", notifyCount);
         this.notificationCount = notifyCount.data;
       } catch (error) {
         console.log(error);
@@ -260,7 +299,7 @@ export default {
   },
   mounted() {
     this.countUnreadNotify();
-    console.log("알림 갯수",this.notificationCount);
+    console.log("알림 갯수", this.notificationCount);
   },
 };
 </script>
