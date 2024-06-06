@@ -321,13 +321,13 @@
           <br />
           <button
             style="border: none; margin-top: 15px"
-            @click="toggleReplyForm(data.commentId)"
+            @click="toggleReplyForm(data.freeBoardCommentId)"
           >
-            {{ replyToCommentId === data.commentId ? "답글접기" : "답글" }}
+            {{ replyToCommentId === data.freeBoardCommentId ? "답글접기" : "답글" }}
           </button>
 
           <!-- 답변(대댓글) 폼 -->
-          <div v-if="replyToCommentId === data.commentId">
+          <div v-if="replyToCommentId === data.freeBoardCommentId">
             <div
               class="lotto_new row row-cols-lg-4 gap-5 justify-content-left mb-3 mt-5"
             >
@@ -446,7 +446,7 @@ import FreeBoardService from "@/services/board/free/FreeBoardService";
 export default {
   data() {
     return {
-      replyVisible: false, // 답글 입력 폼의 표시 여부를 관리하는 변수
+      // replyVisible: false, // 답글 입력 폼의 표시 여부를 관리하는 변수
       replyToCommentId: null, // 어떤 댓글에 대한 답글인지 식별하기 위한 변수
       newReply: {
         // 새로 작성할 답글
@@ -486,6 +486,9 @@ export default {
       this.replyVisible && this.replyToCommentId === commentId ? false : true;
     this.replyToCommentId = this.replyToCommentId === commentId ? null : commentId;
 
+    console.log(commentId);
+    console.log(this.replyToCommentId);
+
     // 현재 선택된 댓글 ID 업데이트
     this.newReply.content = ""; // 입력 폼 내용 초기화
     this.charCountReply = 0; // 글자 수 초기화
@@ -521,6 +524,7 @@ export default {
         const { freeBoardComments, totalItems } = response.data; // 부서배열(벡엔드 전송)
         // TODO: 3) 바인딩변수(속성)에 저장
         this.freeBoardComments = freeBoardComments; // 부서배열(벡엔드 전송)
+        console.log(this.freeBoardComments);
         this.count = totalItems; // 전체페이지수(벡엔드 전송)
         // TODO: 4) 프론트 로깅 : console.log
         // console.log("response.data",response.data);

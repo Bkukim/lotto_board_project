@@ -1,17 +1,12 @@
 package org.example.boardbackend.controller.user.board.club;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import oracle.ucp.proxy.annotation.Post;
 import org.example.boardbackend.model.dto.board.club.CreateClubArticleDto;
 import org.example.boardbackend.model.dto.board.club.FieldPicDto;
 import org.example.boardbackend.model.entity.board.club.ClubBoard;
-import org.example.boardbackend.model.entity.board.club.FieldPic;
-import org.example.boardbackend.model.entity.board.free.FreeBoard;
-import org.example.boardbackend.service.board.club.ClubBoardService;
+import org.example.boardbackend.repositorytest.board.club.ClubBoardService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -19,7 +14,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
 import java.util.*;
 
 /**

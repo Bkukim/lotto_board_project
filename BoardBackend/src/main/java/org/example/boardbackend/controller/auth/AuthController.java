@@ -1,6 +1,5 @@
 package org.example.boardbackend.controller.auth;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.example.boardbackend.model.dto.auth.NewUser;
@@ -10,8 +9,8 @@ import org.example.boardbackend.model.dto.member.FindId;
 import org.example.boardbackend.model.dto.member.NewPw;
 import org.example.boardbackend.model.entity.auth.User;
 import org.example.boardbackend.security.jwt.JwtUtils;
-import org.example.boardbackend.service.social.SocialLoginService;
-import org.example.boardbackend.service.user.UserService;
+import org.example.boardbackend.repositorytest.social.SocialLoginService;
+import org.example.boardbackend.repositorytest.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,8 +22,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * packageName : org.example.board_login_in_webtoken.controller.auth

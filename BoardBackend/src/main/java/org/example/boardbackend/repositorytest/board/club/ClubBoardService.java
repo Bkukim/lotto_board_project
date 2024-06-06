@@ -1,11 +1,9 @@
-package org.example.boardbackend.service.board.club;
+package org.example.boardbackend.repositorytest.board.club;
 
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.example.boardbackend.model.dto.board.club.CreateClubArticleDto;
-import org.example.boardbackend.model.dto.board.club.FieldPicDto;
-import org.example.boardbackend.model.entity.auth.User;
 import org.example.boardbackend.model.entity.board.club.ClubBoard;
 import org.example.boardbackend.model.entity.board.club.FieldPic;
 import org.example.boardbackend.repository.board.club.ClubBoardRepository;
@@ -16,7 +14,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.io.IOException;
 import java.util.*;

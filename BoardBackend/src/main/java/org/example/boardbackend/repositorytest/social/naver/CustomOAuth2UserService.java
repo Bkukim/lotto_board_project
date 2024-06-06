@@ -1,4 +1,4 @@
-package org.example.boardbackend.service.social.naver;
+package org.example.boardbackend.repositorytest.social.naver;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
