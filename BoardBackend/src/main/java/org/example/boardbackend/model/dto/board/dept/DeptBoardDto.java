@@ -22,10 +22,10 @@ public interface DeptBoardDto {
 //    modelMapper 사용
 //    인터페이스 Dto : projection. dto를 확장한 기능
 
-     long getDeptBoardId();
+     Long getDeptBoardId();
      String getUserId();
      String getTitle();
      String getInsertTime();
-     long getLikes();
+     Long getLikes();
 
 }
