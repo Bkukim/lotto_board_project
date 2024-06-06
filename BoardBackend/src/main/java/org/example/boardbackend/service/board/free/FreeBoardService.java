@@ -3,9 +3,8 @@ package org.example.boardbackend.service.board.free;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.example.boardbackend.config.WebConfig;
-import org.example.boardbackend.model.dto.board.free.FreeBoardCommentDto;
 import org.example.boardbackend.model.dto.board.free.FreeBoardDto;
-import org.example.boardbackend.model.entity.auth.User;
+import org.example.boardbackend.model.dto.board.free.IFreeBoardRecommentDto;
 import org.example.boardbackend.model.entity.board.free.FreeBoard;
 import org.example.boardbackend.model.entity.board.free.FreeBoardComment;
 import org.example.boardbackend.model.entity.board.free.FreeBoardRecomment;
@@ -107,9 +106,9 @@ public class FreeBoardService {
 
   
     // 2. 알림 보내기
-    String notifyContent = "회원님의 게시물에 댓글이 달렸습니다." + /*\n" + "\"" +*/ freeBoardComment.getContent() /*+ "\""*/;
-    String notifyUrl = webConfig.getFrontDomain() + "/free/free-board/" + freeBoard.getFreeBoardId();
-    notifyService.send(boardWriter,Notify.NotificationType.COMMENT,notifyContent,notifyUrl);
+    String notifyContent = "회원님의 댓글에 또 다른 댓글이 달렸습니다.    "  + "\"" + freeBoardRecomment.getContent() + "\"";
+    String notifyUrl = webConfig.getFrontDomain() + "/free/free-board/" + freeBoardComment.getFreeBoardId();
+    notifyService.send(commentWriter,Notify.NotificationType.COMMENT,notifyContent,notifyUrl);
 }
 
 
@@ -142,7 +141,7 @@ public class FreeBoardService {
     }
 
     //    todo: 대댓글 조회 함수
-    public Page<FreeBoardRecomment> getRecommentByFreeBoardId(long freeBoardCommentId, Pageable pageable) {
-        return freeBoardRecommentRepository.findFreeBoardRecommentsByFreeBoardCommentIdOrderByInsertTimeDesc(freeBoardCommentId, pageable);
+    public List<IFreeBoardRecommentDto> getRecommentByFreeBoardId(long freeBoardId) {
+        return freeBoardRecommentRepository.findFreeBoardRecommentsByFreeBoardCommentIdOrderByInsertTimeDesc(freeBoardId);
     }
 }
