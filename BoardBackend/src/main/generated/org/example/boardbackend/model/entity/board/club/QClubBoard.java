@@ -32,7 +32,7 @@ public class QClubBoard extends EntityPathBase<ClubBoard> {
     //inherited
     public final StringPath insertTime = _super.insertTime;
 
-    public final NumberPath<Long> like = createNumber("like", Long.class);
+    public final NumberPath<Long> likes = createNumber("likes", Long.class);
 
     public final StringPath location = createString("location");
 
