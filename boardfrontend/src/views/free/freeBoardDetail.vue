@@ -546,7 +546,7 @@ export default {
       this.replyVisible && this.replyToCommentId === freeBoardCommentId ? false : true;
     this.replyToCommentId = this.replyToCommentId === freeBoardCommentId ? null : freeBoardCommentId;
 
-      this.freeBoardCommentId = commentId; // 현재 선택된 댓글 ID 업데이트
+      this.freeBoardCommentId = freeBoardCommentId; // 현재 선택된 댓글 ID 업데이트
       this.newReply.content = ""; // 입력 폼 내용 초기화
       this.charCountReply = 0; // 글자 수 초기화
 

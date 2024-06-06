@@ -23,6 +23,8 @@ public class QDeptRecomment extends EntityPathBase<DeptRecomment> {
 
     public final StringPath comment = createString("comment");
 
+    public final StringPath content = createString("content");
+
     public final NumberPath<Long> deptBoardCommentId = createNumber("deptBoardCommentId", Long.class);
 
     public final NumberPath<Long> deptBoardRecommentId = createNumber("deptBoardRecommentId", Long.class);
