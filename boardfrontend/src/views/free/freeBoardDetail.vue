@@ -327,14 +327,15 @@
           <br />
           <button
             style="border: none; margin-top: 15px"
-            @click="toggleReplyForm(data.freeBoardCommentId)"
+            @click="toggleReplyForm(data.commentId)"
           >
             {{ replyToCommentId === data.freeBoardCommentId ? "답글접기" : "답글" }}
+
 
           </button>
 
           <!-- 답변(대댓글) 폼 -->
-          <div v-if="replyToCommentId === data.freeBoardCommentId">
+          <div v-if="replyToCommentId === data.commentId">
             <div
               class="lotto_new row row-cols-lg-4 gap-5 justify-content-left mb-3 mt-5"
             >
