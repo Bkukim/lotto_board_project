@@ -15,12 +15,6 @@ package org.example.boardbackend.model.dto.board.dept;
  */
 
 public interface DeptBoardDto {
-// 1. 인터페이스 Dto : nativeQuery 쓸때, JPQL
-//    테이블 컬럼 10개인데 그중에 3개만 쓰고 싶을때. repository 에서 사용
-// 2. 클래스 Dto : 엔티티 10개중에 3개만 프론트에 전달하고싶을떄. 서비스/컨트롤러 관계에서 쓴다.
-//    repository에서 쿼리 *로 10개 받았는데, 필드 3개만. 클래스 Dto는 repository에서 쓰는게 복잡해서(생성자 만들기 등등) 인터페이스 Dtoㅇ사용함.
-//    modelMapper 사용
-//    인터페이스 Dto : projection. dto를 확장한 기능
 
      Long getDeptBoardId();
      String getUserId();

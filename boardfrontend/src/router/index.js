@@ -45,17 +45,11 @@ const routes = [
     path: "/member/new-pw",
     component: () => import("../views/auth/NewPwdView.vue"),
   },
-  // 마이페이지
-  {
-    path: "/member/mypage",
-    component: () => import("../views/auth/MyPage.vue"),
-  },
   // 회원정보 수정 페이지
   {
     path: "/member/user-modify",
     component: () => import("../views/user/UserModifyView.vue"),
   },
-
   // 공지사항
   {
     path: "/notice/notice-board",
@@ -100,17 +94,17 @@ const routes = [
   // 동아리 게시판
   {
     path: "/club/club-board",
-    component: () => import("../views/club/clubBoard.vue"),
+    component: () => import("../views/club/ClubBoardList.vue"),
   },
   // 동아리 게시판 -> 매칭글쓰기
   {
     path: "/club/club-boardDetail",
-    component: () => import("../views/club/clubBoardDetail.vue"),
+    component: () => import("../views/club/ClubBoardWrite.vue"),
   },
   // 동아리 게시판 -> 매칭 모집글 게시글
   {
-    path: "/club/club-boardRecruitment",
-    component: () => import("../views/club/clubBorardRecruitment.vue"),
+    path: "/club/club-boardRecruitment/:clubBoardId",
+    component: () => import("../views/club/clubBoardDetail.vue"),
   },
   // 건의 게시판
   {
@@ -142,26 +136,6 @@ const routes = [
     path: "/hot/hotBoard",
     component: () => import("../views/hot/hotBoard.vue"),
   },
-  // 부서게시판 -> 회계부 게시판
-  {
-    path: "/department/accountingboard",
-    component: () => import("../views/department/accountingBoard.vue"),
-  },
-   // 부서게시판 -> 재정부 게시판
-   {
-    path: "/department/fnanceboard",
-    component: () => import("../views/department/fnanceBoard.vue"),
-  },
-    // 부서게시판 -> 기획부 게시판
-    {
-      path: "/department/Planningboard",
-      component: () => import("../views/department/PlanningBoard.vue"),
-    },
-       // 부서게시판 -> 홍보부 게시판
-       {
-        path: "/department/promotionboard",
-        component: () => import("../views/department/promotionBoard.vue"),
-      },
 ];
 
 const router = createRouter({
