@@ -87,7 +87,7 @@ public class FreeBoardService {
         log.debug("여기는 서비스2");
 
         // 2. 알림 보내기
-        String notifyContent = "회원님의 게시물에 댓글이 달렸습니다." + /*\n" + "\"" +*/ freeBoardComment.getContent() /*+ "\""*/;
+        String notifyContent = "회원님의 게시물에 댓글이 달렸습니다.  " + "\"" + freeBoardComment.getContent() + "\"";
         String notifyUrl = webConfig.getFrontDomain() + "/free/free-board/" + freeBoard.getFreeBoardId();
         notifyService.send(boardWriter,Notify.NotificationType.COMMENT,notifyContent,notifyUrl);
     }
