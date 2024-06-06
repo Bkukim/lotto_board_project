@@ -39,6 +39,8 @@ public class QNotice extends EntityPathBase<Notice> {
     //inherited
     public final StringPath updateTime = _super.updateTime;
 
+    public final NumberPath<Long> views = createNumber("views", Long.class);
+
     public QNotice(String variable) {
         super(Notice.class, forVariable(variable));
     }
