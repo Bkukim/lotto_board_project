@@ -1,5 +1,6 @@
 package org.example.boardbackend.model.entity.board.dept;
 
+
 import jakarta.persistence.*;
 import lombok.*;
 import org.example.boardbackend.model.common.BaseTimeEntity;
@@ -44,6 +45,7 @@ public class DeptRecomment extends BaseTimeEntity {
     private String userId;
     private long deptBoardCommentId;
     private String comment;
+    private String content;
     private String secretCommentYN;
 
 }

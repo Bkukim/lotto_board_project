@@ -341,6 +341,7 @@
           </button>
 
 
+
           <!-- 답변(대댓글)들 -->
           <div
             v-if="
@@ -538,14 +539,13 @@ export default {
     },
   },
   methods: {
+    toggleReplyForm(freeBoardCommentId) {
 
-    // 답글 폼 토글
-    toggleReplyForm(commentId) {
-      // 클릭된 답글 버튼이 이미 열려있는 상태이면 폼을 닫고, 그렇지 않으면 엽니다.
-      this.replyVisible =
-        this.replyVisible && this.freeBoardCommentId === commentId
-          ? false
-          : true;
+     // 클릭된 답글 버튼이 이미 열려있는 상태이면 폼을 닫고, 그렇지 않으면 엽니다.
+    this.replyVisible =
+      this.replyVisible && this.replyToCommentId === freeBoardCommentId ? false : true;
+    this.replyToCommentId = this.replyToCommentId === freeBoardCommentId ? null : freeBoardCommentId;
+
       this.freeBoardCommentId = commentId; // 현재 선택된 댓글 ID 업데이트
       this.newReply.content = ""; // 입력 폼 내용 초기화
       this.charCountReply = 0; // 글자 수 초기화
@@ -656,9 +656,9 @@ export default {
     },
 
     // 답글 버튼 클릭 시 호출되는 메소드
-    showReplyForm(commentId) {
+    showReplyForm(freeBoardCommentId) {
       this.replyVisible = true;
-      this.replyToCommentId = commentId;
+      this.replyToCommentId = freeBoardCommentId;
     },
 
     // 답글 글자 수 세기
