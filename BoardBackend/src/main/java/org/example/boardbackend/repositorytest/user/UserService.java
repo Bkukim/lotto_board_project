@@ -1,4 +1,4 @@
-package org.example.boardbackend.service.user;
+package org.example.boardbackend.repositorytest.user;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

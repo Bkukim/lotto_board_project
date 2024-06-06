@@ -2,24 +2,19 @@ package org.example.boardbackend.controller.user.board.free;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.example.boardbackend.model.dto.board.free.FreeBoardCommentDto;
 import org.example.boardbackend.model.dto.board.free.FreeBoardDto;
 import org.example.boardbackend.model.entity.board.free.FreeBoard;
 import org.example.boardbackend.model.entity.board.free.FreeBoardComment;
 import org.example.boardbackend.model.entity.board.free.FreeBoardRecomment;
-import org.example.boardbackend.repository.board.free.FreeBoardCommentRepository;
-import org.example.boardbackend.service.board.free.FreeBoardService;
+import org.example.boardbackend.repositorytest.board.free.FreeBoardService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 

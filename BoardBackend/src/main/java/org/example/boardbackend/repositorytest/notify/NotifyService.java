@@ -1,9 +1,8 @@
-package org.example.boardbackend.service.notify;
+package org.example.boardbackend.repositorytest.notify;
 
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.example.boardbackend.model.entity.auth.User;
 import org.example.boardbackend.model.entity.notify.Notify;
 import org.example.boardbackend.repository.notify.EmitterRepository;
 import org.example.boardbackend.repository.notify.NotifyRepository;
@@ -12,7 +11,6 @@ import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.Map;
 
 @Service
 @Slf4j

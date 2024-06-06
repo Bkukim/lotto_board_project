@@ -43,7 +43,7 @@ public class DeptRecomment extends BaseTimeEntity {
     private long deptBoardRecommentId;
     private String userId;
     private long deptBoardCommentId;
-    private String comment;
+    private String content;
     private String secretCommentYN;
 
 }

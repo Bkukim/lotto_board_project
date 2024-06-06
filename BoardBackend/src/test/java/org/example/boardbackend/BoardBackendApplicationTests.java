@@ -2,7 +2,7 @@ package org.example.boardbackend;
 
 import org.example.boardbackend.constant.Event;
 import org.example.boardbackend.model.entity.notice.Winner;
-import org.example.boardbackend.service.notice.EventService;
+import org.example.boardbackend.repositorytest.notice.EventService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
