@@ -2,8 +2,11 @@ package org.example.boardbackend.model.entity.board.free;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.example.boardbackend.model.entity.auth.User;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
+
+import static jakarta.persistence.FetchType.LAZY;
 
 /**
  * packageName : org.example.boardbackend.model.dto.board.free
@@ -37,12 +40,28 @@ public class FreeBoardLike {
     @Column(name="LIKE_ID")
     private long likeId;
 
-    @JoinColumn(name = "USER_ID")
-    private String userId;
+    @ManyToOne(fetch = LAZY)
+    @JoinColumn(name = "member_id")
+    private User user;
 
-    @JoinColumn(name = "FREE_BOARD_ID")
-    private long freeBoardId;
-//@AllArgsConstructor이거 있으면 생성자 안해줘도 되는것?
+    @ManyToOne(fetch = LAZY)
+    @JoinColumn(name = "board_id")
+    private FreeBoard freeBoard;
+
+
+//    @JoinColumn(name = "USER_ID")
+//    private String userId;
+//
+//    @JoinColumn(name = "FREE_BOARD_ID")
+//    private long freeBoardId;
+
+    @Builder
+    public FreeBoardLike(User user, FreeBoard freeBoard) {
+        this.user = user;
+        this.freeBoard = freeBoard;
+    }
+
+//@AllArgsConstructor이거 있으면 아래처럼 직접설정해줄 필요가 없음ㄷ
 //    public FreeBoardLike(long likeId, String userId, long freeBoardId) {
 //        this.likeId = likeId;
 //        this.userId = userId;
