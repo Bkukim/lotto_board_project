@@ -18,14 +18,14 @@ import java.util.List;
  */
 @Repository
 public interface DeptRecommentRepository extends JpaRepository<DeptRecomment, Long> {
-    @Query(value = "SELECT DR.CONTENT AS content, DR.INSERT_TIME AS insertTime \n" +
-            "FROM LOTTO_DEPT_BOARD FB, LOTTO_DEPT_BOARD_COMMENT FC, LOTTO_DEPT_BOARD_RECOMMENT FR\n" +
-            "WHERE DB.FREE_BOARD_ID = DC.FREE_BOARD_ID\n" +
-            "AND DC.FREE_BOARD_COMMENT_ID = DR.FREE_BOARD_COMMENT_ID\n" +
-            "AND DB.FREE_BOARD_ID = :freeBoardId \n" +
+    @Query(value = "SELECT DR.DEPT_BOARD_COMMENT_ID AS deptBoardCommentId, DR.USER_ID AS userId DR.CONTENT AS content, DR.INSERT_TIME AS insertTime \n" +
+            "FROM LOTTO_DEPT_BOARD DB, LOTTO_DEPT_BOARD_COMMENT DC, LOTTO_DEPT_BOARD_RECOMMENT DR\n" +
+            "WHERE DB.DEPT_BOARD_ID = DC.DEPT_BOARD_ID\n" +
+            "AND DC.DEPT_BOARD_COMMENT_ID = DR.DEPT_BOARD_COMMENT_ID\n" +
+            "AND DB.DEPT_BOARD_ID = :deptBoardId \n" +
             "ORDER BY DR.INSERT_TIME DESC",
             nativeQuery = true)
-    List<DeptRecommentDto> findFreeBoardRecommentsByFreeBoardCommentIdOrderByInsertTimeDesc(@Param("freeBoardId") long freeBoardId);
+    List<DeptRecommentDto> findDeptBoardRecommentsByDeptBoardCommentIdOrderByInsertTimeDesc(@Param("deptBoardId") long deptBoardId);
 
 
 

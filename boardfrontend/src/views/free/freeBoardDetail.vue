@@ -409,7 +409,7 @@
 
                 <!-- (답변(대댓글)) 등록 버튼-->
                 <button
-                  @click="submitReply()"
+                  @click="submitReply(data.freeBoardCommentId)"
                   class="fbd_d container text-center mt-3"
                   style="
                     width: 60px;
@@ -694,7 +694,8 @@ export default {
       }
     },
     // 대댓글(답글) 등록
-    async submitReply() {
+    async submitReply(commentId) {
+    
       if (!this.newReply.content.trim()) {
         // alert("답글을 입력해주세요.");
         return;
@@ -702,11 +703,11 @@ export default {
       try {
         let data = {
           userId: this.newReply.userId,
-          freeBoardId: this.freeBoard.freeBoardId,
-          freeBoardCommentId: this.freeBoardCommentId, // 부모 댓글 ID
+          freeBoardCommentId: commentId, // 부모 댓글 ID
           content: this.newReply.content,
           secretCommentYn: "N",
         };
+        console.log("대댓글의 댓글 아이디",data.freeBoardCommentId);
         await FreeBoardService.createFreeBoardRecomment(data);
       } catch (e) {
         console.log(e);

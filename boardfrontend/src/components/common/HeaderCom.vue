@@ -64,28 +64,28 @@
                 <li>
                   <router-link
                     class="dropdown-item"
-                    to="/department/accountingboard"
+                    to="/dept/accounting"
                     >회계부 게시판</router-link
                   >
                 </li>
                 <li>
                   <router-link
                     class="dropdown-item"
-                    to="/department/fnanceboard"
+                    to="/dept/finance"
                     >재정부 게시판</router-link
                   >
                 </li>
                 <li>
                   <router-link
                     class="dropdown-item"
-                    to="/department/Planningboard"
+                    to="/dept/planning"
                     >기획부 게시판</router-link
                   >
                 </li>
                 <li>
                   <router-link
                     class="dropdown-item"
-                    to="/department/promotionboard"
+                    to="/dept/promotion"
                     >홍보부 게시판</router-link
                   >
                 </li>
@@ -183,7 +183,7 @@
                         margin-left: 10px;
                       "
                     ></td>
-                    <td class="col-12" style="word-wrap: break-word; white-space: normal; max-width: 250px;">{{ data.content }}</td>
+                    <td class="col-12" style="word-wrap: break-word; white-space: normal; max-width: 250px;"><router-link :to="`/${data.url}`">{{ data.content }}</router-link></td>
                   </tr>
                 </tbody>
               </table>

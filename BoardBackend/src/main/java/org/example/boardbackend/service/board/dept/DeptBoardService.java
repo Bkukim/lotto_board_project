@@ -3,8 +3,11 @@ package org.example.boardbackend.service.board.dept;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.example.boardbackend.config.WebConfig;
+import org.example.boardbackend.constant.DeptCode;
 import org.example.boardbackend.model.dto.board.dept.DeptBoardDto;
+import org.example.boardbackend.model.dto.board.dept.DeptRecommentDto;
 import org.example.boardbackend.model.dto.board.free.FreeBoardDto;
+import org.example.boardbackend.model.dto.board.free.IFreeBoardRecommentDto;
 import org.example.boardbackend.model.entity.board.dept.DeptBoard;
 import org.example.boardbackend.model.entity.board.dept.DeptComment;
 import org.example.boardbackend.model.entity.board.dept.DeptRecomment;
@@ -26,6 +29,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -56,11 +60,13 @@ public class DeptBoardService {
     //    todo 전체 조회
     public Page<DeptBoardDto> selectByTitleContaining(
             String title,
+            DeptCode deptId,
             Pageable pageable
     ) {
         Page<DeptBoardDto> page
                 = deptBoardRepository.findAllByTitleContaining(
                 title,
+                deptId,
                 pageable
         );
         return page;
@@ -136,6 +142,10 @@ public class DeptBoardService {
     public Page<DeptComment> getCommentByDeptBoardId(long deptBoardId, Pageable pageable) throws IOException{
         Page<DeptComment> deptComments = deptCommentRepository.findDeptCommentByDeptBoardCommentIdOrderByInsertTimeDesc(deptBoardId, pageable);
         return deptComments;
+    }
+    //    todo: 대댓글 조회 함수
+    public List<DeptRecommentDto> getRecommentByDeptBoardId(long deptBoardId) {
+        return deptRecommentRepository.findDeptBoardRecommentsByDeptBoardCommentIdOrderByInsertTimeDesc(deptBoardId);
     }
 
 

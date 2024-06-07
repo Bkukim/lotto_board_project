@@ -1,8 +1,8 @@
 <template>
     <div class="container text-center" id="fb_all">
-      <h3 class="mb-5 mt-5">기획부 게시판</h3>
+      <h3 class="mb-5 mt-5">회계부 게시판</h3>
       <p class="mb-5">
-        기획부 게시판은  기획부의 공간으로 건의관련 답변은 드리지
+        회계부 게시판은  회계부의 공간으로 건의관련 답변은 드리지
         않습니다. <br />
         건의관련 및 문의사항은 건의게시판을 이용해주시길 바랍니다.
       </p>
@@ -46,7 +46,7 @@
               class="btn btn-outline-secondary"
               type="button"
               id="button-search"
-              @click="searchFreeBoard"
+              @click="searchDeptBoard"
             >
               검색
             </button>
@@ -81,11 +81,11 @@
         </thead>
         <tbody>
           <!-- 반복문 시작할 행 -->
-          <tr v-for="(data, index) in freeBoardList" :key="index">
+          <tr v-for="(data, index) in deptBoardList" :key="index">
             <td>{{ (page - 1) * pageSize + index + 1 }}</td>
             <td id="router_hv" style="text-align: left; padding-left: 100px;" >
               <router-link style="color: #444444; font-weight: bold; text-decoration:none ;"
-                :to="'/free/free-boardDetail/' + data.freeBoardId"
+                :to="'/dept/board/dtail/' + data.deptBoardId"
                 class="router-link-exact-active alltext"
               >
                 {{ data.title }}
@@ -106,7 +106,7 @@
             type="button"
             id="button-Writing"
             style="margin-left: 1220px"
-            @click="writeFreeBoard"
+            @click="goAddDeptBoard"
           >
             글쓰기
           </button>
@@ -122,7 +122,7 @@
             v-model="page"
             :total-rows="count"
             :per-page="pageSize"
-            @click="retrieveFreeBoard"
+            @click="retrieveDeptBoard"
           ></b-pagination>
         </div>
       </div>
@@ -131,58 +131,73 @@
   </template>
   
   <script>
-  import FreeBoardService from "@/services/board/free/FreeBoardService";
+  import DeptBoardService from "@/services/board/dept/DeptBoardService";
+import UserService from "@/services/user/UserService";
   
   export default {
     data() {
       return {
-        freeBoardList: [],
+        deptBoardList: [],
         searchTitle: "",
         page: 1, // 현재페이지번호
         count: 0, // 전체데이터개수
         pageSize: 10, // 1페이지당개수(select태그)
+        deptId:"A0001"
       };
     },
     methods: {
-      // 전체조회 함수
-      async retrieveFreeBoard() {
-        try {
-          // TODO: 1) 공통 전체조회 함수 실행
-          let response = await FreeBoardService.getAllBoard(
-            this.searchTitle, // 검색어
-            this.page - 1, // 현재페이지번호-1
-            this.pageSize // 1페이지당개수(size)
-          );
-          // TODO: 복습 : 2) 객체분할 할당
-          const { freeBoardList, totalItems } = response.data; // 부서배열(벡엔드 전송)
-          // TODO: 3) 바인딩변수(속성)에 저장
-          this.freeBoardList = freeBoardList; // 부서배열(벡엔드 전송)
-          this.count = totalItems; // 전체페이지수(벡엔드 전송)
-          // TODO: 4) 프론트 로깅 : console.log
-          console.log(response.data);
-        } catch (e) {
-          console.log(e);
-        }
-      },
-      // 검색 함수
-      async searchFreeBoard() {
-        console.log("검색 함수 호출");
-        await this.retrieveFreeBoard();
-      },
-      // 초기화 함수
-      resetSearch() {
-        this.searchTitle = "";
-        this.retrieveFreeBoard();
-      },
-      // 글 쓰러가기 함수
-      writeFreeBoard() {
-        this.$router.push("/free/free-boardAdd");
-      },
-    },
-    mounted() {
-      this.retrieveFreeBoard();
-      window.scrollTo(0, 0);
-    },
+
+// 회원 부서 확인 함수
+async checkUserDeptId(){
+  try {
+    let user = UserService.get(this.$store.state.user.userId);
+    if (user.data.deptId != this.deptId) {
+      alert("해당 부서원이 아니므로 접근할 수 없습니다")
+      this.$router.push("/");
+    } 
+  } catch (error) {
+    
+    console.log(error)
+  }
+},
+
+// 전체조회 함수
+async retrieveDeptBoard() {
+  try {
+    let response = await DeptBoardService.getAllDeptBoard(
+      this.searchTitle, // 검색어
+      this.deptId,
+      this.page - 1, // 현재페이지번호-1
+      this.pageSize // 1페이지당개수(size)
+    );
+    const { deptBoardList, totalItems } = response.data;
+    this.deptBoardList = deptBoardList; // 부서배열(벡엔드 전송)
+    this.count = totalItems; // 전체페이지수(벡엔드 전송)
+    console.log(response.data);
+  } catch (e) {
+    console.log(e);
+  }
+},
+// 검색 함수
+async searchDeptBoard() {
+  console.log("검색 함수 호출");
+  await this.retrieveDeptBoard();
+},
+// 초기화 함수
+resetSearch() {
+  this.searchTitle = "";
+  this.retrieveDeptBoard();
+},
+// 글 쓰러가기 함수
+goAddDeptBoard() {
+  this.$router.push("/dept/board/add");
+},
+},
+async mounted() {
+await this.checkUserDeptId();
+this.retrieveDeptBoard();
+window.scrollTo(0, 0);
+},
   };
   </script>
   

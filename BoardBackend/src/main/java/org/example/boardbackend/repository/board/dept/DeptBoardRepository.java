@@ -1,5 +1,6 @@
 package org.example.boardbackend.repository.board.dept;
 
+import org.example.boardbackend.constant.DeptCode;
 import org.example.boardbackend.model.dto.board.dept.DeptBoardDto;
 import org.example.boardbackend.model.dto.board.free.FreeBoardDto;
 import org.example.boardbackend.model.entity.board.dept.DeptBoard;
@@ -26,9 +27,9 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface DeptBoardRepository extends JpaRepository<DeptBoard,Long> {
     @Query(value = "SELECT FREE_BOARD_ID AS freeBoardId, USER_ID AS userId, TITLE AS title, INSERT_TIME AS insertTime, LIKES AS likes FROM LOTTO_FREE_BOARD\n" +
-            "WHERE TITLE LIKE '%'|| :title ||'%'"
+            "WHERE TITLE LIKE '%'|| :title ||'%' AND DEPT_ID = :deptId"
             , countQuery = "SELECT count(*)FROM LOTTO_FREE_BOARD\n" +
-            "WHERE TITLE LIKE '%'|| :title ||'%'"
+            "WHERE TITLE LIKE '%'|| :title ||'%' AND DEPT_ID = :deptId"
             , nativeQuery = true)
-    Page<DeptBoardDto> findAllByTitleContaining(@Param("title") String title, Pageable pageable);
+    Page<DeptBoardDto> findAllByTitleContaining(@Param("title") String title, @Param("deptId") DeptCode deptId, Pageable pageable);
 }

@@ -136,6 +136,31 @@ const routes = [
     path: "/hot/hotBoard",
     component: () => import("../views/hot/hotBoard.vue"),
   },
+  // 부서 게시판 : 회계부
+  {
+    path: "/dept/accounting",
+    component: () => import("../views/dept/AccountingBoard.vue"),
+  },
+  // 부서 게시판 : 재정부
+  {
+    path: "/dept/finance",
+    component: () => import("../views/dept/FinanceBoard.vue"),
+  },
+  // 부서 게시판 : 기획부
+  {
+    path: "/dept/planning",
+    component: () => import("../views/dept/PlanningBoard.vue"),
+  },
+  // 부서 게시판 : 홍보부
+  {
+    path: "/dept/promotion",
+    component: () => import("../views/dept/PromotionBoard.vue"),
+  },
+  // 부서 게시판 : 상세페이지
+  {
+    path: "/dept/board/dtail/:deptBoardId",
+    component: () => import("../views/dept/DeptBoard.vue"),
+  },
 ];
 
 const router = createRouter({

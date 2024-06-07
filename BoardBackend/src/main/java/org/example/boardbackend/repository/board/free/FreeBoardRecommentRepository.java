@@ -24,7 +24,7 @@ import java.util.List;
  */
 @Repository
 public interface FreeBoardRecommentRepository extends JpaRepository<FreeBoardRecomment,Long> {
-    @Query(value = "SELECT FR.FREE_BOARD_COMMENT_ID AS freeBoardCommentId, FR.USER_ID AS userId, FR.CONTENT AS content, FR.INSERT_TIME AS insertTime \n" +
+    @Query(value = "SELECT FR.FREE_BOARD_COMMENT_ID AS freeBoardCommentId, FR.USER_ID AS userId, FR.FREE_BOARD_COMMENT_ID AS freeBoardCommentId, FR.USER_ID AS userId, FR.CONTENT AS content, FR.INSERT_TIME AS insertTime \n" +
             "FROM LOTTO_FREE_BOARD FB, LOTTO_FREE_BOARD_COMMENT FC, LOTTO_FREE_BOARD_RECOMMENT FR\n" +
             "WHERE FB.FREE_BOARD_ID = FC.FREE_BOARD_ID\n" +
             "AND FC.FREE_BOARD_COMMENT_ID = FR.FREE_BOARD_COMMENT_ID\n" +
