@@ -73,7 +73,6 @@ export default {
     let code = this.$route.query.code;
     console.log(code);
     this.kakaoLogin(code);
-
   },
   // async created() {
   //   try {

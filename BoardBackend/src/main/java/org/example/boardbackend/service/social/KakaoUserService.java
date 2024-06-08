@@ -2,6 +2,7 @@ package org.example.boardbackend.service.social;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.example.boardbackend.model.dto.auth.SocialUserReq;
 import org.example.boardbackend.model.dto.auth.UserRes;
 import org.example.boardbackend.model.entity.auth.User;
 import org.example.boardbackend.repository.user.UserRepository;
@@ -11,10 +12,12 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.*;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 
+import java.io.IOException;
 import java.util.Map;
 
 /**
@@ -120,24 +123,44 @@ public class KakaoUserService implements SocialLoginService {
         // 사용자 정보를 바탕으로 JWT 토큰 생성
         String userId = ((Map<String, Object>) userInfo.get("kakao_account")).get("email").toString();
 
-
-        // 유저가 없다면 회원가입
-        if (!userRepository.existsById(userId)) {
-            // 사용자 저장
-            User user = new User(
-                    userId, passwordEncoder.encode("asdfasdgawstgfasdfa"), "ROLE_USER"
-            );
-            userRepository.save(user);
+        if (userRepository.existsById(userId)) {
+            // 프론트로 userRes 객체 보내기
+            String jwt = jwtUtils.generateJwtTokenForKakao(userId);
+            UserRes userRes = new UserRes(
+                    jwt,                // 웹토큰
+                    userId,
+                    "ROLE_USER");
+            return userRes;
+        }else{
+            // 프론트로 userRes 객체 보내기
+            String jwt = jwtUtils.generateJwtTokenForKakao(userId);
+            UserRes userRes = new UserRes(
+                    null,                // 웹토큰
+                    userId,
+                    null);
+            return userRes;
         }
+    }
 
-        // 프론트로 userRes 객체 보내기
+    @Override
+    @Transactional
+    public UserRes socialRegister(String userId, SocialUserReq socialUserReq) throws IOException {
+        User user = new User(userId,
+                passwordEncoder.encode("asdfasdgfsadgqawrg23463457"),
+                socialUserReq.getUserName(),
+                socialUserReq.getBirthday(),
+                socialUserReq.getPhoneNum(),
+                socialUserReq.getEmail(),
+                socialUserReq.getRole(),
+                socialUserReq.getDeptId(),
+                socialUserReq.getNormalAddress(),
+                socialUserReq.getDetailAddress());
+        userRepository.save(user);
         String jwt = jwtUtils.generateJwtTokenForKakao(userId);
         UserRes userRes = new UserRes(
                 jwt,                // 웹토큰
                 userId,
-                "ROLE_USER");
-
+                socialUserReq.getRole());
         return userRes;
     }
-
 }

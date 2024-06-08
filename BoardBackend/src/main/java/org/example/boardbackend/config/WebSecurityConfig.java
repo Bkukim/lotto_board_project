@@ -105,7 +105,7 @@ public class WebSecurityConfig {
                 .anyRequest()
 //                .authenticated());
                 .permitAll());
-//
+
 
 ////        TODO: 6) 카카오 소셜 로그인 설정 부분
 //        http.oauth2Login(req -> req

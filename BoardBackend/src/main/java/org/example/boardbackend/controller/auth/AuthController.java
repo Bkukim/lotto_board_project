@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.example.boardbackend.model.dto.auth.NewUser;
+import org.example.boardbackend.model.dto.auth.SocialUserReq;
 import org.example.boardbackend.model.dto.auth.UserReq;
 import org.example.boardbackend.model.dto.auth.UserRes;
 import org.example.boardbackend.model.dto.member.FindId;
@@ -61,10 +62,33 @@ public class AuthController {
         try {
             String accessToken = socialLoginService.getAccessToken(code);
             UserRes userRes = socialLoginService.getUserInfo(accessToken);
-            return new ResponseEntity<>(userRes,HttpStatus.OK);
+            if (userRes.getAccessToken() == null) {
+                return new ResponseEntity<>(userRes,HttpStatus.OK);
+            }else{
+                return new ResponseEntity<>(userRes,HttpStatus.OK);
+            }
+
         }catch (Exception e){
             log.debug(e.getMessage());
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+    // 카카오 로그인 함수
+    @PostMapping("/kakao-register/{code}")
+    public ResponseEntity<Object> kakaoLogin(@PathVariable String code,
+                                             @RequestBody SocialUserReq socialUserReq){
+        try {
+            String accessToken = socialLoginService.getAccessToken(code);
+            UserRes userRes = socialLoginService.getUserInfo(accessToken);
+            if (userRes.getAccessToken() == null && userRes.getRole() == null) { // 회원이 아니면 jwt 는 null 이 됨
+                UserRes RegisteredUserRes = socialLoginService.socialRegister(userRes.getUserId(), socialUserReq);
+                return new ResponseEntity<>(RegisteredUserRes,HttpStatus.OK);
+            }else {
+                return new ResponseEntity<>(userRes,HttpStatus.OK);
+            }
+        }catch (Exception e){
+            log.debug(e.getMessage());
+            return new ResponseEntity<>("회원가입 실패",HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
@@ -202,8 +226,9 @@ public class AuthController {
         }
     }
     // todo 새로운 비밀번호 업데이트
-    @PutMapping("/new-pw")
-    public ResponseEntity<Object> updatePw(@RequestBody NewPw newPw){
+    @PutMapping("/new-pw/{userId}")
+    public ResponseEntity<Object> updatePw(@PathVariable String userId,
+                                           @RequestBody NewPw newPw){
         boolean result = false;
         try {
             if (userService.existsById(newPw.getUserId())) {
