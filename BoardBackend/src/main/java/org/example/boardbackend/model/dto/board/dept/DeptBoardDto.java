@@ -21,5 +21,6 @@ public interface DeptBoardDto {
      String getTitle();
      String getInsertTime();
      Long getLikes();
+     Long getReportId();
 
 }

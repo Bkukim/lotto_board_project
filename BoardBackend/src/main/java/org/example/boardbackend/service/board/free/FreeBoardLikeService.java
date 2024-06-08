@@ -48,47 +48,47 @@ public class FreeBoardLikeService {
     private final FreeBoardLikeRepository freeBoardLikeRepository;
 
     //    TODO: 추가
-    @Transactional
-    public void insert(FreeBoardLikeDto freeBoardLikeDto) throws Exception {
-//todo: 레포짓토리인지 객체파일인지 가져올때 잘보고 바꿀것
-        User user = userRepository.findById(freeBoardLikeDto.getUserId())
-                .orElseThrow(() -> new NotFoundException("Could not found member id : " + freeBoardLikeDto.getUserId()));
-
-        FreeBoard freeBoard = freeBoardRepository.findById(freeBoardLikeDto.getFreeBoardId())
-                .orElseThrow(() -> new NotFoundException("Could not found board id : " + freeBoardLikeDto.getUserId()));
-
-        // 이미 좋아요되어있으면 에러 반환
-        if (freeBoardLikeRepository.findByUserIdAndFreeBoardId(user, freeBoard).isPresent()) {
-            //TODO 409에러로 변경
-            throw new DuplicateResourceException("already exist data by member id :" + user.getUserId() + " ,"
-                    + "board id : " + freeBoard.getFreeBoardId());
-        }
-
-        FreeBoardLike freeBoardLike = FreeBoardLike.builder()
-                .freeBoard(freeBoard)
-                .user(user)
-                .build();
-
-        freeBoardLikeRepository.save(freeBoardLike);
-//        freeBoardRepository.addLikeCount(board);
-    }
-
-    //    todo : 삭제
-    @Transactional
-    public void delete(FreeBoardLikeDto freeBoardLikeDto) {
-
-        User user = userRepository.findById(freeBoardLikeDto.getUserId())
-                .orElseThrow(() -> new NotFoundException("Could not found member id : " + freeBoardLikeDto.getUserId()));
-
-        FreeBoard freeBoard = freeBoardRepository.findById(freeBoardLikeDto.getFreeBoardId())
-                .orElseThrow(() -> new NotFoundException("Could not found board id : " + freeBoardLikeDto.getFreeBoardId()));
-
-        FreeBoardLike freeBoardLike = freeBoardLikeRepository.findByUserIdAndFreeBoardId(user, freeBoard)
-                .orElseThrow(() -> new NotFoundException("Could not found heart id"));
-
-        freeBoardLikeRepository.delete(freeBoardLike);
-//    boardRepository.subLikeCount(board);
-    }
+//    @Transactional
+//    public void insert(FreeBoardLikeDto freeBoardLikeDto) throws Exception {
+////todo: 레포짓토리인지 객체파일인지 가져올때 잘보고 바꿀것
+//        User user = userRepository.findById(freeBoardLikeDto.getUserId())
+//                .orElseThrow(() -> new NotFoundException("Could not found member id : " + freeBoardLikeDto.getUserId()));
+//
+//        FreeBoard freeBoard = freeBoardRepository.findById(freeBoardLikeDto.getFreeBoardId())
+//                .orElseThrow(() -> new NotFoundException("Could not found board id : " + freeBoardLikeDto.getUserId()));
+//
+//        // 이미 좋아요되어있으면 에러 반환
+//        if (freeBoardLikeRepository.findByUserIdAndFreeBoardId(user, freeBoard).isPresent()) {
+//            //TODO 409에러로 변경
+//            throw new DuplicateResourceException("already exist data by member id :" + user.getUserId() + " ,"
+//                    + "board id : " + freeBoard.getFreeBoardId());
+//        }
+//
+//        FreeBoardLike freeBoardLike = FreeBoardLike.builder()
+//                .freeBoard(freeBoard)
+//                .user(user)
+//                .build();
+//
+//        freeBoardLikeRepository.save(freeBoardLike);
+////        freeBoardRepository.addLikeCount(board);
+//    }
+//
+//    //    todo : 삭제
+//    @Transactional
+//    public void delete(FreeBoardLikeDto freeBoardLikeDto) {
+//
+//        User user = userRepository.findById(freeBoardLikeDto.getUserId())
+//                .orElseThrow(() -> new NotFoundException("Could not found member id : " + freeBoardLikeDto.getUserId()));
+//
+//        FreeBoard freeBoard = freeBoardRepository.findById(freeBoardLikeDto.getFreeBoardId())
+//                .orElseThrow(() -> new NotFoundException("Could not found board id : " + freeBoardLikeDto.getFreeBoardId()));
+//
+//        FreeBoardLike freeBoardLike = freeBoardLikeRepository.findByUserIdAndFreeBoardId(user, freeBoard)
+//                .orElseThrow(() -> new NotFoundException("Could not found heart id"));
+//
+//        freeBoardLikeRepository.delete(freeBoardLike);
+////    boardRepository.subLikeCount(board);
+//    }
 
 
     // 예외처리 해주는 클래스

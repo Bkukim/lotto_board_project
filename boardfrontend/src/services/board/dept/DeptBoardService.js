@@ -46,7 +46,7 @@ class DeptBoardService {
   }
   // TODO: 댓글 조회 
   getDeptBoardComment(deptBoardId, page, size){
-    return http.get(`/user/dept/comment/?deptBoardId=${deptBoardId}&page=${page}&size=${size}`, {
+    return http.get(`/user/dept/comment?deptBoardId=${deptBoardId}&page=${page}&size=${size}`, {
       headers: AuthHeader(),
     });
   }

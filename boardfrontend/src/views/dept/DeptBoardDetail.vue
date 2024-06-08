@@ -29,7 +29,7 @@
             background-color: #f2f2f2;
           "
         >
-          {{ freeBoard.title }}
+          {{ deptBoard.title }}
         </div>
   
         <div
@@ -43,10 +43,10 @@
         >
           <div class="lotto_new row row-cols-lg-4 gap-5 justify-content-left">
             <div class="col" style="color: #999999">
-              등록일 | {{ freeBoard.insertTime }}
+              등록일 | {{ deptBoard.insertTime }}
             </div>
             <div class="col" style="color: #999999">
-              등록자 | {{ freeBoard.userId }}
+              등록자 | {{ deptBoard.userId }}
             </div>
           </div>
         </div>
@@ -61,7 +61,7 @@
             word-wrap: break-word;
             word-break: break-all;
           "
-          v-html="freeBoard.content"
+          v-html="deptBoard.content"
         ></div>
         <!-- TODO: 좋아요버튼 -->
         <div class="mt-5 text-center">
@@ -79,7 +79,7 @@
           >
             <img src="@/assets/img/like_icon.png" width="40" height="40" />
             공감해요
-            {{ this.freeBoard.likes }}
+            {{ this.deptBoard.likes }}
           </button>
           <button
             type="button"
@@ -104,14 +104,14 @@
       <!-- TODO: 좋아요버튼 -->
       <div class="d-flex justify-content-center mt-3">
         <button type="button" class="btn btn-primary" @click="likeUp">
-          공감해요 {{ this.freeBoard.likes }}
+          공감해요 {{ this.deptBoard.likes }}
         </button>
       </div>
       <div class="container text-center mt-5">
         <div
           class="row"
           style="margin-top: 100px"
-          v-if="freeBoard.userId === this.$store.state.user?.userId"
+          v-if="deptBoard.userId === this.$store.state.user?.userId"
         >
           <!-- 삭제 -->
           <div class="col">
@@ -126,7 +126,7 @@
                 border-radius: 20px;
                 border: none;
               "
-              @click="deleteFreeBoard"
+              @click="deleteDeptBoard"
             >
               <div
                 style="
@@ -153,7 +153,7 @@
           <!-- 수정 -->
           <div class="col mb-5">
             <router-link
-              :to="'/free/free-board/Update/' + this.$route.params.freeBoardId"
+              :to="'/dept/board/Update/' + this.$route.params.deptBoardId"
               class="fbd_d container text-center"
               style="
                 width: 300px;
@@ -292,7 +292,7 @@
         <!-- 댓글들 -->
         <div
           class="container text-left"
-          v-for="(data, index) in freeBoardComments"
+          v-for="(data, index) in deptBoardComments"
           :key="index"
         >
           <div
@@ -338,17 +338,17 @@
             <br />
             <button
               style="border: none; margin-top: 15px"
-              @click="toggleReplyForm(data.freeBoardCommentId)"
+              @click="toggleReplyForm(data.deptBoardCommentId)"
             >
               {{
-                replyToCommentId === data.freeBoardCommentId ? "답글접기" : "답글"
+                replyToCommentId === data.deptBoardCommentId ? "답글접기" : "답글"
               }}
             </button>
   
             <!-- 답변(대댓글)들 -->
-            <div v-if="replyToCommentId === data.freeBoardCommentId">
+            <div v-if="replyToCommentId === data.deptBoardCommentId">
               <div
-                v-for="(data, index) in data.freeBoardRecomments"
+                v-for="(data, index) in data.deptBoardRecomments"
                 :key="index"
               >
                 <div
@@ -370,7 +370,7 @@
   
             <!-- 답변(대댓글) 다는 곳 -->
             <div
-              v-if="replyVisible && replyToCommentId === data.freeBoardCommentId"
+              v-if="replyVisible && replyToCommentId === data.deptBoardCommentId"
             >
               <div
                 class="lotto_new row row-cols-lg-4 gap-5 justify-content-left mb-3 mt-5"
@@ -409,7 +409,7 @@
   
                   <!-- (답변(대댓글)) 등록 버튼-->
                   <button
-                    @click="submitReply(data.freeBoardCommentId)"
+                    @click="submitReply(data.deptBoardCommentId)"
                     class="fbd_d container text-center mt-3"
                     style="
                       width: 60px;
@@ -461,7 +461,7 @@
               v-model="page"
               :total-rows="count"
               :per-page="pageSize"
-              @click="retrieveFreeBoardComment(this.$route.params.freeBoardId)"
+              @click="retrieveDeptBoardComment(this.$route.params.deptBoardId)"
             ></b-pagination>
           </div>
         </div>
@@ -483,7 +483,6 @@
   </template>
   <script>
   import DeptBoardService from "@/services/board/dept/DeptBoardService";
-import FreeBoardService from "@/services/board/free/FreeBoardService";
 import UserService from "@/services/user/UserService";
   // import { ref } from "vue";
   
@@ -492,7 +491,58 @@ import UserService from "@/services/user/UserService";
     data() {
       return {
 
-         // 회원 부서 확인 함수
+        
+        // replyVisible: false, // 답글 입력 폼의 표시 여부를 관리하는 변수
+        replyToCommentId: null, // 어떤 댓글에 대한 답글인지 식별하기 위한 변수
+  
+        // 새로 작성할 답글
+        newReply: {
+          userId: this.$store.state.user?.userId,
+          content: "",
+        },
+  
+        // 답글 글자 수
+        charCountReply: 0,
+  
+        // 해당 게시글
+        deptBoard: {
+          deptBoardId: this.$route.params.deptBoardId,
+          deptId:0,
+          userId: "",
+          content: "",
+          title: "",
+          likes: 0,
+        },
+  
+        // 기존 댓글 목록
+        deptBoardComments: [],
+  
+        // 기존 대댓글 목록
+        deptBoardRecomments: [],
+  
+        // 새로 작성할 댓글
+        newComment: {
+          userId: this.$store.state.user?.userId, // 로그인된 사용자 ID
+          content: "",
+        },
+  
+        // 페이징
+        page: 1, // 현재페이지번호
+        count: 0, // 전체데이터개수
+        pageSize: 5, // 1페이지당개수(select태그)
+  
+        // 댓글 글자수
+  
+        charCount: 0,
+      };
+    },
+    watch: {
+      "newComment.content"(newVal) {
+        this.charCount = newVal.length;
+      },
+    },
+    methods: {
+       // 회원 부서 확인 함수
     async checkUserDeptId(){
       try {
         let user = UserService.get(this.$store.state.user.userId);
@@ -521,55 +571,6 @@ import UserService from "@/services/user/UserService";
         console.log(e);
       }
     },
-        // replyVisible: false, // 답글 입력 폼의 표시 여부를 관리하는 변수
-        replyToCommentId: null, // 어떤 댓글에 대한 답글인지 식별하기 위한 변수
-  
-        // 새로 작성할 답글
-        newReply: {
-          userId: this.$store.state.user?.userId,
-          content: "",
-        },
-  
-        // 답글 글자 수
-        charCountReply: 0,
-  
-        // 해당 게시글
-        freeBoard: {
-          freeBoardId: this.$route.params.freeBoardId,
-          userId: "",
-          content: "",
-          title: "",
-          likes: 0,
-        },
-  
-        // 기존 댓글 목록
-        freeBoardComments: [],
-  
-        // 기존 대댓글 목록
-        freeBoardRecomments: [],
-  
-        // 새로 작성할 댓글
-        newComment: {
-          userId: this.$store.state.user?.userId, // 로그인된 사용자 ID
-          content: "",
-        },
-  
-        // 페이징
-        page: 1, // 현재페이지번호
-        count: 0, // 전체데이터개수
-        pageSize: 5, // 1페이지당개수(select태그)
-  
-        // 댓글 글자수
-  
-        charCount: 0,
-      };
-    },
-    watch: {
-      "newComment.content"(newVal) {
-        this.charCount = newVal.length;
-      },
-    },
-    methods: {
       toggleReplyForm(commentId) {
         // 클릭된 답글 버튼이 이미 열려있는 상태이면 폼을 닫고, 그렇지 않으면 엽니다.
         this.replyVisible =
@@ -590,11 +591,11 @@ import UserService from "@/services/user/UserService";
         this.charCount = this.newComment.content.length;
       },
   
-      // freeBoardId로 상세조회 : 화면뜰때 실행
-      async retrieveGetFreeBoard(freeBoardId) {
+      // deptBoardId로 상세조회 : 화면뜰때 실행
+      async retrieveGetDeptBoard(deptBoardId) {
         try {
-          let response = await FreeBoardService.getFreeBoardId(freeBoardId);
-          this.freeBoard = response.data;
+          let response = await DeptBoardService.getDeptBoardId(deptBoardId);
+          this.deptBoard = response.data;
           console.log(response.data);
         } catch (e) {
           alert("에러");
@@ -602,23 +603,25 @@ import UserService from "@/services/user/UserService";
         }
       },
   
-      // freeBoardId로 댓글조회 : 화면뜰때 실행
-      async retrieveFreeBoardComment(freeBoardId) {
+      // deptBoardId로 댓글조회 : 화면뜰때 실행
+      async retrieveDeptBoardComment(deptBoardId) {
         try {
-          let response = await FreeBoardService.getFreeBoardComment(
-            freeBoardId,
+          let response = await DeptBoardService.getDeptBoardComment(
+            deptBoardId,
             this.page - 1,
             this.pageSize
           );
+          console.log("댓글들이 안들어와요",response.data)
+
           // TODO: 복습 : 2) 객체분할 할당
-          const { freeBoardComments, totalItems } = response.data; // 부서배열(벡엔드 전송)
+          const { deptBoardComments, totalItems } = response.data; // 부서배열(벡엔드 전송)
           // TODO: 3) 바인딩변수(속성)에 저장
-          this.freeBoardComments = freeBoardComments; // 부서배열(벡엔드 전송)
+          this.deptBoardComments = deptBoardComments; // 부서배열(벡엔드 전송)
           this.count = totalItems; // 전체페이지수(벡엔드 전송)
-          this.retrieveFreeBoardRecomment(freeBoardId);
+          this.retrieveDeptBoardRecomment(deptBoardId);
           // TODO: 4) 프론트 로깅 : console.log
           // console.log("response.data",response.data);
-          // console.log("this.comments" ,this.freeBoardComments);
+          // console.log("this.comments" ,this.deptBoardComments);
         } catch (e) {
           // alert("페이징 댓글 에러");
           console.log(e);
@@ -635,11 +638,11 @@ import UserService from "@/services/user/UserService";
           let data = {
             userId: this.newComment.userId,
   
-            freeBoardId: this.freeBoard.freeBoardId,
+            deptBoardId: this.deptBoard.deptBoardId,
             content: this.newComment.content,
-            secretCommentYn: "N",
+            secretCommentYN: "N",
           };
-          await FreeBoardService.createFreeBoardComment(data);
+          await DeptBoardService.createDeptBoardComment(data);
         } catch (e) {
           // alert("댓글 등록 중 에러가 발생했습니다.");
           console.log(e);
@@ -647,20 +650,20 @@ import UserService from "@/services/user/UserService";
         this.newComment.content = "";
         this.charCount = 0;
   
-        this.retrieveFreeBoardComment(this.$route.params.freeBoardId);
+        this.retrieveDeptBoardComment(this.$route.params.deptBoardId);
       },
   
       // 삭제 함수
-      async deleteFreeBoard() {
+      async deleteDeptBoard() {
         try {
           if (confirm("정말로 삭제하시겠습니까?")) {
-            let response = await FreeBoardService.deleteFreeBoard(
-              this.freeBoard.freeBoardId
+            let response = await DeptBoardService.deleteDeptBoard(
+              this.deptBoard.deptBoardId
             );
             // 로깅
             console.log(response.data);
             alert("게시글이 삭제되었습니다.");
-            this.$router.push("/free/free-board");
+            this.$router.push("/dept/"+ this.deptBoard.deptId);
           } else {
             return;
           }
@@ -671,24 +674,24 @@ import UserService from "@/services/user/UserService";
   
       // 수정 함수
       async likeUp() {
-        this.freeBoard.likes = +1;
+        this.deptBoard.likes = +1;
   
         try {
-          let response = await FreeBoardService.updateFreeBoard(
-            this.freeBoard.likes
+          let response = await DeptBoardService.updateDeptBoard(
+            this.deptBoard.likes
           );
           // 로깅
           console.log(response.data);
-          this.$router.push("/free/free-board/:freeBoardId");
+          this.$router.push("/dept/board/detail/:deptBoardId");
         } catch (e) {
           console.log(e);
         }
       },
   
       // 답글 버튼 클릭 시 호출되는 메소드
-      showReplyForm(freeBoardCommentId) {
+      showReplyForm(deptBoardCommentId) {
         this.replyVisible = true;
-        this.replyToCommentId = freeBoardCommentId;
+        this.replyToCommentId = deptBoardCommentId;
       },
   
       // 답글 글자 수 세기
@@ -700,26 +703,25 @@ import UserService from "@/services/user/UserService";
       },
   
       // 대댓글(답글) 조회
-      async retrieveFreeBoardRecomment(freeBoardId) {
+      async retrieveDeptBoardRecomment(deptBoardId) {
         console.log("진입");
         try {
-          let response = await FreeBoardService.getFreeBoardRecomment(
-            freeBoardId
+          let response = await DeptBoardService.getDeptBoardRecomment(
+            deptBoardId
           );
-          this.freeBoardRecomments = response.data; // 부서배열(벡엔드 전송)
-  
-          console.log("댓글들", this.freeBoardComments);
-          console.log("대댓글들", this.freeBoardRecomments);
+          this.deptBoardRecomments = response.data; // 부서배열(벡엔드 전송)
+          console.log("댓글들", this.deptBoardComments);
+          console.log("대댓글들", this.deptBoardRecomments);
           // 댓글 배열에 대댓글 속성을 추가하는 함수
-          this.freeBoardComments.forEach((comment) => {
-            comment.freeBoardRecomments = this.freeBoardRecomments.filter(
-              (reply) => reply.freeBoardCommentId === comment.freeBoardCommentId
+          this.deptBoardComments.forEach((comment) => {
+            comment.deptBoardRecomments = this.deptBoardRecomments.filter(
+              (reply) => reply.deptBoardCommentId === comment.deptBoardCommentId
             );
           });
-          console.log("댓글마다 대댓글 잘 드갔나", this.freeBoardComments);
+          console.log("댓글마다 대댓글 잘 드갔나", this.deptBoardComments);
           // TODO: 4) 프론트 로깅 : console.log
           // console.log("response.data",response.data);
-          // console.log("this.comments" ,this.freeBoardComments);
+          // console.log("this.comments" ,this.deptBoardComments);
         } catch (e) {
           // alert("페이징 대댓글 에러");
           console.log(e);
@@ -735,12 +737,12 @@ import UserService from "@/services/user/UserService";
         try {
           let data = {
             userId: this.newReply.userId,
-            freeBoardCommentId: commentId, // 부모 댓글 ID
+            deptBoardCommentId: commentId, // 부모 댓글 ID
             content: this.newReply.content,
             secretCommentYn: "N",
           };
-          console.log("대댓글의 댓글 아이디",data.freeBoardCommentId);
-          await FreeBoardService.createFreeBoardRecomment(data);
+          console.log("대댓글의 댓글 아이디",data.deptBoardCommentId);
+          await DeptBoardService.createDeptBoardRecomment(data);
         } catch (e) {
           console.log(e);
         }
@@ -748,13 +750,13 @@ import UserService from "@/services/user/UserService";
         this.charCountReply = 0;
         this.replyVisible = false; // 답글 입력 폼 숨기기
         // alert("답글이 등록되었습니다.");
-        this.retrieveFreeBoardComment(this.$route.params.freeBoardId);
+        this.retrieveDeptBoardComment(this.$route.params.deptBoardId);
       },
     },
     async mounted() {
-      this.retrieveGetFreeBoard(this.$route.params.freeBoardId);
-      this.retrieveFreeBoardComment(this.$route.params.freeBoardId);
-      // this.retrieveFreeBoardRecomment(this.$route.params.freeBoardId);
+      this.retrieveGetDeptBoard(this.$route.params.deptBoardId);
+      this.retrieveDeptBoardComment(this.$route.params.deptBoardId);
+      // this.retrieveDeptBoardRecomment(this.$route.params.deptBoardId);
       window.scrollTo(0, 0);
     },
   };

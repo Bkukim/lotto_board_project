@@ -6,11 +6,15 @@ import org.example.boardbackend.constant.DeptCode;
 import org.example.boardbackend.model.dto.board.dept.DeptBoardDto;
 import org.example.boardbackend.model.dto.board.dept.DeptRecommentDto;
 import org.example.boardbackend.model.entity.board.dept.DeptBoard;
+import org.example.boardbackend.model.entity.board.dept.DeptBoardReport;
 import org.example.boardbackend.model.entity.board.dept.DeptComment;
 import org.example.boardbackend.model.entity.board.dept.DeptRecomment;
 import org.example.boardbackend.model.entity.dept.Department;
+import org.example.boardbackend.model.entity.notify.Notify;
 import org.example.boardbackend.service.board.dept.DeptBoardService;
 import org.example.boardbackend.service.dept.DepartmentService;
+import org.example.boardbackend.service.notify.NotifyService;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -44,7 +48,9 @@ public class DeptBoardController {
 
     private final DeptBoardService deptBoardService;
     private final DepartmentService departmentService;
-
+    private final NotifyService notifyService;
+    @Value("${adminId}")
+    private String adminId;
     //    todo 전체 조회 + 제목 검색 + 페이징
     @GetMapping("/board")
     public ResponseEntity<Object> findAllDeptBoard(
@@ -162,7 +168,7 @@ public class DeptBoardController {
     @GetMapping("/comment")
     public ResponseEntity<Object> getCommentsByFreeBoardId(@RequestParam(defaultValue = "0") long deptBoardId,
                                                            @RequestParam(defaultValue = "0") int page,
-                                                           @RequestParam(defaultValue = "5") int size) {
+                                                           @RequestParam(defaultValue = "10") int size) {
         try {
             Pageable pageable = PageRequest.of(page, size);
 
@@ -187,7 +193,7 @@ public class DeptBoardController {
     }
 
     //    TODO: 대댓글 조회 함수
-    @GetMapping("/recomment/{deptBoardId}")
+    @GetMapping("/recomment")
     public ResponseEntity<Object> getCommentsByFreeBoardCoId(@RequestParam(defaultValue = "0") long deptBoardId) {
         try {
             // 해당 freeBoardId에 대한 댓글을 가져오도록 서비스 메서드를 호출
@@ -207,10 +213,16 @@ public class DeptBoardController {
 
     // TODO 댓글 저장 함수
     @PostMapping("/comment/save")
-    public ResponseEntity<Object> saveFreeComment(@RequestBody DeptComment DeptComment) {
+    public ResponseEntity<Object> saveFreeComment(@RequestBody DeptComment deptComment) {
         try {
-            //            DB 서비스 저장 함수 실행
-            deptBoardService.saveComment(DeptComment);
+            log.debug(deptComment.toString());
+            // 댓글 저장
+            deptBoardService.saveComment(deptComment);
+            // 알림 생성
+            String notifyContent = "회원님의 게시물에 댓글이 달렸습니다." + /*\n" + "\"" +*/ deptComment.getContent() /*+ "\""*/;
+            String notifyUrl = "dept/board/detail/" + deptComment.getDeptBoardId();
+            // 알림 전송 및 저장
+            notifyService.send(deptComment.getUserId(), Notify.NotificationType.COMMENT, notifyContent, notifyUrl);
             return new ResponseEntity<>(HttpStatus.OK);
         } catch (Exception e) {
             log.debug("디버그"+e.getMessage());
@@ -224,7 +236,14 @@ public class DeptBoardController {
         log.debug("대댓글"+deptRecomment);
 
         try {
+            // 대댓글 저장
             deptBoardService.saveRecomment(deptRecomment);
+            // 2. 알림 보내기
+            DeptComment deptComment = deptBoardService.findByCommentId(deptRecomment.getDeptBoardCommentId());
+            String commentWriter = deptComment.getUserId();
+            String notifyContent = "회원님의 댓글에 또 다른 댓글이 달렸습니다.    "  + "\"" + deptRecomment.getContent() + "\"";
+            String notifyUrl = "dept/board/detail/" + deptComment.getDeptBoardId();
+            notifyService.send(commentWriter,Notify.NotificationType.COMMENT,notifyContent,notifyUrl);
             return new ResponseEntity<>(HttpStatus.OK);
         } catch (Exception e) {
             log.debug("디버그 :: "+e.getMessage());
@@ -253,6 +272,24 @@ public class DeptBoardController {
         }catch (Exception e){
             log.debug(e.getMessage());
             return new ResponseEntity<>(e.getMessage(),HttpStatus.OK);
+        }
+    }
+
+    // todo 부서 신고 알림 함수
+    @PostMapping("/report/save")
+    public ResponseEntity<Object> reportDeptBoard(@RequestBody DeptBoardReport deptBoardReport) {
+        try {
+            // 신고 저장
+            deptBoardService.saveReport(deptBoardReport);
+            // 2. 알림 보내기
+            DeptBoard deptBoard = deptBoardService.findById(deptBoardReport.getDeptBoardId()).get();
+            String notifyContent = "게시물 신고가 접수되었습니다.   "  + "\"" + deptBoard.getTitle() + "\"";
+            String notifyUrl = "dept/board/detail/" + deptBoard.getDeptBoardId(); // todo 주소 바꾸기
+            notifyService.send(adminId,Notify.NotificationType.REPORT,notifyContent,notifyUrl);
+            return new ResponseEntity<>(HttpStatus.OK);
+        } catch (Exception e) {
+            log.debug("디버그 :: "+e.getMessage());
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 }

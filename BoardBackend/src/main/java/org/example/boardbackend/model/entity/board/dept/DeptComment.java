@@ -44,6 +44,7 @@ public class DeptComment extends BaseTimeEntity {
     private String userId;
     private long deptBoardId;
     private String content;
+    @Column(name = "SECRET_COMMENT_YN")
     private String secretCommentYN;
 
 }

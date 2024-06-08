@@ -168,7 +168,7 @@ const routes = [
   // },
   // 부서 게시판 : 상세페이지
   {
-    path: "/dept/board/dtail/:deptBoardId",
+    path: "/dept/board/detail/:deptBoardId",
     component: () => import("../views/dept/DeptBoardDetail.vue"),
   },
   // 부서 게시판 : 글쓰기
