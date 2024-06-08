@@ -2,7 +2,7 @@
   <div class="container text-center" id="fb_all">
     <h3 class="mb-5 mt-5">{{ department.deptName }} 게시판</h3>
     <p class="mb-5">
-      회계부 게시판은 회계부의 공간으로 건의관련 답변은 드리지 않습니다. <br />
+      {{ department.deptName }} 게시판은 {{ department.deptName }}의 공간으로 건의관련 답변은 드리지 않습니다. <br />
       건의관련 및 문의사항은 건의게시판을 이용해주시길 바랍니다.
     </p>
 
@@ -87,7 +87,7 @@
           <td id="router_hv" style="text-align: left; padding-left: 100px">
             <router-link
               style="color: #444444; font-weight: bold; text-decoration: none"
-              :to="'/dept/board/dtail/' + data.deptBoardId"
+              :to="'/dept/board/detail/' + data.deptBoardId"
               class="router-link-exact-active alltext"
             >
               {{ data.title }}

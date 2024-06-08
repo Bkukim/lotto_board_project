@@ -41,11 +41,11 @@ public class FreeBoardLike {
     private long likeId;
 
     @ManyToOne(fetch = LAZY)
-    @JoinColumn(name = "member_id")
+    @JoinColumn(name = "USER_ID")
     private User user;
 
     @ManyToOne(fetch = LAZY)
-    @JoinColumn(name = "board_id")
+    @JoinColumn(name = "FREE_BOARD_ID")
     private FreeBoard freeBoard;
 
 

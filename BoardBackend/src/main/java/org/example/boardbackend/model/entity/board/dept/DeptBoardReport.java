@@ -2,6 +2,7 @@ package org.example.boardbackend.model.entity.board.dept;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.example.boardbackend.model.common.BaseTimeEntity;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 
@@ -34,7 +35,7 @@ import org.hibernate.annotations.DynamicUpdate;
 @AllArgsConstructor
 @DynamicInsert
 @DynamicUpdate
-public class DeptBoardReport {
+public class DeptBoardReport extends BaseTimeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE
             , generator = "SQ_DEPT_BOARD_REPORT_GENERATOR"

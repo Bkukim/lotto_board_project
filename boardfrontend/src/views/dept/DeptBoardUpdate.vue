@@ -7,7 +7,7 @@
         type="text"
         class="form-control"
         placeholder="제목을 적어주세요"
-        v-model="freeBoardList.title"
+        v-model="deptBoard.title"
       />
     </div>
     <div class="col-12 mt-3 mb-3">
@@ -15,19 +15,19 @@
     </div>
 
     <!-- 본문 -->
-    <div ref="editor"></div>
+    <div id="editor"></div>
 
     <!-- 버튼 -->
     <div class="row mt-3">
       <button
-        @click="cancelFreeBoard"
+        @click="cancelDeptBoard"
         class="btn col-3"
         id="button-cancle-Writing"
       >
         취소
       </button>
       <button
-        @click="updateFreeBoard"
+        @click="updateDeptBoard"
         class="btn col-3"
         id="button-cancle-Writing"
       >
@@ -38,28 +38,29 @@
 </template>
 
 <script>
+import DeptBoardService from "@/services/board/dept/DeptBoardService";
 import Editor from "@toast-ui/editor";
 import "@toast-ui/editor/dist/toastui-editor.css";
-import FreeBoardService from "@/services/board/free/FreeBoardService";
 
 export default {
   data() {
     return {
       editor: null,
-      freeBoardList: {
+      deptBoard: {
+        deptBoardId:0,
+        deptId:0,
         userId: this.$store.state.user.userId, // 로그인 된 userId
         title: "",
-        freeBoardId: "",
         content: "",
       },
     };
   },
   methods: {
-    // freeBoardId로 상세조회
-    async retrieveGetFreeBoard(freeBoardId) {
+    // deptBoardId로 상세조회
+    async retrieveDeptBoard(deptBoardId) {
       try {
-        let response = await FreeBoardService.getFreeBoardId(freeBoardId);
-        this.freeBoardList = response.data;
+        let response = await DeptBoardService.getDeptBoardId(deptBoardId);
+        this.deptBoard = response.data;
         console.log(response.data);
       } catch (e) {
         alert("에러");
@@ -67,43 +68,49 @@ export default {
       }
     },
     // 글 수정 취소 함수
-    cancelFreeBoard() {
+    cancelDeptBoard() {
       if (confirm("글 수정을 취소하시겠습니까?")) {
-        alert(this.freeBoardList.freeBoardId);
-        this.$router.push(
-          "/free/free-boardDetail/" + this.freeBoardList.freeBoardId
-        );
+        alert(this.deptBoard.deptBoardId);
+        this.$router.push("/dept/board/detail/" + this.deptBoard.deptBoardId);
       }
     },
     // 수정 함수
-    async updateFreeBoard() {
+    async updateDeptBoard() {
       try {
-        let response = await FreeBoardService.updateFreeBoard(
-          this.freeBoardList.freeBoardId
+        let data = {
+          deptBoardId:this.deptBoard.deptBoardId,
+          deptId:this.deptBoard.deptId,
+          userId:this.deptBoard.userId,
+          noticeId: this.deptBoard.deptBoardId,
+          title: this.deptBoard.title,
+          content: this.editor.getHTML(), // 에디터의 글 content 가져오기
+          
+        };
+        let response = await DeptBoardService.updateDeptBoard(
+          this.deptBoard.deptBoardId,
+          data
         );
         // 로깅
         console.log(response.data);
         alert("게시글이 수정되었습니다.");
-        this.$router.push("/free/free-board/:freeBoardId");
+        this.$router.push("/dept/board/detail/"+this.deptBoard.deptBoardId);
       } catch (e) {
         console.log(e);
       }
     },
+    // toastUi 에디터 생성
+    createEditor(content) {
+      this.editor = new Editor({
+        el: document.querySelector("#editor"),
+        initialEditType: "wysiwyg",
+        initialValue: content, // TODO: 중요 : 여기 content 넣기 , 에디터에 content 보임 =>내용
+      });
+    },
   },
-  mounted() {
-    this.editor = new Editor({
-      el: this.$refs.editor,
-      initialEditType: "wysiwyg",
-      height: "500px",
-      // hooks: {
-      //   addImageBlobHook: async (blob, callback) => {
-      //     const imageUrl = await this.uploadImage(blob);
-      //     callback(imageUrl, blob.name);
-      //   },
-      // },
-    });
-    this.retrieveGetFreeBoard(this.$route.params.freeBoardId);
-        window.scrollTo(0, 0);
+  async mounted() {
+    // 비동기
+    await this.retrieveDeptBoard(this.$route.params.deptBoardId);
+    this.createEditor(this.deptBoard.content);
   },
 };
 </script>

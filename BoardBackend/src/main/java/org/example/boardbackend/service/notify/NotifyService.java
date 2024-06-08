@@ -68,21 +68,13 @@ public class NotifyService {
     }
 
     // 알림 보내기 함수
-    public void send(String userId, Notify.NotificationType notificationType, String notifyContent, String url) {
-        Notify notification = notifyRepository.save(createNotification(userId, notificationType, notifyContent, url)); // 알림 객체 생성 및 저장
+    public void send(String receiver, Notify.NotificationType notificationType, String notifyContent, String url) {
+        Notify notification = notifyRepository.save(createNotification(receiver, notificationType, notifyContent, url)); // 알림 객체 생성 및 저장
         log.debug("send 함수 들옴");
-        log.debug(userId);
-        SseEmitter sseEmitter = emitterRepository.findByUserId(userId);
-//        if (sseEmitter == null) {
-//            log.debug("send 함수 : 로그인 안된 상태");
-//            emitterRepository.deleteAllEmitterStartWithId(userId);
-//            emitterRepository.saveEventCache(userId,new SseEmitter()); // 전달 되지 못한 emitter 들 저장
-//            List<Map<String,SseEmitter>> list = emitterRepository.findAllEventCacheStartWithByUserId(userId);
-//            log.debug("캐쉬 에 들어있는 알림들" + list.toString());
-//        }else {
-            log.debug("보낼 알림 "+sseEmitter.toString());
-            sendNotification(userId, sseEmitter, notificationType, notifyContent);
-//        }
+        log.debug(receiver);
+        SseEmitter sseEmitter = emitterRepository.findByUserId(receiver);
+        log.debug("보낼 알림 " + sseEmitter.toString());
+        sendNotification(receiver, sseEmitter, notificationType, notifyContent);
     }
 
     private void sendNotification(String userId, SseEmitter emitter, Notify.NotificationType notificationType, String notifyContent) {
@@ -113,18 +105,19 @@ public class NotifyService {
     }
 
     // todo 읽지 않은 알림 조회
-    public List<Notify> findUnReadNotify(String userId) throws IOException{
+    public List<Notify> findUnReadNotify(String userId) throws IOException {
         List<Notify> list = notifyRepository.findTop8ByUserIdOrderByIsReadAscInsertTimeDesc(userId/*,"N"*/);
         return list;
     }
+
     // todo 읽음 변경함수
-    public void updateIsRead(String  userId) throws IOException{
+    public void updateIsRead(String userId) throws IOException {
         notifyRepository.updateByUserId(userId);
     }
 
     // todo 읽지 않은 알림 갯수 구하기
-    public long countUnread(String userId)throws IOException{
-        long count = notifyRepository.countByUserIdAndIsRead(userId,"N");
+    public long countUnread(String userId) throws IOException {
+        long count = notifyRepository.countByUserIdAndIsRead(userId, "N");
         return count;
     }
 }
