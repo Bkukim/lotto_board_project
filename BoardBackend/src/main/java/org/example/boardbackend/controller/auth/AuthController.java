@@ -62,30 +62,27 @@ public class AuthController {
         try {
             String accessToken = socialLoginService.getAccessToken(code);
             UserRes userRes = socialLoginService.getUserInfo(accessToken);
-            if (userRes.getAccessToken() == null) {
+
+
                 return new ResponseEntity<>(userRes,HttpStatus.OK);
-            }else{
-                return new ResponseEntity<>(userRes,HttpStatus.OK);
-            }
+
+
 
         }catch (Exception e){
             log.debug(e.getMessage());
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-    // 카카오 로그인 함수
-    @PostMapping("/kakao-register/{code}")
-    public ResponseEntity<Object> kakaoLogin(@PathVariable String code,
+
+    // 카카오 회원가입 함수
+    @PostMapping("/kakao-register/{userId}")
+    public ResponseEntity<Object> kakaoLogin(@PathVariable String userId,
                                              @RequestBody SocialUserReq socialUserReq){
         try {
-            String accessToken = socialLoginService.getAccessToken(code);
-            UserRes userRes = socialLoginService.getUserInfo(accessToken);
-            if (userRes.getAccessToken() == null && userRes.getRole() == null) { // 회원이 아니면 jwt 는 null 이 됨
-                UserRes RegisteredUserRes = socialLoginService.socialRegister(userRes.getUserId(), socialUserReq);
-                return new ResponseEntity<>(RegisteredUserRes,HttpStatus.OK);
-            }else {
-                return new ResponseEntity<>(userRes,HttpStatus.OK);
-            }
+
+                UserRes RegisteredUserRes = socialLoginService.socialRegister(userId, socialUserReq);
+              return new ResponseEntity<>(RegisteredUserRes, HttpStatus.OK);
+
         }catch (Exception e){
             log.debug(e.getMessage());
             return new ResponseEntity<>("회원가입 실패",HttpStatus.INTERNAL_SERVER_ERROR);
@@ -105,7 +102,7 @@ public class AuthController {
         }
     }
 
-//    todo 로그인 함수 : 로그인은 조회. URL에 안뜨게 하려고 GET아니고 POST
+    //    todo 로그인 함수 : 로그인은 조회. URL에 안뜨게 하려고 GET아니고 POST
     @PostMapping("/login")
     public ResponseEntity<Object> login(
             @RequestBody UserReq userReq      //  프론트에서 받은 정보

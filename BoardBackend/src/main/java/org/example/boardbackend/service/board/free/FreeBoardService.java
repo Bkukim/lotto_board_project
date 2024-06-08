@@ -88,7 +88,9 @@ public class FreeBoardService {
 
         // 2. 알림 보내기
         String notifyContent = "회원님의 게시물에 댓글이 달렸습니다.  " + "\"" + freeBoardComment.getContent() + "\"";
-        String notifyUrl =  "free/free-boardDetail/" + freeBoard.getFreeBoardId();
+
+        String notifyUrl = "free/free-boardDetail/" + freeBoardComment.getFreeBoardId();
+
         notifyService.send(boardWriter,Notify.NotificationType.COMMENT,notifyContent,notifyUrl);
     }
 
@@ -139,7 +141,7 @@ public class FreeBoardService {
 
     //    todo: 댓글 조회 함수
     public Page<FreeBoardComment> getCommentByFreeBoardId(long freeBoardId, Pageable pageable) {
-        return freeBoardCommentRepository.findFreeBoardCommentsByFreeBoardIdOrderByInsertTimeDesc(freeBoardId, pageable);
+        return freeBoardCommentRepository.findFreeBoardCommentsByFreeBoardIdOrderByInsertTimeAsc(freeBoardId, pageable);
     }
 
     //    todo: 대댓글 조회 함수

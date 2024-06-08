@@ -4,7 +4,7 @@
 </template>
 
 <script>
-import AuthService from '@/services/auth/AuthService';
+import AuthService from "@/services/auth/AuthService";
 export default {
   data() {
     return {
@@ -12,20 +12,24 @@ export default {
     };
   },
   methods: {
-  
-      async kakaoLogin(code) {
-        try {
-          let response = await AuthService.socialLogin(code);
-      let user = response.data;
-      localStorage.setItem("user", JSON.stringify(user));
-      this.$store.commit("loginSuccess", user);
-      this.connectSse(response.data.accessToken);
-      
-      this.$router.push("/");
-        } catch (e) {
-          console.log(e);
+    async kakaoLogin(code) {
+      try {
+        let response = await AuthService.socialLogin(code);
+
+        if (response.data.accessToken == null) {
+          this.$router.push(
+            "/member/login/additional-info/" + response.data.userId
+          );
+        } else {
+          let user = response.data;
+          localStorage.setItem("user", JSON.stringify(user));
+          this.$store.commit("loginSuccess", user);
+          this.connectSse(response.data.accessToken);
+          this.$router.push("/");
         }
-      
+      } catch (e) {
+        console.log(e);
+      }
     },
     // sse 연결 함수
     connectSse(jwt) {
@@ -42,14 +46,14 @@ export default {
         //     let message = event.data;
         //     alert(message);
         // })
-        this.eventSource.addEventListener("UNSENT_MESSAGE", function(event) {
-            let message = event.data;
-            alert(message);
-        })
-        this.eventSource.addEventListener("COMMENT", function(event) {
-            let message = event.data;
-            alert(message);
-        })
+        this.eventSource.addEventListener("UNSENT_MESSAGE", function (event) {
+          let message = event.data;
+          alert(message);
+        });
+        this.eventSource.addEventListener("COMMENT", function (event) {
+          let message = event.data;
+          alert(message);
+        });
         this.eventSource.onmessage = (event) => {
           console.log("새 알림:", event.data);
           this.messages.push(event.data);
