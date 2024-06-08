@@ -32,7 +32,7 @@ class ComplaintService {
       });
     }
       // TODO: 수정함수
-  updateFreeBoard(complaintBoardId, data) {
+  updateComplaintBoard(complaintBoardId, data) {
     return http.put(`/user/board/complaint/update/${complaintBoardId}`, data, {
       headers: AuthHeader(),
     });

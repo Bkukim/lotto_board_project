@@ -20,6 +20,11 @@ const routes = [
     path: "/auth-redirect",
     component: () => import("../views/auth/KakaoRedirectView.vue"),
   },
+  // 카카오 로그인 시 추가 정보 기입
+  {
+    path: "/member/login/additional-info/:userId",
+    component: () => import("../views/auth/KakaoAdditionalInfo.vue"),
+  },
   // 회원가입 페이지
   {
     path: "/member/join",

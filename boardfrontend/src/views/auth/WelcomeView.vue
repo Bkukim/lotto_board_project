@@ -18,7 +18,7 @@
     <br />
     <div class="container">
       <div class="row justify-content-md-center">
-        <div class="col-8">로또에 회원가입이 성공적으로 완료되었습니다.</div>
+        <div class="col-8">회원가입이 성공적으로 완료되었습니다.</div>
       </div>
     </div>
     <div class="col"></div>

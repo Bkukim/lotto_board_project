@@ -31,7 +31,7 @@ public interface FreeBoardRecommentRepository extends JpaRepository<FreeBoardRec
             "WHERE FB.FREE_BOARD_ID = FC.FREE_BOARD_ID\n" +
             "AND FC.FREE_BOARD_COMMENT_ID = FR.FREE_BOARD_COMMENT_ID\n" +
             "AND FB.FREE_BOARD_ID = :freeBoardId \n" +
-            "ORDER BY FR.INSERT_TIME DESC",
+            "ORDER BY FR.INSERT_TIME",
             nativeQuery = true)
     List<IFreeBoardRecommentDto> findFreeBoardRecommentsByFreeBoardCommentIdOrderByInsertTimeDesc(@Param("freeBoardId") long freeBoardId);
 

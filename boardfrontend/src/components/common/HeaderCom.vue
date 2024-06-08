@@ -183,7 +183,7 @@
                         margin-left: 10px;
                       "
                     ></td>
-                    <td class="col-12" style="word-wrap: break-word; white-space: normal; max-width: 250px;">{{ data.content }}</td>
+                    <td class="col-12" style="word-wrap: break-word; white-space: normal; max-width: 250px;"><router-link :to="`/${data.url}`">{{ data.content }}</router-link></td>
                   </tr>
                 </tbody>
               </table>

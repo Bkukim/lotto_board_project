@@ -1,204 +1,20 @@
+// 카카오 소셜 로그인 리다이렉트 페이지
 <template>
-  <div class="container mt-5">
+  <div class="container mt-5" v-if="!UserExist">
     <div class="row">
       <div class="col"></div>
       <div class="col-10">
-        <!-- 회원유형 테이블 시작 -->
-        <table class="table">
-          <thead>
-            <tr>
-              <td scope="col"><h3 class="mb-5">회원가입</h3></td>
-              <td scope="col"></td>
-              <td scope="col"></td>
-              <td scope="col"></td>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td scope="row">회원 유형</td>
-              <td>
-                <div class="form-check">
-                  <input
-                    class="form-check-input"
-                    type="radio"
-                    name="flexRadioDefault"
-                    id="flexRadioDefault1"
-                    value="ROLE_USER"
-                    v-model="user.role"
-                  />
-                  <label class="form-check-label" for="flexRadioDefault1">
-                    회원
-                  </label>
-                </div>
-              </td>
-              <td>
-                <div class="form-check">
-                  <input
-                    class="form-check-input"
-                    type="radio"
-                    name="flexRadioDefault"
-                    id="flexRadioDefault2"
-                    value="ROLE_ADMIN"
-                    v-model="user.role"
-                  />
-                  <label class="form-check-label" for="flexRadioDefault2">
-                    관리자
-                  </label>
-                </div>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-        <!-- 회원 유형 테이블 끝 -->
-        <br />
-        <br />
-        <br />
-
         <!-- 기본 정보 테이블 시작-->
         <table class="table">
           <thead>
             <tr>
-              <td scope="co"><h3 class="mb-5">기본 정보</h3></td>
+              <td scope="col"><h3>기본 정보</h3></td>
               <td scope="col"></td>
               <td scope="col"></td>
               <td scope="col"></td>
             </tr>
           </thead>
           <tbody>
-            <!-- 아이디 tr -->
-
-            <tr>
-              <td scope="row">
-                <label class="insert-id" for="id">아이디</label>
-              </td>
-              <td>
-                <div class="col">
-                  <input
-                    class="form-control"
-                    type="text"
-                    name="id"
-                    v-model="user.userId"
-                    @change="convertToFalse"
-                  />
-                </div>
-              </td>
-              <td>
-                <button
-                  class="btn col-1"
-                  type="button"
-                  id="addressBtn"
-                  @click="confirmExistenceID"
-                >
-                  중복 확인
-                </button>
-                <!-- <div class="col-11" v-if="idCheckMessage">
-                      {{ idCheckMessage }}
-                    </div> -->
-                <div v-if="idCheckMessage == '사용 가능한 ID 입니다.'">
-                  {{ idCheckMessage }}
-                </div>
-                <div v-if="idCheckMessage == '이미 사용중인 ID 입니다.'">
-                  {{ idCheckMessage }}
-                </div>
-                <div v-if="idCheckMessage == ''">
-                  {{ idCheckMessage }}
-                </div>
-              </td>
-            </tr>
-            <!-- 비밀번호 tr -->
-            <tr>
-              <td scope="row">
-                <label class="form-label" for="pwd">비밀번호</label>
-              </td>
-              <td>
-                <div class="col">
-                  <input
-                    class="form-control"
-                    type="password"
-                    name="pwd"
-                    v-model="user.password"
-                    @input="validatePassword"
-                  />
-                </div>
-              </td>
-              <div class="col">
-                <td>
-                  <p v-if="!isValid">
-                    (영문 대소문자/숫자/특수문자 중 3가지 이상 조합, 8자~16자)
-                  </p>
-                  <p v-else>비밀번호가 조건에 맞습니다.</p>
-                </td>
-              </div>
-            </tr>
-            <!-- 비밀번호 확인 tr -->
-            <tr>
-              <td scope="row">
-                <label class="form-label" for="pwdCheck">비밀번호 확인</label>
-              </td>
-              <td>
-                <div class="col">
-                  <input
-                    class="form-control"
-                    type="password"
-                    name="pwdCheck"
-                    id="pwdCheck"
-                    v-model="confirmPassword"
-                    @input="checkPasswordMatch"
-                  />
-                </div>
-              </td>
-              <td>
-                <p v-if="passwordMatchError" style="color: red">
-                  비밀번호가 일치하지 않습니다.
-                </p>
-              </td>
-            </tr>
-            <!-- 비밀번호 확인 질문 tr -->
-            <!-- <tr>
-              <td scope="row">
-                <label class="form-label" for="address"
-                  >비밀번호 확인 질문</label
-                >
-              </td>
-              <td>
-                <select
-                  class="form-select"
-                  aria-label="Default select example"
-                  v-model="user.pwQuestion"
-                >
-                  <option selected value="자신이 가장 존경하는 인물은">
-                    자신이 가장 존경하는 인물은?
-                  </option>
-                  <option value="기억에 남는 추억의 장소는">
-                    기억에 남는 추억의 장소는?
-                  </option>
-                  <option value="자신의 인생 좌우명은">
-                    자신의 인생 좌우명은?
-                  </option>
-                  <option value="인상깊게 읽은 책 이름은">
-                    인상깊게 읽은 책 이름은?
-                  </option>
-                </select>
-              </td>
-              <td></td>
-            </tr> -->
-            <!-- 비밀번호 질문 확인 tr -->
-            <!-- <tr>
-              <td scope="row">
-                <label class="form-label" for="pwdAskCheck"
-                  >비밀번호 질문 확인</label
-                >
-              </td>
-              <td>
-                <input
-                  class="form-control"
-                  type="text"
-                  name="pwdAskCheck"
-                  v-model="user.pwAnswer"
-                />
-              </td>
-              <td></td>
-            </tr> -->
             <!-- 이름 tr -->
             <tr>
               <td scope="row">
@@ -245,18 +61,10 @@
                   aria-label="Default select example"
                   v-model="user.department"
                 >
-                  <option value="A0001">
-                    회계부
-                  </option>
-                  <option selected value="B0002">
-                    재정부
-                  </option>
-                  <option value="C0003">
-                    기획부
-                  </option>
-                  <option selected value="D0004">
-                    홍보부
-                  </option>
+                  <option value="A0001">회계부</option>
+                  <option selected value="B0002">재정부</option>
+                  <option value="C0003">기획부</option>
+                  <option selected value="D0004">홍보부</option>
                 </select>
               </td>
               <td></td>
@@ -283,7 +91,7 @@
                     <button
                       class="btn"
                       type="button"
-                      @click="execDaumPostcode()"
+                      @click="execDaumPostcode"
                       value="우편번호 찾기"
                       id="addressBtn"
                     >
@@ -327,59 +135,6 @@
               </td>
               <td></td>
             </tr>
-            <!-- 전화 번호 tr -->
-            <!-- <tr>
-              <td scope="row">
-                <label class="form-label" for="address">일반 전화 번호</label>
-              </td>
-              <td>
-                <div class="row">
-                  <div class="col-3">
-                    <select
-                      class="form-select"
-                      aria-label="Default select example"
-                      v-model="callNum.first"
-                    >
-                      <option selected value="02">02</option>
-                      <option value="032">032</option>
-                      <option value="042">042</option>
-                      <option value="051">051</option>
-                      <option value="052">052</option>
-                      <option value="053">053</option>
-                      <option value="062">062</option>
-                      <option value="064">064</option>
-                      <option value="031">031</option>
-                      <option value="033">033</option>
-                      <option value="041">041</option>
-                      <option value="043">043</option>
-                      <option value="054">054</option>
-                      <option value="055">055</option>
-                      <option value="061">061</option>
-                      <option value="063">063</option>
-                    </select>
-                  </div>
-                  _
-                  <div class="col-3">
-                    <input
-                      class="form-control"
-                      type="text"
-                      name="call"
-                      v-model="callNum.second"
-                    />
-                  </div>
-                  _
-                  <div class="col-3">
-                    <input
-                      class="form-control"
-                      type="text"
-                      name="call"
-                      v-model="callNum.third"
-                    />
-                  </div>
-                </div>
-              </td>
-              <td></td>
-            </tr> -->
             <!-- 휴대폰 번호 tr -->
             <tr>
               <td scope="row">
@@ -478,11 +233,15 @@
   <br />
   <br />
 </template>
+
 <script>
 import AuthService from "@/services/auth/AuthService";
+// import UserService from '@/services/user/UserService';
 export default {
   data() {
     return {
+      UserExist:false,
+
       confirmPassword: "", // 비밀번호 확인
       passwordMatchError: false, // 비밀번호 확인이 다르면 true
 
@@ -491,12 +250,6 @@ export default {
       // email 정규화 확인 : 확인 되면 true
       emailIsValid: false,
 
-      // id 중복 체크 변수 : 존재여부로 존재하면 false
-      idPass: true,
-      // id 중복 실행 여부 : 실행하면 true
-      idCheck: false,
-      // id 중복 확인 결과 메세지
-      idCheckMessage: "",
 
       // 주소검색 변수들
       postcode: "",
@@ -522,61 +275,77 @@ export default {
         role: "",
         department: "",
         detailAddress: "",
-        pwQuestion: "",
-        pwAnswer: "",
       },
     };
   },
   methods: {
+    // async checkUserExist(){
+    //   let response = AuthService.existUserById()
+    //   if (this.UserExist) {
+        
+    //   } else {
+        
+    
+    // async kakaoLogin(code) {
+    //   try {
+    //     let response = await AuthService.socialLogin(code);
+    //     let user = response.data;
+    //     localStorage.setItem("user", JSON.stringify(user));
+    //     this.$store.commit("loginSuccess", user);
+    //     this.connectSse(response.data.accessToken);
+
+    //     // this.$router.push("/");
+    //   } catch (e) {
+    //     console.log(e);
+    //   }
+    // },
+    // sse 연결 함수
+    connectSse(jwt) {
+      let subscribeUrl = "http://localhost:8000/api/v1/notify/subscribe";
+
+      if (jwt != null) {
+        let token = jwt;
+        this.eventSource = new EventSource(subscribeUrl + "?token=" + token);
+        this.eventSource.onopen = () => {
+          console.log("SSE 연결이 열렸습니다.");
+          this.isConnected = true;
+        };
+        // this.eventSource.addEventListener("connect", function(event) {
+        //     let message = event.data;
+        //     alert(message);
+        // })
+        this.eventSource.addEventListener("UNSENT_MESSAGE", function (event) {
+          let message = event.data;
+          alert(message);
+        });
+        this.eventSource.addEventListener("COMMENT", function (event) {
+          let message = event.data;
+          alert(message);
+        });
+        this.eventSource.onmessage = (event) => {
+          console.log("새 알림:", event.data);
+          this.messages.push(event.data);
+        };
+        this.eventSource.onerror = (event) => {
+          console.error("SSE 연결 오류:", event);
+          if (event.readyState == EventSource.CLOSED) {
+            console.log("SSE 연결이 닫혔습니다.");
+            this.isConnected = false;
+          } else {
+            console.log("SSE 연결 오류 발생, 재연결 시도 중...");
+            setTimeout(() => this.connectSSE(), 5000); // 5초 후 재연결 시도
+          }
+        };
+      } else {
+        console.error("JWT 토큰이 없습니다.");
+      }
+    },
     /* 회원가입 버튼 누르면 실행될 함수 */
     async handleRegister() {
-      if (this.user.role == "") {
-        alert("회원유형을 선택해주세요");
-        return;
-      }
-      if (this.user.userId == "") {
-        alert("ID를 입력해주세요");
-        return;
-      }
-      if (!this.idCheck) {
-        alert("ID 중복 확인을 해주세요");
-        return;
-      }
-      if (!this.idPass) {
-        alert("이미 사용중인 ID입니다");
-        return;
-      }
-      if (this.user.password == "") {
-        alert("비밀번호를 입력해주세요");
-        return;
-      }
-      if (this.user.confirmPassword == "") {
-        alert("비밀번호확인을 입력해주세요");
-        return;
-      }
-      if (!this.isValid) {
-        alert("비밀번호가 조건에 맞지 않습니다");
-        return;
-      }
-
-      if (this.user.password !== this.confirmPassword) {
-        alert("비밀번호와 비밀번호 확인이 일치하지 않습니다");
-        return;
-      }
-      if (this.user.pwQuestion == "") {
-        alert("비밀번호 확인 질문을 입력해주세요");
-        return;
-      }
-      if (this.user.pwAnswer == "") {
-        alert("비밀번호 질문 확인을 입력해주세요");
-        return;
-      }
-
       if (this.user.userName == "") {
         alert("이름을 입력해주세요");
         return;
       }
- 
       if (this.user.email == "") {
         alert("email을 입력해주세요");
         return;
@@ -610,44 +379,30 @@ export default {
         return;
       }
       let data = {
-        userId: this.user.userId,
-        password: this.user.password,
         userName: this.user.userName,
         birthday: this.user.birthday,
         phoneNum:
           this.phoneNum.first + this.phoneNum.second + this.phoneNum.third,
         // callNum: this.callNum.first + this.callNum.second + this.callNum.third,
         email: this.user.email,
-        role: this.user.role,
-        department: this.user.department,
+        role: "ROLE_USER",
+        deptId: this.user.department,
         normalAddress: this.address + "," + this.extraAddress,
         detailAddress: this.user.detailAddress,
-        pwQuestion: this.user.pwQuestion,
-        pwAnswer: this.user.pwAnswer,
       };
       try {
-        let response = await AuthService.register(data);
-        console.log(response.data);
-        this.$store.commit("registerSuccess");
-        this.$router.push("/member/join/welcome");
+        let response = await AuthService.registerSocialUser(this.$route.params.userId, data);
+        let user = response.data;
+        localStorage.setItem("user", JSON.stringify(user));
+        this.$store.commit("loginSuccess", user);
+        this.connectSse(response.data.accessToken);
+        this.$router.push("/");
       } catch (e) {
         // 공유 저장소의 register 실행함수 실행
         this.$store.commit("registerFailure");
         this.message = "에러 :" + e;
         console.log(e); // 에러 출력
       }
-    },
-
-    // 비밀번호 입력시 실행되는 함수
-
-    // 비밀번호 정규화 함수
-    validatePassword() {
-      // 비밀번호에 대한 정규식 패턴
-      const pattern =
-        /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,16}$/;
-
-      // 정규식 패턴과 비밀번호가 맞는지 확인
-      this.isValid = pattern.test(this.user.password);
     },
 
     // email 정규화함수
@@ -669,32 +424,9 @@ export default {
       }
     },
 
-    // 아이디 중복 함수
-    async confirmExistenceID() {
-      try {
-        let response = await AuthService.existUserById(this.user.userId);
-        // console.log("아이디 존재 " + response.data);
-        this.idPass = !response.data; // response.data = id 가 존재 하면 true 존재 안 하면 false
-        if (!response.data) {
-          this.idCheckMessage = "사용 가능한 ID 입니다.";
-          this.idCheck = true;
-        } else {
-          this.idCheckMessage = "이미 사용중인 ID 입니다.";
-          this.idCheck = true;
-        }
-      } catch (e) {
-        console.log(e);
-      }
-    },
-
-    // 아이디 재 입력시 아이디 중복확인 여부 false로 만들어주는 함수
-    convertToFalse() {
-      this.idCheck = false;
-      this.idCheckMessage = "";
-    },
-
     // 주소 api 함수
     execDaumPostcode() {
+      console.log("진입");
       new window.daum.Postcode({
         oncomplete: (data) => {
           if (this.extraAddress !== "") {
@@ -734,8 +466,11 @@ export default {
         },
       }).open();
     },
-  },
+    },
   mounted() {
+   
+    // console.log(code);
+    // this.handleRegister(code);
     window.scrollTo(0, 0);
   },
 };

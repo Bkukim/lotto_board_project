@@ -107,13 +107,14 @@
         공감해요 {{ this.freeBoard.likes }}
       </button>
     </div>
+
+    <!-- 삭제 -->
     <div class="container text-center mt-5">
       <div
         class="row"
         style="margin-top: 100px"
         v-if="freeBoard.userId === this.$store.state.user?.userId"
       >
-        <!-- 삭제 -->
         <div class="col">
           <button
             class="fbd_d container text-center"
@@ -347,10 +348,7 @@
 
           <!-- 답변(대댓글)들 -->
           <div v-if="replyToCommentId === data.freeBoardCommentId">
-            <div
-              v-for="(data, index) in data.freeBoardRecomments"
-              :key="index"
-            >
+            <div v-for="(data, index) in data.freeBoardRecomments" :key="index">
               <div
                 class="lotto_new row row-cols-lg-4 gap-5 justify-content-left mb-3 mt-5"
               >
@@ -358,11 +356,12 @@
                   <span style="color: #999999; font-weight: 200">등록자 |</span>
                   {{ data.userId }}
                 </div>
-                <div class="col" style="color: #999999">
+                <div class="col" style="color: #999999; font-weight: bold">
                   {{ data.content }}
                 </div>
-                <div class="col" style="color: #999999">
-                  날짜 | {{ data.insertTime }}
+                <div class="col" style="color: #999999; font-weight: bold">
+                  <span style="color: #999999; font-weight: 200">날짜 | </span>
+                  {{ data.insertTime }}
                 </div>
               </div>
             </div>
@@ -409,7 +408,7 @@
 
                 <!-- (답변(대댓글)) 등록 버튼-->
                 <button
-                  @click="submitReply()"
+                  @click="submitReply(data.freeBoardCommentId)"
                   class="fbd_d container text-center mt-3"
                   style="
                     width: 60px;
@@ -538,16 +537,14 @@ export default {
     },
   },
   methods: {
+    toggleReplyForm(commentId) {
+      // 클릭된 답글 버튼이 이미 열려있는 상태이면 폼을 닫고, 그렇지 않으면 엽니다.
+      this.replyVisible =
+        this.replyVisible && this.replyToCommentId === commentId ? false : true;
+      this.replyToCommentId =
+        this.replyToCommentId === commentId ? null : commentId;
 
-    toggleReplyForm(freeBoardCommentId) {
-
-     // 클릭된 답글 버튼이 이미 열려있는 상태이면 폼을 닫고, 그렇지 않으면 엽니다.
-    this.replyVisible =
-      this.replyVisible && this.replyToCommentId === freeBoardCommentId ? false : true;
-    this.replyToCommentId = this.replyToCommentId === freeBoardCommentId ? null : freeBoardCommentId;
-
-      this.freeBoardCommentId = freeBoardCommentId; // 현재 선택된 댓글 ID 업데이트
-
+      // 현재 선택된 댓글 ID 업데이트
       this.newReply.content = ""; // 입력 폼 내용 초기화
       this.charCountReply = 0; // 글자 수 초기화
     },
@@ -696,7 +693,7 @@ export default {
       }
     },
     // 대댓글(답글) 등록
-    async submitReply() {
+    async submitReply(commentId) {
       if (!this.newReply.content.trim()) {
         // alert("답글을 입력해주세요.");
         return;
@@ -704,11 +701,11 @@ export default {
       try {
         let data = {
           userId: this.newReply.userId,
-          freeBoardId: this.freeBoard.freeBoardId,
-          freeBoardCommentId: this.freeBoardCommentId, // 부모 댓글 ID
+          freeBoardCommentId: commentId, // 부모 댓글 ID
           content: this.newReply.content,
           secretCommentYn: "N",
         };
+        console.log("대댓글의 댓글 아이디", data.freeBoardCommentId);
         await FreeBoardService.createFreeBoardRecomment(data);
       } catch (e) {
         console.log(e);
