@@ -1,19 +1,20 @@
 <template>
-  <div style="background-color: #f2f2f2; height: 5000px">
+  <div style="background-color: #f2f2f2; padding-bottom: 50px;">
+    <!-- 큰 이미지 배너 -->
     <div class="container d-flex justify-content-center text-center">
-      <div v-if="clubBoard && !mapView" style="width: 80%; height: 500px; background-color: #4480fe">
-        <img :src="clubBoard.imgUrl" alt="club_photo" width="80%" height="500" class="d-inline-block align-text-top" />
+      <div v-if="clubBoard && !mapView" style="width: 1000px; height: 500px;">
+        <img :src="clubBoard.imgUrl" alt="club_photo" width="1000px" height="500" class="d-inline-block align-text-top" />
       </div>
-      <div id="map" style="width: 80%; height: 500px" ref="map" v-else></div>
+      <div id="map" style="width: 1000px; height: 500px;" ref="map" v-else></div>
     </div>
 
-    <div class="container text-center mt-1">
-      <div class="container text-center">
-        <div class="lotto_new row row-cols-lg-2 gap-2 justify-content-center">
-          <div class="col match-point-container" style="background-color: #ffffff; height: 400px; max-width: 40%">
-            <p class="container text-left match-point-title">
-              매치 포인트
-            </p>
+    <div class="container text-center d-flex" style="width: 1000px; margin: 0 auto;">
+      <!-- 왼쪽 섹션 -->
+      <div style="flex: 1; margin-right: 20px;">
+        <!-- 매치 포인트 섹션 -->
+        <div class="row rounded-section" style="background-color: #ffffff; margin-bottom: 20px; height: 300px; position: relative;">
+          <div class="col-12">
+            <h3 class="match-point-title">매치 포인트</h3>
             <div v-if="clubBoard" class="match-point-content">
               <div class="match-point-item">
                 <i class="fas fa-venus-mars"></i>
@@ -33,28 +34,21 @@
               </div>
             </div>
           </div>
-          <div class="col" style="background-color: #ffffff; height: 400px; max-width: 40%">
-            news 2
-            <button @click="popUpMap">장소 사진 보기</button>
-          </div>
         </div>
 
-        <div class="d-flex justify-content-center">
-          <div class="row mt-3" style="background-color: #ffffff; width: 80%; height: 700px">
-            <p class="container text-left" style="text-align: left; margin: 20px 0 0 10px; font-size: 20px; letter-spacing: -1px; font-weight: 600;">
-              매치 데이터
-            </p>
+        <!-- 매치 데이터 섹션 -->
+        <div class="row rounded-section" style="background-color: #ffffff; margin-bottom: 20px; height: 500px;">
+          <div class="col-12">
+            <h3 class="text-left mt-3">매치 데이터</h3>
             <p v-if="clubBoard">{{ clubBoard.location }}</p>
           </div>
         </div>
 
-        <div class="d-flex justify-content-center">
-          <div class="row mt-3" style="background-color: #ffffff; width: 80%; height: 700px; text-align: left">
-            <p class="container text-left" style="text-align: left; margin: 20px 0 0 10px; font-size: 20px; letter-spacing: -1px; font-weight: 600;">
-              매치 진행방식
-            </p>
-            <ul style="padding: 0 0 0 30px; font-size: 20px; padding-left: 50px">
-              <b>매치 규칙</b>
+        <!-- 매치 진행방식 섹션 -->
+        <div class="row rounded-section" style="background-color: #ffffff; margin-bottom: 20px; height: 500px;">
+          <div class="col-12">
+            <h3 class="text-left mt-3">매치 진행방식</h3>
+            <ul>
               <li>모든 파울은 사이드라인에서 킥인</li>
               <li>골키퍼에게 백패스 가능 손으로는 잡으면 안 돼요</li>
               <li>사람을 향한 태클 금지</li>
@@ -62,7 +56,20 @@
           </div>
         </div>
       </div>
+
+      <!-- 뉴스 섹션 -->
+      <div class="news-container rounded-section" style="background-color: #ffffff; height: 400px; flex-basis: calc(35% + 10px); position: sticky; top: 5px; margin-right: -10px;">
+        <h3 class="text-left mt-3">뉴스</h3>
+        <button @click="popUpMap">장소 사진 보기</button>
+      </div>
     </div>
+
+    <!-- 푸터 -->
+    <footer style="background-color: #f2f2f2; padding: 20px;">
+      <div class="container">
+        <p class="text-center">© 2024 Your Company. All Rights Reserved.</p>
+      </div>
+    </footer>
   </div>
 </template>
 
@@ -73,11 +80,6 @@ export default {
   data() {
     return {
       clubBoard: null,
-      options: {
-        center: { lat: 33.450701, lng: 126.570667 },
-        level: 3,
-      },
-      address: "",
       mapView: true,
     };
   },
@@ -85,12 +87,9 @@ export default {
     async fetchClubBoardDetails() {
       const clubBoardId = this.$route.params.clubBoardId;
       try {
-        console.log("Fetching details for clubBoardId:", clubBoardId);
         const response = await ClubBoardService.getClubOnce(clubBoardId);
-        console.log("Response data:", response.data);
-        this.clubBoard = response.data[0]; // 첫 번째 요소를 clubBoard에 할당
-        this.address = this.clubBoard.address;
-        this.retrieveMap(this.address);
+        this.clubBoard = response.data[0];
+        this.retrieveMap(this.clubBoard.address);
       } catch (error) {
         console.error("Error fetching club board details:", error);
       }
@@ -99,46 +98,38 @@ export default {
       this.mapView = !this.mapView;
       if (this.mapView) {
         this.$nextTick(() => {
-          setTimeout(() => {
-            this.retrieveMap(this.address);
-          }, 0);
+          this.retrieveMap(this.clubBoard.address);
         });
       }
     },
     retrieveMap(address) {
-      let kakao = window.kakao;
-      var container = this.$refs.map;
-      const { center, level } = this.options;
-
-      var map = new kakao.maps.Map(container, {
-        center: new kakao.maps.LatLng(center.lat, center.lng),
-        level,
-      });
-
-      var geocoder = new kakao.maps.services.Geocoder();
-
-      geocoder.addressSearch(address, function (result, status) {
+      const kakao = window.kakao;
+      const container = this.$refs.map;
+      const options = {
+        center: new kakao.maps.LatLng(33.450701, 126.570667),
+        level: 3,
+      };
+      const map = new kakao.maps.Map(container, options);
+      const geocoder = new kakao.maps.services.Geocoder();
+      geocoder.addressSearch(address, (result, status) => {
         if (status === kakao.maps.services.Status.OK) {
-          var coords = new kakao.maps.LatLng(result[0].y, result[0].x);
-
-          var marker = new kakao.maps.Marker({
+          const coords = new kakao.maps.LatLng(result[0].y, result[0].x);
+          const marker = new kakao.maps.Marker({
             map: map,
             position: coords,
           });
-
-          var infowindow = new kakao.maps.InfoWindow({
+          const infowindow = new kakao.maps.InfoWindow({
             content: '<div style="width:150px;text-align:center;padding:6px 0;">경기장소</div>',
           });
           infowindow.open(map, marker);
-
           map.setCenter(coords);
         }
       });
-    }
+    },
   },
   async mounted() {
     await this.fetchClubBoardDetails();
-  }
+  },
 };
 </script>
 
@@ -148,8 +139,9 @@ export default {
 }
 
 .match-point-title {
-  text-align: left;
-  margin: 20px 0 0 10px;
+  position: absolute;
+  top: 5px; /* 더 위로 이동 */
+  left: 10px;
   font-size: 20px;
   letter-spacing: -1px;
   font-weight: 600;
@@ -157,24 +149,43 @@ export default {
 
 .match-point-content {
   display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
-  margin-top: 20px;
+  flex-wrap: wrap; /* 2열 배치를 위해 wrap 설정 */
+  justify-content: center; /* 중앙에 배치 */
+  align-items: center; /* 중앙에 배치 */
+  height: 100%; /* 부모 div의 높이 전체를 사용 */
+  gap: 2px; /* 간격을 줄여서 더 붙게 만듦 */
 }
 
 .match-point-item {
   display: flex;
   align-items: center;
-  margin-bottom: 10px;
+  width: 48%; /* 2열 배치를 위해 너비 조정 */
+  justify-content: center; /* 중앙에 배치 */
 }
 
 .match-point-item i {
-  margin-right: 10px;
+  margin-right: 2px; /* 간격을 줄여서 더 붙게 만듦 */
   width: 30px;
   height: 30px;
   font-size: 30px;
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+.news-container {
+  padding: 20px;
+}
+
+.news-title {
+  text-align: left;
+  margin: 20px 0 0 10px;
+  font-size: 20px;
+  letter-spacing: -1px;
+  font-weight: 600;
+}
+
+.rounded-section {
+  border-radius: 15px; /* 외곽선을 둥글게 만듦 */
 }
 </style>

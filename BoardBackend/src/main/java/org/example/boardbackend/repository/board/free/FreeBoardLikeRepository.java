@@ -23,5 +23,5 @@ import java.util.Optional;
  */
 public interface FreeBoardLikeRepository extends JpaRepository<FreeBoardLike, Long> {
 
-    Optional<FreeBoardLike> findByUserIdAndFreeBoardId(String userId, Long freeBoardId);
+    Optional<FreeBoardLike> findByUserIdAndFreeBoardId(User user, FreeBoard freeBoard);
 }

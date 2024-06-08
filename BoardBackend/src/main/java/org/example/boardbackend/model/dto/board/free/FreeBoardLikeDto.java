@@ -21,7 +21,7 @@ import lombok.*;
 @ToString
 //생성자 어노테이션
 @AllArgsConstructor
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class FreeBoardLikeDto {
     //    like dto, 회원id, 게시펀id get
     private String userId;
