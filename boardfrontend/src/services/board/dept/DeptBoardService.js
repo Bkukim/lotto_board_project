@@ -68,6 +68,18 @@ class DeptBoardService {
       headers: AuthHeader(),
     });
   }
+  // todo : 부서 전체 조회 함수
+  findAllDepartment(){
+    return http.get("/user/dept/department" , {
+      headers: AuthHeader(),
+    });
+  }
+   // todo : 부서 상세 조회 함수
+  findDepartmentByDeptId(deptId){
+    return http.get(`/user/dept/department/${deptId}` , {
+      headers: AuthHeader(),
+    });
+  }
 }
 
 export default new DeptBoardService();

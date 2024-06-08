@@ -43,8 +43,7 @@ public class DeptBoard extends BaseTimeEntity {
     )
     private long deptBoardId;
     private String userId;
-    @Enumerated(EnumType.STRING)
-    private DeptCode deptId;
+    private String deptId;
     private long likes;
     private String title;
     @Lob

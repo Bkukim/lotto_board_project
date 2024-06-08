@@ -60,7 +60,7 @@ public class DeptBoardService {
     //    todo 전체 조회
     public Page<DeptBoardDto> selectByTitleContaining(
             String title,
-            DeptCode deptId,
+            String deptId,
             Pageable pageable
     ) {
         Page<DeptBoardDto> page

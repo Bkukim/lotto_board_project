@@ -190,7 +190,7 @@ export default {
     },
     // 글 쓰러가기 함수
     goAddDeptBoard() {
-      this.$router.push("/dept/board/add");
+      this.$router.push("/dept/board/add/" + this.deptId);
     },
   },
   async mounted() {

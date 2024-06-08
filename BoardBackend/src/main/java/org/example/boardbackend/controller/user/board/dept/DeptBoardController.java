@@ -8,7 +8,9 @@ import org.example.boardbackend.model.dto.board.dept.DeptRecommentDto;
 import org.example.boardbackend.model.entity.board.dept.DeptBoard;
 import org.example.boardbackend.model.entity.board.dept.DeptComment;
 import org.example.boardbackend.model.entity.board.dept.DeptRecomment;
+import org.example.boardbackend.model.entity.dept.Department;
 import org.example.boardbackend.service.board.dept.DeptBoardService;
+import org.example.boardbackend.service.dept.DepartmentService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -41,12 +43,13 @@ import java.util.Optional;
 public class DeptBoardController {
 
     private final DeptBoardService deptBoardService;
+    private final DepartmentService departmentService;
 
     //    todo 전체 조회 + 제목 검색 + 페이징
     @GetMapping("/board")
     public ResponseEntity<Object> findAllDeptBoard(
             @RequestParam(defaultValue = "") String title,
-            @RequestParam(defaultValue = "")DeptCode deptId,
+            @RequestParam(defaultValue = "")String deptId,
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size
     ) {
@@ -226,6 +229,30 @@ public class DeptBoardController {
         } catch (Exception e) {
             log.debug("디버그 :: "+e.getMessage());
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    // todo 부서 전체조회
+    @GetMapping("/department")
+    public ResponseEntity<Object> findAllDepartment(){
+        try {
+            List<Department> departments = departmentService.findAllDepartment();
+            return new ResponseEntity<>(departments, HttpStatus.OK);
+        }catch (Exception e){
+            log.debug(e.getMessage());
+            return new ResponseEntity<>(e.getMessage(),HttpStatus.OK);
+        }
+    }
+
+    // todo 부서 상세 조회
+    @GetMapping("/department/{deptId}")
+    public ResponseEntity<Object> findAllDepartment(@PathVariable String deptId){
+        try {
+            Department department = departmentService.findDepartmentByDeptId(deptId);
+            return new ResponseEntity<>(department, HttpStatus.OK);
+        }catch (Exception e){
+            log.debug(e.getMessage());
+            return new ResponseEntity<>(e.getMessage(),HttpStatus.OK);
         }
     }
 }
