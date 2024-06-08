@@ -15,6 +15,11 @@ const routes = [
     path: "/member/login",
     component: () => import("../views/auth/LoginView.vue"),
   },
+    // 마이페이지
+    {
+      path: "/member/mypage",
+      component: () => import("../views/auth/MyPage.vue"),
+    },
   // 카카오 로그인
   {
     path: "/auth-redirect",
@@ -140,6 +145,42 @@ const routes = [
   {
     path: "/hot/hotBoard",
     component: () => import("../views/hot/hotBoard.vue"),
+  },
+  // 부서 게시판 
+  {
+    path: "/dept/:deptId",
+    component: () => import("../views/dept/DeptBoard.vue"),
+  },
+  // // 부서 게시판 : 재정부
+  // {
+  //   path: "/dept/B0002",
+  //   component: () => import("../views/dept/FinanceBoard.vue"),
+  // },
+  // // 부서 게시판 : 기획부
+  // {
+  //   path: "/dept/C0003",
+  //   component: () => import("../views/dept/PlanningBoard.vue"),
+  // },
+  // // 부서 게시판 : 홍보부
+  // {
+  //   path: "/dept/D0004",
+  //   component: () => import("../views/dept/PromotionBoard.vue"),
+  // },
+  // 부서 게시판 : 상세페이지
+  {
+    path: "/dept/board/dtail/:deptBoardId",
+    component: () => import("../views/dept/DeptBoardDetail.vue"),
+  },
+  // 부서 게시판 : 글쓰기
+  {
+    path: "/dept/board/Add/:deptId",
+    component: () => import("../views/dept/DeptBoardAdd.vue"),
+  },
+  // 부서 게시판 : 수정하기
+  {
+    path: "/dept/board/Update/:deptBoardId",
+    component: () => import("../views/dept/DeptBoardUpdate.vue"),
+
   },
 ];
 

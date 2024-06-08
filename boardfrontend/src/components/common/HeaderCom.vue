@@ -60,33 +60,12 @@
               >
                 부서 게시판
               </router-link>
-              <ul class="dropdown-menu">
-                <li>
-                  <router-link
+              <ul class="dropdown-menu" >
+                <li v-for="(data,index) in departments" :key="index">
+                  <a
                     class="dropdown-item"
-                    to="/department/accountingboard"
-                    >회계부 게시판</router-link
-                  >
-                </li>
-                <li>
-                  <router-link
-                    class="dropdown-item"
-                    to="/department/fnanceboard"
-                    >재정부 게시판</router-link
-                  >
-                </li>
-                <li>
-                  <router-link
-                    class="dropdown-item"
-                    to="/department/Planningboard"
-                    >기획부 게시판</router-link
-                  >
-                </li>
-                <li>
-                  <router-link
-                    class="dropdown-item"
-                    to="/department/promotionboard"
-                    >홍보부 게시판</router-link
+                    :href="`/dept/${data.deptId}`"
+                    >{{data.deptName}} 게시판</a
                   >
                 </li>
               </ul>
@@ -251,23 +230,35 @@
 
 <script>
 import AuthService from "@/services/auth/AuthService";
+import DeptBoardService from "@/services/board/dept/DeptBoardService";
 import NotifyService from "@/services/notify/NotifyService";
 
 export default {
   data() {
     return {
+      departments:[],
       notificationList: [],
       notificationCount: undefined,
     };
   },
   methods: {
+    async getAllDepartment(){
+      try {
+
+        let response = await DeptBoardService.findAllDepartment();
+        console.log("부서",response.data)
+        this.departments = response.data;
+      } catch (error) {
+        console.log(error);
+      }
+    },
     async getUnreadNotify() {
       try {
         let response = await NotifyService.getUnreadNotify(
           this.$store.state.user.userId
         );
         this.notificationList = response.data;
-        console.log("알림들", response.data);
+        // console.log("알림들", response.data);
 
       } catch (error) {
         console.log(error);
@@ -278,7 +269,7 @@ export default {
         let notifyCount = await NotifyService.countNotify(
           this.$store.state.user.userId
         );
-        console.log("백엔드에서 받아온 알림", notifyCount);
+        // console.log("백엔드에서 받아온 알림", notifyCount);
         this.notificationCount = notifyCount.data;
       } catch (error) {
         console.log(error);
@@ -298,6 +289,7 @@ export default {
     },
   },
   mounted() {
+    this.getAllDepartment();
     this.countUnreadNotify();
     console.log("알림 갯수", this.notificationCount);
   },

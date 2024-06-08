@@ -694,6 +694,8 @@ export default {
     },
     // 대댓글(답글) 등록
     async submitReply(commentId) {
+
+
       if (!this.newReply.content.trim()) {
         // alert("답글을 입력해주세요.");
         return;
@@ -705,7 +707,9 @@ export default {
           content: this.newReply.content,
           secretCommentYn: "N",
         };
+
         console.log("대댓글의 댓글 아이디", data.freeBoardCommentId);
+
         await FreeBoardService.createFreeBoardRecomment(data);
       } catch (e) {
         console.log(e);

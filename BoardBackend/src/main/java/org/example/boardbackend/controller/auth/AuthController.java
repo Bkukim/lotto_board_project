@@ -63,7 +63,9 @@ public class AuthController {
             String accessToken = socialLoginService.getAccessToken(code);
             UserRes userRes = socialLoginService.getUserInfo(accessToken);
 
+
                 return new ResponseEntity<>(userRes,HttpStatus.OK);
+
 
 
         }catch (Exception e){
@@ -71,6 +73,7 @@ public class AuthController {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
     // 카카오 회원가입 함수
     @PostMapping("/kakao-register/{userId}")
     public ResponseEntity<Object> kakaoLogin(@PathVariable String userId,
@@ -79,6 +82,7 @@ public class AuthController {
 
                 UserRes RegisteredUserRes = socialLoginService.socialRegister(userId, socialUserReq);
               return new ResponseEntity<>(RegisteredUserRes, HttpStatus.OK);
+
         }catch (Exception e){
             log.debug(e.getMessage());
             return new ResponseEntity<>("회원가입 실패",HttpStatus.INTERNAL_SERVER_ERROR);
