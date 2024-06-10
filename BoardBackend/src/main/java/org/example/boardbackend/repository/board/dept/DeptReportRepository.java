@@ -20,5 +20,4 @@ import org.springframework.stereotype.Repository;
  */
 @Repository
 public interface DeptReportRepository extends JpaRepository<DeptBoardReport,Long> {
-    public DeptBoardDto findUserIdByDeptBoardId
 }
