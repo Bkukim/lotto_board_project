@@ -58,7 +58,7 @@
         <table class="table">
           <thead>
             <tr>
-              <td scope="col"><h3>기본 정보</h3></td>
+              <td scope="co"><h3 class="mb-5">기본 정보</h3></td>
               <td scope="col"></td>
               <td scope="col"></td>
               <td scope="col"></td>
@@ -154,7 +154,7 @@
               </td>
             </tr>
             <!-- 비밀번호 확인 질문 tr -->
-            <tr>
+            <!-- <tr>
               <td scope="row">
                 <label class="form-label" for="address"
                   >비밀번호 확인 질문</label
@@ -181,9 +181,9 @@
                 </select>
               </td>
               <td></td>
-            </tr>
+            </tr> -->
             <!-- 비밀번호 질문 확인 tr -->
-            <tr>
+            <!-- <tr>
               <td scope="row">
                 <label class="form-label" for="pwdAskCheck"
                   >비밀번호 질문 확인</label
@@ -198,7 +198,7 @@
                 />
               </td>
               <td></td>
-            </tr>
+            </tr> -->
             <!-- 이름 tr -->
             <tr>
               <td scope="row">
@@ -245,16 +245,16 @@
                   aria-label="Default select example"
                   v-model="user.department"
                 >
-                  <option value="회계부">
+                  <option value="A0001">
                     회계부
                   </option>
-                  <option selected value="재정부">
+                  <option selected value="B0002">
                     재정부
                   </option>
-                  <option value="기획부">
+                  <option value="C0003">
                     기획부
                   </option>
-                  <option selected value="홍보부">
+                  <option selected value="D0004">
                     홍보부
                   </option>
                 </select>

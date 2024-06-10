@@ -45,8 +45,7 @@ public class User extends BaseTimeEntity2 {
     private String phoneNum;
     private String email;
     private String role;
-    @Column(name = "DEPT")
-    private String dept;
+    private String deptId;
     private String normalAddress;
     private String detailAddress;
     private String pwQuestion;
@@ -56,5 +55,18 @@ public class User extends BaseTimeEntity2 {
         this.userId = userId;
         this.password = password;
         this.role = role;
+    }
+
+    public User(String userId, String password, String userName, long birthday, String phoneNum, String email, String role, String deptId, String normalAddress, String detailAddress) {
+        this.userId = userId;
+        this.password = password;
+        this.userName = userName;
+        this.birthday = birthday;
+        this.phoneNum = phoneNum;
+        this.email = email;
+        this.role = role;
+        this.deptId = deptId;
+        this.normalAddress = normalAddress;
+        this.detailAddress = detailAddress;
     }
 }

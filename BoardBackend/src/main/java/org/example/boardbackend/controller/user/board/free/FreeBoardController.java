@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.example.boardbackend.model.dto.board.free.FreeBoardCommentDto;
 import org.example.boardbackend.model.dto.board.free.FreeBoardDto;
+import org.example.boardbackend.model.dto.board.free.IFreeBoardRecommentDto;
 import org.example.boardbackend.model.entity.board.free.FreeBoard;
 import org.example.boardbackend.model.entity.board.free.FreeBoardComment;
 import org.example.boardbackend.model.entity.board.free.FreeBoardRecomment;
@@ -203,30 +204,24 @@ public class FreeBoardController {
     }
 
     //    TODO: 대댓글 조회 함수
-    @GetMapping("/free/{freeBoardCommentId}/recomments")
-    public ResponseEntity<Object> getCommentsByFreeBoardCoId(@PathVariable long freeBoardCommentId,
-                                                             @RequestParam(defaultValue = "0") int page,
-                                                             @RequestParam(defaultValue = "5") int size) {
+    @GetMapping("/free/recomments/{freeBoardId}")
+    public ResponseEntity<Object> getCommentsByFreeBoardCoId(@PathVariable long freeBoardId) {
         try {
-            Pageable pageable = PageRequest.of(page, size);
-
             // 해당 freeBoardId에 대한 댓글을 가져오도록 서비스 메서드를 호출
-            Page<FreeBoardRecomment> comments = freeBoardService.getRecommentByFreeBoardId(freeBoardCommentId, pageable);
+            List<IFreeBoardRecommentDto> freeBoardRecomments = freeBoardService.getRecommentByFreeBoardId(freeBoardId);
 
-            if (comments.isEmpty() == false) {
+            if (freeBoardRecomments.isEmpty() == false) {
                 // 공통 페이징 객체 생성 : 자료구조 맵 사용
-                Map<String, Object> response = new HashMap<>();
+//                Map<String, Object> response = new HashMap<>();
 
-                response.put("freeBoardComments", comments.getContent());       // faq 배열
-                response.put("currentPage", comments.getNumber());       // 현재페이지번호
-                response.put("totalItems", comments.getTotalElements()); // 총건수(개수)
-                response.put("totalPages", comments.getTotalPages());    // 총페이지수
+//                response.put("freeBoardRecomments", recomments);
 
-                return new ResponseEntity<>(response, HttpStatus.OK);
+                return new ResponseEntity<>(freeBoardRecomments, HttpStatus.OK);
             } else {
                 return new ResponseEntity<>(HttpStatus.NO_CONTENT);
             }
         } catch (Exception e) {
+            log.debug("대댓글 디버그 :: "+e.getMessage());
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
@@ -247,6 +242,8 @@ public class FreeBoardController {
     // TODO 대댓글 저장 함수
     @PostMapping("/free/save/recomment")
     public ResponseEntity<Object> saveFreeRecomment(@RequestBody FreeBoardRecomment freeBoardRecomment) {
+        log.debug("대댓글"+freeBoardRecomment);
+
         try {
             //            DB 서비스 저장 함수 실행
             freeBoardService.saveRecomment(freeBoardRecomment);

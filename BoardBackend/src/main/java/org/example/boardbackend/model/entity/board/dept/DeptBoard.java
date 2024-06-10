@@ -2,6 +2,7 @@ package org.example.boardbackend.model.entity.board.dept;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.example.boardbackend.constant.DeptCode;
 import org.example.boardbackend.model.common.BaseTimeEntity;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
@@ -42,7 +43,7 @@ public class DeptBoard extends BaseTimeEntity {
     )
     private long deptBoardId;
     private String userId;
-    private long deptId;
+    private String deptId;
     private long likes;
     private String title;
     @Lob

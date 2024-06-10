@@ -23,7 +23,7 @@ public class QUser extends EntityPathBase<User> {
 
     public final NumberPath<Long> birthday = createNumber("birthday", Long.class);
 
-    public final StringPath dept = createString("dept");
+    public final StringPath deptId = createString("deptId");
 
     public final StringPath detailAddress = createString("detailAddress");
 

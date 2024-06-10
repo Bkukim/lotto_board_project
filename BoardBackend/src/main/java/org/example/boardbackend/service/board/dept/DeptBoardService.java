@@ -3,10 +3,15 @@ package org.example.boardbackend.service.board.dept;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.example.boardbackend.config.WebConfig;
+import org.example.boardbackend.constant.DeptCode;
 import org.example.boardbackend.model.dto.board.dept.DeptBoardDto;
+import org.example.boardbackend.model.dto.board.dept.DeptRecommentDto;
 import org.example.boardbackend.model.dto.board.free.FreeBoardDto;
+import org.example.boardbackend.model.dto.board.free.IFreeBoardRecommentDto;
 import org.example.boardbackend.model.entity.board.dept.DeptBoard;
+import org.example.boardbackend.model.entity.board.dept.DeptBoardReport;
 import org.example.boardbackend.model.entity.board.dept.DeptComment;
+import org.example.boardbackend.model.entity.board.dept.DeptRecomment;
 import org.example.boardbackend.model.entity.board.free.FreeBoard;
 import org.example.boardbackend.model.entity.board.free.FreeBoardComment;
 import org.example.boardbackend.model.entity.board.free.FreeBoardRecomment;
@@ -14,6 +19,7 @@ import org.example.boardbackend.model.entity.notify.Notify;
 import org.example.boardbackend.repository.board.dept.DeptBoardRepository;
 import org.example.boardbackend.repository.board.dept.DeptCommentRepository;
 import org.example.boardbackend.repository.board.dept.DeptRecommentRepository;
+import org.example.boardbackend.repository.board.dept.DeptReportRepository;
 import org.example.boardbackend.repository.board.free.FreeBoardCommentRepository;
 import org.example.boardbackend.repository.board.free.FreeBoardRecommentRepository;
 import org.example.boardbackend.repository.board.free.FreeBoardRepository;
@@ -25,6 +31,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -46,20 +53,20 @@ import java.util.Optional;
 public class DeptBoardService {
 
     private final DeptBoardRepository deptBoardRepository;
-    private final UserRepository userRepository;
-    private final NotifyService notifyService;
     private final DeptCommentRepository deptCommentRepository;
     private final DeptRecommentRepository deptRecommentRepository;
-    private final WebConfig webConfig;
+    private final DeptReportRepository deptReportRepository;
 
     //    todo 전체 조회
     public Page<DeptBoardDto> selectByTitleContaining(
             String title,
+            String deptId,
             Pageable pageable
     ) {
         Page<DeptBoardDto> page
                 = deptBoardRepository.findAllByTitleContaining(
                 title,
+                deptId,
                 pageable
         );
         return page;
@@ -72,50 +79,6 @@ public class DeptBoardService {
                 = deptBoardRepository.findById(freeBoardId);
         return freeBoardOptional;
     }
-
-
-    // TODO 댓글 저장 기능
-    // 1. boardId로 게시글 주인의 객체 가져오기,  1. 댓글을 저장, 2 알림 보내기
-    @Transactional
-    public void saveComment(DeptComment deptComment) {
-        DeptBoard deptBoard = deptBoardRepository.findById(deptComment.getDeptBoardId()).get();
-
-
-        String boardWriter = deptBoard.getUserId();
-        log.debug("여기는 서비스1");
-
-
-//        FreeBoardComment freeBoardComment = new FreeBoardComment(freeBoardComment.getUserId(),freeBoard.getFreeBoardId(),freeBoardComment.getContent(),freeBoardComment.getSecretCommentYn());
-
-        // 1. 댓글 저장
-        deptCommentRepository.save(deptComment);
-        log.debug("여기는 서비스2");
-
-        // 2. 알림 보내기
-        String notifyContent = "회원님의 게시물에 댓글이 달렸습니다." + /*\n" + "\"" +*/ deptComment.getContent() /*+ "\""*/;
-        String notifyUrl = webConfig.getFrontDomain() + "/free/free-board/" + deptBoard.getDeptBoardId();
-        notifyService.send(boardWriter, Notify.NotificationType.COMMENT, notifyContent, notifyUrl);
-    }
-
-//    // TODO 대댓글 저장 기능
-//    // 1. boardId로 게시글 주인의 객체 가져오기,  1. 댓글을 저장, 2 알림 보내기
-//    public void saveRecomment(FreeBoardRecomment freeBoardRecomment) {
-//        FreeBoardComment freeBoardComment = freeBoardCommentRepository.findById(freeBoardRecomment.getFreeBoardCommentId()).get();
-//
-//        String commentWriter = freeBoardComment.getUserId();
-//        log.debug("여기는 대댓글1");
-//
-//        // 1. 댓글 저장
-//        freeBoardRecommentRepository.save(freeBoardRecomment);
-//        log.debug("여기는 대댓글2");
-//
-//
-//        // 2. 알림 보내기
-////    String notifyContent = "회원님의 댓글에 또다른 댓글이 달렸습니다." + /*\n" + "\"" +*/ freeBoardRecomment.getContent() /*+ "\""*/;
-////    String notifyUrl = webConfig.getFrontDomain() + "/free/free-board/" + freeBoard.getFreeBoardId();
-////    notifyService.send(boardWriter,Notify.NotificationType.COMMENT,notifyContent,notifyUrl);
-//    }
-
 
     //   todo:  저장 함수
     @Transactional
@@ -133,15 +96,47 @@ public class DeptBoardService {
             return false;
         }
     }
+    // TODO 댓글 저장 기능
+    // 1. boardId로 게시글 주인의 객체 가져오기,  1. 댓글을 저장, 2 알림 보내기
+    @Transactional
+    public void saveComment(DeptComment deptComment) {
+        DeptBoard deptBoard = deptBoardRepository.findById(deptComment.getDeptBoardId()).get();
 
-    //    todo: 댓글 조회 함수
-    public Page<DeptComment> getCommentByDeptBoardId(long deptBoardId, Pageable pageable) throws IOException{
-        Page<DeptComment> deptComments = deptCommentRepository.findDeptCommentByDeptBoardCommentIdOrderByInsertTimeDesc(deptBoardId, pageable);
-        return deptComments;
+        // 1. 댓글 저장
+        deptCommentRepository.save(deptComment);
+
+
     }
 
-//    //    todo: 대댓글 조회 함수
-//    public Page<FreeBoardRecomment> getRecommentByFreeBoardId(long freeBoardCommentId, Pageable pageable) {
-//        return freeBoardRecommentRepository.findFreeBoardRecommentsByFreeBoardCommentIdOrderByInsertTimeDesc(freeBoardCommentId, pageable);
-//    }
+    // TODO 대댓글 저장 기능
+    // 1. boardId로 게시글 주인의 객체 가져오기,  1. 댓글을 저장, 2 알림 보내기
+    @Transactional
+    public void saveRecomment(DeptRecomment deptRecomment){
+
+        // 1. 댓글 저장
+        deptRecommentRepository.save(deptRecomment);
+
+
+    }
+    //    todo: boardId 로 댓글 조회 함수
+    public Page<DeptComment> getCommentByDeptBoardId(long deptBoardId, Pageable pageable) throws IOException{
+        Page<DeptComment> deptComments = deptCommentRepository.findDeptCommentsByDeptBoardIdOrderByInsertTimeDesc(deptBoardId, pageable);
+        return deptComments;
+    }
+    //    todo: boardId 로 대댓글 조회 함수
+    public List<DeptRecommentDto> getRecommentByDeptBoardId(long deptBoardId) throws IOException{
+        return deptRecommentRepository.findDeptBoardRecommentsByDeptBoardCommentIdOrderByInsertTimeDesc(deptBoardId);
+    }
+
+    // todo : 댓글id 로 댓글 상세조회
+    public DeptComment findByCommentId(long deptCommentId) throws IOException{
+        DeptComment comment = deptCommentRepository.findById(deptCommentId).get();
+        return comment;
+    }
+
+    // todo : 신고 저장함수
+    @Transactional
+    public void saveReport(DeptBoardReport deptBoardReport){
+        deptReportRepository.save(deptBoardReport);
+    }
 }

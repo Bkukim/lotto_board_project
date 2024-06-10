@@ -4,6 +4,7 @@ import org.example.boardbackend.model.entity.auth.User;
 import org.example.boardbackend.model.entity.board.free.FreeBoard;
 import org.example.boardbackend.model.entity.board.free.FreeBoardLike;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
 
@@ -21,7 +22,9 @@ import java.util.Optional;
  * -----------------------------------------------------------
  * 2024-06-05         KimDJ          최초 생성
  */
+
+@Repository
 public interface FreeBoardLikeRepository extends JpaRepository<FreeBoardLike, Long> {
 
-    Optional<FreeBoardLike> findByUserAndFreeBoard(User user, FreeBoard freeBoard);
+//    Optional<FreeBoardLike> findByUserIdAndFreeBoardId(User user, FreeBoard freeBoard);
 }

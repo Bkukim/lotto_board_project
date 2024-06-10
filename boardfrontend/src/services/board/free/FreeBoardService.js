@@ -36,8 +36,8 @@ class FreeBoardService {
     return http.put(`/user/board/free/update/${freeBoardId}`, data, {
       headers: AuthHeader(),
     });
-  } 
-  
+  }
+
   // TODO: 수정함수 : qnaId,
   updateLike(freeBoardId, data) {
     return http.put(`/user/board/free/update/${freeBoardId}`, data, {
@@ -45,14 +45,29 @@ class FreeBoardService {
     });
   }
   // TODO: 댓글 조회 : freeBoardId
-  getFreeBoardComment(freeBoardId, page, size){
-    return http.get(`/user/board/free/${freeBoardId}/comments?page=${page}&size=${size}`, {
+  getFreeBoardComment(freeBoardId, page, size) {
+    return http.get(
+      `/user/board/free/${freeBoardId}/comments?page=${page}&size=${size}`,
+      {
+        headers: AuthHeader(),
+      }
+    );
+  }
+  // TODO: 댓글 저장 함수
+  createFreeBoardComment(data) {
+    return http.post(`/user/board/free/save/comment`, data, {
       headers: AuthHeader(),
     });
   }
-  // TODO: 댓글 저장 함수
-  createFreeBoardComment(data){
-    return http.post(`/user/board/free/save/comment`, data, {
+  // TODO: 대댓글 조회 : freeBoardCommentId
+  getFreeBoardRecomment(freeBoardId) {
+    return http.get(`/user/board/free/recomments/${freeBoardId}`, {
+      headers: AuthHeader(),
+    });
+  }
+  // TODO: 대댓글 저장 함수
+  createFreeBoardRecomment(data) {
+    return http.post(`/user/board/free/save/recomment`, data, {
       headers: AuthHeader(),
     });
   }

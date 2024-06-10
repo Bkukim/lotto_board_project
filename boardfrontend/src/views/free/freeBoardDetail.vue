@@ -69,13 +69,25 @@
           type="button"
           class="btn btn-light"
           @click="likeUp"
-          style="border: none; text-align:center; height: 8vh; width: 18vw; padding: 1vw; "
+          style="
+            border: none;
+            text-align: center;
+            height: 8vh;
+            width: 18vw;
+            padding: 1vw;
+          "
         >
           <img src="@/assets/img/like_icon.png" width="40" height="40" />
           공감해요
           {{ this.freeBoard.likes }}
         </button>
-        <button type="button" class="btn btn-light" style="margin-left: 3vh; height: 8vh; width: 10vw; padding: 1vw;">신고</button>
+        <button
+          type="button"
+          class="btn btn-light"
+          style="margin-left: 3vh; height: 8vh; width: 10vw; padding: 1vw"
+        >
+          신고
+        </button>
       </div>
       <!-- 파일첨부 -->
       <!-- <div class="mt-5" style="width: 500px">
@@ -89,20 +101,20 @@
     </div>
     <!--  첫번째 게시판 큰 박스 끝-->
 
-
     <!-- TODO: 좋아요버튼 -->
     <div class="d-flex justify-content-center mt-3">
       <button type="button" class="btn btn-primary" @click="likeUp">
         공감해요 {{ this.freeBoard.likes }}
       </button>
     </div>
+
+    <!-- 삭제 -->
     <div class="container text-center mt-5">
       <div
         class="row"
         style="margin-top: 100px"
         v-if="freeBoard.userId === this.$store.state.user?.userId"
       >
-        <!-- 삭제 -->
         <div class="col">
           <button
             class="fbd_d container text-center"
@@ -329,12 +341,36 @@
             style="border: none; margin-top: 15px"
             @click="toggleReplyForm(data.freeBoardCommentId)"
           >
-            {{ replyToCommentId === data.freeBoardCommentId ? "답글접기" : "답글" }}
-
+            {{
+              replyToCommentId === data.freeBoardCommentId ? "답글접기" : "답글"
+            }}
           </button>
 
-          <!-- 답변(대댓글) 폼 -->
+          <!-- 답변(대댓글)들 -->
           <div v-if="replyToCommentId === data.freeBoardCommentId">
+            <div v-for="(data, index) in data.freeBoardRecomments" :key="index">
+              <div
+                class="lotto_new row row-cols-lg-4 gap-5 justify-content-left mb-3 mt-5"
+              >
+                <div class="col" style="color: #595959; font-weight: bold">
+                  <span style="color: #999999; font-weight: 200">등록자 |</span>
+                  {{ data.userId }}
+                </div>
+                <div class="col" style="color: #999999; font-weight: bold">
+                  {{ data.content }}
+                </div>
+                <div class="col" style="color: #999999; font-weight: bold">
+                  <span style="color: #999999; font-weight: 200">날짜 | </span>
+                  {{ data.insertTime }}
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 답변(대댓글) 다는 곳 -->
+          <div
+            v-if="replyVisible && replyToCommentId === data.freeBoardCommentId"
+          >
             <div
               class="lotto_new row row-cols-lg-4 gap-5 justify-content-left mb-3 mt-5"
             >
@@ -346,8 +382,6 @@
                 날짜 | {{ newReply.insertTime }}
               </div>
             </div>
-
-            <!-- 답변(대댓글) 입력 칸 -->
             <div class="mb-5 comment-box" style="border: #595959 1.5px solid">
               <div class="comment-input">
                 <textarea
@@ -357,7 +391,7 @@
                   v-model="newReply.content"
                   @input="updateReplyCharacterCount"
                   maxlength="1000"
-                  placeholder="댓글을 입력하세요."
+                  placeholder="답글을 입력하세요."
                   style="
                     height: 150px;
                     border-bottom: #cccccc 1px solid;
@@ -371,9 +405,10 @@
                 >
                   글자 수: {{ charCountReply }}/300
                 </div>
+
                 <!-- (답변(대댓글)) 등록 버튼-->
                 <button
-                  @click="submitReply()"
+                  @click="submitReply(data.freeBoardCommentId)"
                   class="fbd_d container text-center mt-3"
                   style="
                     width: 60px;
@@ -453,14 +488,19 @@ import FreeBoardService from "@/services/board/free/FreeBoardService";
 export default {
   data() {
     return {
-      replyVisible: false, // 답글 입력 폼의 표시 여부를 관리하는 변수
+      // replyVisible: false, // 답글 입력 폼의 표시 여부를 관리하는 변수
       replyToCommentId: null, // 어떤 댓글에 대한 답글인지 식별하기 위한 변수
+
+      // 새로 작성할 답글
       newReply: {
-        // 새로 작성할 답글
         userId: this.$store.state.user?.userId,
         content: "",
       },
-      charCountReply: 0, // 답글 글자 수
+
+      // 답글 글자 수
+      charCountReply: 0,
+
+      // 해당 게시글
       freeBoard: {
         freeBoardId: this.$route.params.freeBoardId,
         userId: "",
@@ -468,15 +508,25 @@ export default {
         title: "",
         likes: 0,
       },
-      freeBoardComments: [], // 기존 댓글 목록
+
+      // 기존 댓글 목록
+      freeBoardComments: [],
+
+      // 기존 대댓글 목록
+      freeBoardRecomments: [],
+
+      // 새로 작성할 댓글
       newComment: {
-        // 새로 작성할 댓글
         userId: this.$store.state.user?.userId, // 로그인된 사용자 ID
         content: "",
       },
+
+      // 페이징
       page: 1, // 현재페이지번호
       count: 0, // 전체데이터개수
       pageSize: 5, // 1페이지당개수(select태그)
+
+      // 댓글 글자수
 
       charCount: 0,
     };
@@ -488,16 +538,15 @@ export default {
   },
   methods: {
     toggleReplyForm(commentId) {
+      // 클릭된 답글 버튼이 이미 열려있는 상태이면 폼을 닫고, 그렇지 않으면 엽니다.
+      this.replyVisible =
+        this.replyVisible && this.replyToCommentId === commentId ? false : true;
+      this.replyToCommentId =
+        this.replyToCommentId === commentId ? null : commentId;
 
-     // 클릭된 답글 버튼이 이미 열려있는 상태이면 폼을 닫고, 그렇지 않으면 엽니다.
-    this.replyVisible =
-      this.replyVisible && this.replyToCommentId === commentId ? false : true;
-    this.replyToCommentId = this.replyToCommentId === commentId ? null : commentId;
-
-    // 현재 선택된 댓글 ID 업데이트
-    this.newReply.content = ""; // 입력 폼 내용 초기화
-    this.charCountReply = 0; // 글자 수 초기화
-
+      // 현재 선택된 댓글 ID 업데이트
+      this.newReply.content = ""; // 입력 폼 내용 초기화
+      this.charCountReply = 0; // 글자 수 초기화
     },
 
     // 댓글 작성 시 글자 수 세기
@@ -507,6 +556,7 @@ export default {
       }
       this.charCount = this.newComment.content.length;
     },
+
     // freeBoardId로 상세조회 : 화면뜰때 실행
     async retrieveGetFreeBoard(freeBoardId) {
       try {
@@ -518,6 +568,7 @@ export default {
         console.log(e);
       }
     },
+
     // freeBoardId로 댓글조회 : 화면뜰때 실행
     async retrieveFreeBoardComment(freeBoardId) {
       try {
@@ -531,16 +582,22 @@ export default {
         // TODO: 3) 바인딩변수(속성)에 저장
         this.freeBoardComments = freeBoardComments; // 부서배열(벡엔드 전송)
         this.count = totalItems; // 전체페이지수(벡엔드 전송)
+        this.retrieveFreeBoardRecomment(freeBoardId);
         // TODO: 4) 프론트 로깅 : console.log
         // console.log("response.data",response.data);
         // console.log("this.comments" ,this.freeBoardComments);
       } catch (e) {
-        alert("페이징 에러");
+        // alert("페이징 댓글 에러");
         console.log(e);
       }
     },
+
     // 댓글 등록 함수
     async submitComment() {
+      if (!this.newComment.content.trim()) {
+        alert("댓글을 입력해주세요.");
+        return;
+      }
       try {
         let data = {
           userId: this.newComment.userId,
@@ -556,9 +613,10 @@ export default {
       }
       this.newComment.content = "";
       this.charCount = 0;
-      alert("댓글이 등록되었습니다.");
+
       this.retrieveFreeBoardComment(this.$route.params.freeBoardId);
     },
+
     // 삭제 함수
     async deleteFreeBoard() {
       try {
@@ -577,6 +635,7 @@ export default {
         console.log(e);
       }
     },
+
     // 수정 함수
     async likeUp() {
       this.freeBoard.likes = +1;
@@ -592,10 +651,11 @@ export default {
         console.log(e);
       }
     },
+
     // 답글 버튼 클릭 시 호출되는 메소드
-    showReplyForm(commentId) {
+    showReplyForm(freeBoardCommentId) {
       this.replyVisible = true;
-      this.replyToCommentId = commentId;
+      this.replyToCommentId = freeBoardCommentId;
     },
 
     // 답글 글자 수 세기
@@ -606,30 +666,65 @@ export default {
       this.charCountReply = this.newReply.content.length;
     },
 
-    // 답글 제출
-    async submitReply() {
+    // 대댓글(답글) 조회
+    async retrieveFreeBoardRecomment(freeBoardId) {
+      console.log("진입");
+      try {
+        let response = await FreeBoardService.getFreeBoardRecomment(
+          freeBoardId
+        );
+        this.freeBoardRecomments = response.data; // 부서배열(벡엔드 전송)
+
+        console.log("댓글들", this.freeBoardComments);
+        console.log("대댓글들", this.freeBoardRecomments);
+        // 댓글 배열에 대댓글 속성을 추가하는 함수
+        this.freeBoardComments.forEach((comment) => {
+          comment.freeBoardRecomments = this.freeBoardRecomments.filter(
+            (reply) => reply.freeBoardCommentId === comment.freeBoardCommentId
+          );
+        });
+        console.log("댓글마다 대댓글 잘 드갔나", this.freeBoardComments);
+        // TODO: 4) 프론트 로깅 : console.log
+        // console.log("response.data",response.data);
+        // console.log("this.comments" ,this.freeBoardComments);
+      } catch (e) {
+        // alert("페이징 대댓글 에러");
+        console.log(e);
+      }
+    },
+    // 대댓글(답글) 등록
+    async submitReply(commentId) {
+
+
+      if (!this.newReply.content.trim()) {
+        // alert("답글을 입력해주세요.");
+        return;
+      }
       try {
         let data = {
           userId: this.newReply.userId,
-          freeBoardId: this.freeBoard.freeBoardId,
-          parentCommentId: this.replyToCommentId, // 부모 댓글 ID
+          freeBoardCommentId: commentId, // 부모 댓글 ID
           content: this.newReply.content,
           secretCommentYn: "N",
         };
-        await FreeBoardService.createFreeBoardComment(data);
+
+        console.log("대댓글의 댓글 아이디", data.freeBoardCommentId);
+
+        await FreeBoardService.createFreeBoardRecomment(data);
       } catch (e) {
         console.log(e);
       }
       this.newReply.content = "";
       this.charCountReply = 0;
       this.replyVisible = false; // 답글 입력 폼 숨기기
-      alert("답글이 등록되었습니다.");
+      // alert("답글이 등록되었습니다.");
       this.retrieveFreeBoardComment(this.$route.params.freeBoardId);
     },
   },
-  mounted() {
+  async mounted() {
     this.retrieveGetFreeBoard(this.$route.params.freeBoardId);
     this.retrieveFreeBoardComment(this.$route.params.freeBoardId);
+    // this.retrieveFreeBoardRecomment(this.$route.params.freeBoardId);
     window.scrollTo(0, 0);
   },
 };

@@ -22,5 +22,5 @@ import org.springframework.stereotype.Repository;
  */
 @Repository
 public interface DeptCommentRepository extends JpaRepository<DeptComment,Long> {
-    Page<DeptComment> findDeptCommentByDeptBoardCommentIdOrderByInsertTimeDesc(long freeBoardId, Pageable pageable);
+    Page<DeptComment> findDeptCommentsByDeptBoardIdOrderByInsertTimeDesc(long deptBoardId, Pageable pageable);
 }
