@@ -25,7 +25,7 @@ public class QDeptBoard extends EntityPathBase<DeptBoard> {
 
     public final NumberPath<Long> deptBoardId = createNumber("deptBoardId", Long.class);
 
-    public final NumberPath<Long> deptId = createNumber("deptId", Long.class);
+    public final StringPath deptId = createString("deptId");
 
     //inherited
     public final StringPath insertTime = _super.insertTime;
