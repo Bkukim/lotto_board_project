@@ -253,4 +253,38 @@ public class FreeBoardController {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
+    //    todo: UserId 가 작성한 글 전체조회
+    @GetMapping("/free/userId/freeBoard")
+    public ResponseEntity<Object> findUserId(
+            @RequestParam(defaultValue = "") String userId,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size
+    ) {
+        try {
+//            페이징 객체 생성
+            Pageable pageable = PageRequest.of(page, size);
+
+//            전체 조회 서비스 실행
+            Page<FreeBoardDto> freeBoardDto
+                    = freeBoardService.findFreeBoardByUserIdContaining(userId, pageable);
+
+//            공통 페이징 객체 생성 : 자료구조 맵 사용
+            Map<String, Object> response = new HashMap<>();
+            response.put("freeBoardList", freeBoardDto.getContent());       // faq 배열
+            response.put("currentPage", freeBoardDto.getNumber());       // 현재페이지번호
+            response.put("totalItems", freeBoardDto.getTotalElements()); // 총건수(개수)
+            response.put("totalPages", freeBoardDto.getTotalPages());    // 총페이지수
+
+            if (freeBoardDto.isEmpty() == false) {
+//                조회 성공
+                return new ResponseEntity<>(response, HttpStatus.OK);
+            } else {
+//                데이터 없음
+                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+            }
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
 }

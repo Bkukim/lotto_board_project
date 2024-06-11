@@ -30,6 +30,7 @@ public class UserRes {
     private String userId;          // 이메일
     private String role;       // 권한명
 
+
     //    생성자 : alt + insert (3개)
     public UserRes(String accessToken, String userId, String role) {
         this.accessToken = accessToken;

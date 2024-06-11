@@ -20,12 +20,14 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 /**
  * packageName : org.example.board_login_in_webtoken.controller.auth
@@ -129,11 +131,16 @@ public class AuthController {
 //            권한 클래스 : GRANTED로 되어있는데 그걸 문자열로 바꿔주기. 자바스크립트에서 사용하기 위해 문자열로 변환.
             String role = new ArrayList(authentication.getAuthorities()).get(0).toString();
 
+////            todo 상세조회 : nullPointError 방지. 있으면 user 객체에 넣는다.
+//            User user = userService.findById(userReq.getUserId())
+//                    .orElseThrow(()->new UsernameNotFoundException("유저가 없습니다."));
+
 //             5) DTO : jwt(웹토큰), 이메일, 권한명 => 프론트에 전송
             UserRes userRes = new UserRes(
                     jwt,                // 웹토큰
                     userReq.getUserId(), // 이메일
                     role
+
             );
             return new ResponseEntity<>(userRes, HttpStatus.OK); // 따로따로 못보내니까 USERRES라는 객체를 써서 안에 속성적어서 보냄
 

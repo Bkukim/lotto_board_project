@@ -71,6 +71,15 @@ class FreeBoardService {
       headers: AuthHeader(),
     });
   }
+  // TODO: userId로 전체조회 내글찾기
+  getAllFreeBoardUserId(userId, page, size) {
+    return http.get(
+      `/user/board/free/userId/freeBoard?userId=${userId}&page=${page}&size=${size}`,
+      {
+        headers: AuthHeader(),
+      }
+    );
+  }
 }
 
 export default new FreeBoardService();
