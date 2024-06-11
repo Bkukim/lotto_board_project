@@ -74,12 +74,12 @@
 
           <!-- 검색바 -->
           <nav
-            class="navbar navbar-light bg-light search-bar"
-            style="background-color: rgb(255, 255, 255)"
+            class="navbar navbar-light  search-bar"
+            style="background-color: rgb(255, 255, 255); display: block;"
           >
             <div
               class="container-fluid"
-              style="background-color: rgb(255, 255, 255); height: 90px"
+              style="background-color: rgb(255, 255, 255); height: 92px"
             >
               <form class="d-flex">
                 <input
