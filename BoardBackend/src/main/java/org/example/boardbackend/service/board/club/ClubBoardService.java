@@ -58,11 +58,11 @@ public class ClubBoardService {
         return clubBoardRepository.findAll();
     }
 
-//  TODO: 상세 조회
-public List<ClubBoardWithPicsDto> getClubBoardWithPics(long clubBoardId) {
-    List<Map<String, Object>> results = clubBoardRepository.findClubBoardWithPics(clubBoardId);
-    return results.stream().map(this::mapToDto).collect(Collectors.toList());
-}
+    //  TODO: 상세 조회
+    public List<ClubBoardWithPicsDto> getClubBoardWithPics(long clubBoardId) {
+        List<Map<String, Object>> results = clubBoardRepository.findClubBoardWithPics(clubBoardId);
+        return results.stream().map(this::mapToDto).collect(Collectors.toList());
+    }
 
     private ClubBoardWithPicsDto mapToDto(Map<String, Object> result) {
         ClubBoardWithPicsDto dto = new ClubBoardWithPicsDto();
@@ -113,142 +113,12 @@ public List<ClubBoardWithPicsDto> getClubBoardWithPics(long clubBoardId) {
         return clubBoards;
     }
 
-//  TODO: 상세 조회
+    //  TODO: 상세 조회
     public Optional<ClubBoard> findById(long clubBoardId) {
         Optional<ClubBoard> optionalClubBoard = clubBoardRepository.findById(clubBoardId);
         return optionalClubBoard;
     }
 
-//  TODO: 사진 같이 저장하는 함수
-//    public ClubBoard saveClubBoard(long clubBoardId,
-//                                   String userId,
-//                                   long likes,
-//                                   String content,
-//                                   String location,
-//                                   String address,
-//                                   long participationFee,
-//                                   String startTime,
-//                                   String endTime,
-//                                   String recruitmentDeadline,
-//                                   long maxQuota,
-//                                   long minQuota,
-//                                   String peoplesMatch,
-//                                   String sex,
-//                                   String matchForm,
-//                                   String title,
-//                                   String uuid,
-//                                   String imgUrl,
-//                                   String imgFile
-//                                   ) {
-//        ClubBoard clubBoard2 = null;
-//        try {
-//            if (clubBoardId == 0) {
-//                uuid = UUID.randomUUID().toString().replace("-", ""); // uuid 만드는 방법
-//
-//                String imgDownload = ServletUriComponentsBuilder
-//                        .fromCurrentContextPath()
-//                        .path("/api/user/board/club/img/")
-//                        .path(uuid)
-//                        .toUriString();
-//
-//                ClubBoard clubBoard = new ClubBoard(userId,
-//                        likes, content, location, address, participationFee,
-//                        startTime, endTime, recruitmentDeadline, maxQuota, minQuota,
-//                        peoplesMatch, sex, matchForm, title, imgDownload, uuid);
-//                clubBoard2 = clubBoardRepository.save(clubBoard);
-//            } else {
-//                String imgDownload = ServletUriComponentsBuilder
-//                        .fromCurrentContextPath()
-//                        .path("/api/user/board/club/img/")
-//                        .path(uuid)
-//                        .toUriString();
-//
-//                ClubBoard clubBoard = new ClubBoard(userId,
-//                        likes, content, location, address, participationFee,
-//                        startTime, endTime, recruitmentDeadline, maxQuota, minQuota,
-//                        peoplesMatch, sex, matchForm, title, imgDownload, uuid);
-//                clubBoard2 = clubBoardRepository.save(clubBoard);
-//            }
-//        } catch (Exception e) {
-//            log.debug(e.getMessage());
-//        }
-//        return clubBoard2;
-//    }
-
-//  TODO: 저장 함수
-//@Transactional
-//public void save(CreateClubArticleDto dto) {
-//    // ClubBoard 저장
-//    ClubBoard clubBoard = ClubBoard.builder()
-//            .userId(dto.getUserId())
-//            .likes(dto.getLike())
-//            .content(dto.getContent())
-//            .location(dto.getLocation())
-//            .address(dto.getAddress())
-//            .participationFee(dto.getParticipationFee())
-//            .startTime(dto.getStartTime())
-//            .endTime(dto.getEndTime())
-//            .recruitmentDeadline(dto.getRecruitmentDeadline())
-//            .maxQuota(dto.getMaxQuota())
-//            .minQuota(dto.getMinQuota())
-//            .peoplesMatch(dto.getPeoplesMatch())
-//            .material(dto.getMaterial())
-//            .sex(dto.getSex())
-//            .matchForm(dto.getMatchForm())
-//            .title(dto.getTitle())
-//            .build();
-//    clubBoard = clubBoardRepository.save(clubBoard);
-//
-//    // FieldPic 저장
-//    if (dto.getFieldPics() != null) {
-//        for (FieldPicDto fieldPicDto : dto.getFieldPics()) {
-//            FieldPic fieldPic = FieldPic.builder()
-//                    .uuid(UUID.randomUUID().toString())
-//                    .clubBoard(clubBoard)
-//                    .imgUrl(fieldPicDto.getImgUrl())
-//                    .imgFile(fieldPicDto.getImgFile())
-//                    .build();
-//            fieldPicRepository.save(fieldPic);
-//        }
-//    }
-//}
-//@Transactional
-//public void save(CreateClubArticleDto dto) {
-//    // ClubBoard 저장
-//    ClubBoard clubBoard = ClubBoard.builder()
-//            .userId(dto.getUserId())
-//            .likes(dto.getLike())
-//            .content(dto.getContent())
-//            .location(dto.getLocation())
-//            .address(dto.getAddress())
-//            .participationFee(dto.getParticipationFee())
-//            .startTime(dto.getStartTime())
-//            .endTime(dto.getEndTime())
-//            .recruitmentDeadline(dto.getRecruitmentDeadline())
-//            .maxQuota(dto.getMaxQuota())
-//            .minQuota(dto.getMinQuota())
-//            .peoplesMatch(dto.getPeoplesMatch())
-//            .material(dto.getMaterial())
-//            .sex(dto.getSex())
-//            .matchForm(dto.getMatchForm())
-//            .title(dto.getTitle())
-//            .build();
-//    clubBoard = clubBoardRepository.save(clubBoard);
-//
-//    // FieldPic 저장
-//    if (dto.getFieldPics() != null) {
-//        for (FieldPicDto fieldPicDto : dto.getFieldPics()) {
-//            byte[] imgFileBytes = Base64.getDecoder().decode(fieldPicDto.getImgFile());
-//            FieldPic fieldPic = FieldPic.builder()
-//                    .uuid(UUID.randomUUID().toString())
-//                    .clubBoard(clubBoard)
-//                    .imgUrl(fieldPicDto.getImgUrl())
-//                    .imgFile(imgFileBytes)
-//                    .build();
-//            fieldPicRepository.save(fieldPic);
-//        }
-//    }
-//}
 
     // TODO: 저장 함수
     @Transactional
@@ -277,11 +147,22 @@ public List<ClubBoardWithPicsDto> getClubBoardWithPics(long clubBoardId) {
             List<FieldPic> fieldPics = new ArrayList<>();
             for (MultipartFile imgFile : imgFiles) {
                 try {
+                    // 1. UUID 생성
+                    String uuid = UUID.randomUUID().toString().replace("-", "");
+
+                    // 2. 다운로드 URL 생성
+                    String downloadUrl = ServletUriComponentsBuilder
+                            .fromCurrentContextPath()
+                            .path("/api/user/board/club/img/")
+                            .path(uuid)
+                            .toUriString();
+
+                    // 3. FieldPic 생성
                     byte[] imgFileBytes = imgFile.getBytes(); // IOException 발생 가능
                     FieldPic fieldPic = FieldPic.builder()
-                            .uuid(UUID.randomUUID().toString())
+                            .uuid(uuid)
                             .clubBoard(clubBoard)
-                            .imgUrl(imgFile.getOriginalFilename())
+                            .imgUrl(downloadUrl)
                             .imgFile(imgFileBytes)
                             .build();
                     fieldPics.add(fieldPic);
@@ -295,50 +176,15 @@ public List<ClubBoardWithPicsDto> getClubBoardWithPics(long clubBoardId) {
         }
     }
 
-//@Transactional
-//public void save(CreateClubArticleDto dto) {
-//    ClubBoard clubBoard = ClubBoard.builder()
-//            .userId(dto.getUserId())
-//            .likes(dto.getLikes())
-//            .content(dto.getContent())
-//            .location(dto.getLocation())
-//            .address(dto.getAddress())
-//            .participationFee(dto.getParticipationFee())
-//            .startTime(dto.getStartTime())
-//            .endTime(dto.getEndTime())
-//            .recruitmentDeadline(dto.getRecruitmentDeadline())
-//            .maxQuota(dto.getMaxQuota())
-//            .minQuota(dto.getMinQuota())
-//            .peoplesMatch(dto.getPeoplesMatch())
-//            .material(dto.getMaterial())
-//            .sex(dto.getSex())
-//            .matchForm(dto.getMatchForm())
-//            .title(dto.getTitle())
-//            .build();
-//    clubBoard = clubBoardRepository.save(clubBoard);
-//
-//    if (dto.getFieldPics() != null) {
-//        for (FieldPicDto fieldPicDto : dto.getFieldPics()) {
-//            byte[] imgFileBytes = Base64.getDecoder().decode(fieldPicDto.getImgFile());
-//            FieldPic fieldPic = FieldPic.builder()
-//                    .uuid(UUID.randomUUID().toString())
-//                    .clubBoard(clubBoard)
-//                    .imgUrl(fieldPicDto.getImgUrl())
-//                    .imgFile(imgFileBytes)
-//                    .build();
-//            fieldPicRepository.save(fieldPic);
-//        }
-//    }
-//}
 
-//  TODO: 수정 함수
+    //  TODO: 수정 함수
     public ClubBoard update(ClubBoard clubBoard) {
         ClubBoard clubBoard2 = clubBoardRepository.save(clubBoard);
 
         return clubBoard2;
     }
 
-//  TODO: 삭제 함수
+    //  TODO: 삭제 함수
     public boolean removeById(long clubBoardId) {
         if (clubBoardRepository.existsById(clubBoardId) == true) {
             clubBoardRepository.deleteById(clubBoardId);
@@ -348,24 +194,16 @@ public List<ClubBoardWithPicsDto> getClubBoardWithPics(long clubBoardId) {
         }
     }
 
-//  TODO: 사진과 함께 저장하는 함수
-//@Transactional
-//public void createClubBoardAndFieldPic(ClubBoard clubBoard, FieldPic fieldPic) {
-//    // ClubBoard 엔티티 저장
-//    ClubBoard savedClubBoard = clubBoardRepository.save(clubBoard);
-//
-//    // FieldPic 엔티티의 참조키 설정
-//    fieldPic.setClubBoardId(savedClubBoard.getClubBoardId());
-//
-//    // FieldPic 엔티티 저장
-//    fieldPicRepository.save(fieldPic);
-//}
+    //  TODO: 이미지 조회 함수
+    public Optional<FieldPic> findByUuid(String uuid) {
+        return fieldPicRepository.findByUuid(uuid);
+    }
 
-
-//    @Transactional
-//    public void createClubBoardAndFieldPic(ClubBoard clubBoard, FieldPic fieldPic) {
-//        ClubBoard savedClubBoard = clubBoardRepository.save(clubBoard);
-//        fieldPic.setClubBoardId(savedClubBoard.getClubBoardId());
-//        fieldPicRepository.save(fieldPic);
-//    }
+    // 클럽보드 아이디로 UUID 목록을 조회하는 메소드
+    public List<String> getImgUuidsByClubBoardId(Long clubBoardId) {
+        List<FieldPic> fieldPics = fieldPicRepository.findByClubBoard_ClubBoardId(clubBoardId);
+        return fieldPics.stream()
+                .map(FieldPic::getUuid)
+                .collect(Collectors.toList());
+    }
 }

@@ -4,6 +4,9 @@ import org.example.boardbackend.model.entity.board.club.FieldPic;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+import java.util.Optional;
+
 /**
  * packageName : org.example.boardbackend.repository.board.club
  * fileName : FieldPicRepository
@@ -19,4 +22,6 @@ import org.springframework.stereotype.Repository;
  */
 @Repository
 public interface FieldPicRepository extends JpaRepository<FieldPic, String> {
+    Optional<FieldPic> findByUuid(String uuid);
+    List<FieldPic> findByClubBoard_ClubBoardId(Long clubBoardId);
 }
