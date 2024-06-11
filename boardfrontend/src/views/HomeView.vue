@@ -265,6 +265,20 @@
 
     <div class="main_img container text-center"></div>
   </div>
+
+  <br>
+  <br>
+  <br>
+  <br>
+  <br>
+  <br>
+  <br>
+  <br>
+  <br>
+  <br>
+  <br>
+  <br>
+  <br>
 </template>
 
 <script>
@@ -283,7 +297,7 @@ export default {
 
 <style>
 .main-all {
-  height: 1800px;
+  height: auto;
 }
 
 /* 메인배너 */
