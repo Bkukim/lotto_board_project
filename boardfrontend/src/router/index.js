@@ -15,11 +15,14 @@ const routes = [
     path: "/member/login",
     component: () => import("../views/auth/LoginView.vue"),
   },
+
+
   // 마이페이지
   {
     path: "/member/mypage",
     component: () => import("../views/auth/MyPage.vue"),
   },
+
   // 카카오 로그인
   {
     path: "/auth-redirect",
@@ -145,11 +148,14 @@ const routes = [
     path: "/hot/hotBoard",
     component: () => import("../views/hot/hotBoard.vue"),
   },
+
   // 부서 게시판
+
   {
     path: "/dept/:deptId",
     component: () => import("../views/dept/DeptBoard.vue"),
   },
+
   // 부서 게시판 : 재정부
   {
     path: "/dept/B0002",
@@ -165,6 +171,7 @@ const routes = [
     path: "/dept/D0004",
     component: () => import("../views/dept/PromotionBoard.vue"),
   },
+
   // 부서 게시판 : 상세페이지
   {
     path: "/dept/board/detail/:deptBoardId",

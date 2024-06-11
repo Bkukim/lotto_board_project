@@ -110,15 +110,17 @@
           <!-- 알림 아이콘 -->
           <div
             class="nav-item dropdown notification-dropdown"
-            style="position: relative; margin-right: 7px"
+            style="position: relative; margin-right: 7px; color: #444;"
           >
             <router-link
-              class="nav-link"
+              class="nav-link "
+              id="r_t"
               to="#"
               role="button"
               data-bs-toggle="dropdown"
               aria-expanded="false"
               @click="getUnreadNotify"
+              style="color: #444; text-decoration: none;"
             >
               <img
                 src="@/assets/img/Notification_icon.png"
@@ -130,7 +132,7 @@
 
               <span
                 v-if="notificationCount > 0"
-                class="badge bg-danger notification-badge"
+                class="badge bg-danger notification-badge "
               >
                 {{ notificationCount }}
               </span>
@@ -162,7 +164,7 @@
                         margin-left: 10px;
                       "
                     ></td>
-                    <td class="col-12" style="word-wrap: break-word; white-space: normal; max-width: 250px;"><router-link :to="`/${data.url}`">{{ data.content }}</router-link></td>
+                    <td class="col-12" style="word-wrap: break-word; white-space: normal; max-width: 250px;"><router-link class="notification-link" :to="`/${data.url}`">{{ data.content }}</router-link></td>
                   </tr>
                 </tbody>
               </table>
@@ -374,6 +376,9 @@ export default {
   background-color: red;
   color: white;
 }
+.router-link> #r_t{
+  color: #162b59;
+}
 
 /* 반응형 스타일 */
 @media (max-width: 1200px) {
@@ -442,5 +447,13 @@ export default {
   .nav-link {
     font-size: 14px;
   }
+}
+.notification-link {
+  color: black;
+  text-decoration: none;
+}
+.notification-link:hover {
+  color: black;
+  text-decoration: underline;
 }
 </style>

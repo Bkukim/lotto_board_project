@@ -22,12 +22,13 @@
           ></div> -->
           <div class="circle"></div>
 
+          <p style="color: #fff; margin-top: 20px">ID: {{ userId }}</p>
           <ul
-            class="nav flex-column mt-5"
+            class="nav flex-column mt-3"
             style="
               gap: 50px;
               font-size: 25px;
-              border-right: 3px solid #162b59;
+              /* border-right: 3px solid #162b59; */
               height: 900px;
               padding-top: 100px;
               text-align: center;
@@ -103,19 +104,88 @@
             </div>
           </div> -->
 
+
           <!-- 1. 프로필 -->
+
           <template v-if="displayedContent === 'profile'">
             <!-- 프로필 표시 -->
             <h3 class="mb-5 mt-5">My Profile</h3>
 
-            <div
-              class="container text-center"
-              style="border: solid #cccccc 1px; width: 1200px; height: 300px"
-            >
-              <p>사용자 ID: {{ userId }}</p>
-              <p>사용자 이름: {{ user.userName }}</p>
-              <p>사용자 폰번호: {{ user.phoneNum }}</p>
+
+            <div class="container">
+              <div
+                class="row justify-content-md-center"
+                style="
+                  background-color: #f2f2f2;
+                  text-align: center;
+                  padding: 50px 0 50px 0;
+                "
+              >
+                <p
+                  style="
+                    background-color: #fff;
+                    padding: 10px;
+                    margin-top: 10px;
+                    width: 700px;
+                    border-radius: 20px;
+                  "
+                >
+                  사용자 ID: <span style="font-weight: bold">{{ userId }}</span>
+                </p>
+
+                <p
+                  style="
+                    background-color: #fff;
+                    padding: 10px;
+                    margin-top: 10px;
+                    width: 700px;
+                    border-radius: 20px;
+                  "
+                >
+                  이름: <span style="font-weight: bold">{{ userName }}</span>
+                </p>
+
+                <p
+                  style="
+                    background-color: #fff;
+                    padding: 10px;
+                    margin-top: 10px;
+                    width: 700px;
+                    border-radius: 20px;
+                  "
+                >
+                  휴대폰 번호:
+                  <span style="font-weight: bold">{{ phoneNum }}</span>
+                </p>
+              </div>
             </div>
+
+            <!-- <div
+              class="container text-center"
+              style="
+                border: solid #cccccc 1px;
+                width: 1000px;
+                height: 300px;
+                background-color: #e6e6e6;
+                border: none;
+                box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+                padding: 10px;
+              "
+            >
+              <p style="background-color: #fff; padding: 10px; margin-top: 10px;">
+                사용자 ID: <span style="font-weight: bold;">{{ userId }}</span> 
+              </p>
+
+              <p style="background-color: #fff; padding: 10px; margin-top: 10px;">
+                사용자 이름: {{ userName }}
+              </p>
+
+              <p style="background-color: #fff; padding: 10px; margin-top: 10px;">
+                사용자 폰번호: {{ phoneNum }}
+              </p>
+ 
+            </div> -->
+
 
             <!-- 프로필 내용 -->
           </template>
@@ -123,7 +193,221 @@
           <!-- 2. 작성한 글 -->
           <template v-else-if="displayedContent === 'writtenPosts'">
             <!-- 작성한 글 표시 -->
-            <h3 class="mt-5 mb-5 main_text">내가 작성한 글</h3>
+
+            <h3 class="mt-5">내가 작성한 글</h3>
+
+            <div class="container" style="height: 1700px">
+   
+              <!-- 테이블 옆 버튼 3개 -->
+              <!-- <div class="col-12 d-flex align-items-start justify-content-end">
+                <div class="d-flex flex-column">
+                  <button
+                    type="button"
+                    class="btn btn-primary mb-2"
+                    @click="goNoticeAdd"
+                  >
+                    공지사항 등록
+                  </button>
+                  <button type="button" class="btn btn-success">
+                    공지사항 전체삭제
+                  </button>
+                </div>
+              </div> -->
+              <!-- 게시판별 공지사항  div 총 3개 -->
+              <!--자유게시판 공지사항  -->
+              <div class="row mt-5 border justify-content-center">
+                <h3 style="text-align: left; font-size: 20px; letter-spacing: -1.2px;">자유게시판</h3>
+                <!-- 테이블시작, 작게 왼쪽 -->
+                <div class="col-11">
+                  <table class="table mt-5 text-center">
+                    <thead>
+                      <tr>
+                        <th scope="col">번호</th>
+                        <th scope="col">유형</th>
+                        <th scope="col">제목</th>
+                        <th scope="col">등록일</th>
+                        <th scope="col">삭제</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <!-- 반복문 시작할 행 -->
+                      <tr v-for="(data, index) in noticeFree" :key="index">
+                        <td>
+                          {{ index + 1 }}
+                        </td>
+                        <td >{{ data.noticeType }}</td>
+                        <td>{{ data.title }}</td>
+                        <td>{{ data.insertTime }}</td>
+                        <td>
+                          <button
+                            type="button"
+                            class="btn btn-success"
+                            @click="deleteNotice(data.noticeId)"
+                          >
+                            삭제
+                          </button>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+
+              <!-- 부서게시판 공지사항 -->
+              <div class="row mt-3 border justify-content-center">
+                <h3 style="text-align: left; font-size: 20px; letter-spacing: -1.2px;">부서게시판</h3>
+                <!-- 테이블시작, 작게 왼쪽 -->
+                <div class="col-11">
+                  <table class="table mt-5 text-center">
+                    <thead>
+                      <tr>
+                        <th scope="col">번호</th>
+                        <th scope="col">유형</th>
+                        <th scope="col">제목</th>
+                        <th scope="col">등록일</th>
+                        <th scope="col">삭제</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <!-- 반복문 시작할 행 -->
+                      <tr v-for="(data, index) in noticeDept" :key="index">
+                        <td>
+                          {{ index + 1 }}
+                        </td>
+                        <!-- dto에 없어서 noticeType이 안나왔던것 안나오면 dto한번더 확인 -->
+                        <td>{{ data.noticeType }}</td>
+                        <td>{{ data.title }}</td>
+                        <td>{{ data.insertTime }}</td>
+                        <td>
+                          <button
+                            type="button"
+                            class="btn btn-success"
+                            @click="deleteNotice(data.noticeId)"
+                          >
+                            삭제
+                          </button>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+
+              <!-- 건의게시판 공지사항 -->
+              <div class="row mt-3 border justify-content-center">
+                <h3 style="text-align: left; font-size: 20px; letter-spacing: -1.2px;">건의게시판</h3>
+                <!-- 테이블시작, 작게 왼쪽 -->
+                <div class="col-11">
+                  <table class="table mt-5 text-center">
+                    <thead>
+                      <tr>
+                        <th scope="col">번호</th>
+                        <th scope="col">유형</th>
+                        <th scope="col">제목</th>
+                        <th scope="col">등록일</th>
+                        <th scope="col">삭제</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <!-- 반복문 시작할 행 -->
+                      <tr v-for="(data, index) in noticeComplaint" :key="index">
+                        <td>
+                          {{ index + 1 }}
+                        </td>
+                        <!-- dto에 없어서 noticeType이 안나왔던것 안나오면 dto한번더 확인 -->
+                        <td>{{ data.noticeType }}</td>
+                        <td>{{ data.title }}</td>
+                        <td>{{ data.insertTime }}</td>
+                        <td>
+                          <button
+                            type="button"
+                            class="btn btn-success"
+                            @click="deleteNotice(data.noticeId)"
+                          >
+                            삭제
+                          </button>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+
+              <!-- 동호회 게시판 공지사항 -->
+              <div class="row mt-3 border justify-content-center">
+                <h3 style="text-align: left; font-size: 20px; letter-spacing: -1.2px;">동호회 게시판</h3>
+                <!-- 테이블시작, 작게 왼쪽 -->
+                <div class="col-11">
+                  <table class="table mt-5 text-center">
+                    <thead>
+                      <tr>
+                        <th scope="col">번호</th>
+                        <th scope="col">유형</th>
+                        <th scope="col">제목</th>
+                        <th scope="col">등록일</th>
+                        <th scope="col">삭제</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <!-- 반복문 시작할 행 -->
+                      <tr v-for="(data, index) in noticeGroup" :key="index">
+                        <td>
+                          {{ index + 1 }}
+                        </td>
+                        <!-- dto에 없어서 noticeType이 안나왔던것 안나오면 dto한번더 확인 -->
+                        <td>{{ data.noticeType }}</td>
+                        <td>{{ data.title }}</td>
+                        <td>{{ data.insertTime }}</td>
+                        <td>
+                          <button
+                            type="button"
+                            class="btn btn-success"
+                            @click="deleteNotice(data.noticeId)"
+                          >
+                            삭제
+                          </button>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+                            <!-- 페이징 -->
+              <!-- {/* paging 시작 */} -->
+              <!-- TODO: 1페이지당 화면에 보일 개수 조정(select태그) -->
+              <div class="row justify-content-center mt-4">
+                <div class="col-auto">
+                  <b-pagination
+                    class="col-12 mb-3 custom-pagination"
+                    v-model="page"
+                    :total-rows="count"
+                    :per-page="pageSize"
+                    @click="retrieveQnaUserId"
+                  ></b-pagination>
+                </div>
+              </div>
+            </div>
+
+            
+            <!-- <div class="row" style="gap: 20px;">
+            <button class="col">
+              자유 게시판 <br>내가 쓴 글 보러가기
+            </button>
+
+            <button class="col">
+              자유 게시판 <br>내가 쓴 글 보러가기
+            </button>
+
+            <button class="col">
+              자유 게시판 <br>내가 쓴 글 보러가기
+            </button>
+
+            <button class="col">
+              자유 게시판 <br>내가 쓴 글 보러가기
+            </button>
+
+          </div> -->
+
             <!-- 작성한 글 목록 -->
             <div class="text-center">
               <table class="table">
@@ -182,10 +466,11 @@
               <br />
               <br />
               <br />
-              <br />
-              <br />
-              <h2 class="text-center">새로운 비밀번호 설정</h2>
-              <div class="container">
+
+              <h2 class="text-center mb-5" style="letter-spacing: -1.5px">
+                새로운 비밀번호 설정
+              </h2>
+              <div class="container" style="background-color: #f2f2f2">
                 <div class="row justify-content-md-center" v-if="result">
                   <div class="col-8">
                     <div
@@ -202,7 +487,7 @@
                 <div class="row justify-content-md-center" v-else>
                   <div class="col-8">
                     <div class="mt-5" id="comment">
-                      <p>
+                      <p style="text-align: left">
                         ＊새로운 비밀번호를 입력하세요.<br />
                         ＊영문 대소문자/숫자/특수문자 중 3가지 이상 조합,
                         8자~16자 이상으로 입력하세요.
@@ -267,6 +552,11 @@
                     id=""
                     type="submit"
                     @click="updatePw"
+                    style="
+                      background-color: #162b59;
+                      border: none;
+                      padding: 10px 20px;
+                    "
                   >
                     확인
                   </button>
@@ -333,6 +623,7 @@ import UserService from '@/services/user/UserService';
 export default {
   data() {
     return {
+
       // 내가 쓴 글 : 자유게시판
       freeBoardList: [],
 
@@ -343,17 +634,20 @@ export default {
       count: 0, // 전체데이터개수
       pageSize: 10, // 1페이지당개수(select태그)
 
+
       // displayedContent: "",
       displayedContent: "profile", // 현재 화면에 표시할 내용을 저장하는 변수
 
       // 비밀번호 확인이 같으면 true
       passwordMatchError: false,
 
+
       // user 객체 초기화(원래 객체는 null로 초기화하지만 별로 좋지 않은 방법이긴하다.)
       user: {
         userName:"",
         phoneNum: ""
       },
+
 
       newPw: "",
       newPwCheck: "",

@@ -233,7 +233,7 @@
 
 
     <!-- 로또의 새로운 소식 (중앙정렬) -->
-    <div class="container text-center">
+    <!-- <div class="container text-center">
       <div class="container text-center">
         <h2 class="main_tt1 mb-5">LOTOO의 새로운 소식</h2>
 
@@ -256,11 +256,11 @@
           >
             news 3
           </div>
-        </div>
+        </div> -->
         <!-- 루또의 새로운 소식 끝 -->
-      </div>
+      <!-- </div> -->
       <!-- 루또의 새로운 소식 (중앙정렬) 끝 -->
-    </div>
+    <!-- </div> -->
 
 
     <div class="main_img container text-center"></div>
@@ -283,7 +283,7 @@ export default {
 
 <style>
 .main-all {
-  height: 3500px;
+  height: 1800px;
 }
 
 /* 메인배너 */
