@@ -27,7 +27,8 @@ import org.springframework.stereotype.Repository;
 public interface ComplaintBoardRepository extends JpaRepository<ComplaintBoard, Long> {
 
     @Query(value = "SELECT COMPLAINT_BOARD_ID AS complaintBoardId, TITLE AS title, USER_ID AS userId, INSERT_TIME AS insertTime, LIKES AS likes, STATUS AS status FROM LOTTO_COMPLAINT_BOARD\n" +
-            "WHERE TITLE LIKE '%'|| :title ||'%'"
+            "WHERE TITLE LIKE '%'|| :title ||'%'"+
+            "ORDER BY INSERT_TIME DESC"
             , countQuery = "SELECT count(*)FROM LOTTO_COMPLAINT_BOARD\n" +
             "WHERE TITLE LIKE '%'|| :title ||'%'"
             , nativeQuery = true)

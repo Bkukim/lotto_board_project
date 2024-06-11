@@ -103,9 +103,14 @@
               엥
             </div>
           </div> -->
+
+
+          <!-- 1. 프로필 -->
+
           <template v-if="displayedContent === 'profile'">
             <!-- 프로필 표시 -->
             <h3 class="mb-5 mt-5">My Profile</h3>
+
 
             <div class="container">
               <div
@@ -181,10 +186,14 @@
  
             </div> -->
 
+
             <!-- 프로필 내용 -->
           </template>
+
+          <!-- 2. 작성한 글 -->
           <template v-else-if="displayedContent === 'writtenPosts'">
             <!-- 작성한 글 표시 -->
+
             <h3 class="mt-5">내가 작성한 글</h3>
 
             <div class="container" style="height: 1700px">
@@ -398,8 +407,58 @@
             </button>
 
           </div> -->
+
             <!-- 작성한 글 목록 -->
+            <div class="text-center">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th scope="col">번호</th>
+                    <th scope="col">제목</th>
+                    <th scope="col">작성자</th>
+                    <th scope="col">작성일</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <!-- 반복문 시작할 행 -->
+                  <tr v-for="(data, index) in freeBoardList" :key="index">
+                    <th scope="row">
+                      {{ data.freeBoardId }}
+                    </th>
+                    <td class="col-8">
+                      <router-link
+                        :to="`/product/inquiry/detail/${data.qnaId}`"
+                        style="text-decoration: none"
+                        class="alltext router-link-exact-active custom-pagination"
+                        >{{ data.title }}</router-link
+                      >
+                    </td>
+                    <td>
+                      {{ userId }}
+                    </td>
+                    <td>{{ data.insertTime }}</td>
+                  </tr>
+                </tbody>
+              </table>
+
+              <!-- 페이징 -->
+              <!-- {/* paging 시작 */} -->
+              <!-- TODO: 1페이지당 화면에 보일 개수 조정(select태그) -->
+              <div class="row justify-content-center mt-4">
+                <div class="col-auto">
+                  <b-pagination
+                    class="col-12 mb-3 custom-pagination"
+                    v-model="page"
+                    :total-rows="count"
+                    :per-page="pageSize"
+                    @click="retrieveQnaUserId"
+                  ></b-pagination>
+                </div>
+              </div>
+            </div>
           </template>
+
+          <!-- 3. 비밀번호 변경하기 -->
           <template v-else-if="displayedContent === 'ChangPassword'">
             <!-- 비밀번호 변경 표시 -->
             <!-- <h3>비번번경</h3> -->
@@ -538,6 +597,8 @@
             <br />
             <br />
           </template>
+
+          <!-- 4. 회원탈퇴 -->
           <template v-else-if="displayedContent === 'withdrawal'">
             <!-- 회원탈퇴 표시 -->
             <h3>회원탈퇴 화면</h3>
@@ -556,19 +617,37 @@
 
 <script>
 import AuthService from "@/services/auth/AuthService";
+import FreeBoardService from "@/services/board/free/FreeBoardService";
+import UserService from '@/services/user/UserService';
 
 export default {
   data() {
     return {
+
+      // 내가 쓴 글 : 자유게시판
+      freeBoardList: [],
+
+      userId: this.$store.state.user.userId,
+
+      // 공통 속성(현재페이지, 전체데이터개수,1페이지당개수)
+      page: 1, // 현재페이지번호
+      count: 0, // 전체데이터개수
+      pageSize: 10, // 1페이지당개수(select태그)
+
+
       // displayedContent: "",
       displayedContent: "profile", // 현재 화면에 표시할 내용을 저장하는 변수
 
       // 비밀번호 확인이 같으면 true
       passwordMatchError: false,
 
-      userId: this.$store.state.user.userId,
-      userName: this.$store.state.user.userName,
-      phoneNum: this.$store.state.user.phoneNum,
+
+      // user 객체 초기화(원래 객체는 null로 초기화하지만 별로 좋지 않은 방법이긴하다.)
+      user: {
+        userName:"",
+        phoneNum: ""
+      },
+
 
       newPw: "",
       newPwCheck: "",
@@ -577,6 +656,37 @@ export default {
   },
 
   methods: {
+    // 유저 상세조회 : 프로필
+    async findUserInfo(userId) {
+      try {
+        let response = await UserService.get(userId);
+        this.user = response.data;
+        console.log("유저",response.data);
+      } catch (e) {
+        alert("에러");
+        console.log(e);
+      }
+    },
+    // 내가 쓴 글 : 자유게시판
+    async retrieveFreeBoardListUserId() {
+      try {
+        // TODO: 1) 공통 전체조회 함수 실행
+        let response = await FreeBoardService.getAllFreeBoardUserId(
+          this.userId, // 검색어
+          this.page - 1, // 현재페이지번호-1
+          this.pageSize // 1페이지당개수(size)
+        );
+        // TODO: 복습 : 2) 객체분할 할당
+        const { freeBoardList, totalItems } = response.data; // 부서배열(벡엔드 전송)
+        // TODO: 3) 바인딩변수(속성)에 저장
+        this.freeBoardList = freeBoardList; // 부서배열(벡엔드 전송)
+        this.count = totalItems; // 전체페이지수(벡엔드 전송)
+        // TODO: 4) 프론트 로깅 : console.log
+        console.log(response.data);
+      } catch (e) {
+        console.log(e);
+      }
+    },
     // 프로필 표시 메소드
     showProfile() {
       this.displayedContent = "profile";
@@ -635,6 +745,8 @@ export default {
   },
   mounted() {
     window.scrollTo(0, 0);
+    this.findUserInfo(this.$store.state.user.userId);
+    this.retrieveFreeBoardListUserId();
   },
 };
 </script>

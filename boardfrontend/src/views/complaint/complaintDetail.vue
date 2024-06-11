@@ -50,11 +50,12 @@
       <div
         style="
           text-align: left;
-          border-bottom: #cccccc solid 1px;
           padding: 20px 0 20px 30px;
           font-size: 15px;
           font-weight: 600;
-          height: 450px;
+          border-bottom: 1px solid #cccccc;
+          word-wrap: break-word;
+          word-break: break-all;
         "
         v-html="complaintBoard.content"
       ></div>
@@ -146,7 +147,9 @@
       </div>
     </div>
 
-    <!-- 댓글 조회-->
+    <!-- --------------------------------------------------- -->
+
+    <!-- 댓글 작성 및 조회/대댓글-->
     <div
       class="container text-center mt-5"
       id="comments"

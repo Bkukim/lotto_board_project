@@ -16,6 +16,7 @@ const routes = [
     component: () => import("../views/auth/LoginView.vue"),
   },
 
+
   // 마이페이지
   {
     path: "/member/mypage",
@@ -72,7 +73,6 @@ const routes = [
     path: "/notice/notice-check/:noticeId",
     component: () => import("../views/notice/NoticeCheck.vue"),
   },
-
   // 공지사항 -> 글쓰기
   {
     path: "/admin/notice-add",
@@ -186,7 +186,16 @@ const routes = [
   {
     path: "/dept/board/Update/:deptBoardId",
     component: () => import("../views/dept/DeptBoardUpdate.vue"),
-
+  },
+  // 관리자 신고 게시판
+  {
+    path: "/admin/report",
+    component: () => import("../views/admin/AdminReportBoard.vue"),
+  },
+   // 관리자 신고 게시판 : 상세페이지
+  {
+    path: "/admin/report/:reportId",
+    component: () => import("../views/admin/AdminReportBoardDetail.vue"),
   },
 ];
 
