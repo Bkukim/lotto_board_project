@@ -1,9 +1,12 @@
+// 관리자 신고 게시판 : 미완성
 <template>
   <div class="container text-center" id="fb_all">
-    <h3 class="mb-5 mt-5">건의 / 문의사항 게시판</h3>
-        <p class="mb-5">
-      건의 게시판은 전달하고 싶은 다양한 의견이나 아이디어를 익명으로 전달하는 게시판입니다. 
-    </p>
+    <h3 class="mb-5 mt-5">관리자 신고 게시판 관리</h3>
+    <!-- <p class="mb-5">
+      자유게시판은 자유로운 의견을 남기는 공간으로 건의관련 답변은 드리지
+      않습니다. <br />
+      건의관련 및 문의사항은 건의게시판을 이용해주시길 바랍니다.
+    </p> -->
 
     <!-- 검색 박스 -->
     <div class="container text-center" style="gap: 5px" id="search_box">
@@ -16,7 +19,7 @@
             aria-expanded="false"
             id="search_ck"
           >
-            -- 검색 선택 ---
+            
           </button> -->
           <!-- <ul class="dropdown-menu">
             <li><a class="dropdown-item" href="#">Action</a></li>
@@ -33,6 +36,7 @@
               aria-label="Sizing example input"
               aria-describedby="inputGroup-sizing-default"
               placeholder="검색어를 입력하세요."
+              v-model="searchTitle"
             />
           </div>
         </div>
@@ -43,7 +47,7 @@
             class="btn btn-outline-secondary"
             type="button"
             id="button-search"
-            @click="searchComplaintBoard"
+            @click="searchFreeBoard"
           >
             검색
           </button>
@@ -55,7 +59,7 @@
             class="btn btn-outline-secondary"
             type="button"
             id="button-reset"
-            @click="resetComplaintSearch"
+            @click="resetSearch"
           >
             초기화
           </button>
@@ -69,29 +73,28 @@
       <thead>
         <tr>
           <th scope="col">번호</th>
-          <th scope="col">제목</th>
+          <th scope="col" style="text-align: left; padding-left: 100px">제목</th>
           <th scope="col">작성자</th>
           <th scope="col">등록일</th>
           <th scope="col">좋아요</th>
-          <th scope="col">상태</th>
+          <!-- <th scope="col">조회수</th> -->
         </tr>
       </thead>
       <tbody>
         <!-- 반복문 시작할 행 -->
-        <tr v-for="(data, index) in complaintBoardList" :key="index">
+        <tr v-for="(data, index) in freeBoardList" :key="index">
           <td>{{ (page - 1) * pageSize + index + 1 }}</td>
-          <td id="router_hv" style="text-align: left; padding-left: 100px;">
+          <td id="router_hv" style="text-align: left; padding-left: 100px;" >
             <router-link style="color: #444444; font-weight: bold; text-decoration:none ;"
-              :to="'/complaint/complaint-boardDetail/' + data.complaintBoardId"
+              :to="'/free/free-boardDetail/' + data.freeBoardId"
               class="router-link-exact-active alltext"
             >
               {{ data.title }}
             </router-link>
           </td>
-          <td>익명</td>
+          <td>{{ data.userId }}</td>
           <td>{{ data.insertTime }}</td>
           <td>{{ data.likes }}</td>
-          <td>{{ data.status }}</td>
         </tr>
       </tbody>
     </table>
@@ -104,7 +107,7 @@
           type="button"
           id="button-Writing"
           style="margin-left: 1220px"
-          @click="writeComplaintBoard"
+          @click="writeFreeBoard"
         >
           글쓰기
         </button>
@@ -120,7 +123,7 @@
           v-model="page"
           :total-rows="count"
           :per-page="pageSize"
-          @click="retrieveComplaintBoard"
+          @click="retrieveFreeBoard"
         ></b-pagination>
       </div>
     </div>
@@ -129,12 +132,12 @@
 </template>
 
 <script>
-import ComplaintBoardService from "@/services/board/complaint/ComplaintBoardService";
+import FreeBoardService from "@/services/board/free/FreeBoardService";
 
 export default {
   data() {
     return {
-      complaintBoardList: [],
+      freeBoardList: [],
       searchTitle: "",
       page: 1, // 현재페이지번호
       count: 0, // 전체데이터개수
@@ -143,18 +146,18 @@ export default {
   },
   methods: {
     // 전체조회 함수
-    async retrieveComplaintBoard() {
+    async retrieveFreeBoard() {
       try {
         // TODO: 1) 공통 전체조회 함수 실행
-        let response = await ComplaintBoardService.getAllComplaintBoard(
+        let response = await FreeBoardService.getAllBoard(
           this.searchTitle, // 검색어
           this.page - 1, // 현재페이지번호-1
           this.pageSize // 1페이지당개수(size)
         );
         // TODO: 복습 : 2) 객체분할 할당
-        const { complaintBoardList, totalItems } = response.data; // 부서배열(벡엔드 전송)
+        const { freeBoardList, totalItems } = response.data; // 부서배열(벡엔드 전송)
         // TODO: 3) 바인딩변수(속성)에 저장
-        this.complaintBoardList = complaintBoardList; // 부서배열(벡엔드 전송)
+        this.freeBoardList = freeBoardList; // 부서배열(벡엔드 전송)
         this.count = totalItems; // 전체페이지수(벡엔드 전송)
         // TODO: 4) 프론트 로깅 : console.log
         console.log(response.data);
@@ -162,23 +165,23 @@ export default {
         console.log(e);
       }
     },
-        // 검색 함수
-    async searchComplaintBoard() {
+    // 검색 함수
+    async searchFreeBoard() {
       console.log("검색 함수 호출");
-      await this.retrieveComplaintBoard();
+      await this.retrieveFreeBoard();
     },
-        // 초기화 함수
-    resetComplaintSearch() {
+    // 초기화 함수
+    resetSearch() {
       this.searchTitle = "";
       this.retrieveFreeBoard();
     },
     // 글 쓰러가기 함수
-    writeComplaintBoard() {
-      this.$router.push("/complaint/complaint-boardAdd");
+    writeFreeBoard() {
+      this.$router.push("/free/free-boardAdd");
     },
   },
   mounted() {
-    this.retrieveComplaintBoard();
+    this.retrieveFreeBoard();
     window.scrollTo(0, 0);
   },
 };
@@ -202,13 +205,13 @@ p {
 }
 
 .custom-pagination .page-link {
-  color: #342a26;
+  color: #162b59;
 }
 
 .custom-pagination .page-link:hover {
   background-color: #ffffff;
   border-color: 1px solid#8f8f8f;
-  color: #342a26;
+  color: #162b59;
   /* border: none; */
 }
 
@@ -245,5 +248,8 @@ p {
   background-color: #162b59;
   color: #ffffff;
   border: none;
+}
+#router_hv:hover{
+text-decoration: underline 1px solid;
 }
 </style>

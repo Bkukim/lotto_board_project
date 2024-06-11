@@ -148,4 +148,12 @@ public class FreeBoardService {
     public List<IFreeBoardRecommentDto> getRecommentByFreeBoardId(long freeBoardId) {
         return freeBoardRecommentRepository.findFreeBoardRecommentsByFreeBoardCommentIdOrderByInsertTimeDesc(freeBoardId);
     }
+
+    //    todo : userId가 작성한 글 전체조회
+    public Page<FreeBoardDto> findFreeBoardByUserIdContaining(String userId, Pageable pageable)
+    {
+        Page<FreeBoardDto> page
+                = freeBoardRepository.findFreeBoardByUserIdContaining(userId, pageable);
+        return page;
+    }
 }

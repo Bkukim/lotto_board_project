@@ -38,12 +38,17 @@ class FreeBoardService {
     });
   }
 
-  // TODO: 수정함수 : qnaId,
+  // TODO: 수정함수 : updateLike 공감해요 버튼에 적용될것
   updateLike(freeBoardId, data) {
-    return http.put(`/user/board/free/update/${freeBoardId}`, data, {
-      headers: AuthHeader(),
-    });
+    return http.put(`/user/board-like/insert-like/{userId}`, data,
+    //    {
+    //   headers: AuthHeader(),
+    // }
+    )
+    ;
   }
+
+
   // TODO: 댓글 조회 : freeBoardId
   getFreeBoardComment(freeBoardId, page, size) {
     return http.get(
@@ -70,6 +75,15 @@ class FreeBoardService {
     return http.post(`/user/board/free/save/recomment`, data, {
       headers: AuthHeader(),
     });
+  }
+  // TODO: userId로 전체조회 내글찾기
+  getAllFreeBoardUserId(userId, page, size) {
+    return http.get(
+      `/user/board/free/userId/freeBoard?userId=${userId}&page=${page}&size=${size}`,
+      {
+        headers: AuthHeader(),
+      }
+    );
   }
 }
 

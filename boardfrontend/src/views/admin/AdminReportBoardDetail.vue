@@ -1,3 +1,4 @@
+// 관리자 신고 게시판 상세보기 : 미완성
 <template>
   <!-- 전체 박스 -->
   <div class="fbd_all" style="height: auto">
@@ -73,7 +74,7 @@
             border: none;
             text-align: center;
             height: 8vh;
-            width: 15vw;
+            width: 18vw;
             padding: 1vw;
           "
         >
@@ -84,7 +85,7 @@
         <button
           type="button"
           class="btn btn-light"
-          style="margin-left: 3vh; height: 8vh; width: 8vw; padding: 1vw"
+          style="margin-left: 3vh; height: 8vh; width: 10vw; padding: 1vw"
         >
           신고
         </button>
@@ -101,7 +102,12 @@
     </div>
     <!--  첫번째 게시판 큰 박스 끝-->
 
-    
+    <!-- TODO: 좋아요버튼 -->
+    <div class="d-flex justify-content-center mt-3">
+      <button type="button" class="btn btn-primary" @click="likeUp">
+        공감해요 {{ this.freeBoard.likes }}
+      </button>
+    </div>
 
     <!-- 삭제 -->
     <div class="container text-center mt-5">
@@ -211,7 +217,7 @@
         class="lotto_new row row-cols-lg-4 gap-5 justify-content-left mb-3 mt-5"
       >
         <div class="col" style="color: #595959; font-weight: bold">
-          <span style="color: #999999; font-weight: bold">등록자 |</span>
+          <span style="color: #999999; font-weight: 200">등록자 |</span>
           {{ newComment.userId }}
         </div>
 
@@ -285,9 +291,6 @@
         </div>
       </div>
 
-      <br />
-      <br />
-      <br />
       <!-- 댓글들 -->
       <div
         class="container text-left"
@@ -344,58 +347,22 @@
             }}
           </button>
 
-
           <!-- 답변(대댓글)들 -->
           <div v-if="replyToCommentId === data.freeBoardCommentId">
-          <hr>
-
             <div v-for="(data, index) in data.freeBoardRecomments" :key="index">
               <div
                 class="lotto_new row row-cols-lg-4 gap-5 justify-content-left mb-3 mt-5"
               >
                 <div class="col" style="color: #595959; font-weight: bold">
-                  <!-- <div
-                    style="
-                      background: #ccc;
-                      height: 30px;
-                      width: 30px;
-                      border-radius: 50%;
-                      margin-right: 5px;
-                    "
-                  ></div> -->
-                  <!-- (대댓글 등록자) -->
-                  <!-- <span style="color: #999999; font-weight: 200">
-                    {{ data.userId }}</span
-                  > -->
-
-                  <div
-                    class="row"
-                    style="color: #333333; text-align: left; font-weight: bold"
-                  >
-                  └>   
-                    <div
-                      style="
-                        background: #ccc;
-                        height: 30px;
-                        width: 30px;
-                        border-radius: 50%;
-                        margin-right: 5px;
-                        margin-left: 5px;
-                      "
-                    ></div>
-                    {{ data.userId }}
-                  </div>
-
-                  <!-- (대댓글 시간) -->
-                  <div class="col" style="color: #999999; font-weight: bold">
-                    <span style="color: #999999; font-weight: 100; margin-left: 55px;"> 
-                    {{ data.insertTime }}</span>
-
-                    <!-- (대댓글 내용) -->
-                    <div class="col" style="color: #333; font-weight: 300 ;margin-left: 55px; margin-top: 10px;">
-                      {{ data.content }}
-                    </div>
-                  </div>
+                  <span style="color: #999999; font-weight: 200">등록자 |</span>
+                  {{ data.userId }}
+                </div>
+                <div class="col" style="color: #999999; font-weight: bold">
+                  {{ data.content }}
+                </div>
+                <div class="col" style="color: #999999; font-weight: bold">
+                  <span style="color: #999999; font-weight: 200">날짜 | </span>
+                  {{ data.insertTime }}
                 </div>
               </div>
             </div>
@@ -675,7 +642,7 @@ export default {
       this.freeBoard.likes = +1;
 
       try {
-        let response = await FreeBoardService.updateLike(
+        let response = await FreeBoardService.updateFreeBoard(
           this.freeBoard.likes
         );
         // 로깅
@@ -728,6 +695,8 @@ export default {
     },
     // 대댓글(답글) 등록
     async submitReply(commentId) {
+
+
       if (!this.newReply.content.trim()) {
         // alert("답글을 입력해주세요.");
         return;

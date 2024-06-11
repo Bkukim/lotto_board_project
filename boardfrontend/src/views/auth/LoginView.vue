@@ -279,7 +279,7 @@ export default {
           this.$router.push("/");
         } else if (this.$store.state.user.role == "ROLE_ADMIN") {
           alert("관리자 로그인에 성공하였습니다.");
-          this.$router.push("/shop/admin/order");
+          this.$router.push("/admin/notice-add");
         }
       } catch (e) {
         // 로그인 실패시 에러가 뜨므로 로그인 실패 공유함수를 실행

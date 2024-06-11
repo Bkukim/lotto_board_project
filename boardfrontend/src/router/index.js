@@ -15,11 +15,14 @@ const routes = [
     path: "/member/login",
     component: () => import("../views/auth/LoginView.vue"),
   },
-    // 마이페이지
-    {
-      path: "/member/mypage",
-      component: () => import("../views/auth/MyPage.vue"),
-    },
+
+
+  // 마이페이지
+  {
+    path: "/member/mypage",
+    component: () => import("../views/auth/MyPage.vue"),
+  },
+
   // 카카오 로그인
   {
     path: "/auth-redirect",
@@ -70,7 +73,6 @@ const routes = [
     path: "/notice/notice-check/:noticeId",
     component: () => import("../views/notice/NoticeCheck.vue"),
   },
-
   // 공지사항 -> 글쓰기
   {
     path: "/admin/notice-add",
@@ -146,26 +148,30 @@ const routes = [
     path: "/hot/hotBoard",
     component: () => import("../views/hot/hotBoard.vue"),
   },
-  // 부서 게시판 
+
+  // 부서 게시판
+
   {
     path: "/dept/:deptId",
     component: () => import("../views/dept/DeptBoard.vue"),
   },
-  // // 부서 게시판 : 재정부
-  // {
-  //   path: "/dept/B0002",
-  //   component: () => import("../views/dept/FinanceBoard.vue"),
-  // },
-  // // 부서 게시판 : 기획부
-  // {
-  //   path: "/dept/C0003",
-  //   component: () => import("../views/dept/PlanningBoard.vue"),
-  // },
-  // // 부서 게시판 : 홍보부
-  // {
-  //   path: "/dept/D0004",
-  //   component: () => import("../views/dept/PromotionBoard.vue"),
-  // },
+
+  // 부서 게시판 : 재정부
+  {
+    path: "/dept/B0002",
+    component: () => import("../views/dept/FinanceBoard.vue"),
+  },
+  // 부서 게시판 : 기획부
+  {
+    path: "/dept/C0003",
+    component: () => import("../views/dept/PlanningBoard.vue"),
+  },
+  // 부서 게시판 : 홍보부
+  {
+    path: "/dept/D0004",
+    component: () => import("../views/dept/PromotionBoard.vue"),
+  },
+
   // 부서 게시판 : 상세페이지
   {
     path: "/dept/board/detail/:deptBoardId",
@@ -180,7 +186,16 @@ const routes = [
   {
     path: "/dept/board/Update/:deptBoardId",
     component: () => import("../views/dept/DeptBoardUpdate.vue"),
-
+  },
+  // 관리자 신고 게시판
+  {
+    path: "/admin/report",
+    component: () => import("../views/admin/AdminReportBoard.vue"),
+  },
+   // 관리자 신고 게시판 : 상세페이지
+  {
+    path: "/admin/report/:reportId",
+    component: () => import("../views/admin/AdminReportBoardDetail.vue"),
   },
 ];
 

@@ -18,7 +18,6 @@ import org.springframework.stereotype.Repository;
  * -----------------------------------------------------------
  * 2024-06-09         PC          최초 생성
  */
-@Repository
 public interface DeptReportRepository extends JpaRepository<DeptBoardReport,Long> {
-//    public DeptBoardDto findUserIdByDeptBoardId
+
 }
