@@ -6,6 +6,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.example.boardbackend.model.dto.board.club.*;
 import org.example.boardbackend.model.dto.board.club.CreateClubArticleDto;
 import org.example.boardbackend.model.dto.board.club.FieldPicDto;
+import org.example.boardbackend.model.dto.board.free.FreeBoardDto;
 import org.example.boardbackend.model.entity.auth.User;
 import org.example.boardbackend.model.entity.board.club.ClubBoard;
 import org.example.boardbackend.model.entity.board.club.FieldPic;
@@ -59,9 +60,12 @@ public class ClubBoardService {
         return clubBoardRepository.findAll();
     }
 
-   // TODO: 전체 조회 함수 (페이징 처리 포함)
-   public Page<ClubBoard> pageAllClub(Pageable pageable) {
-       return clubBoardRepository.findAll(pageable);
+   // TODO: userId 기준으로 내가 작성한 글 조회
+   public Page<ClubBoardDto> findClubBoardByUserIdContaining(String userId, Pageable pageable)
+   {
+       Page<ClubBoardDto> page
+               = clubBoardRepository.findClubBoardByUserIdContaining(userId, pageable);
+       return page;
    }
 
     //  TODO: 상세 조회
@@ -191,14 +195,13 @@ public class ClubBoardService {
     }
 
     //  TODO: 삭제 함수
-    public boolean removeById(long clubBoardId) {
-        if (clubBoardRepository.existsById(clubBoardId) == true) {
-            clubBoardRepository.deleteById(clubBoardId);
-            return true;
-        } else {
-            return false;
-        }
-    }
+    @Transactional
+//    public void deleteByClubBoardId(Long clubBoardId) {
+//        // 먼저 FieldPic 테이블에서 관련된 데이터를 삭제합니다.
+//        fieldPicRepository.deleteByClubBoardId(clubBoardId);
+//        // 그 다음 ClubBoard 테이블에서 데이터를 삭제합니다.
+//        clubBoardRepository.deleteById(clubBoardId);
+//    }
 
     //  TODO: 이미지 조회 함수
     public Optional<FieldPic> findByUuid(String uuid) {
