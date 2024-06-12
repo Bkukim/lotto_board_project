@@ -16,9 +16,9 @@ package org.example.boardbackend.model.dto.board.complaint;
 
 public interface ComplaintBoardDto {
 
-     long getComplaintBoardId();
+     Long getComplaintBoardId();
      String getUserId();
-     long getLikes();
+     Long getLikes();
      String getContent();
      String getStatus();
      String getTitle();

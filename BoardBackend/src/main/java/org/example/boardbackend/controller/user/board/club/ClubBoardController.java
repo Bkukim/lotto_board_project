@@ -7,10 +7,12 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import oracle.ucp.proxy.annotation.Post;
 
+import org.example.boardbackend.model.dto.board.club.ClubBoardDto;
 import org.example.boardbackend.model.dto.board.club.ClubBoardWithPicsDto;
 
 import org.example.boardbackend.model.dto.board.club.CreateClubArticleDto;
 import org.example.boardbackend.model.dto.board.club.FieldPicDto;
+import org.example.boardbackend.model.dto.board.free.FreeBoardDto;
 import org.example.boardbackend.model.entity.board.club.ClubBoard;
 import org.example.boardbackend.model.entity.board.club.FieldPic;
 import org.example.boardbackend.model.entity.board.free.FreeBoard;
@@ -20,6 +22,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -52,11 +55,45 @@ public class ClubBoardController {
     private final FieldPicRepository fieldPicRepository;
 
 
-    //  TODO: 전체 조회 함수 : 페이징 처리
+    //  TODO: 전체 조회 함수
     @GetMapping("/club")
     public ResponseEntity<List<ClubBoard>> getAllClubs() {
         List<ClubBoard> clubBoards = clubBoardService.getAllClub();
         return ResponseEntity.ok(clubBoards);
+    }
+
+    //  TODO: UserId 가 작성한 글 전체조회
+    @GetMapping("/club/userId/clubBoard")
+    public ResponseEntity<Object> findByUserId(
+            @RequestParam(defaultValue = "") String userId,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size
+    ) {
+        try {
+//            페이징 객체 생성
+            Pageable pageable = PageRequest.of(page, size);
+
+//            전체 조회 서비스 실행
+            Page<ClubBoardDto> clubBoardDto
+                    = clubBoardService.findClubBoardByUserIdContaining(userId, pageable);
+
+//            공통 페이징 객체 생성 : 자료구조 맵 사용
+            Map<String, Object> response = new HashMap<>();
+            response.put("clubBoardList", clubBoardDto.getContent());       // faq 배열
+            response.put("currentPage", clubBoardDto.getNumber());       // 현재페이지번호
+            response.put("totalItems", clubBoardDto.getTotalElements()); // 총건수(개수)
+            response.put("totalPages", clubBoardDto.getTotalPages());    // 총페이지수
+
+            if (clubBoardDto.isEmpty() == false) {
+//                조회 성공
+                return new ResponseEntity<>(response, HttpStatus.OK);
+            } else {
+//                데이터 없음
+                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+            }
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
 
@@ -101,20 +138,9 @@ public class ClubBoardController {
 
     //  TODO: 삭제 함수
     @DeleteMapping("club/deletion/{clubBoardId}")
-    public ResponseEntity<Object> delete(
-            @PathVariable long clubBoardId
-    ) {
-        try {
-//          DB 서비스 삭제 함수 실행
-            boolean success = clubBoardService.removeById(clubBoardId);
-            if (success == true) {
-                return new ResponseEntity<>(HttpStatus.OK);
-            } else {
-                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-            }
-        } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+    public ResponseEntity<Void> deleteClubBoard(@PathVariable Long clubBoardId) {
+        clubBoardService.deleteByClubBoardId(clubBoardId);
+        return ResponseEntity.noContent().build();
     }
 
 

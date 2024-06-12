@@ -71,15 +71,39 @@
       </div>
 
       <!-- 뉴스 섹션 -->
-      <div class="news-container rounded-section" style="background-color: #ffffff; height: 400px; flex-basis: calc(35% + 10px); position: sticky; top: 5px; margin-right: -10px;">
+      <div class="news-container rounded-section" style="background-color: #ffffff; max-height: 400px; overflow-y: auto; flex-basis: calc(35% + 10px); position: sticky; top: 5px; margin-right: -10px;">
         <div v-if="clubBoard" class="date-container">{{ formatDate(clubBoard.startTime) }}</div>
-        <div v-if="clubBoard" class="news-title">{{ clubBoard.title }}</div>
+        <div v-if="clubBoard" class="club-title">{{ clubBoard.title }}</div>
         <div v-if="clubBoard" class="news-content">
           <div class="address-container">
-            <div>{{ clubBoard.address }}</div>
+            <div class="address-text">{{ clubBoard.address }}</div>
             <div class="address-actions">
               <button @click="copyAddress" class="small-button">주소 복사</button>
               <button @click="toggleMapView" class="small-button">지도 보기</button>
+            </div>
+          </div>
+          <div class="likes-container">
+            <i class="fas fa-heart small-heart"></i>
+            <span>{{ clubBoard.likes }}</span>
+          </div>
+          <hr class="separator">
+          <div class="fee-time-info">
+            <span class="fee-info">{{ formatCurrency(clubBoard.participationFee) }}원</span>
+            <span class="time-info"> / {{ calculateMatchDuration(clubBoard.startTime, clubBoard.endTime) }}</span>
+          </div>
+          <div class="like-apply-container">
+            <div class="like-container">
+              <i 
+                :class="{'fas fa-heart liked': isLiked, 'far fa-heart': !isLiked}" 
+                @click="toggleLike">
+              </i>
+              <div class="like-text">
+                <p>모집 게시글이 마음에 든다면</p>
+                <p>좋아요를 눌러보세요!</p>
+              </div>
+            </div>
+            <div class="apply-container">
+              <button @click="apply" class="apply-button">신청하기</button>
             </div>
           </div>
         </div>
@@ -105,7 +129,8 @@ export default {
       imgUrls: [],
       currentImageIndex: 0,
       mapView: false,
-      imageLoading: true
+      imageLoading: true,
+      isLiked: false
     };
   },
   methods: {
@@ -190,9 +215,26 @@ export default {
       navigator.clipboard.writeText(address).then(() => {
         alert('주소가 복사되었습니다.');
       });
+    },
+    calculateMatchDuration(startTime, endTime) {
+      const start = new Date(startTime);
+      const end = new Date(endTime);
+      const diff = (end - start) / (1000 * 60 * 60); // 차이를 시간 단위로 계산
+      const hours = Math.floor(diff);
+      return `${hours}시간`;
+    },
+    formatCurrency(value) {
+      return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+    },
+    toggleLike() {
+      this.isLiked = !this.isLiked;
+    },
+    apply() {
+      alert("신청하기 버튼이 클릭되었습니다.");
     }
   },
   async mounted() {
+    window.scrollTo(0, 0);
     await this.fetchClubBoardDetails();
   }
 };
@@ -217,8 +259,8 @@ export default {
   flex-wrap: nowrap;
   justify-content: center;
   align-items: center;
-  margin-top: 40px;
-  gap: 0;
+  margin-top: 45px;
+  gap: 10px;
 }
 
 .match-point-item {
@@ -227,11 +269,10 @@ export default {
   justify-content: center;
   width: 48%;
   margin: 2px;
-  margin-bottom: 2px;
 }
 
 .match-point-item i {
-  margin-right: 2px;
+  margin-right: 8px;
   width: 30px;
   height: 30px;
   font-size: 30px;
@@ -249,16 +290,16 @@ export default {
   position: absolute;
   top: 0;
   left: 0;
-  font-size: 15px;
+  font-size: 20px;
   font-weight: bold;
   margin-top: 20px;
   margin-left: 20px;
 }
 
-.news-title {
+.club-title {
   text-align: left;
-  margin: 20px 0 0 0;
-  font-size: 20px;
+  margin: 30px 0 0 0;
+  font-size: 30px;
   letter-spacing: -1px;
   font-weight: 600;
 }
@@ -269,9 +310,14 @@ export default {
 
 .address-container {
   display: flex;
-  justify-content: space-between;
-  align-items: center;
-  font-size: 14px;
+  flex-direction: column;
+  align-items: flex-start;
+  font-size: 16px;
+}
+
+.address-text {
+  text-align: left;
+  margin-bottom: 10px;
 }
 
 .address-actions {
@@ -288,7 +334,91 @@ export default {
   font-size: 12px;
   padding: 0;
 }
-  
+
+.separator {
+  border: none;
+  height: 2px;
+  background-color: #888; /* 더 진한 색상으로 변경 */
+  margin: 10px 0;
+  width: 100%; /* 전체 너비보다 조금 짧게 */
+}
+
+.fee-time-info {
+  font-size: 20px;
+  font-weight: bold;
+  margin-top: 10px;
+  text-align: left; /* 왼쪽 정렬 */
+}
+
+.fee-info {
+  font-size: 20px;
+  font-weight: bold;
+}
+
+.time-info {
+  font-size: 14px;
+  color: gray;
+}
+
+.closing-info {
+  font-size: 14px;
+  color: gray;
+  margin-top: 5px;
+  text-align: left; /* 왼쪽 정렬 */
+}
+
+.like-apply-container {
+  display: flex;
+  align-items: center;
+  margin-top: 30px;
+  text-align: left;
+}
+
+.like-container {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.like-container i {
+  font-size: 24px;
+  cursor: pointer;
+}
+
+.like-container .liked {
+  color: red;
+}
+
+.like-text {
+  font-size: 12px;
+  color: gray;
+  text-align: left;
+}
+
+.like-text p {
+  margin: 0;
+  padding: 0;
+}
+
+.apply-container {
+  display: flex;
+  justify-content: center;
+  margin-left: auto;
+}
+
+.apply-button {
+  background-color: #162b59;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  padding: 10px 20px;
+  cursor: pointer;
+}
+
+.apply-button:hover {
+  background-color: #0d1f3c;
+}
+
 .rounded-section {
   border-radius: 15px;
 }
@@ -315,5 +445,18 @@ export default {
 
 .next-button {
   right: 10px;
+}
+
+.likes-container {
+  display: flex;
+  align-items: center;
+  font-size: 14px;
+  color: gray;
+  margin-top: 10px;
+}
+
+.likes-container .small-heart {
+  color: red;
+  margin-right: 5px;
 }
 </style>
