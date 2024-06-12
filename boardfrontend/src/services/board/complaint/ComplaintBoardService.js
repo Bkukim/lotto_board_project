@@ -49,6 +49,15 @@ class ComplaintService {
         headers: AuthHeader(),
       });
     }
+      // TODO: userId로 전체조회 내글찾기
+  getAllComplaintBoardUserId(userId, page, size) {
+    return http.get(
+      `/user/board/complaint/userId/complaintBoard?userId=${userId}&page=${page}&size=${size}`,
+      {
+        headers: AuthHeader(),
+      }
+    );
+  }
 }
 
 export default new ComplaintService();

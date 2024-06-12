@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.example.boardbackend.config.WebConfig;
 import org.example.boardbackend.constant.DeptCode;
+import org.example.boardbackend.model.dto.board.complaint.ComplaintBoardDto;
 import org.example.boardbackend.model.dto.board.dept.DeptBoardDto;
 import org.example.boardbackend.model.dto.board.dept.DeptRecommentDto;
 import org.example.boardbackend.model.dto.board.free.FreeBoardDto;
@@ -138,5 +139,13 @@ public class DeptBoardService {
     @Transactional
     public void saveReport(DeptBoardReport deptBoardReport){
         deptReportRepository.save(deptBoardReport);
+    }
+
+    //    todo : userId가 작성한 글 전체조회
+    public Page<DeptBoardDto> findDeptBoardByUserIdContaining(String userId, Pageable pageable)
+    {
+        Page<DeptBoardDto> page
+                = deptBoardRepository.findDeptBoardByUserIdContaining(userId, pageable);
+        return page;
     }
 }
