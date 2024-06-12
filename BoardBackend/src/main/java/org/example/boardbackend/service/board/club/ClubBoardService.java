@@ -17,6 +17,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -53,10 +54,15 @@ public class ClubBoardService {
     private final UserRepository userRepository;
 
 
-    // TODO: 전체 조회 함수 (페이징 처리 포함)
+    // TODO: 전체 조회 함수
     public List<ClubBoard> getAllClub() {
         return clubBoardRepository.findAll();
     }
+
+   // TODO: 전체 조회 함수 (페이징 처리 포함)
+   public Page<ClubBoard> pageAllClub(Pageable pageable) {
+       return clubBoardRepository.findAll(pageable);
+   }
 
     //  TODO: 상세 조회
     public List<ClubBoardWithPicsDto> getClubBoardWithPics(long clubBoardId) {
