@@ -209,14 +209,14 @@
                     <tbody>
                       <tr v-for="(data, index) in clubBoardList" :key="index">
                         <td class="col-8">
-                          <router-link :to="`/product/inquiry/detail/${data.qnaId}`" style="text-decoration: none" class="alltext router-link-exact-active custom-pagination">{{ data.title }}</router-link>
+                          <router-link :to="`/club/club-boardRecruitment/${data.clubBoardId}`" style="text-decoration: none" class="alltext router-link-exact-active custom-pagination">{{ data.title }}</router-link>
                         </td>
                         <td>{{ data.insertTime }}</td>
                         <td>
                           <button type="button" class="btn btn-success" @click="deleteNotice(data.noticeId)">수정</button>
                         </td>
                         <td>
-                          <button type="button" class="btn btn-success" @click="deleteNotice(data.noticeId)">삭제</button>
+                          <button type="button" class="btn btn-success" @click="deleteClubBoard(data.clubBoardId)">삭제</button>
                         </td>
                       </tr>
                     </tbody>
@@ -469,6 +469,19 @@ export default {
           this.retrieveFreeBoardListUserId();
         } else {
           return;
+        }
+      } catch (e) {
+        console.log(e);
+      }
+    },
+    // 매칭게시판 : 내가 쓴 글 삭제 함수
+    async deleteClubBoard(clubBoardId) {
+      try {
+        if (confirm("정말로 삭제하시겠습니까?")) {
+          let response = await ClubBoardService.deleteClub(clubBoardId);
+          console.log(response.data);
+          alert("게시글이 삭제되었습니다.")
+          this.retrieveClubBoardListUserId();
         }
       } catch (e) {
         console.log(e);

@@ -196,12 +196,10 @@ public class ClubBoardService {
 
     //  TODO: 삭제 함수
     @Transactional
-//    public void deleteByClubBoardId(Long clubBoardId) {
-//        // 먼저 FieldPic 테이블에서 관련된 데이터를 삭제합니다.
-//        fieldPicRepository.deleteByClubBoardId(clubBoardId);
-//        // 그 다음 ClubBoard 테이블에서 데이터를 삭제합니다.
-//        clubBoardRepository.deleteById(clubBoardId);
-//    }
+    public void deleteByClubBoardId(Long clubBoardId) {
+        fieldPicRepository.deleteByClubBoard_ClubBoardId(clubBoardId);
+        clubBoardRepository.deleteById(clubBoardId);
+    }
 
     //  TODO: 이미지 조회 함수
     public Optional<FieldPic> findByUuid(String uuid) {
