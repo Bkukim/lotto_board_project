@@ -195,7 +195,6 @@
             <h3 class="mt-5">내가 작성한 글</h3>
 
             <div class="container" style="height: auto">
-
               <div class="row mt-5 border justify-content-center">
                 <h3
                   style="
@@ -219,7 +218,6 @@
                     </thead>
                     <tbody>
                       <!-- 반복문 시작할 행 -->
-                      <!-- 반복문 시작할 행 -->
                       <tr v-for="(data, index) in freeBoardList" :key="index">
                         <td class="col-8">
                           <router-link
@@ -236,7 +234,7 @@
                           <button
                             type="button"
                             class="btn btn-success"
-                            @click="deleteNotice(data.noticeId)"
+                            @click="goUpdateFreeBoard(data.freeBoardId)"
                           >
                             수정
                           </button>
@@ -245,12 +243,26 @@
                           <button
                             type="button"
                             class="btn btn-success"
-                            @click="deleteNotice(data.noticeId)"
+                            @click="deleteFreeBoard(data.freeBoardId)"
                           >
                             삭제
                           </button>
                         </td>
                       </tr>
+                      <!-- 페이징 -->
+                      <!-- {/* paging 시작 */} -->
+                      <!-- TODO: 1페이지당 화면에 보일 개수 조정(select태그) -->
+                      <div class="row justify-content-center mt-4">
+                        <div class="col-auto">
+                          <b-pagination
+                            class="col-12 mb-3 custom-pagination"
+                            v-model="page"
+                            :total-rows="count"
+                            :per-page="pageSize"
+                            @click="retrieveFreeBoardListUserId"
+                          ></b-pagination>
+                        </div>
+                      </div>
                     </tbody>
                   </table>
                 </div>
@@ -302,6 +314,19 @@
                           </button>
                         </td>
                       </tr>
+                      <!-- {/* paging 시작 */} -->
+                      <!-- TODO: 1페이지당 화면에 보일 개수 조정(select태그) -->
+                      <div class="row justify-content-center mt-4">
+                        <div class="col-auto">
+                          <b-pagination
+                            class="col-12 mb-3 custom-pagination"
+                            v-model="page"
+                            :total-rows="count"
+                            :per-page="pageSize"
+                            @click="retrieveQnaUserId"
+                          ></b-pagination>
+                        </div>
+                      </div>
                     </tbody>
                   </table>
                 </div>
@@ -354,6 +379,19 @@
                           </button>
                         </td>
                       </tr>
+                      <!-- {/* paging 시작 */} -->
+                      <!-- TODO: 1페이지당 화면에 보일 개수 조정(select태그) -->
+                      <div class="row justify-content-center mt-4">
+                        <div class="col-auto">
+                          <b-pagination
+                            class="col-12 mb-3 custom-pagination"
+                            v-model="page"
+                            :total-rows="count"
+                            :per-page="pageSize"
+                            @click="retrieveQnaUserId"
+                          ></b-pagination>
+                        </div>
+                      </div>
                     </tbody>
                   </table>
                 </div>
@@ -382,7 +420,6 @@
                       </tr>
                     </thead>
                     <tbody>
-                      <!-- 반복문 시작할 행 -->
                       <!-- 반복문 시작할 행 -->
                       <tr v-for="(data, index) in freeBoardList" :key="index">
                         <td class="col-8">
@@ -415,38 +452,35 @@
                           </button>
                         </td>
                       </tr>
+                      <!-- {/* paging 시작 */} -->
+                      <!-- TODO: 1페이지당 화면에 보일 개수 조정(select태그) -->
+                      <div class="row justify-content-center mt-4">
+                        <div class="col-auto">
+                          <b-pagination
+                            class="col-12 mb-3 custom-pagination"
+                            v-model="page"
+                            :total-rows="count"
+                            :per-page="pageSize"
+                            @click="retrieveQnaUserId"
+                          ></b-pagination>
+                        </div>
+                      </div>
                     </tbody>
                   </table>
                 </div>
               </div>
-              <!-- 페이징 -->
-              <!-- {/* paging 시작 */} -->
-              <!-- TODO: 1페이지당 화면에 보일 개수 조정(select태그) -->
-              <div class="row justify-content-center mt-4">
-                <div class="col-auto">
-                  <b-pagination
-                    class="col-12 mb-3 custom-pagination"
-                    v-model="page"
-                    :total-rows="count"
-                    :per-page="pageSize"
-                    @click="retrieveQnaUserId"
-                  ></b-pagination>
-                </div>
-              </div>
             </div>
 
-
-            <br>
-            <br>
-            <br>
-            <br>
-            <br>
-            <br>
-            <br>
-            <br>
-            <br>
-            <br>
-            
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
           </template>
 
           <!-- 3. 비밀번호 변경하기 -->
@@ -559,31 +593,6 @@
             <br />
             <br />
             <br />
-            <!-- <div class="container text-center">
-    <div class="row justify-content-md-center">
-      <div class="col-md-auto">
-        <button
-          class="text-light FindIdBtn btn-sm mt-4"
-          id=""
-          type="submit"
-          @click="findId"
-        >
-          확인
-        </button>
-      </div>
-      <div class="col-md-auto">
-        <button
-          class="text-light btn-sm mt-4"
-          id="go-login"
-          type="submit"
-          @click="goLogin"
-         style="border: 1px solid #cccccc;"
-        >
-          <p>로그인</p>
-        </button>
-      </div>
-    </div>
-  </div> -->
             <br />
             <br />
             <br />
@@ -617,16 +626,14 @@ export default {
       noticeFree: [1, 2, 3, 4, 5],
       noticeDept: [1, 2, 3, 4, 5],
       noticeComplaint: [1, 2, 3, 4, 5],
-
       freeBoardList: [],
-
 
       userId: this.$store.state.user.userId,
 
       // 공통 속성(현재페이지, 전체데이터개수,1페이지당개수)
       page: 1, // 현재페이지번호
       count: 0, // 전체데이터개수
-      pageSize: 10, // 1페이지당개수(select태그)
+      pageSize: 3, // 1페이지당개수(select태그)
 
       // displayedContent: "",
       displayedContent: "profile", // 현재 화면에 표시할 내용을 저장하는 변수
@@ -634,7 +641,7 @@ export default {
       // 비밀번호 확인이 같으면 true
       passwordMatchError: false,
 
-      // user 객체 초기화(원래 객체는 null로 초기화하지만 별로 좋지 않은 방법이긴하다.)
+      // 프로필에 사용 : user 객체 초기화(원래 객체는 null로 초기화하지만 별로 좋지 않은 방법이긴하다.)
       user: {
         userName: "",
         phoneNum: "",
@@ -658,7 +665,7 @@ export default {
         console.log(e);
       }
     },
-    // 내가 쓴 글 : 자유게시판
+    // 자유게시판 : 내가 쓴 글
     async retrieveFreeBoardListUserId() {
       try {
         // TODO: 1) 공통 전체조회 함수 실행
@@ -679,6 +686,30 @@ export default {
         console.log(e);
       }
     },
+
+    // 자유게시판 : 내가 쓴 글 삭제 함수
+    async deleteFreeBoard(freeBoardId) {
+      try {
+        if (confirm("정말로 삭제하시겠습니까?")) {
+          let response = await FreeBoardService.deleteFreeBoard(freeBoardId);
+          // 로깅
+          console.log(response.data);
+          alert("게시글이 삭제되었습니다.");
+          // 현재 페이지 다시 로그(삭제 작업 후 같은 페이지에서 업데이트된 내용 확인 가능)
+          this.$router.go(0);
+        } else {
+          return;
+        }
+      } catch (e) {
+        console.log(e);
+      }
+    },
+
+    // 자유게시판 : 내가 쓴 글 수정 함수
+    async goUpdateFreeBoard(freeBoardId) {
+      this.$router.push(`/free/free-board/Update/` + freeBoardId);
+    },
+
     // 프로필 표시 메소드
     showProfile() {
       this.displayedContent = "profile";

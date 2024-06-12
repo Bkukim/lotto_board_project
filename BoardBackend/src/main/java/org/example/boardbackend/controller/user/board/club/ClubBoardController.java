@@ -52,7 +52,7 @@ public class ClubBoardController {
     private final FieldPicRepository fieldPicRepository;
 
 
-    //  TODO: 전체 조회 함수 : 페이징 처리
+    //  TODO: 전체 조회 함수
     @GetMapping("/club")
     public ResponseEntity<List<ClubBoard>> getAllClubs() {
         List<ClubBoard> clubBoards = clubBoardService.getAllClub();
