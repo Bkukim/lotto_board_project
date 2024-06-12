@@ -23,5 +23,15 @@ class UserService{
          headers: AuthHeader()
        });
    }
+
+     // userName로 회원찾기
+  getAllUsersbyUserName(userName, page, size) {
+   return http.get(
+     `/admin/user/manage?userName=${userName}&page=${page}&size=${size}`,
+     {
+       headers: AuthHeader(),
+     }
+   );
+ }
 }
 export default new UserService;

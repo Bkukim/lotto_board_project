@@ -9,14 +9,18 @@
           style="background-color: #162b59"
         >
           <div class="circle"></div>
+
           <p style="color: #fff; margin-top: 20px; font-size: 20px">
             {{ userId }}
           </p>
+
           <ul
             class="nav flex-column mt-3"
             style="
               gap: 50px;
+
               font-size: 20px;
+
               height: 900px;
               padding-top: 100px;
               text-align: center;
@@ -24,18 +28,42 @@
           >
 
             <li class="nav-item">
-              <a class="nav-link" href="#" style="border-bottom: 1px solid #cccccc; color: #fff" @click="showProfile">프로필</a>
+              <a
+                class="nav-link"
+                href="#"
+                style="border-bottom: 1px solid #cccccc; color: #fff"
+                @click="showProfile"
+                >프로필</a
+              >
             </li>
             <li class="nav-item">
 
-              <a class="nav-link" href="#" style="border-bottom: 1px solid #cccccc; color: #fff" @click="showWrittenPosts">작성한 글</a>
+              <a
+                class="nav-link"
+                href="#"
+                style="border-bottom: 1px solid #cccccc; color: #fff"
+                @click="showWrittenPosts"
+                >작성한 글</a
+              >
 
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="#" style="border-bottom: 1px solid #cccccc; color: #fff" @click="ChangPassword">비밀번호 변경하기</a>
+              <a
+                class="nav-link"
+                href="#"
+                style="border-bottom: 1px solid #cccccc; color: #fff"
+                @click="ChangPassword"
+                >비밀번호 변경하기</a
+              >
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="#" style="border-bottom: 1px solid #cccccc; color: #fff" @click="showWithdrawal">회원탈퇴</a>
+              <a
+                class="nav-link"
+                href="#"
+                style="border-bottom: 1px solid #cccccc; color: #fff"
+                @click="showWithdrawal"
+                >회원탈퇴</a
+              >
             </li>
           </ul>
         </div>
@@ -46,6 +74,7 @@
           <template v-if="displayedContent === 'profile'">
             <h3 class="mb-5 mt-5">My Profile</h3>
 
+
             <div
               class="container"
               style="
@@ -54,6 +83,7 @@
                 align-items: center;
               "
             >
+
               <div
                 class="row justify-content-md-center"
                 style="
@@ -131,7 +161,6 @@
                     <tbody>
                       <tr v-for="(data, index) in freeBoardList" :key="index">
                         <td class="col-8">
-
                           <router-link
                             :to="'/free/free-boardDetail/' + data.freeBoardId"
 
@@ -158,7 +187,6 @@
                           >
                             삭제
                           </button>
-
 
                         </td>
                       </tr>
@@ -250,8 +278,18 @@
                 </div>
               </div>
 
+              <!-- 건의게시판 공지사항 -->
               <div class="row mt-3 border justify-content-center">
-                <h3 style="text-align: left; font-size: 20px; letter-spacing: -1.2px;">건의게시판</h3>
+                <h3
+                  style="
+                    text-align: left;
+                    font-size: 20px;
+                    letter-spacing: -1.2px;
+                  "
+                >
+                  건의게시판
+                </h3>
+                <!-- 테이블시작, 작게 왼쪽 -->
                 <div class="col-11">
                   <table class="table mt-5 text-center">
                     <thead>
@@ -263,7 +301,6 @@
                       </tr>
                     </thead>
                     <tbody>
-
                       <!-- 반복문 시작할 행 -->
                       <tr
                         v-for="(data, index) in complaintBoardList"
@@ -344,7 +381,9 @@
 
                         <td class="col-8">
                           <router-link
+
                             :to="'/complaint/complaint-boardDetail/' + data.complaintBoardId"
+
                             style="text-decoration: none"
                             class="alltext router-link-exact-active custom-pagination"
                             >{{ data.title }}</router-link
@@ -355,9 +394,11 @@
                           <button
                             type="button"
                             class="btn btn-success"
+
                             @click="
                               goUpdateComplaintBoard(data.complaintBoardId)
                             "
+
                           >
                             수정
                           </button>
@@ -366,7 +407,9 @@
                           <button
                             type="button"
                             class="btn btn-success"
-                            @click="deleteComplaintBoard(data.complaintBoardId)"
+
+                            @click="deleteNotice(data.noticeId)"
+
                           >
                             삭제
                           </button>
@@ -419,7 +462,11 @@
               <div class="container" style="background-color: #f2f2f2">
                 <div class="row justify-content-md-center" v-if="result">
                   <div class="col-8">
-                    <div class="mt-5 text-center" id="box" style="height: 300px">
+                    <div
+                      class="mt-5 text-center"
+                      id="box"
+                      style="height: 300px"
+                    >
                       <div style="margin-top: 70px">
                         <h3>비밀번호가 성공적으로 변경되었습니다.</h3>
                       </div>
@@ -431,20 +478,37 @@
                     <div class="mt-5" id="comment">
                       <p style="text-align: left">
                         ＊새로운 비밀번호를 입력하세요.<br />
-                        ＊영문 대소문자/숫자/특수문자 중 3가지 이상 조합, 8자~16자 이상으로 입력하세요.
+                        ＊영문 대소문자/숫자/특수문자 중 3가지 이상 조합,
+                        8자~16자 이상으로 입력하세요.
                       </p>
                     </div>
                     <div class="mt-5" id="box">
                       <div class="mt-4" style="font-size: 20px">
                         <label class="form-label">새로운 비밀번호</label>
-                        <input class="form-control" type="password" name="id" v-model="newPw" style="height: 50px" @input="checkPasswordMatch" />
+                        <input
+                          class="form-control"
+                          type="password"
+                          name="id"
+                          v-model="newPw"
+                          style="height: 50px"
+                          @input="checkPasswordMatch"
+                        />
                       </div>
                       <div style="margin-top: 70px; font-size: 20px">
                         <label class="form-label">새로운 비밀번호 확인</label>
-                        <input class="form-control" type="password" name="pwdAskCheck" v-model="newPwCheck" style="height: 50px; margin-bottom: 50px" @input="checkPasswordMatch" />
+                        <input
+                          class="form-control"
+                          type="password"
+                          name="pwdAskCheck"
+                          v-model="newPwCheck"
+                          style="height: 50px; margin-bottom: 50px"
+                          @input="checkPasswordMatch"
+                        />
                       </div>
                       <div class="mt-5 text-center">
-                        <p v-if="passwordMatchError" style="color: red">비밀번호가 일치하지 않습니다.</p>
+                        <p v-if="passwordMatchError" style="color: red">
+                          비밀번호가 일치하지 않습니다.
+                        </p>
                       </div>
                     </div>
                   </div>
@@ -457,14 +521,31 @@
             <div class="container text-center" v-if="result">
               <div class="row justify-content-md-center">
                 <div class="col-md-auto">
-                  <button class="text-light findPwdBtn btn-sm mt-4" id="" type="submit" @click="goLogin">로그인 하러 가기</button>
+                  <button
+                    class="text-light findPwdBtn btn-sm mt-4"
+                    id=""
+                    type="submit"
+                    @click="goLogin"
+                  >
+                    로그인 하러 가기
+                  </button>
                 </div>
               </div>
             </div>
             <div class="container text-center" v-else>
               <div class="row justify-content-md-center">
                 <div class="col-md-auto">
-                  <button class="text-light findPwdBtn btn-sm" id="" type="submit" @click="updatePw" style="background-color: #162b59; border: none; padding: 10px 20px;">
+                  <button
+                    class="text-light findPwdBtn btn-sm"
+                    id=""
+                    type="submit"
+                    @click="updatePw"
+                    style="
+                      background-color: #162b59;
+                      border: none;
+                      padding: 10px 20px;
+                    "
+                  >
                     확인
                   </button>
                 </div>
@@ -576,14 +657,10 @@
 import AuthService from "@/services/auth/AuthService";
 import FreeBoardService from "@/services/board/free/FreeBoardService";
 import UserService from "@/services/user/UserService";
+
 import ComplaintBoardService from "@/services/board/complaint/ComplaintBoardService";
 import ClubBoardService from "@/services/board/club/ClubBoardService";
 import DeptBoardService from "@/services/board/dept/DeptBoardService";
-
-import ComplaintBoardService from "@/services/board/complaint/ComplaintBoardService";
-
-import ClubBoardService from '@/services/board/club/ClubBoardService';
-
 
 export default {
   data() {
@@ -636,6 +713,29 @@ export default {
   },
 
   methods: {
+    // 회원 탈퇴 소프트 삭제 함수
+    async withdraw(userId) {
+      if (this.user.password !== this.confirmPassword) {
+        alert("비밀번호가 일치하지 않습니다");
+        return;
+      }
+      try {
+        let result = confirm("정말로 탈퇴 하시겠습니까?");
+        if (result) {
+          let response = UserService.deleteUser(userId);
+          console.log(response);
+          AuthService.logout(); // LOCAL저장소에서 USER객체 삭제해주기
+          this.$store.commit("logout"); //
+          alert("회원 탈퇴가 완료되었습니다");
+          this.$router.push("/");
+        } else {
+          return;
+        }
+      } catch (e) {
+        console.log(e);
+      }
+    },
+
     // 유저 상세조회 : 프로필
     async findUserInfo(userId) {
       try {
@@ -778,7 +878,6 @@ export default {
       );
     },
 
-
     // 4. 동호회게시판 : 내가 쓴 글
     async retrieveClubBoardListUserId() {
       try {
@@ -871,11 +970,9 @@ export default {
     window.scrollTo(0, 0);
     this.findUserInfo(this.$store.state.user.userId);
     this.retrieveFreeBoardListUserId();
-
     this.retrieveComplaintBoardListUserId();
     this.retrieveDeptBoardListUserId();
     this.retrieveClubBoardListUserId();
-
   },
 };
 </script>

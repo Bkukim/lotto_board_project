@@ -2,8 +2,11 @@ package org.example.boardbackend.service.user;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.example.boardbackend.model.dto.board.dept.DeptBoardDto;
 import org.example.boardbackend.model.entity.auth.User;
 import org.example.boardbackend.repository.user.UserRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -26,6 +29,14 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class UserService {
     private final UserRepository userRepository;
+
+    //    todo : 관리자 : userName으로 회원 조회
+    public Page<User> findUserByUserNameContaining(String userName, Pageable pageable)
+    {
+        Page<User> page
+                = userRepository.findByUserName(userName, pageable);
+        return page;
+    }
 
     //    todo 회원 있는지 확인 함수 : 회원가입
     public boolean existsById(String userId) {

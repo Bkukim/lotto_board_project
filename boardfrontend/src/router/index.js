@@ -195,6 +195,11 @@ const routes = [
     path: "/dept/board/Update/:deptBoardId",
     component: () => import("../views/dept/DeptBoardUpdate.vue"),
   },
+    // 관리자 회원 관리
+    {
+      path: "/admin/member/manage",
+      component: () => import("../views/admin/AdminMemberManagement.vue"),
+    },
   // 관리자 신고 게시판
   {
     path: "/admin/report",
