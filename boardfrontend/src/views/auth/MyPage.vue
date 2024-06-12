@@ -3,15 +3,33 @@
     <div>
       <div class="row">
         <!-- 왼쪽 사이드바 -->
-        <div class="col-3 text-center text-lg-start sidebar" style="background-color: #162b59">
+
+        <div
+          class="col-3 text-center text-lg-start sidebar"
+          style="background-color: #162b59"
+        >
           <div class="circle"></div>
-          <p style="color: #fff; margin-top: 20px">ID: {{ userId }}</p>
-          <ul class="nav flex-column mt-3" style="gap: 50px; font-size: 25px; height: 900px; padding-top: 100px; text-align: center;">
+          <p style="color: #fff; margin-top: 20px; font-size: 20px">
+            {{ userId }}
+          </p>
+          <ul
+            class="nav flex-column mt-3"
+            style="
+              gap: 50px;
+              font-size: 20px;
+              height: 900px;
+              padding-top: 100px;
+              text-align: center;
+            "
+          >
+
             <li class="nav-item">
               <a class="nav-link" href="#" style="border-bottom: 1px solid #cccccc; color: #fff" @click="showProfile">프로필</a>
             </li>
             <li class="nav-item">
+
               <a class="nav-link" href="#" style="border-bottom: 1px solid #cccccc; color: #fff" @click="showWrittenPosts">작성한 글</a>
+
             </li>
             <li class="nav-item">
               <a class="nav-link" href="#" style="border-bottom: 1px solid #cccccc; color: #fff" @click="ChangPassword">비밀번호 변경하기</a>
@@ -27,16 +45,58 @@
           <!-- 1. 프로필 -->
           <template v-if="displayedContent === 'profile'">
             <h3 class="mb-5 mt-5">My Profile</h3>
-            <div class="container">
-              <div class="row justify-content-md-center" style="background-color: #f2f2f2; text-align: center; padding: 50px 0 50px 0;">
-                <p style="background-color: #fff; padding: 10px; margin-top: 10px; width: 700px; border-radius: 20px;">
+
+            <div
+              class="container"
+              style="
+                display: flex;
+                justify-content: center;
+                align-items: center;
+              "
+            >
+              <div
+                class="row justify-content-md-center"
+                style="
+                  background-color: #f2f2f2;
+                  text-align: center;
+                  padding: 50px 0 50px 0;
+                "
+              >
+                <p
+                  style="
+                    background-color: #fff;
+                    padding: 10px;
+                    margin-top: 10px;
+                    width: 700px;
+                    border-radius: 20px;
+                  "
+                >
                   사용자 ID: <span style="font-weight: bold">{{ userId }}</span>
                 </p>
-                <p style="background-color: #fff; padding: 10px; margin-top: 10px; width: 700px; border-radius: 20px;">
-                  이름: <span style="font-weight: bold">{{ user.userName }}</span>
+                <p
+                  style="
+                    background-color: #fff;
+                    padding: 10px;
+                    margin-top: 10px;
+                    width: 700px;
+                    border-radius: 20px;
+                  "
+                >
+                  이름:
+                  <span style="font-weight: bold">{{ user.userName }}</span>
                 </p>
-                <p style="background-color: #fff; padding: 10px; margin-top: 10px; width: 700px; border-radius: 20px;">
-                  휴대폰 번호: <span style="font-weight: bold">{{ user.phoneNum }}</span>
+                <p
+                  style="
+                    background-color: #fff;
+                    padding: 10px;
+                    margin-top: 10px;
+                    width: 700px;
+                    border-radius: 20px;
+                  "
+                >
+                  휴대폰 번호:
+                  <span style="font-weight: bold">{{ user.phoneNum }}</span>
+
                 </p>
               </div>
             </div>
@@ -47,7 +107,17 @@
             <h3 class="mt-5">내가 작성한 글</h3>
             <div class="container" style="height: auto">
               <div class="row mt-5 border justify-content-center">
-                <h3 style="text-align: left; font-size: 20px; letter-spacing: -1.2px;">자유게시판</h3>
+
+                <h3
+                  style="
+                    text-align: left;
+                    font-size: 20px;
+                    letter-spacing: -1.2px;
+                  "
+                >
+                  자유게시판
+                </h3>
+
                 <div class="col-11">
                   <table class="table mt-5 text-center">
                     <thead>
@@ -64,32 +134,63 @@
 
                           <router-link
                             :to="'/free/free-boardDetail/' + data.freeBoardId"
-                            style="text-decoration: none"
+
+                            style="text-decoration: none; color: #333"
                             class="alltext router-link-exact-active custom-pagination"
                             >{{ data.title }}</router-link
                           >
-
                         </td>
                         <td>{{ data.insertTime }}</td>
                         <td>
-                          <button type="button" class="btn btn-success" @click="goUpdateFreeBoard(data.freeBoardId)">수정</button>
+                          <button
+                            type="button"
+                            class="btn btn-success"
+                            @click="goUpdateFreeBoard(data.freeBoardId)"
+                          >
+                            수정
+                          </button>
                         </td>
                         <td>
-                          <button type="button" class="btn btn-success" @click="deleteFreeBoard(data.freeBoardId)">삭제</button>
+                          <button
+                            type="button"
+                            class="btn btn-success"
+                            @click="deleteFreeBoard(data.freeBoardId)"
+                          >
+                            삭제
+                          </button>
+
+
                         </td>
                       </tr>
                     </tbody>
                   </table>
                   <div class="row justify-content-center mt-4">
                     <div class="col-auto">
-                      <b-pagination class="col-12 mb-3 custom-pagination" v-model="freeBoardPage" :total-rows="freeBoardCount" :per-page="freeBoardPageSize"></b-pagination>
+
+                      <b-pagination
+                        class="col-12 mb-3 custom-pagination"
+                        v-model="freeBoardPage"
+                        :total-rows="freeBoardCount"
+                        :per-page="freeBoardPageSize"
+                      ></b-pagination>
+
                     </div>
                   </div>
                 </div>
               </div>
 
               <div class="row mt-3 border justify-content-center">
-                <h3 style="text-align: left; font-size: 20px; letter-spacing: -1.2px;">부서게시판</h3>
+
+                <h3
+                  style="
+                    text-align: left;
+                    font-size: 20px;
+                    letter-spacing: -1.2px;
+                  "
+                >
+                  부서게시판
+                </h3>
+
                 <div class="col-11">
                   <table class="table mt-5 text-center">
                     <thead>
@@ -101,21 +202,49 @@
                       </tr>
                     </thead>
                     <tbody>
-                      <tr v-for="(data, index) in noticeDept" :key="index">
-                        <td>{{ data.noticeType }}</td>
-                        <td>{{ data.title }}</td>
+
+                      <tr v-for="(data, index) in deptBoardList" :key="index">
+                        <td class="col-8">
+                          <router-link
+                            :to="'/dept/board/detail/' + data.deptBoardId"
+                            style="text-decoration: none"
+                            class="alltext router-link-exact-active custom-pagination"
+                            >{{ data.title }}</router-link
+                          >
+                        </td>
+                        <td>{{ data.insertTime }}</td>
                         <td>
-                          <button type="button" class="btn btn-success" @click="deleteNotice(data.noticeId)">수정</button>
+                          <button
+                            type="button"
+                            class="btn btn-success"
+                            @click="goUpdatedeptBoard(data.deptBoardId)"
+                          >
+                            수정
+                          </button>
                         </td>
                         <td>
-                          <button type="button" class="btn btn-success" @click="deleteNotice(data.noticeId)">삭제</button>
+                          <button
+                            type="button"
+                            class="btn btn-success"
+                            @click="deleteDeptBoard(data.deptBoardId)"
+                          >
+                            삭제
+                          </button>
+
                         </td>
                       </tr>
                     </tbody>
                   </table>
                   <div class="row justify-content-center mt-4">
                     <div class="col-auto">
-                      <b-pagination class="col-12 mb-3 custom-pagination" v-model="noticeDeptPage" :total-rows="noticeDeptCount" :per-page="noticeDeptPageSize"></b-pagination>
+
+                      <b-pagination
+                        class="col-12 mb-3 custom-pagination"
+                        v-model="deptBoardPage"
+                        :total-rows="deptBoardCount"
+                        :per-page="deptBoardPageSize"
+                      ></b-pagination>
+
                     </div>
                   </div>
                 </div>
@@ -140,6 +269,79 @@
                         v-for="(data, index) in complaintBoardList"
                         :key="index"
                       >
+                        <td class="col-8">
+                          <router-link
+                            :to="
+                              '/complaint/complaint-boardDetail/' +
+                              data.complaintBoardId
+                            "
+                            style="text-decoration: none"
+                            class="alltext router-link-exact-active custom-pagination"
+                            >{{ data.title }}</router-link
+                          >
+                        </td>
+                        <td>{{ data.insertTime }}</td>
+                        <td>
+                          <button
+                            type="button"
+                            class="btn btn-success"
+                            @click="
+                              goUpdateComplaintBoard(data.complaintBoardId)
+                            "
+                          >
+                            수정
+                          </button>
+                        </td>
+                        <td>
+                          <button
+                            type="button"
+                            class="btn btn-success"
+                            @click="deleteComplaintBoard(data.complaintBoardId)"
+                          >
+                            삭제
+                          </button>
+                        </td>
+                      </tr>
+                      <!-- {/* paging 시작 */} -->
+                      <!-- TODO: 1페이지당 화면에 보일 개수 조정(select태그) -->
+                      <div class="row justify-content-center mt-4">
+                        <div class="col-auto">
+                          <b-pagination
+                            class="col-12 mb-3 custom-pagination"
+                            v-model="complaintBoardPage"
+                            :total-rows="complaintBoardCount"
+                            :per-page="complaintBoardPageSize"
+                          ></b-pagination>
+                        </div>
+                      </div>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+
+              <div class="row mt-3 border justify-content-center">
+                <h3
+                  style="
+                    text-align: left;
+                    font-size: 20px;
+                    letter-spacing: -1.2px;
+                  "
+                >
+                  동호회 게시판
+                </h3>
+                <div class="col-11">
+                  <table class="table mt-5 text-center">
+                    <thead>
+                      <tr>
+                        <th scope="col">제목</th>
+                        <th scope="col">등록일</th>
+                        <th scope="col">수정</th>
+                        <th scope="col">삭제</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr v-for="(data, index) in clubBoardList" :key="index">
+
                         <td class="col-8">
                           <router-link
                             :to="'/complaint/complaint-boardDetail/' + data.complaintBoardId"
@@ -188,42 +390,14 @@
                   </table>
                   <div class="row justify-content-center mt-4">
                     <div class="col-auto">
-                      <b-pagination class="col-12 mb-3 custom-pagination" v-model="noticeComplaintPage" :total-rows="noticeComplaintCount" :per-page="noticeComplaintPageSize"></b-pagination>
-                    </div>
-                  </div>
-                </div>
-              </div>
 
-              <div class="row mt-3 border justify-content-center">
-                <h3 style="text-align: left; font-size: 20px; letter-spacing: -1.2px;">동호회 게시판</h3>
-                <div class="col-11">
-                  <table class="table mt-5 text-center">
-                    <thead>
-                      <tr>
-                        <th scope="col">제목</th>
-                        <th scope="col">등록일</th>
-                        <th scope="col">수정</th>
-                        <th scope="col">삭제</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr v-for="(data, index) in clubBoardList" :key="index">
-                        <td class="col-8">
-                          <router-link :to="`/club/club-boardRecruitment/${data.clubBoardId}`" style="text-decoration: none" class="alltext router-link-exact-active custom-pagination">{{ data.title }}</router-link>
-                        </td>
-                        <td>{{ data.insertTime }}</td>
-                        <td>
-                          <button type="button" class="btn btn-success" @click="deleteNotice(data.noticeId)">수정</button>
-                        </td>
-                        <td>
-                          <button type="button" class="btn btn-success" @click="deleteClubBoard(data.clubBoardId)">삭제</button>
-                        </td>
-                      </tr>
-                    </tbody>
-                  </table>
-                  <div class="row justify-content-center mt-4">
-                    <div class="col-auto">
-                      <b-pagination class="col-12 mb-3 custom-pagination" v-model="clubBoardPage" :total-rows="clubBoardCount" :per-page="clubBoardPageSize"></b-pagination>
+                      <b-pagination
+                        class="col-12 mb-3 custom-pagination"
+                        v-model="clubBoardPage"
+                        :total-rows="clubBoardCount"
+                        :per-page="clubBoardPageSize"
+                      ></b-pagination>
+
                     </div>
                   </div>
                 </div>
@@ -237,7 +411,11 @@
               <br />
               <br />
               <br />
-              <h2 class="text-center mb-5" style="letter-spacing: -1.5px">새로운 비밀번호 설정</h2>
+
+              <h2 class="text-center mb-5" style="letter-spacing: -1.5px">
+                새로운 비밀번호 설정
+              </h2>
+
               <div class="container" style="background-color: #f2f2f2">
                 <div class="row justify-content-md-center" v-if="result">
                   <div class="col-8">
@@ -304,7 +482,83 @@
 
           <!-- 4. 회원탈퇴 -->
           <template v-else-if="displayedContent === 'withdrawal'">
-            <h3>회원탈퇴 화면</h3>
+
+            <!-- <div class="container withdrawal-container">
+              <div
+                class="card mt-5 container text-center shadow"
+                style="width: 800px"
+              >
+                <h5
+                  class="card-header"
+                  style="font-size: 45px; font-weight: bold; color: #162b59"
+                >
+                  LOTTO COMPANY
+                </h5>
+                <div
+                  class="card-body"
+                  style="height: 500px; padding-top: 100px"
+                >
+                  <h5 class="card-title mb-3" style="font-weight: bold">
+                    회원 탈퇴
+                  </h5>
+                  <p class="card-text" style="padding-top: 30px">
+                    회원 탈퇴 시 계정정보 삭제 및 공지사항 확인이 불가합니다.
+                    <br />
+                    정말로 삭제하시겠습니까?
+                  </p>
+                  <a href="#" class="btn btn-primary" style="margin-top: 70px"
+                    >탈퇴하기</a
+                  >
+                </div>
+              </div>
+            </div> -->
+
+            <div class="withdrawal-container" style="height: 800px">
+              <div class="withdrawal-box">
+                <h5
+                  class="card-header"
+                  style="font-size: 45px; font-weight: bold; color: #162b59"
+                >
+                  LOTTO COMPANY
+                </h5>
+                <p class="card-text" style="padding-top: 30px">
+                  회원 탈퇴 시 계정정보 삭제 및 공지사항 확인이 불가합니다.
+                  <br />
+                  정말로 삭제하시겠습니까?
+                </p>
+                <p>
+                  사용자 ID:
+                  <span style="font-weight: bold; text-align: left">{{
+                    userId
+                  }}</span>
+                </p>
+
+                <div>
+                  <div class="row">
+                    <label for="password" class="col-sm-4 col-form-label"
+                      >비밀번호:</label
+                    >
+                    <div class="col-sm-8">
+                      <input
+                        type="password"
+                        class="form-control"
+                        id="password"
+                        v-model="password"
+                      />
+                    </div>
+                  </div>
+                  <button
+                    type="button"
+                    class="btn btn-success mt-3"
+                    @click="withdraw"
+                    style="background-color: #162b59"
+                  >
+                    회원 탈퇴
+                  </button>
+                </div>
+              </div>
+            </div>
+
           </template>
         </div>
       </div>
@@ -322,6 +576,9 @@
 import AuthService from "@/services/auth/AuthService";
 import FreeBoardService from "@/services/board/free/FreeBoardService";
 import UserService from "@/services/user/UserService";
+import ComplaintBoardService from "@/services/board/complaint/ComplaintBoardService";
+import ClubBoardService from "@/services/board/club/ClubBoardService";
+import DeptBoardService from "@/services/board/dept/DeptBoardService";
 
 import ComplaintBoardService from "@/services/board/complaint/ComplaintBoardService";
 
@@ -331,13 +588,11 @@ import ClubBoardService from '@/services/board/club/ClubBoardService';
 export default {
   data() {
     return {
-      noticeFree: [1, 2, 3, 4, 5],
-      noticeDept: [1, 2, 3, 4, 5],
+
       freeBoardList: [],
-
       complaintBoardList: [],
-
       clubBoardList: [],
+      deptBoardList: [],
 
 
       userId: this.$store.state.user.userId,
@@ -348,14 +603,16 @@ export default {
       freeBoardPageSize: 3,
 
       // 부서게시판 페이지네이션 상태
-      noticeDeptPage: 1,
-      noticeDeptCount: 0,
-      noticeDeptPageSize: 3,
+
+      deptBoardPage: 1,
+      deptBoardCount: 0,
+      deptBoardPageSize: 3,
 
       // 건의게시판 페이지네이션 상태
-      noticeComplaintPage: 1,
-      noticeComplaintCount: 0,
-      noticeComplaintPageSize: 3,
+      complaintBoardPage: 1,
+      complaintBoardCount: 0,
+      complaintBoardPageSize: 3,
+
 
       // 동호회게시판 페이지네이션 상태
       clubBoardPage: 1,
@@ -391,82 +648,37 @@ export default {
       }
     },
 
-    // 자유게시판 : 내가 쓴 글
+
+    // 1. 자유게시판 : 내가 쓴 글
+
     async retrieveFreeBoardListUserId() {
       try {
         let response = await FreeBoardService.getAllFreeBoardUserId(
           this.$store.state.user.userId,
           this.freeBoardPage - 1,
           this.freeBoardPageSize
+
         );
         const { freeBoardList, totalItems } = response.data;
         this.freeBoardList = freeBoardList;
         this.freeBoardCount = totalItems;
+
         console.log(response.data);
       } catch (e) {
         console.log(e);
       }
     },
 
-    // 부서게시판 : 내가 쓴 글
-    async retrieveNoticeDeptListUserId() {
-      try {
-        let response = await FreeBoardService.getAllNoticeDeptUserId(
-          this.$store.state.user.userId,
-          this.noticeDeptPage - 1,
-          this.noticeDeptPageSize
-        );
-        const { noticeDeptList, totalItems } = response.data;
-        this.noticeDeptList = noticeDeptList;
-        this.noticeDeptCount = totalItems;
-        console.log(response.data);
-      } catch (e) {
-        console.log(e);
-      }
-    },
 
-    // 건의게시판 : 내가 쓴 글
-    async retrieveNoticeComplaintListUserId() {
-      try {
-        let response = await FreeBoardService.getAllNoticeComplaintUserId(
-          this.$store.state.user.userId,
-          this.noticeComplaintPage - 1,
-          this.noticeComplaintPageSize
-        );
-        const { noticeComplaintList, totalItems } = response.data;
-        this.noticeComplaintList = noticeComplaintList;
-        this.noticeComplaintCount = totalItems;
-        console.log(response.data);
-      } catch (e) {
-        console.log(e);
-      }
-    },
-
-    // 동호회게시판 : 내가 쓴 글
-    async retrieveClubBoardListUserId() {
-      try {
-        let response = await ClubBoardService.getAllClubBoardUserId(
-          this.$store.state.user.userId,
-          this.clubBoardPage - 1,
-          this.clubBoardPageSize
-        );
-        const { clubBoardList, totalItems } = response.data;
-        this.clubBoardList = clubBoardList;
-        this.clubBoardCount = totalItems;
-        console.log(response.data);
-      } catch (e) {
-        console.log(e);
-      }
-    },
-
-    // 자유게시판 : 내가 쓴 글 삭제 함수
+    // 1. 자유게시판 : 내가 쓴 글 삭제
     async deleteFreeBoard(freeBoardId) {
       try {
         if (confirm("정말로 삭제하시겠습니까?")) {
           let response = await FreeBoardService.deleteFreeBoard(freeBoardId);
           console.log(response.data);
           alert("게시글이 삭제되었습니다.");
-          this.retrieveFreeBoardListUserId();
+          // 현재 페이지 다시 로그(삭제 작업 후 같은 페이지에서 업데이트된 내용 확인 가능)
+          this.$router.go(0);
         } else {
           return;
         }
@@ -474,47 +686,70 @@ export default {
         console.log(e);
       }
     },
-    // 매칭게시판 : 내가 쓴 글 삭제 함수
-    async deleteClubBoard(clubBoardId) {
-      try {
-        if (confirm("정말로 삭제하시겠습니까?")) {
-          let response = await ClubBoardService.deleteClub(clubBoardId);
-          console.log(response.data);
-          alert("게시글이 삭제되었습니다.")
-          this.retrieveClubBoardListUserId();
-        }
-      } catch (e) {
-        console.log(e);
-      }
-    },
 
-    // 자유게시판 : 내가 쓴 글 수정 함수
+    // 1. 자유게시판 : 내가 쓴 글 수정
     async goUpdateFreeBoard(freeBoardId) {
       this.$router.push(`/free/free-board/Update/` + freeBoardId);
     },
 
-    // 건의게시판 : 내가 쓴 글
-    async retrieveComplaintBoardListUserId() {
+    // 2. 부서게시판 : 내가 쓴 글
+    async retrieveDeptBoardListUserId() {
       try {
-        // TODO: 1) 공통 전체조회 함수 실행
-        let response = await ComplaintBoardService.getAllComplaintBoardUserId(
-          this.$store.state.user.userId, // 검색어
-          this.page - 1, // 현재페이지번호-1
-          this.pageSize // 1페이지당개수(size)
+        let response = await DeptBoardService.getAllDeptBoardUserId(
+          this.$store.state.user.userId,
+          this.deptBoardPage - 1,
+          this.deptBoardPageSize
         );
-        // TODO: 복습 : 2) 객체분할 할당
-        const { complaintBoardList, totalItems } = response.data; // 부서배열(벡엔드 전송)
-        // TODO: 3) 바인딩변수(속성)에 저장
-        this.complaintBoardList = complaintBoardList; // 부서배열(벡엔드 전송)
-        this.count = totalItems; // 전체페이지수(벡엔드 전송)
-        // TODO: 4) 프론트 로깅 : console.log
+        const { deptBoardList, totalItems } = response.data;
+        this.deptBoardList = deptBoardList;
+        this.deptBoardCount = totalItems;
         console.log(response.data);
       } catch (e) {
         console.log(e);
       }
     },
 
-    // 건의게시판 : 내가 쓴 글 삭제 함수
+    // 2. 부서게시판 : 내가 쓴 글 삭제
+    async deleteDeptBoard(deptBoardId) {
+      try {
+        if (confirm("정말로 삭제하시겠습니까?")) {
+          let response = await DeptBoardService.deleteDeptBoard(deptBoardId);
+          console.log(response.data);
+          alert("게시글이 삭제되었습니다.");
+          // 현재 페이지 다시 로그(삭제 작업 후 같은 페이지에서 업데이트된 내용 확인 가능)
+          this.$router.go(0);
+        } else {
+          return;
+        }
+      } catch (e) {
+        console.log(e);
+      }
+    },
+
+    // 2. 부서게시판 : 내가 쓴 글 수정
+    async goUpdatedeptBoard(deptBoardId) {
+      this.$router.push(`/dept/board/Update/` + deptBoardId);
+    },
+
+    // 3. 건의게시판 : 내가 쓴 글
+    async retrieveComplaintBoardListUserId() {
+      try {
+        let response = await ComplaintBoardService.getAllComplaintBoardUserId(
+          this.$store.state.user.userId,
+          this.complaintBoardPage - 1,
+          this.complaintBoardPageSize
+        );
+        const { complaintBoardList, totalItems } = response.data;
+        this.complaintBoardList = complaintBoardList;
+        this.complaintBoardCount = totalItems;
+        console.log(response.data);
+      } catch (e) {
+        console.log(e);
+      }
+    },
+
+    // 3. 건의게시판 : 내가 쓴 글 삭제
+
     async deleteComplaintBoard(complaintBoardId) {
       try {
         if (confirm("정말로 삭제하시겠습니까?")) {
@@ -534,12 +769,33 @@ export default {
       }
     },
 
-    // 건의게시판 : 내가 쓴 글 수정 함수
+
+    // 3. 건의게시판 : 내가 쓴 글 수정
+
     async goUpdateComplaintBoard(complaintBoardId) {
       this.$router.push(
         `/complaint/complaint-board/Update/` + complaintBoardId
       );
     },
+
+
+    // 4. 동호회게시판 : 내가 쓴 글
+    async retrieveClubBoardListUserId() {
+      try {
+        let response = await ClubBoardService.getAllClubBoardUserId(
+          this.$store.state.user.userId,
+          this.clubBoardPage - 1,
+          this.clubBoardPageSize
+        );
+        const { clubBoardList, totalItems } = response.data;
+        this.clubBoardList = clubBoardList;
+        this.clubBoardCount = totalItems;
+        console.log(response.data);
+      } catch (e) {
+        console.log(e);
+      }
+    },
+
 
     // 프로필 표시 메소드
     showProfile() {
@@ -599,11 +855,13 @@ export default {
     freeBoardPage() {
       this.retrieveFreeBoardListUserId();
     },
-    noticeDeptPage() {
-      this.retrieveNoticeDeptListUserId();
+
+    deptBoardPage() {
+      this.retrieveDeptBoardListUserId();
     },
-    noticeComplaintPage() {
-      this.retrieveNoticeComplaintListUserId();
+    complaintBoardPage() {
+      this.retrieveComplaintBoardListUserId();
+
     },
     clubBoardPage() {
       this.retrieveClubBoardListUserId();
@@ -615,9 +873,7 @@ export default {
     this.retrieveFreeBoardListUserId();
 
     this.retrieveComplaintBoardListUserId();
-
-    this.retrieveNoticeDeptListUserId();
-    this.retrieveNoticeComplaintListUserId();
+    this.retrieveDeptBoardListUserId();
     this.retrieveClubBoardListUserId();
 
   },
@@ -646,5 +902,21 @@ export default {
   min-height: 200px;
   flex-direction: column;
   align-items: center;
+}
+
+.withdrawal-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+.withdrawal-box {
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 20px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  max-width: 600px;
+  width: 100%;
 }
 </style>

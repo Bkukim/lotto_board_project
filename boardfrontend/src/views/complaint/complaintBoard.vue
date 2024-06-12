@@ -1,9 +1,31 @@
 <template>
   <div class="container text-center" id="fb_all">
-    <h3 class="mb-5 mt-5">건의 / 문의사항 게시판</h3>
-        <p class="mb-5">
-      건의 게시판은 전달하고 싶은 다양한 의견이나 아이디어를 익명으로 전달하는 게시판입니다. 
-    </p>
+   
+    <div
+      class="complaint_bn mb-5 text-start"
+      style="height: 200px; background-color: #162b59; color: #fff; padding-left: 30px;" 
+    >
+
+      <h3 class="mb-5 mt-5" style="font-weight: bold;">건의 / 문의 게시판</h3>
+      <p class="mb-5">
+        건의 게시판은 전달하고 싶은 다양한 의견이나 아이디어를 익명으로 전달하는 게시판입니다. 
+      </p>
+    </div>
+
+    
+    <nav style="--bs-breadcrumb-divider: '>'" aria-label="breadcrumb">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item">
+          <a href="/" style="color: blue; text-decoration: none">Home</a>
+        </li>
+        <li
+          class="breadcrumb-item active"
+          aria-current="page"
+        >
+        건의 / 문의 게시판
+        </li>
+      </ol>
+    </nav>
 
     <!-- 검색 박스 -->
     <div class="container text-center" style="gap: 5px" id="search_box">
@@ -97,18 +119,31 @@
     </table>
 
     <!-- 글쓰기 버튼-->
-    <div class="mt-5">
+    <!-- <div class="mt-5 container text-right">
       <router-link to="">
         <button
-          class="btn btn-outline-secondary"
+          class="btn btn-outline-secondary text-right"
           type="button"
           id="button-Writing"
-          style="margin-left: 1220px"
           @click="writeComplaintBoard"
+          style="text-align: right;"
         >
           글쓰기
         </button>
       </router-link>
+    </div> -->
+
+
+    <!-- 글쓰기 버튼 -->
+    <div class="text-end mt-5">
+        <button
+          class="btn btn-outline-secondary"
+          type="button"
+          id="button-Writing"
+          @click="writeComplaintBoard"
+        >
+          글쓰기
+        </button>
     </div>
 
     <!-- 페이징 -->
@@ -245,5 +280,12 @@ p {
   background-color: #162b59;
   color: #ffffff;
   border: none;
+}
+
+.complaint_bn {
+  background-image: url("@/assets/img/complaint_icon.png");
+  background-repeat: no-repeat;
+  background-position: calc(100% - 50px) center; /* 오른쪽에서 20px 왼쪽으로 이동 */
+  background-size: 150px 150px; /* 원하는 크기로 이미지 크기 조정 */
 }
 </style>

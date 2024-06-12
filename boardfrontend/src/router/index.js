@@ -1,11 +1,19 @@
 import { createRouter, createWebHistory } from "vue-router";
 import HomeView from "../views/HomeView.vue";
 
+
 const routes = [
   {
     path: "/",
     component: HomeView,
   },
+  // 어도민 홈
+  {
+    path: "/admin/home",
+    component: () => import("../views/admin/AdminHome.vue"),
+    
+  },
+
   {
     path: "/about",
     component: () => import("../views/AboutView.vue"),

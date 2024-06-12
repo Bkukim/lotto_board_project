@@ -143,6 +143,39 @@
         </div>
       </div>
 
+          <!-- 목록으로 버튼 -->
+          <div class="col mb-5">
+          <router-link
+            :to="'/complaint/complaint-board' "
+            class="fbd_d container text-center"
+            style="
+              width: 150px;
+              text-decoration: none;
+              background-color: #3363cc;
+              font-size: 15px;
+              text-align: center;
+              height: 40px;
+              border-radius: 50px;
+              margin-top: 50px;
+            "
+          >
+            <div
+              style="
+                display: flex;
+                align-items: center;
+                justify-content: center;
+              "
+            >
+              <div
+                class="router-text"
+                style=" margin-top: 10px; color: #fff; text-align: center;  font-weight: 300;"
+              >
+                목록으로
+              </div>
+            </div>
+          </router-link>
+        </div>
+
       <!-- 파일첨부 -->
       <!-- <div class="mt-5" style="width: 500px">
         <input
