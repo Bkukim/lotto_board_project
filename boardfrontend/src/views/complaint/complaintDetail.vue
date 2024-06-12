@@ -52,23 +52,19 @@
           <div class="col" style="color: #999999">
             등록일 | {{ complaintBoard.insertTime }}
           </div>
-          <div class="col" style="color: #999999">
-            등록자 | {{ complaintBoard.userId }}
-          </div>
+          <div class="col" style="color: #999999">등록자 | 익명</div>
         </div>
       </div>
-
       <div
         style="
           text-align: left;
+          border-bottom: #cccccc solid 1px;
           padding: 20px 0 20px 30px;
           font-size: 15px;
           font-weight: 600;
-          border-bottom: 1px solid #cccccc;
-          word-wrap: break-word;
-          word-break: break-all;
+          height: auto;
         "
-        v-html="freeBoard.content"
+        v-html="complaintBoard.content"
       ></div>
       <!-- TODO: 좋아요버튼 -->
       <div class="mt-5 text-center">
@@ -86,7 +82,7 @@
         >
           <img src="@/assets/img/like_icon.png" width="40" height="40" />
           공감해요
-          {{ this.freeBoard.likes }}
+          {{ this.complaintBoard.likes }}
         </button>
 
         <button
@@ -147,6 +143,39 @@
         </div>
       </div>
 
+          <!-- 목록으로 버튼 -->
+          <div class="col mb-5">
+          <router-link
+            :to="'/complaint/complaint-board' "
+            class="fbd_d container text-center"
+            style="
+              width: 150px;
+              text-decoration: none;
+              background-color: #3363cc;
+              font-size: 15px;
+              text-align: center;
+              height: 40px;
+              border-radius: 50px;
+              margin-top: 50px;
+            "
+          >
+            <div
+              style="
+                display: flex;
+                align-items: center;
+                justify-content: center;
+              "
+            >
+              <div
+                class="router-text"
+                style=" margin-top: 10px; color: #fff; text-align: center;  font-weight: 300;"
+              >
+                목록으로
+              </div>
+            </div>
+          </router-link>
+        </div>
+
       <!-- 파일첨부 -->
       <!-- <div class="mt-5" style="width: 500px">
         <input
@@ -171,7 +200,7 @@
       <div
         class="row"
         style="margin-top: 100px"
-        v-if="freeBoard.userId === this.$store.state.user?.userId"
+        v-if="this.complaintBoard.userId === this.$store.state.user?.userId"
       >
         <div class="col">
           <button
@@ -179,13 +208,13 @@
             style="
               width: 300px;
               text-decoration: none;
-              background-color: #cccccc;
+              background-color: #ffffff;
               font-size: 20px;
+              text-align: center;
               height: 50px;
               border-radius: 20px;
-              border: none;
             "
-            @click="deleteFreeBoard"
+            @click="deleteComplaintBoard"
           >
             <div
               style="
@@ -196,12 +225,7 @@
             >
               <div
                 class="router-text"
-                style="
-                  margin-right: 20px;
-                  margin-top: 10px;
-                  color: #ffffff;
-                  text-align: center;
-                "
+                style="margin-right: 20px; margin-top: 10px"
               >
                 삭제
               </div>
@@ -212,7 +236,7 @@
         <!-- 수정 -->
         <div class="col mb-5">
           <router-link
-            :to="'/free/free-board/Update/' + this.$route.params.freeBoardId"
+            :to="'/complaint/complaint-board/Update/' + this.$route.params.complaintBoardId"
             class="fbd_d container text-center"
             style="
               width: 300px;
@@ -275,11 +299,11 @@
       >
         <div class="col" style="color: #595959; font-weight: bold">
           <span style="color: #999999; font-weight: bold">등록자 |</span>
-          {{ data.userId }}
+          {{ newComment.userId }}
         </div>
 
         <div class="col" style="color: #999999">
-          날짜 | {{ data.insertTime }}
+          날짜 | {{ newComment.insertTime }}
         </div>
       </div>
 
@@ -351,6 +375,7 @@
       <br />
       <br />
       <br />
+      
       <!-- 댓글들 -->
       <div
         class="container text-left"
@@ -398,167 +423,14 @@
         >
           {{ data.content }}
           <br />
-          <button
+          <!-- <button
             style="border: none; margin-top: 15px"
             @click="toggleReplyForm(data.complaintBoardCommentId)"
           >
             {{
               replyToCommentId === data.complaintBoardCommentId ? "답글접기" : "답글"
             }}
-          </button>
-
-          <!-- 답변(대댓글)들 -->
-          <div v-if="replyToCommentId === data.complaintBoardCommentId">
-            <hr />
-
-            <div v-for="(data, index) in data.complaintBoardRecomments" :key="index">
-              <div
-                class="lotto_new row row-cols-lg-4 gap-5 justify-content-left mb-3 mt-5"
-              >
-                <div class="col" style="color: #595959; font-weight: bold">
-                  <!-- <div
-                    style="
-                      background: #ccc;
-                      height: 30px;
-                      width: 30px;
-                      border-radius: 50%;
-                      margin-right: 5px;
-                    "
-                  ></div> -->
-                  <!-- (대댓글 등록자) -->
-                  <!-- <span style="color: #999999; font-weight: 200">
-                    {{ data.userId }}</span
-                  > -->
-
-                  <div
-                    class="row"
-                    style="color: #333333; text-align: left; font-weight: bold"
-                  >
-                    └>
-                    <div
-                      style="
-                        background: #ccc;
-                        height: 30px;
-                        width: 30px;
-                        border-radius: 50%;
-                        margin-right: 5px;
-                        margin-left: 5px;
-                      "
-                    ></div>
-                    {{ data.userId }}
-                  </div>
-
-                  <!-- (대댓글 시간) -->
-                  <div class="col" style="color: #999999; font-weight: bold">
-                    <span
-                      style="
-                        color: #999999;
-                        font-weight: 100;
-                        margin-left: 55px;
-                      "
-                    >
-                      {{ data.insertTime }}</span
-                    >
-
-                    <!-- (대댓글 내용) -->
-                    <div
-                      class="col"
-                      style="
-                        color: #333;
-                        font-weight: 300;
-                        margin-left: 55px;
-                        margin-top: 10px;
-                      "
-                    >
-                      {{ data.content }}
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <!-- 답변(대댓글) 다는 곳 -->
-          <div
-            v-if="replyVisible && replyToCommentId === data.complaintBoardCommentsId"
-          >
-            <div
-              class="lotto_new row row-cols-lg-4 gap-5 justify-content-left mb-3 mt-5"
-            >
-              <div class="col" style="color: #595959; font-weight: bold">
-                <span style="color: #999999; font-weight: 200">등록자 |</span>
-                {{ newReply.userId }}
-              </div>
-              <div class="col" style="color: #999999">
-                날짜 | {{ newReply.insertTime }}
-              </div>
-            </div>
-            <div class="mb-5 comment-box" style="border: #595959 1.5px solid">
-              <div class="comment-input">
-                <textarea
-                  class="form-control"
-                  id="replyTextarea"
-                  rows="3"
-                  v-model="newReply.content"
-                  @input="updateReplyCharacterCount"
-                  maxlength="1000"
-                  placeholder="답글을 입력하세요."
-                  style="
-                    height: 150px;
-                    border-bottom: #cccccc 1px solid;
-                    word-wrap: break-word;
-                    word-break: break-all;
-                  "
-                ></textarea>
-                <div
-                  class="char-count"
-                  style="text-align: left; padding: 10px 0 20px 10px"
-                >
-                  글자 수: {{ charCountReply }}/300
-                </div>
-
-                <!-- (답변(대댓글)) 등록 버튼-->
-                <button
-                  @click="submitReply(data.complaintBoardCommentId)"
-                  class="fbd_d container text-center mt-3"
-                  style="
-                    width: 60px;
-                    text-decoration: none;
-                    background-color: #999;
-                    border: none;
-                    font-size: 15px;
-                    text-align: center;
-                    height: 40px;
-                    font-weight: 100;
-                    position: absolute;
-                    bottom: 10px;
-                    right: 10px;
-                  "
-                >
-                  <div
-                    style="
-                      display: flex;
-                      align-items: center;
-                      justify-content: center;
-                    "
-                  >
-                    <div
-                      class="router-text"
-                      style="
-                        margin-right: 5px;
-                        margin-top: 5px;
-                        color: #ffffff;
-                        font-weight: 100;
-                        text-align: center;
-                      "
-                    >
-                      등록
-                    </div>
-                  </div>
-                </button>
-              </div>
-            </div>
-          </div>
+          </button> -->
         </div>
       </div>
 
@@ -571,7 +443,7 @@
             v-model="page"
             :total-rows="count"
             :per-page="pageSize"
-            @click="retrieveFreeBoardComment(this.$route.params.freeBoardId)"
+            @click="retrievecomplaintBoardComment(this.$route.params.complaintBoardId)"
           ></b-pagination>
         </div>
       </div>
@@ -592,7 +464,7 @@
   <!-- 전체 박스 끝 -->
 </template>
 <script>
-import FreeBoardService from "@/services/board/free/FreeBoardService";
+import ComplaintBoardService from "@/services/board/complaint/ComplaintBoardService";
 // import { ref } from "vue";
 
 // 댓글 글자 작성 수 올라가는 것 확인
@@ -612,8 +484,8 @@ export default {
       charCountReply: 0,
 
       // 해당 게시글
-      freeBoard: {
-        freeBoardId: this.$route.params.freeBoardId,
+      complaintBoard: {
+        complaintBoardId: this.$route.params.complaintBoardId,
         userId: "",
         content: "",
         title: "",
@@ -621,10 +493,11 @@ export default {
       },
 
       // 기존 댓글 목록
-      freeBoardComments: [],
+      complaintBoardComments: [],
 
       // 기존 대댓글 목록
-      freeBoardRecomments: [],
+      // complaintBoardReComments: [],
+      
 
       // 새로 작성할 댓글
       newComment: {
@@ -669,10 +542,10 @@ export default {
     },
 
     // freeBoardId로 상세조회 : 화면뜰때 실행
-    async retrieveGetFreeBoard(freeBoardId) {
+    async retrieveGetComplaintBoard(complaintBoardId) {
       try {
-        let response = await FreeBoardService.getFreeBoardId(freeBoardId);
-        this.freeBoard = response.data;
+        let response = await ComplaintBoardService.getComplaintBoardId(complaintBoardId);
+        this.complaintBoard = response.data;
         console.log(response.data);
       } catch (e) {
         alert("에러");
@@ -681,19 +554,19 @@ export default {
     },
 
     // freeBoardId로 댓글조회 : 화면뜰때 실행
-    async retrieveFreeBoardComment(freeBoardId) {
+    async retrieveComplaintBoardComment(complaintBoardId) {
       try {
-        let response = await FreeBoardService.getFreeBoardComment(
-          freeBoardId,
+        let response = await ComplaintBoardService.getComplaintBoardComment(
+          complaintBoardId,
           this.page - 1,
           this.pageSize
         );
         // TODO: 복습 : 2) 객체분할 할당
-        const { freeBoardComments, totalItems } = response.data; // 부서배열(벡엔드 전송)
+        const { complaintBoardComments, totalItems } = response.data; // 부서배열(벡엔드 전송)
         // TODO: 3) 바인딩변수(속성)에 저장
-        this.freeBoardComments = freeBoardComments; // 부서배열(벡엔드 전송)
+        this.complaintBoardComments = complaintBoardComments; // 부서배열(벡엔드 전송)
         this.count = totalItems; // 전체페이지수(벡엔드 전송)
-        this.retrieveFreeBoardRecomment(freeBoardId);
+        this.retrieveComplaintBoardRecomment(complaintBoardId);
         // TODO: 4) 프론트 로깅 : console.log
         // console.log("response.data",response.data);
         // console.log("this.comments" ,this.freeBoardComments);
@@ -713,11 +586,11 @@ export default {
         let data = {
           userId: this.newComment.userId,
 
-          freeBoardId: this.freeBoard.freeBoardId,
+          complaintBoardId: this.complaintBoard.complaintBoardId,
           content: this.newComment.content,
           secretCommentYn: "N",
         };
-        await FreeBoardService.createFreeBoardComment(data);
+        await ComplaintBoardService.createComplaintBoardComment(data);
       } catch (e) {
         // alert("댓글 등록 중 에러가 발생했습니다.");
         console.log(e);
@@ -725,20 +598,20 @@ export default {
       this.newComment.content = "";
       this.charCount = 0;
 
-      this.retrieveFreeBoardComment(this.$route.params.freeBoardId);
+      this.retrieveComplaintBoardComment(this.$route.params.complaintBoardId);
     },
 
     // 삭제 함수
-    async deleteFreeBoard() {
+    async deleteComplaintBoard() {
       try {
         if (confirm("정말로 삭제하시겠습니까?")) {
-          let response = await FreeBoardService.deleteFreeBoard(
-            this.freeBoard.freeBoardId
+          let response = await ComplaintBoardService.deleteComplaintBoard(
+            this.complaintBoard.complaintBoardId
           );
           // 로깅
           console.log(response.data);
           alert("게시글이 삭제되었습니다.");
-          this.$router.push("/free/free-board");
+          this.$router.push("/complaint/complaint-board");
         } else {
           return;
         }
@@ -749,24 +622,24 @@ export default {
 
     // 수정 함수
     async likeUp() {
-      this.freeBoard.likes = +1;
+      this.complaintBoard.likes = +1;
 
       try {
-        let response = await FreeBoardService.updateFreeBoard(
-          this.freeBoard.likes
+        let response = await ComplaintBoardService.updateComplaintBoard(
+          this.complaintBoard.likes
         );
         // 로깅
         console.log(response.data);
-        this.$router.push("/free/free-board/:freeBoardId");
+        this.$router.push("/complaint/complaint-board/:complaintBoardId");
       } catch (e) {
         console.log(e);
       }
     },
 
     // 답글 버튼 클릭 시 호출되는 메소드
-    showReplyForm(freeBoardCommentId) {
+    showReplyForm(complaintBoardCommentId) {
       this.replyVisible = true;
-      this.replyToCommentId = freeBoardCommentId;
+      this.replyToCommentId = complaintBoardCommentId;
     },
 
     // 답글 글자 수 세기
@@ -777,63 +650,10 @@ export default {
       this.charCountReply = this.newReply.content.length;
     },
 
-    // 대댓글(답글) 조회
-    async retrieveFreeBoardRecomment(freeBoardId) {
-      console.log("진입");
-      try {
-        let response = await FreeBoardService.getFreeBoardRecomment(
-          freeBoardId
-        );
-        this.freeBoardRecomments = response.data; // 부서배열(벡엔드 전송)
-
-        console.log("댓글들", this.freeBoardComments);
-        console.log("대댓글들", this.freeBoardRecomments);
-        // 댓글 배열에 대댓글 속성을 추가하는 함수
-        this.freeBoardComments.forEach((comment) => {
-          comment.freeBoardRecomments = this.freeBoardRecomments.filter(
-            (reply) => reply.freeBoardCommentId === comment.freeBoardCommentId
-          );
-        });
-        console.log("댓글마다 대댓글 잘 드갔나", this.freeBoardComments);
-        // TODO: 4) 프론트 로깅 : console.log
-        // console.log("response.data",response.data);
-        // console.log("this.comments" ,this.freeBoardComments);
-      } catch (e) {
-        // alert("페이징 대댓글 에러");
-        console.log(e);
-      }
-    },
-    // 대댓글(답글) 등록
-    async submitReply(commentId) {
-      if (!this.newReply.content.trim()) {
-        // alert("답글을 입력해주세요.");
-        return;
-      }
-      try {
-        let data = {
-          userId: this.newReply.userId,
-          freeBoardCommentId: commentId, // 부모 댓글 ID
-          content: this.newReply.content,
-          secretCommentYn: "N",
-        };
-
-        console.log("대댓글의 댓글 아이디", data.freeBoardCommentId);
-
-        await FreeBoardService.createFreeBoardRecomment(data);
-      } catch (e) {
-        console.log(e);
-      }
-      this.newReply.content = "";
-      this.charCountReply = 0;
-      this.replyVisible = false; // 답글 입력 폼 숨기기
-      // alert("답글이 등록되었습니다.");
-      this.retrieveFreeBoardComment(this.$route.params.freeBoardId);
-    },
   },
   async mounted() {
-    this.retrieveGetFreeBoard(this.$route.params.freeBoardId);
-    this.retrieveFreeBoardComment(this.$route.params.freeBoardId);
-    // this.retrieveFreeBoardRecomment(this.$route.params.freeBoardId);
+    this.retrieveGetComplaintBoard(this.$route.params.complaintBoardId);
+    this.retrieveComplaintBoardComment(this.$route.params.complaintBoardId);
     window.scrollTo(0, 0);
   },
 };
