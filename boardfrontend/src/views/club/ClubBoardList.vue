@@ -1,10 +1,10 @@
 <template>
   <div class="club-board-list-wrapper">
     <!-- 일기예보 -->
-    <div class="container text-center mb-2" id="fb_all">
+    <div class="container text-center mb-2" style="height: 266px;" id="fb_all">
       <div class="weather-forecast mb-3">
         <h3 class="mb-3">부산광역시 일주일 날씨 예보</h3>
-        <div v-if="loading">로딩 중...</div>
+        <div v-if="loading" class="skeleton-loader">로딩 중...</div>
         <div v-if="error">{{ error }}</div>
         <div v-if="forecast">
           <div class="weather-card-container">
@@ -59,7 +59,7 @@
         >
           <div class="club-time">{{ formatTime(club.startTime) }}</div>
           <div class="club-info">
-            <div class="club-title" @click="goToDetail(club.clubBoardId)">
+            <div class="all-club-title" @click="goToDetail(club.clubBoardId)">
               {{ club.title }}
             </div>
             <div class="club-detail-info">
@@ -354,7 +354,7 @@ export default {
   cursor: pointer; /* 제목 클릭 가능 표시 */
 }
 
-.club-title {
+.all-club-title {
   font-weight: bold;
 }
 
@@ -417,6 +417,8 @@ export default {
 .weather-forecast {
   font-family: Arial, sans-serif;
   margin: 0 20px 10px 20px; /* 위쪽 간격 제거 */
+  height: 250px; /* 고정된 높이 설정 */
+  overflow: hidden; /* 높이를 초과하는 내용은 숨김 */
 }
 
 .weather-forecast h3 {
@@ -526,5 +528,15 @@ export default {
 
 .fas.fa-snowflake {
   color: #ffffff; /* 눈 오는 날 아이콘 색상 */
+}
+
+/* 스켈레톤 로더 스타일 */
+.skeleton-loader {
+  height: 250px; /* 고정된 높이 설정 */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #f0f0f0;
+  color: #888;
 }
 </style>

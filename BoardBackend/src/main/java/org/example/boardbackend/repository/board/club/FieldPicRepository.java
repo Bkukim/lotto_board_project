@@ -24,4 +24,6 @@ import java.util.Optional;
 public interface FieldPicRepository extends JpaRepository<FieldPic, String> {
     Optional<FieldPic> findByUuid(String uuid);
     List<FieldPic> findByClubBoard_ClubBoardId(Long clubBoardId);
+
+//    void deleteByClubBoardId(Long clubBoardId);
 }
