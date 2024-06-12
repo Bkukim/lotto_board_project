@@ -195,23 +195,7 @@
             <h3 class="mt-5">내가 작성한 글</h3>
 
             <div class="container" style="height: auto">
-              <!-- 테이블 옆 버튼 3개 -->
-              <!-- <div class="col-12 d-flex align-items-start justify-content-end">
-                <div class="d-flex flex-column">
-                  <button
-                    type="button"
-                    class="btn btn-primary mb-2"
-                    @click="goNoticeAdd"
-                  >
-                    공지사항 등록
-                  </button>
-                  <button type="button" class="btn btn-success">
-                    공지사항 전체삭제
-                  </button>
-                </div>
-              </div> -->
-              <!-- 게시판별 공지사항  div 총 3개 -->
-              <!--자유게시판 공지사항  -->
+
               <div class="row mt-5 border justify-content-center">
                 <h3
                   style="
@@ -633,10 +617,9 @@ export default {
       noticeFree: [1, 2, 3, 4, 5],
       noticeDept: [1, 2, 3, 4, 5],
       noticeComplaint: [1, 2, 3, 4, 5],
-      freeBoardList: [1, 2, 3, 4, 5],
 
-      // 내가 쓴 글 : 자유게시판
-      // freeBoardList: [],
+      freeBoardList: [],
+
 
       userId: this.$store.state.user.userId,
 
@@ -680,7 +663,7 @@ export default {
       try {
         // TODO: 1) 공통 전체조회 함수 실행
         let response = await FreeBoardService.getAllFreeBoardUserId(
-          this.userId, // 검색어
+          this.$store.state.user.userId, // 검색어
           this.page - 1, // 현재페이지번호-1
           this.pageSize // 1페이지당개수(size)
         );
@@ -690,6 +673,7 @@ export default {
         this.freeBoardList = freeBoardList; // 부서배열(벡엔드 전송)
         this.count = totalItems; // 전체페이지수(벡엔드 전송)
         // TODO: 4) 프론트 로깅 : console.log
+
         console.log(response.data);
       } catch (e) {
         console.log(e);
