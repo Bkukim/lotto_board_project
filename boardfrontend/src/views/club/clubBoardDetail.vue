@@ -42,7 +42,7 @@
                 <span>{{ clubBoard.minQuota }} ~ {{ clubBoard.maxQuota }}명</span>
               </div>
               <div class="match-point-item">
-                <i class="fas fa-running" style="width: 30px;"></i>
+                <i class="fas fa-running"></i>
                 <span>{{ clubBoard.material }}</span>
               </div>
             </div>
@@ -76,7 +76,7 @@
         <div v-if="clubBoard" class="club-title">{{ clubBoard.title }}</div>
         <div v-if="clubBoard" class="news-content">
           <div class="address-container">
-            <div>{{ clubBoard.address }}</div>
+            <div class="address-text">{{ clubBoard.address }}</div>
             <div class="address-actions">
               <button @click="copyAddress" class="small-button">주소 복사</button>
               <button @click="toggleMapView" class="small-button">지도 보기</button>
@@ -309,9 +309,14 @@ export default {
 
 .address-container {
   display: flex;
-  justify-content: space-between;
-  align-items: center;
+  flex-direction: column;
+  align-items: flex-start;
   font-size: 16px;
+}
+
+.address-text {
+  text-align: left;
+  margin-bottom: 10px;
 }
 
 .address-actions {
@@ -364,7 +369,7 @@ export default {
 .like-apply-container {
   display: flex;
   align-items: center;
-  margin-top: 50px;
+  margin-top: 30px;
   text-align: left;
 }
 
