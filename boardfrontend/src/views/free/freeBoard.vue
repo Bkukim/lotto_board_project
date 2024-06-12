@@ -1,11 +1,35 @@
 <template>
   <div class="container text-center" id="fb_all">
-    <h3 class="mb-5 mt-5">자유게시판</h3>
-    <p class="mb-5">
-      자유게시판은 자유로운 의견을 남기는 공간으로 건의관련 답변은 드리지
-      않습니다. <br />
-      건의관련 및 문의사항은 건의게시판을 이용해주시길 바랍니다.
-    </p>
+    <div
+      class="free_bn mb-5 text-start"
+      style="
+        height: 200px;
+        background-color: #162b59;
+        color: #fff;
+        padding-left: 30px;
+      "
+    >
+      <h3 class="mb-5 mt-5" style="font-weight: bold">자유게시판</h3>
+      <p class="mb-5">
+        자유게시판은 자유로운 의견을 남기는 공간으로 건의관련 답변은 드리지
+        않습니다. <br />
+        건의관련 및 문의사항은 건의게시판을 이용해주시길 바랍니다.
+      </p>
+    </div>
+
+    <nav style="--bs-breadcrumb-divider: '>'" aria-label="breadcrumb">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item">
+          <a href="/" style="color: blue; text-decoration: none">Home</a>
+        </li>
+        <li
+          class="breadcrumb-item active"
+          aria-current="page"
+        >
+          자유게시판
+        </li>
+      </ol>
+    </nav>
 
     <!-- 검색 박스 -->
     <div class="container text-center" style="gap: 5px" id="search_box">
@@ -72,7 +96,9 @@
       <thead>
         <tr>
           <th scope="col">번호</th>
-          <th scope="col" style="text-align: left; padding-left: 100px">제목</th>
+          <th scope="col" style="text-align: left; padding-left: 100px">
+            제목
+          </th>
           <th scope="col">작성자</th>
           <th scope="col">등록일</th>
           <th scope="col">좋아요</th>
@@ -83,8 +109,9 @@
         <!-- 반복문 시작할 행 -->
         <tr v-for="(data, index) in freeBoardList" :key="index">
           <td>{{ (page - 1) * pageSize + index + 1 }}</td>
-          <td id="router_hv" style="text-align: left; padding-left: 100px;" >
-            <router-link style="color: #444444; font-weight: bold; text-decoration:none ;"
+          <td id="router_hv" style="text-align: left; padding-left: 100px">
+            <router-link
+              style="color: #444444; font-weight: bold; text-decoration: none"
               :to="'/free/free-boardDetail/' + data.freeBoardId"
               class="router-link-exact-active alltext"
             >
@@ -98,19 +125,16 @@
       </tbody>
     </table>
 
-    <!-- 글쓰기 버튼-->
-    <div class="mt-5">
-      <router-link to="">
-        <button
-          class="btn btn-outline-secondary"
-          type="button"
-          id="button-Writing"
-          style="margin-left: 1220px"
-          @click="writeFreeBoard"
-        >
-          글쓰기
-        </button>
-      </router-link>
+    <!-- 글쓰기 버튼 -->
+    <div class="text-end mt-5">
+      <button
+        class="btn btn-outline-secondary"
+        type="button"
+        id="button-Writing"
+        @click="writeFreeBoard"
+      >
+        글쓰기
+      </button>
     </div>
 
     <!-- 페이징 -->
@@ -228,7 +252,7 @@ p {
 /* 검색 전체 배경 */
 #search_box {
   background-color: #e2e2e28c;
-  height: 75PX;
+  height: 75px;
   padding: 20px;
 }
 #search_ck {
@@ -248,7 +272,14 @@ p {
   color: #ffffff;
   border: none;
 }
-#router_hv:hover{
-text-decoration: underline 1px solid;
+#router_hv:hover {
+  text-decoration: underline 1px solid;
+}
+
+.free_bn {
+  background-image: url("@/assets/img/free_icon.png");
+  background-repeat: no-repeat;
+  background-position: calc(100% - 50px) center; /* 오른쪽에서 20px 왼쪽으로 이동 */
+  background-size: 170px 170px; /* 원하는 크기로 이미지 크기 조정 */
 }
 </style>

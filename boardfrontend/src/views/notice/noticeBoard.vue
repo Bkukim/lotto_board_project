@@ -1,17 +1,29 @@
 <template>
   <div class="container" id="fb_all">
-    <h3
-      class="mb-5 mt-5"
-      style="
-        color: #535353;
-        font-family: Inter-Light, sans-serif;
-        font-weight: 600;
-      "
-      id="nt_h3"
+    <div
+      class="notice_bn mb-5 text-start"
+      style="height: 200px; background-color: #162b59; color: #fff; padding-left: 30px;" 
     >
-      공지사항
-    </h3>
 
+      <h3 class="mb-5 mt-5" style="font-weight: bold;">공지사항</h3>
+      <p class="mb-5">
+        로또 사내게시판에서 알리는 새소식을 안내해 드립니다.
+      </p>
+    </div>
+
+    <nav style="--bs-breadcrumb-divider: '>'" aria-label="breadcrumb">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item">
+          <a href="/" style="color: blue; text-decoration: none">Home</a>
+        </li>
+        <li
+          class="breadcrumb-item active"
+          aria-current="page"
+        >
+          공지사항
+        </li>
+      </ol>
+    </nav>
     <!-- 검색 박스 -->
     <div class="container text-center" style="background-color: #e2e2e28c">
       <div
@@ -115,19 +127,7 @@
         </tr>
       </tbody>
     </table>
-    <div class="mt-5">
-      <router-link to="">
-        <button
-          class="btn btn-outline-secondary"
-          type="button"
-          id="button-Writing"
-          style="margin-left: 1220px"
-          @click="goNoticeAdd"
-        >
-          글쓰기
-        </button>
-      </router-link>
-    </div>
+
     <!-- 페이징 -->
     <!-- {/* paging 시작 */} -->
     <div class="row justify-content-center mt-4">
@@ -206,7 +206,7 @@ p {
 
 /* 페이징 번호 디자인 */
 .custom-pagination .page-item.active .page-link {
-  background-color: #342a26;
+  background-color: #162b59;
   border-color: #ffffff;
   color: white;
 }
@@ -263,4 +263,11 @@ p {
   color: #ffffff;
   border: none;
 }
+.notice_bn {
+  background-image: url("@/assets/img/notice_icon.png");
+  background-repeat: no-repeat;
+  background-position: calc(100% - 50px) center; /* 오른쪽에서 20px 왼쪽으로 이동 */
+  background-size: 170px 170px; 
+}
+
 </style>

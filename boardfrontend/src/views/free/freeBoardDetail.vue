@@ -92,11 +92,9 @@
         <button
           type="button"
           class="btn btn-light"
-
           style="margin-left: 3vh; height: 8vh; width: 10vw; padding: 1vw"
           data-bs-toggle="modal"
           data-bs-target="#reportModal"
-
         >
           <img src="@/assets/img/report_icon.png" width="40" height="40" />
           신고
@@ -113,7 +111,11 @@
           <div class="modal-dialog">
             <div class="modal-content">
               <div class="modal-header">
-                <h5 class="modal-title" id="reportModalLabel" style="font-weight: bold;">
+                <h5
+                  class="modal-title"
+                  id="reportModalLabel"
+                  style="font-weight: bold"
+                >
                   <img
                     src="@/assets/img/report_icon.png"
                     width="20"
@@ -148,6 +150,39 @@
             </div>
           </div>
         </div>
+
+        <!-- 목록으로 버튼 -->
+        <div class="col mb-5">
+          <router-link
+            :to="'/free/free-board' "
+            class="fbd_d container text-center"
+            style="
+              width: 150px;
+              text-decoration: none;
+              background-color: #3363cc;
+              font-size: 15px;
+              text-align: center;
+              height: 40px;
+              border-radius: 50px;
+              margin-top: 50px;
+            "
+          >
+            <div
+              style="
+                display: flex;
+                align-items: center;
+                justify-content: center;
+              "
+            >
+              <div
+                class="router-text"
+                style=" margin-top: 10px; color: #fff; text-align: center;  font-weight: 300;"
+              >
+                목록으로
+              </div>
+            </div>
+          </router-link>
+        </div>
       </div>
 
       <!-- 파일첨부 -->
@@ -162,14 +197,12 @@
     </div>
     <!--  첫번째 게시판 큰 박스 끝-->
 
-
     <!-- TODO: 좋아요버튼 -->
     <!-- <div class="d-flex justify-content-center mt-3">
       <button type="button" class="btn btn-primary" @click="likeUp">
         공감해요 {{ this.freeBoard.likes }}
       </button>
     </div> -->
-
 
     <!-- 삭제 -->
     <div class="container text-center mt-5">
@@ -202,8 +235,6 @@
               <div
                 class="router-text"
                 style="
-                  margin-right: 20px;
-                  margin-top: 10px;
                   color: #ffffff;
                   text-align: center;
                 "
@@ -238,7 +269,7 @@
             >
               <div
                 class="router-text"
-                style="margin-right: 20px; margin-top: 10px; color: #ffffff"
+                style=" margin-top: 10px; color: #ffffff"
               >
                 수정
               </div>
@@ -757,9 +788,7 @@ export default {
       this.freeBoard.likes = +1;
 
       try {
-        let response = await FreeBoardService.updateLike(
-          this.freeBoard.likes
-        );
+        let response = await FreeBoardService.updateLike(this.freeBoard.likes);
         // 로깅
         console.log(response.data);
         this.$router.push("/free/free-board/:freeBoardId");

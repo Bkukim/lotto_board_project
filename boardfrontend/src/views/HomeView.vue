@@ -15,7 +15,7 @@
         <!-- 이달의 HOT -->
         <div class="col">
           <router-link
-            to="/free/free-board"
+            to="/hot/hotBoard"
             class="hot_cm container text-center"
             style="width: 500px; text-decoration: none"
           >
