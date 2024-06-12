@@ -251,6 +251,16 @@ export default {
     },
     goToDetail(clubBoardId) {
       this.$router.push({ path: `/club/club-boardRecruitment/${clubBoardId}` });
+    },
+    async preloadImages(imgUrls) {
+      const imagePromises = imgUrls.map(async (uuid) => {
+        const response = await ClubBoardService.getStadiumImg(uuid);
+        const url = URL.createObjectURL(new Blob([response.data]));
+        const img = new Image();
+        img.src = url;
+      });
+
+      await Promise.all(imagePromises);
     }
   }
 };

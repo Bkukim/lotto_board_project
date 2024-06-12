@@ -195,6 +195,7 @@
             <h3 class="mt-5">내가 작성한 글</h3>
 
             <div class="container" style="height: auto">
+
               <div class="row mt-5 border justify-content-center">
                 <h3
                   style="
@@ -616,7 +617,9 @@ export default {
       noticeFree: [1, 2, 3, 4, 5],
       noticeDept: [1, 2, 3, 4, 5],
       noticeComplaint: [1, 2, 3, 4, 5],
+
       freeBoardList: [],
+
 
       userId: this.$store.state.user.userId,
 

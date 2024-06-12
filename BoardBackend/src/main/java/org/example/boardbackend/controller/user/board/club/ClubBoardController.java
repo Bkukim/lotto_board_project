@@ -14,12 +14,15 @@ import org.example.boardbackend.model.dto.board.club.FieldPicDto;
 import org.example.boardbackend.model.entity.board.club.ClubBoard;
 import org.example.boardbackend.model.entity.board.club.FieldPic;
 import org.example.boardbackend.model.entity.board.free.FreeBoard;
+import org.example.boardbackend.repository.board.club.FieldPicRepository;
 import org.example.boardbackend.service.board.club.ClubBoardService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -46,24 +49,25 @@ import java.util.*;
 @RequestMapping("/api/user/board")
 public class ClubBoardController {
     private final ClubBoardService clubBoardService;
+    private final FieldPicRepository fieldPicRepository;
 
 
-//  TODO: 전체 조회 함수 : 페이징 처리
-@GetMapping("/club")
-public ResponseEntity<List<ClubBoard>> getAllClubs() {
-    List<ClubBoard> clubBoards = clubBoardService.getAllClub();
-    return ResponseEntity.ok(clubBoards);
-}
+    //  TODO: 전체 조회 함수 : 페이징 처리
+    @GetMapping("/club")
+    public ResponseEntity<List<ClubBoard>> getAllClubs() {
+        List<ClubBoard> clubBoards = clubBoardService.getAllClub();
+        return ResponseEntity.ok(clubBoards);
+    }
 
 
-//  TODO: 상세 조회 함수
+    //  TODO: 상세 조회 함수
     @GetMapping("/club/{clubBoardId}")
     public ResponseEntity<List<ClubBoardWithPicsDto>> getClubBoard(@PathVariable long clubBoardId) {
         List<ClubBoardWithPicsDto> result = clubBoardService.getClubBoardWithPics(clubBoardId);
         return ResponseEntity.ok(result);
     }
 
-//  TODO: 저장 함수 : ClubBoardEntity + FieldPic 동시에 생성
+    //  TODO: 저장 함수 : ClubBoardEntity + FieldPic 동시에 생성
     @PostMapping("/club/create")
     public ResponseEntity<String> createClubArticle(
             @RequestPart("data") String data,
@@ -71,17 +75,6 @@ public ResponseEntity<List<ClubBoard>> getAllClubs() {
         try {
             ObjectMapper objectMapper = new ObjectMapper();
             CreateClubArticleDto dto = objectMapper.readValue(data, CreateClubArticleDto.class);
-
-            if (imgFiles != null && imgFiles.length > 0) {
-                List<FieldPicDto> fieldPics = new ArrayList<>();
-                for (MultipartFile imgFile : imgFiles) {
-                    FieldPicDto fieldPicDto = new FieldPicDto();
-                    fieldPicDto.setImgUrl(imgFile.getOriginalFilename());
-                    fieldPicDto.setImgFile(Base64.getEncoder().encodeToString(imgFile.getBytes()));
-                    fieldPics.add(fieldPicDto);
-                }
-                dto.setFieldPics(fieldPics);
-            }
 
             clubBoardService.save(dto, imgFiles);
             return ResponseEntity.status(HttpStatus.CREATED).body("Club article created successfully.");
@@ -91,7 +84,7 @@ public ResponseEntity<List<ClubBoard>> getAllClubs() {
         }
     }
 
-//  TODO: 수정 함수
+    //  TODO: 수정 함수
     @PutMapping("/club/update/{clubBoardId}")
     public ResponseEntity<Object> update(
             @PathVariable long clubBoardId,
@@ -106,7 +99,7 @@ public ResponseEntity<List<ClubBoard>> getAllClubs() {
         }
     }
 
-//  TODO: 삭제 함수
+    //  TODO: 삭제 함수
     @DeleteMapping("club/deletion/{clubBoardId}")
     public ResponseEntity<Object> delete(
             @PathVariable long clubBoardId
@@ -132,4 +125,43 @@ public ResponseEntity<List<ClubBoard>> getAllClubs() {
 //                                             @RequestParam String reporterUserId){
 //
 //    }
+
+    //  TODO: 이미지 조회 함수
+    @GetMapping("/club/img/{uuid}")
+    public ResponseEntity<byte[]> getImage(@PathVariable String uuid) {
+        Optional<FieldPic> fieldPicOpt = fieldPicRepository.findByUuid(uuid);
+        if (fieldPicOpt.isPresent()) {
+            FieldPic fieldPic = fieldPicOpt.get();
+            String imgUrl = fieldPic.getImgUrl();
+
+            // 이미지 확장자에 따라 Content-Type 설정
+            MediaType mediaType = getMediaTypeForImage(imgUrl);
+
+            return ResponseEntity.ok()
+                    .header(HttpHeaders.CONTENT_DISPOSITION, "inline; filename=\"" + imgUrl + "\"")
+                    .contentType(mediaType)
+                    .body(fieldPic.getImgFile());
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    private MediaType getMediaTypeForImage(String imgUrl) {
+        if (imgUrl.endsWith(".png")) {
+            return MediaType.IMAGE_PNG;
+        } else if (imgUrl.endsWith(".jpg") || imgUrl.endsWith(".jpeg")) {
+            return MediaType.IMAGE_JPEG;
+        } else if (imgUrl.endsWith(".gif")) {
+            return MediaType.IMAGE_GIF;
+        } else {
+            return MediaType.APPLICATION_OCTET_STREAM;
+        }
+    }
+
+    // 클럽보드 아이디로 UUID 목록을 조회하는 엔드포인트
+    @GetMapping("/club/uuid/{clubBoardId}")
+    public ResponseEntity<List<String>> getImgUuidsByClubBoardId(@PathVariable Long clubBoardId) {
+        List<String> imgUuids = clubBoardService.getImgUuidsByClubBoardId(clubBoardId);
+        return ResponseEntity.ok(imgUuids);
+    }
 }

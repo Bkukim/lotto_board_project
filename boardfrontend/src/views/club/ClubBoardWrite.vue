@@ -147,7 +147,7 @@ export default {
 
         let response = await ClubBoardService.createClub(formData);
         console.log("Response data:", response.data);
-        // this.$router.push("/club/club-board");
+        this.$router.push("/club/club-board");
       } catch (e) {
         console.error("Error:", e);
         if (e.response) {
