@@ -138,10 +138,10 @@ public class ClubBoardController {
 
     //  TODO: 삭제 함수
     @DeleteMapping("club/deletion/{clubBoardId}")
-//    public ResponseEntity<Void> deleteClubBoard(@PathVariable Long clubBoardId) {
-//        clubBoardService.deleteByClubBoardId(clubBoardId);
-//        return ResponseEntity.noContent().build();
-//    }
+    public ResponseEntity<Void> deleteClubBoard(@PathVariable Long clubBoardId) {
+        clubBoardService.deleteByClubBoardId(clubBoardId);
+        return ResponseEntity.noContent().build();
+    }
 
 
     // todo 게시글 신고함수
