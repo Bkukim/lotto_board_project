@@ -20,6 +20,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -57,6 +58,12 @@ public class ClubBoardController {
     public ResponseEntity<List<ClubBoard>> getAllClubs() {
         List<ClubBoard> clubBoards = clubBoardService.getAllClub();
         return ResponseEntity.ok(clubBoards);
+    }
+
+    // TODO: 전체 조회 함수 : 페이징 처리
+    @GetMapping("/club/pageable")
+    public Page<ClubBoard> pageAllClub(Pageable pageable) {
+        return clubBoardService.pageAllClub(pageable);
     }
 
 

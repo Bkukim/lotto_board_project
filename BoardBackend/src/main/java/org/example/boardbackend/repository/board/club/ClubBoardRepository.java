@@ -1,6 +1,8 @@
 package org.example.boardbackend.repository.board.club;
 
 import org.example.boardbackend.model.entity.board.club.ClubBoard;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -33,4 +35,7 @@ public interface ClubBoardRepository extends JpaRepository<ClubBoard, Long> {
             "JOIN LOTTO_FIELD_PIC FP ON CB.CLUB_BOARD_ID = FP.CLUB_BOARD_ID " +
             "WHERE CB.CLUB_BOARD_ID = :clubBoardId", nativeQuery = true)
     List<Map<String, Object>> findClubBoardWithPics(@Param("clubBoardId") long clubBoardId);
+
+//  페이징 처리
+Page<ClubBoard> findAll(Pageable pageable);
 }
