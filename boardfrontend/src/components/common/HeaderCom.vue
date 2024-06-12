@@ -74,7 +74,7 @@
 
           <!-- 검색바 -->
           <nav
-            class="navbar navbar-light bg-light search-bar"
+            class="navbar navbar-light  search-bar"
             style="background-color: rgb(255, 255, 255)"
           >
             <div

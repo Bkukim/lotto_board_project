@@ -29,6 +29,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @Configuration
 @Getter
 public class WebConfig implements WebMvcConfigurer {
+//    private final String frontDomain = "http://13.209.24.76:8080";  // AWS ip 주소
     private final String frontDomain = "http://localhost:8080";
 //    함수 재정의 : alt + insert
     @Override
