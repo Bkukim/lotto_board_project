@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.example.boardbackend.config.WebConfig;
 import org.example.boardbackend.model.dto.board.complaint.ComplaintBoardDto;
+import org.example.boardbackend.model.dto.board.free.FreeBoardDto;
 import org.example.boardbackend.model.entity.board.complaint.ComplaintBoard;
 import org.example.boardbackend.model.entity.board.complaint.ComplaintBoardComment;
 import org.example.boardbackend.model.entity.board.free.FreeBoard;
@@ -108,5 +109,13 @@ public class ComplaintBoardService {
     //    todo: 댓글 조회 함수
     public Page<ComplaintBoardComment> getCommentByComplaintBoardId(long complaintBoardId, Pageable pageable) {
         return complaintBoardCommentRepository.findComplaintBoardCommentsByComplaintBoardId(complaintBoardId, pageable);
+    }
+
+    //    todo : userId가 작성한 글 전체조회
+    public Page<ComplaintBoardDto> findComplaintBoardByUserIdContaining(String userId, Pageable pageable)
+    {
+        Page<ComplaintBoardDto> page
+                = complaintBoardRepository.findComplaintBoardByUserIdContaining(userId, pageable);
+        return page;
     }
 }

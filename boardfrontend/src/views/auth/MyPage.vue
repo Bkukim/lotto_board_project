@@ -221,7 +221,7 @@
                       <tr v-for="(data, index) in freeBoardList" :key="index">
                         <td class="col-8">
                           <router-link
-                            :to="`/product/inquiry/detail/${data.qnaId}`"
+                            :to="'/free/free-boardDetail/' + data.freeBoardId"
                             style="text-decoration: none"
                             class="alltext router-link-exact-active custom-pagination"
                             >{{ data.title }}</router-link
@@ -356,15 +356,26 @@
                     </thead>
                     <tbody>
                       <!-- 반복문 시작할 행 -->
-                      <tr v-for="(data, index) in noticeComplaint" :key="index">
-                        <!-- dto에 없어서 noticeType이 안나왔던것 안나오면 dto한번더 확인 -->
-                        <td>{{ data.noticeType }}</td>
-                        <td>{{ data.title }}</td>
+                      <tr
+                        v-for="(data, index) in complaintBoardList"
+                        :key="index"
+                      >
+                        <td class="col-8">
+                          <router-link
+                            :to="'/complaint/complaint-boardDetail/' + data.complaintBoardId"
+                            style="text-decoration: none"
+                            class="alltext router-link-exact-active custom-pagination"
+                            >{{ data.title }}</router-link
+                          >
+                        </td>
+                        <td>{{ data.insertTime }}</td>
                         <td>
                           <button
                             type="button"
                             class="btn btn-success"
-                            @click="deleteNotice(data.noticeId)"
+                            @click="
+                              goUpdateComplaintBoard(data.complaintBoardId)
+                            "
                           >
                             수정
                           </button>
@@ -373,7 +384,7 @@
                           <button
                             type="button"
                             class="btn btn-success"
-                            @click="deleteNotice(data.noticeId)"
+                            @click="deleteComplaintBoard(data.complaintBoardId)"
                           >
                             삭제
                           </button>
@@ -388,7 +399,7 @@
                             v-model="page"
                             :total-rows="count"
                             :per-page="pageSize"
-                            @click="retrieveQnaUserId"
+                            @click="retrieveComplaintBoardListUserId"
                           ></b-pagination>
                         </div>
                       </div>
@@ -619,14 +630,15 @@
 import AuthService from "@/services/auth/AuthService";
 import FreeBoardService from "@/services/board/free/FreeBoardService";
 import UserService from "@/services/user/UserService";
+import ComplaintBoardService from "@/services/board/complaint/ComplaintBoardService";
 
 export default {
   data() {
     return {
       noticeFree: [1, 2, 3, 4, 5],
       noticeDept: [1, 2, 3, 4, 5],
-      noticeComplaint: [1, 2, 3, 4, 5],
       freeBoardList: [],
+      complaintBoardList: [],
 
       userId: this.$store.state.user.userId,
 
@@ -710,6 +722,54 @@ export default {
       this.$router.push(`/free/free-board/Update/` + freeBoardId);
     },
 
+    // 건의게시판 : 내가 쓴 글
+    async retrieveComplaintBoardListUserId() {
+      try {
+        // TODO: 1) 공통 전체조회 함수 실행
+        let response = await ComplaintBoardService.getAllComplaintBoardUserId(
+          this.$store.state.user.userId, // 검색어
+          this.page - 1, // 현재페이지번호-1
+          this.pageSize // 1페이지당개수(size)
+        );
+        // TODO: 복습 : 2) 객체분할 할당
+        const { complaintBoardList, totalItems } = response.data; // 부서배열(벡엔드 전송)
+        // TODO: 3) 바인딩변수(속성)에 저장
+        this.complaintBoardList = complaintBoardList; // 부서배열(벡엔드 전송)
+        this.count = totalItems; // 전체페이지수(벡엔드 전송)
+        // TODO: 4) 프론트 로깅 : console.log
+        console.log(response.data);
+      } catch (e) {
+        console.log(e);
+      }
+    },
+
+    // 건의게시판 : 내가 쓴 글 삭제 함수
+    async deleteComplaintBoard(complaintBoardId) {
+      try {
+        if (confirm("정말로 삭제하시겠습니까?")) {
+          let response = await ComplaintBoardService.deleteComplaintBoard(
+            complaintBoardId
+          );
+          // 로깅
+          console.log(response.data);
+          alert("게시글이 삭제되었습니다.");
+          // 현재 페이지 다시 로그(삭제 작업 후 같은 페이지에서 업데이트된 내용 확인 가능)
+          this.$router.go(0);
+        } else {
+          return;
+        }
+      } catch (e) {
+        console.log(e);
+      }
+    },
+
+    // 건의게시판 : 내가 쓴 글 수정 함수
+    async goUpdateComplaintBoard(complaintBoardId) {
+      this.$router.push(
+        `/complaint/complaint-board/Update/` + complaintBoardId
+      );
+    },
+
     // 프로필 표시 메소드
     showProfile() {
       this.displayedContent = "profile";
@@ -770,6 +830,7 @@ export default {
     window.scrollTo(0, 0);
     this.findUserInfo(this.$store.state.user.userId);
     this.retrieveFreeBoardListUserId();
+    this.retrieveComplaintBoardListUserId();
   },
 };
 </script>

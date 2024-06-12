@@ -3,6 +3,7 @@ package org.example.boardbackend.controller.user.board.complaint;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.example.boardbackend.model.dto.board.complaint.ComplaintBoardDto;
+import org.example.boardbackend.model.dto.board.free.FreeBoardDto;
 import org.example.boardbackend.model.entity.board.complaint.ComplaintBoard;
 import org.example.boardbackend.model.entity.board.complaint.ComplaintBoardComment;
 import org.example.boardbackend.model.entity.board.free.FreeBoard;
@@ -186,6 +187,40 @@ public class ComplaintBoardController {
             return new ResponseEntity<>(HttpStatus.OK);
         } catch (Exception e) {
             log.debug("asdfasdf"+e.getMessage());
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    //    todo: UserId 가 작성한 글 전체조회
+    @GetMapping("/complaint/userId/complaintBoard")
+    public ResponseEntity<Object> findUserId(
+            @RequestParam(defaultValue = "") String userId,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size
+    ) {
+        try {
+//            페이징 객체 생성
+            Pageable pageable = PageRequest.of(page, size);
+
+//            전체 조회 서비스 실행
+            Page<ComplaintBoardDto> complaintBoardDto
+                    = complaintBoardService.findComplaintBoardByUserIdContaining(userId, pageable);
+
+//            공통 페이징 객체 생성 : 자료구조 맵 사용
+            Map<String, Object> response = new HashMap<>();
+            response.put("complaintBoardList", complaintBoardDto.getContent());       // faq 배열
+            response.put("currentPage", complaintBoardDto.getNumber());       // 현재페이지번호
+            response.put("totalItems", complaintBoardDto.getTotalElements()); // 총건수(개수)
+            response.put("totalPages", complaintBoardDto.getTotalPages());    // 총페이지수
+
+            if (complaintBoardDto.isEmpty() == false) {
+//                조회 성공
+                return new ResponseEntity<>(response, HttpStatus.OK);
+            } else {
+//                데이터 없음
+                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+            }
+        } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
