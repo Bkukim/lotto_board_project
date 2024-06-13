@@ -26,7 +26,6 @@
               text-align: center;
             "
           >
-
             <li class="nav-item">
               <a
                 class="nav-link"
@@ -37,7 +36,6 @@
               >
             </li>
             <li class="nav-item">
-
               <a
                 class="nav-link"
                 href="#"
@@ -45,7 +43,6 @@
                 @click="showWrittenPosts"
                 >작성한 글</a
               >
-
             </li>
             <li class="nav-item">
               <a
@@ -74,7 +71,6 @@
           <template v-if="displayedContent === 'profile'">
             <h3 class="mb-5 mt-5">My Profile</h3>
 
-
             <div
               class="container"
               style="
@@ -83,7 +79,6 @@
                 align-items: center;
               "
             >
-
               <div
                 class="row justify-content-md-center"
                 style="
@@ -126,7 +121,6 @@
                 >
                   휴대폰 번호:
                   <span style="font-weight: bold">{{ user.phoneNum }}</span>
-
                 </p>
               </div>
             </div>
@@ -137,7 +131,6 @@
             <h3 class="mt-5">내가 작성한 글</h3>
             <div class="container" style="height: auto">
               <div class="row mt-5 border justify-content-center">
-
                 <h3
                   style="
                     text-align: left;
@@ -163,7 +156,6 @@
                         <td class="col-8">
                           <router-link
                             :to="'/free/free-boardDetail/' + data.freeBoardId"
-
                             style="text-decoration: none; color: #333"
                             class="alltext router-link-exact-active custom-pagination"
                             >{{ data.title }}</router-link
@@ -187,28 +179,24 @@
                           >
                             삭제
                           </button>
-
                         </td>
                       </tr>
                     </tbody>
                   </table>
                   <div class="row justify-content-center mt-4">
                     <div class="col-auto">
-
                       <b-pagination
                         class="col-12 mb-3 custom-pagination"
                         v-model="freeBoardPage"
                         :total-rows="freeBoardCount"
                         :per-page="freeBoardPageSize"
                       ></b-pagination>
-
                     </div>
                   </div>
                 </div>
               </div>
 
               <div class="row mt-3 border justify-content-center">
-
                 <h3
                   style="
                     text-align: left;
@@ -230,7 +218,6 @@
                       </tr>
                     </thead>
                     <tbody>
-
                       <tr v-for="(data, index) in deptBoardList" :key="index">
                         <td class="col-8">
                           <router-link
@@ -258,21 +245,18 @@
                           >
                             삭제
                           </button>
-
                         </td>
                       </tr>
                     </tbody>
                   </table>
                   <div class="row justify-content-center mt-4">
                     <div class="col-auto">
-
                       <b-pagination
                         class="col-12 mb-3 custom-pagination"
                         v-model="deptBoardPage"
                         :total-rows="deptBoardCount"
                         :per-page="deptBoardPageSize"
                       ></b-pagination>
-
                     </div>
                   </div>
                 </div>
@@ -378,12 +362,9 @@
                     </thead>
                     <tbody>
                       <tr v-for="(data, index) in clubBoardList" :key="index">
-
                         <td class="col-8">
                           <router-link
-
-                            :to="'/complaint/complaint-boardDetail/' + data.complaintBoardId"
-
+                            :to="`/club/club-boardRecruitment/${data.clubBoardId}`"
                             style="text-decoration: none"
                             class="alltext router-link-exact-active custom-pagination"
                             >{{ data.title }}</router-link
@@ -394,11 +375,7 @@
                           <button
                             type="button"
                             class="btn btn-success"
-
-                            @click="
-                              goUpdateComplaintBoard(data.complaintBoardId)
-                            "
-
+                            @click="goUpdateClubBoard(data.clubBoarId)"
                           >
                             수정
                           </button>
@@ -407,9 +384,7 @@
                           <button
                             type="button"
                             class="btn btn-success"
-
-                            @click="deleteNotice(data.noticeId)"
-
+                            @click="deleteClubBoard(data.clubBoardId)"
                           >
                             삭제
                           </button>
@@ -428,19 +403,16 @@
                           ></b-pagination>
                         </div>
                       </div>
-
                     </tbody>
                   </table>
                   <div class="row justify-content-center mt-4">
                     <div class="col-auto">
-
                       <b-pagination
                         class="col-12 mb-3 custom-pagination"
                         v-model="clubBoardPage"
                         :total-rows="clubBoardCount"
                         :per-page="clubBoardPageSize"
                       ></b-pagination>
-
                     </div>
                   </div>
                 </div>
@@ -563,7 +535,6 @@
 
           <!-- 4. 회원탈퇴 -->
           <template v-else-if="displayedContent === 'withdrawal'">
-
             <!-- <div class="container withdrawal-container">
               <div
                 class="card mt-5 container text-center shadow"
@@ -639,7 +610,6 @@
                 </div>
               </div>
             </div>
-
           </template>
         </div>
       </div>
@@ -665,12 +635,10 @@ import DeptBoardService from "@/services/board/dept/DeptBoardService";
 export default {
   data() {
     return {
-
       freeBoardList: [],
       complaintBoardList: [],
       clubBoardList: [],
       deptBoardList: [],
-
 
       userId: this.$store.state.user.userId,
 
@@ -689,7 +657,6 @@ export default {
       complaintBoardPage: 1,
       complaintBoardCount: 0,
       complaintBoardPageSize: 3,
-
 
       // 동호회게시판 페이지네이션 상태
       clubBoardPage: 1,
@@ -748,7 +715,6 @@ export default {
       }
     },
 
-
     // 1. 자유게시판 : 내가 쓴 글
 
     async retrieveFreeBoardListUserId() {
@@ -757,7 +723,6 @@ export default {
           this.$store.state.user.userId,
           this.freeBoardPage - 1,
           this.freeBoardPageSize
-
         );
         const { freeBoardList, totalItems } = response.data;
         this.freeBoardList = freeBoardList;
@@ -768,7 +733,6 @@ export default {
         console.log(e);
       }
     },
-
 
     // 1. 자유게시판 : 내가 쓴 글 삭제
     async deleteFreeBoard(freeBoardId) {
@@ -869,7 +833,6 @@ export default {
       }
     },
 
-
     // 3. 건의게시판 : 내가 쓴 글 수정
 
     async goUpdateComplaintBoard(complaintBoardId) {
@@ -894,7 +857,19 @@ export default {
         console.log(e);
       }
     },
-
+    // 4. 동호회게시판 : 내가 쓴 글 삭제 함수
+    async deleteClubBoard(clubBoardId) {
+      try {
+        if (confirm("정말로 삭제하시겠습니까?")) {
+          let response = await ClubBoardService.deleteClub(clubBoardId);
+          console.log(response.data);
+          alert("게시글이 삭제되었습니다.");
+          this.retrieveClubBoardListUserId();
+        }
+      } catch (e) {
+        console.log(e);
+      }
+    },
 
     // 프로필 표시 메소드
     showProfile() {
@@ -960,7 +935,6 @@ export default {
     },
     complaintBoardPage() {
       this.retrieveComplaintBoardListUserId();
-
     },
     clubBoardPage() {
       this.retrieveClubBoardListUserId();
