@@ -339,7 +339,7 @@ export default {
   border: none;
   height: 2px;
   background-color: #888; /* 더 진한 색상으로 변경 */
-  margin: 10px 0;
+  margin: 20px 0;
   width: 100%; /* 전체 너비보다 조금 짧게 */
 }
 
@@ -370,7 +370,7 @@ export default {
 .like-apply-container {
   display: flex;
   align-items: center;
-  margin-top: 30px;
+  margin-top: 40px;
   text-align: left;
 }
 
