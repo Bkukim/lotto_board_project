@@ -243,6 +243,11 @@ const routes = [
     meta: { showHeader: true }, // 기본적으로 헤더를 보이게 설정
     component: () => import("../views/dept/DeptBoardUpdate.vue"),
   },
+    // 관리자 회원 관리
+    {
+      path: "/admin/member/manage",
+      component: () => import("../views/admin/AdminMemberManagement.vue"),
+    },
   // 관리자 신고 게시판
   {
     path: "/admin/report",

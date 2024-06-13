@@ -1,6 +1,8 @@
 package org.example.boardbackend.repository.user;
 
 import org.example.boardbackend.model.entity.auth.User;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -25,6 +27,12 @@ import java.util.Optional;
  */
 @Repository
 public interface UserRepository extends JpaRepository<User, String> {
+
+    //    todo 관리자 : 이름으로 회원찾기
+    @Query(value = "SELECT * FROM LOTTO_USER\n" +
+            "WHERE USER_NAME = :userName"
+            ,nativeQuery = true)
+    public Page<User> findByUserName(@Param("userName") String userName, Pageable pageable);
 
 //    todo 아이디 찾기
     @Query(value = "SELECT * FROM LOTTO_USER\n" +

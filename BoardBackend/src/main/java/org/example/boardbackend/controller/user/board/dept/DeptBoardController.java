@@ -295,7 +295,7 @@ public class DeptBoardController {
     }
 
     //    todo: UserId 가 작성한 글 전체조회
-    @GetMapping("/dept/userId/deptBoard")
+    @GetMapping("/userId/deptBoard")
     public ResponseEntity<Object> findUserId(
             @RequestParam(defaultValue = "") String userId,
             @RequestParam(defaultValue = "0") int page,
