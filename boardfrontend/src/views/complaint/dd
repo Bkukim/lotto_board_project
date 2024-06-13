@@ -1,302 +1,346 @@
-<!-- NoticeCheck.vue ::공지사항 상세조회  :: 디자인 안했어요 -->
 <template>
-  <!-- 전체 박스스 -->
-  <div class="fbd_all" style="height: 2000px; background-color: #f2f2f2">
-    <!-- 해당 게세판 이름 부분 -->
-    <div class="container text-center">
-      <h3 style="text-align: left" id="fbd_h3">공지사항 상세보기</h3>
-    </div>
-    <!-- 해당 게세판 이름 부분  끝-->
-
-    <!--  첫번째 게시판 큰 박스-->
-    <div
-      class="container text-center mt-5"
-      style="
-        height: auto;
-        border: none;
-        border-radius: 50px;
-        background-color: #ffffff;
-      "
-    >
-      <div
-        style="
-          text-align: left;
-          border-bottom: #cccccc solid 1px;
-          padding: 20px 0 20px 30px;
-          font-size: 20px;
-          font-weight: 600;
-          color: #595959;
-        "
-      >
-        {{ notice.title }}
-      </div>
-
-      <div
-        style="
-          text-align: left;
-          border-bottom: #cccccc solid 1px;
-          padding: 20px 0 20px 30px;
-          font-size: 15px;
-          font-weight: 600;
-        "
-      >
-        <div class="lotto_new row row-cols-lg-4 gap-5 justify-content-left">
-          <div class="col" style="color: #999999">
-            등록일 | {{ notice.insertTime }}
-          </div>
-          <div class="col" style="color: #999999">등록자 | Admin</div>
-        </div>
-      </div>
-
-      <div
-        style="
-          text-align: left;
-          border-bottom: #cccccc solid 1px;
-          padding: 20px 0 20px 30px;
-          font-size: 15px;
-          font-weight: 600;
-          height: auto;
-        "
-        class="notice-content"
-        v-html="notice.content"
-      ></div>
-    </div>
-    <!--  첫번째 게시판 큰 박스 끝-->
-    <!-- v-if="freeBoardList.userId=== this.$store.state.user?.userId" -->
-    <div
-      class="container text-center mt-5"
-      v-if="this.$store.state.user?.role == 'ROLE_ADMIN'"
-    >
-      <div class="row" style="margin-top: 100px">
-        <!-- 삭제 -->
-        <div class="col">
-          <div
-            style="
-              display: flex;
-              align-items: center;
-              justify-content: center;
-              width: 300px;
-              text-decoration: none;
-              background-color: #ffffff;
-              font-size: 20px;
-              text-align: center;
-              height: 50px;
-              border-radius: 20px;
-              line-height: 50px;
-            "
+  <HeaderCom :hideHeader="true" />
+  <!-- 관리자 페이지에서는 헤더를 숨김 -->
+  <div class="main-container d-flex" style="height: auto">
+    <!-- <AdminHeaderCom class="sidebar" /> -->
+    <AdminHeaderCom class="sidebar" :hideHeader="true" />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <div class="container" style="height: auto; width: 1000px; padding: 100px 0 100px 0;" >
+      <h2 class="mt-3 mb-5" style="text-align: center; font-weight: 500">
+        공지사항 통합관리
+      </h2>
+      <!-- 테이블 옆 버튼 3개 -->
+      <div class="col-12 d-flex align-items-start justify-content-end">
+        <div class="d-flex flex-column">
+          <button
+            type="button"
+            class="btn btn-primary mb-2"
+            @click="goNoticeAdd"
           >
-            <div
-              class="router-text"
-              style="margin-right: 20px; margin-top: 10px"
-              @click="deleteNotice"
-            >
-              삭제
-            </div>
-          </div>
-        </div>
-
-        <!-- 수정 -->
-        <div class="col mb-5">
-          <div
-            style="display: flex; align-items: center; justify-content: center"
-          >
-            <div
-              class="router-text"
-              style="
-                margin-right: 20px;
-                margin-top: 10px;
-                color: #ffffff;
-                width: 300px;
-                text-decoration: none;
-                background-color: #162b59;
-                font-size: 20px;
-                text-align: center;
-                height: 50px;
-                border-radius: 20px;
-                line-height: 50px;
-              "
-              @click="goUpdate"
-            >
-              수정
-            </div>
-          </div>
+            공지사항 등록
+          </button>
+          <button type="button" class="btn btn-success">
+            공지사항 전체삭제
+          </button>
         </div>
       </div>
-    </div>
-
-    <!-- 댓글 작성-->
-    <div
-      class="container text-center mt-5"
-      id="comments"
-      style="
-        height: 330px;
-        border: none;
-        border-radius: 50px;
-        background-color: #ffffff;
-      "
-    >
-      <div
-        style="
-          text-align: left;
-          border-bottom: #cccccc solid 1px;
-          padding: 20px 0 20px 30px;
-          font-size: 20px;
-          font-weight: 600;
-          color: #595959;
-        "
-      >
-        댓글
+      <!-- 게시판별 공지사항  div 총 3개 -->
+      <!--자유게시판 공지사항  -->
+      <div class="row mt-5  justify-content-center" >
+        <h5> ▶ 자유게시판</h5>
+        <!-- 테이블시작, 작게 왼쪽 -->
+        <div class="col-11 shadow" style="width: 1200px;background-color: #f2f2f2; ">
+          <table class="table    mt-5 text-center" >
+            <thead >
+              <tr >
+                <th scope="col">번호</th>
+                <th scope="col">유형</th>
+                <th scope="col">제목</th>
+                <th scope="col">등록일</th>
+                <th scope="col">삭제</th>
+              </tr>
+            </thead>
+            <tbody >
+              <!-- 반복문 시작할 행 -->
+              <tr v-for="(data, index) in noticeFree" :key="index">
+                <td>
+                  {{ index + 1 }}
+                </td>
+                <td>{{ data.noticeType }}</td>
+                <td>{{ data.title }}</td>
+                <td>{{ data.insertTime }}</td>
+                <td>
+                  <button
+                    type="button"
+                    class="btn btn-success"
+                    @click="deleteNotice(data.noticeId)"
+                  >
+                    삭제
+                  </button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
       </div>
 
-      <div
-        style="
-          text-align: left;
-          padding: 20px 0 20px 30px;
-          font-size: 15px;
-          font-weight: 600;
-        "
-      >
-        <div
-          class="lotto_new row row-cols-lg-4 gap-5 justify-content-left mb-3"
-        >
-          <div class="col" style="color: #999999">등록자 | {값}</div>
-
-          <div class="col" style="color: #999999">날짜 |</div>
+      <!-- 부서게시판 공지사항 -->
+      <div class="row mt-3 border justify-content-center">
+        <h3>부서게시판</h3>
+        <!-- 테이블시작, 작게 왼쪽 -->
+        <div class="col-11">
+          <table class="table mt-5 text-center">
+            <thead>
+              <tr>
+                <th scope="col">번호</th>
+                <th scope="col">유형</th>
+                <th scope="col">제목</th>
+                <th scope="col">등록일</th>
+                <th scope="col">삭제</th>
+              </tr>
+            </thead>
+            <tbody>
+              <!-- 반복문 시작할 행 -->
+              <tr v-for="(data, index) in noticeDept" :key="index">
+                <td>
+                  {{ index + 1 }}
+                </td>
+                <!-- dto에 없어서 noticeType이 안나왔던것 안나오면 dto한번더 확인 -->
+                <td>{{ data.noticeType }}</td>
+                <td>{{ data.title }}</td>
+                <td>{{ data.insertTime }}</td>
+                <td>
+                  <button
+                    type="button"
+                    class="btn btn-success"
+                    @click="deleteNotice(data.noticeId)"
+                  >
+                    삭제
+                  </button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
         </div>
+      </div>
 
-        <!-- 글쓰기 칸 -->
-        <div class="mb-5">
-          <textarea
-            class="form-control"
-            id="exampleFormControlTextarea1"
-            rows="3"
-            v-model="text"
-            @input="updateCharacterCount"
-            maxlength="1000"
-          ></textarea>
-          <div class="char-count">글자 수: {{ charCount }}/1000</div>
+      <!-- 건의게시판 공지사항 -->
+      <div class="row mt-3 border justify-content-center">
+        <h3>건의게시판</h3>
+        <!-- 테이블시작, 작게 왼쪽 -->
+        <div class="col-11">
+          <table class="table mt-5 text-center">
+            <thead>
+              <tr>
+                <th scope="col">번호</th>
+                <th scope="col">유형</th>
+                <th scope="col">제목</th>
+                <th scope="col">등록일</th>
+                <th scope="col">삭제</th>
+              </tr>
+            </thead>
+            <tbody>
+              <!-- 반복문 시작할 행 -->
+              <tr v-for="(data, index) in noticeComplaint" :key="index">
+                <td>
+                  {{ index + 1 }}
+                </td>
+                <!-- dto에 없어서 noticeType이 안나왔던것 안나오면 dto한번더 확인 -->
+                <td>{{ data.noticeType }}</td>
+                <td>{{ data.title }}</td>
+                <td>{{ data.insertTime }}</td>
+                <td>
+                  <button
+                    type="button"
+                    class="btn btn-success"
+                    @click="deleteNotice(data.noticeId)"
+                  >
+                    삭제
+                  </button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
         </div>
+      </div>
 
-        <!-- 등록 버튼-->
-        <div class="col">
-          <router-link
-            to="/"
-            class="fbd_d container text-center"
-            style="
-              width: 80px;
-              text-decoration: none;
-              background-color: #162b59;
-              font-size: 18px;
-              text-align: center;
-              height: 40px;
-              font-weight: 100;
-              margin-left: 1180px;
-              margin-top: -35px;
-            "
-          >
-            <div
-              style="
-                display: flex;
-                align-items: center;
-                justify-content: center;
-              "
-            >
-              <div
-                class="router-text"
-                style="
-                  margin-right: 5px;
-                  margin-top: 5px;
-                  color: #ffffff;
-                  font-weight: 100;
-                  text-align: center;
-                "
-              >
-                등록
-              </div>
-            </div>
-          </router-link>
+      <!-- 동호회 게시판 공지사항 -->
+      <div class="row mt-3 mb-5 border justify-content-center">
+        <h3>동호회 게시판</h3>
+        <!-- 테이블시작, 작게 왼쪽 -->
+        <div class="col-11">
+          <table class="table mt-5 text-center">
+            <thead>
+              <tr>
+                <th scope="col">번호</th>
+                <th scope="col">유형</th>
+                <th scope="col">제목</th>
+                <th scope="col">등록일</th>
+                <th scope="col">삭제</th>
+              </tr>
+            </thead>
+            <tbody>
+              <!-- 반복문 시작할 행 -->
+              <tr v-for="(data, index) in noticeGroup" :key="index">
+                <td>
+                  {{ index + 1 }}
+                </td>
+                <!-- dto에 없어서 noticeType이 안나왔던것 안나오면 dto한번더 확인 -->
+                <td>{{ data.noticeType }}</td>
+                <td>{{ data.title }}</td>
+                <td>{{ data.insertTime }}</td>
+                <td>
+                  <button
+                    type="button"
+                    class="btn btn-success"
+                    @click="deleteNotice(data.noticeId)"
+                  >
+                    삭제
+                  </button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
         </div>
       </div>
     </div>
   </div>
-  <!-- 전체 박스 끝 -->
+  <!-- <br />
+  <br />
+  <br />
+  <br />
+  <br />
+  <br />
+  <br />
+  <br /> -->
 </template>
 
 <script>
+import AdminHeaderCom from "@/components/common/AdminHeaderCom.vue";
 import NoticeService from "@/services/notice/NoticeService";
+
 export default {
+  components: {
+    AdminHeaderCom,
+  },
+  props: {
+    hideHeader: {
+      type: Boolean,
+      default: true, // 기본값을 false로 설정
+    },
+  },
   data() {
     return {
-      notice: {
-        noticeId: this.$route.params.noticeId, // this.$router.params.기본키
-        noticeType: "",
-        title: "",
-        content: "",
-        views: 0,
-      },
+      // 받아올 각 부서의 공지사항 목록들
+      noticeDept: [],
+      noticeFree: [],
+      noticeComplaint: [],
+      noticeGroup: [],
+      // complaint: [],
+      // free: [],
+      // participants: [],
+
+      // 공통속성
+      pageSize: 25, // 1페이지당개수(select태그)
     };
   },
+  // 함수
   methods: {
-    // 상세조회
-    async get(noticeId) {
-      // todo: 공통 상세조회 함수: get()
+    // TODO:  부서
+    async retrieveNoticeDept() {
       try {
-        let response = await NoticeService.getNotice(noticeId);
-        this.notice = response.data;
-        // 로깅
-        console.log(response.data.views);
-      } catch (e) {
-        console.log(e);
-      }
-    },
-    async deleteNotice() {
-      try {
-        alert("정말로 삭제하시겠습니까?");
-        let response = await NoticeService.delete(this.notice.noticeId);
-
-        // 로깅
-        console.log(response.data);
-        alert("정상적으로 삭제되었습니다.");
-        this.$router.push("/notice/notice-board");
-      } catch (e) {
-        console.log(e);
-      }
-    },
-    goUpdate() {
-      this.$router.push(`/admin/notice-update/${this.notice.noticeId}`);
-    },
-    async viewsUp() {
-      try {
-        // +하고 이동
-        let views = (this.notice.views = this.notice.views + 1);
-        // todo: 오타였음, views
-        let data = {
-          views: views,
-          noticeId: this.notice.noticeId,
-          title: this.notice.title,
-          noticeType: this.notice.noticeType,
-          content: this.notice.content,
-        };
-        console.log(data);
-        let response = await NoticeService.updateVeiws(
-          this.notice.noticeId,
-          data
+        // TODO: 1) 공통 전체조회 함수 실행
+        let response = await NoticeService.getDept(
+          this.pageSize // 1페이지당개수(size) - 5개 이상 등록못하게 할것
         );
+        const { noticeDept } = response.data; // 부서배열(벡엔드 전송)
+        this.noticeDept = noticeDept; // 부서배열(벡엔드 전송)
         console.log(response.data);
       } catch (e) {
         console.log(e);
       }
     },
+
+    // TODO:Free
+    async retrieveNoticeFree() {
+      try {
+        // TODO: 1) 공통 전체조회 함수 실행
+        let response = await NoticeService.getFree(
+          this.pageSize // 1페이지당개수(size) - 5개 이상 등록못하게 할것
+        );
+        const { noticeFree } = response.data; // 부서배열(벡엔드 전송)
+        this.noticeFree = noticeFree; // 부서배열(벡엔드 전송)
+        console.log(response.data);
+      } catch (e) {
+        console.log(e);
+      }
+    },
+
+    // TODO:Complaint
+    async retrieveNoticeComplaint() {
+      try {
+        // TODO: 1) 공통 전체조회 함수 실행
+        let response = await NoticeService.getComplaint(
+          this.pageSize // 1페이지당개수(size) - 5개 이상 등록못하게 할것
+        );
+        const { noticeComplaint } = response.data; // 부서배열(벡엔드 전송)
+        this.noticeComplaint = noticeComplaint; // 부서배열(벡엔드 전송)
+        console.log(response.data);
+      } catch (e) {
+        console.log(e);
+      }
+    },
+
+    // TODO:Complaint
+    async retrieveNoticeGroup() {
+      try {
+        // TODO: 1) 공통 전체조회 함수 실행
+        let response = await NoticeService.getGroup(
+          this.pageSize // 1페이지당개수(size) - 5개 이상 등록못하게 할것
+        );
+        const { noticeGroup } = response.data; // 부서배열(벡엔드 전송)
+        this.noticeGroup = noticeGroup; // 부서배열(벡엔드 전송)
+        console.log(response.data);
+      } catch (e) {
+        console.log(e);
+      }
+    },
+
+    // dept지만 전체 공지사항 다 삭제할 수있는것임 나중에 수정 요망
+    async deleteNotice(noticeId) {
+      console.log("아이디" + noticeId);
+      try {
+        // todo: 공통 장바구니 삭제 서비스 함수 실행
+        let response = await NoticeService.delete(noticeId);
+        // 로깅
+        console.log(response.data);
+        // alert 대화상자
+        alert("정상적으로 삭제되었습니다.");
+        this.retrieveNoticeDept();
+      } catch (e) {
+        console.log(e);
+      }
+    },
+
+    // gonotice
+    goNoticeAdd() {
+      this.$router.push("/admin/notice-add");
+    },
+    //   if (this.pageSize == 25) {
+    //     alert("공지사항이 25개 이상입니다");
+    //   }
+    //   else{
+
+    // },
   },
-  async mounted() {
-    // 상세조회 실행
-    await this.get(this.$route.params.noticeId);
-    this.viewsUp();
-    window.scrollTo(0, 0);
+  // 마운티드
+  mounted() {
+    this.retrieveNoticeDept();
+    this.retrieveNoticeFree();
+    this.retrieveNoticeComplaint();
+    this.retrieveNoticeGroup();
   },
 };
 </script>
 
-<style>
-@import "@/assets/css/NoticeStyle.css";
+<style scoped>
+.main-container {
+  display: flex;
+}
+
+.sidebar {
+  width: 250px;
+  background-color: #343a40;
+  color: white;
+}
+
+.main-content {
+  flex: 1;
+  padding: 20px;
+  background-color: #f8f9fa;
+}
 </style>
