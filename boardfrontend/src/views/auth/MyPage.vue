@@ -629,8 +629,11 @@ import FreeBoardService from "@/services/board/free/FreeBoardService";
 import UserService from "@/services/user/UserService";
 
 import ComplaintBoardService from "@/services/board/complaint/ComplaintBoardService";
-import ClubBoardService from "@/services/board/club/ClubBoardService";
 import DeptBoardService from "@/services/board/dept/DeptBoardService";
+
+import ClubBoardService from '@/services/board/club/ClubBoardService';
+
+
 
 export default {
   data() {
