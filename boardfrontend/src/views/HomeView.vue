@@ -80,7 +80,7 @@
                 justify-content: center;
               "
             >
-              <div class="router-text" style="margin-right: 50px">커뮤니티</div>
+              <div class="router-text" style="margin-right: 50px">공지사항</div>
               <img
                 src="@/assets/img/Community_icon.png"
                 alt="Loo"
@@ -135,7 +135,7 @@
               "
             >
               <div class="router-text" style="margin-right: 50px">
-                이달의 HOT2
+                자유게시판
               </div>
               <img
                 src="@/assets/img/hot_icon.png"
@@ -154,7 +154,7 @@
             style="width: 500px; margin-left: 50px"
           >
             <!-- 테이블 시작-->
-            <table class="table mt-5">
+            <table class="table mt-5">건의게시판
               <thead>
                 <tr>
                   <th scope="col" style="font-size: 14px">작성자</th>
@@ -188,7 +188,7 @@
                 justify-content: center;
               "
             >
-              <div class="router-text" style="margin-right: 50px">커뮤니티2</div>
+              <div class="router-text" style="margin-right: 50px">자유게시판</div>
               <img
                 src="@/assets/img/Community_icon.png"
                 alt="Loo"

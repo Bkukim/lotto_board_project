@@ -9,11 +9,9 @@
           style="background-color: #162b59"
         >
           <div class="circle"></div>
-
           <p style="color: #fff; margin-top: 20px; font-size: 20px">
             {{ userId }}
           </p>
-
           <ul
             class="nav flex-column mt-3"
             style="
@@ -140,7 +138,6 @@
                 >
                   자유게시판
                 </h3>
-
                 <div class="col-11">
                   <table class="table mt-5 text-center">
                     <thead>
@@ -206,7 +203,6 @@
                 >
                   부서게시판
                 </h3>
-
                 <div class="col-11">
                   <table class="table mt-5 text-center">
                     <thead>
@@ -222,7 +218,7 @@
                         <td class="col-8">
                           <router-link
                             :to="'/dept/board/detail/' + data.deptBoardId"
-                            style="text-decoration: none"
+                            style="text-decoration: none; color: #333"
                             class="alltext router-link-exact-active custom-pagination"
                             >{{ data.title }}</router-link
                           >
@@ -296,7 +292,7 @@
                               '/complaint/complaint-boardDetail/' +
                               data.complaintBoardId
                             "
-                            style="text-decoration: none"
+                            style="text-decoration: none; color: #333"
                             class="alltext router-link-exact-active custom-pagination"
                             >{{ data.title }}</router-link
                           >
@@ -339,7 +335,6 @@
                   </table>
                 </div>
               </div>
-
               <div class="row mt-3 border justify-content-center">
                 <h3
                   style="
@@ -364,8 +359,10 @@
                       <tr v-for="(data, index) in clubBoardList" :key="index">
                         <td class="col-8">
                           <router-link
+
                             :to="`/club/club-boardRecruitment/${data.clubBoardId}`"
                             style="text-decoration: none"
+
                             class="alltext router-link-exact-active custom-pagination"
                             >{{ data.title }}</router-link
                           >
@@ -384,7 +381,9 @@
                           <button
                             type="button"
                             class="btn btn-success"
+
                             @click="deleteClubBoard(data.clubBoardId)"
+
                           >
                             삭제
                           </button>
@@ -415,11 +414,9 @@
               <br />
               <br />
               <br />
-
               <h2 class="text-center mb-5" style="letter-spacing: -1.5px">
                 새로운 비밀번호 설정
               </h2>
-
               <div class="container" style="background-color: #f2f2f2">
                 <div class="row justify-content-md-center" v-if="result">
                   <div class="col-8">
@@ -618,8 +615,11 @@ import FreeBoardService from "@/services/board/free/FreeBoardService";
 import UserService from "@/services/user/UserService";
 
 import ComplaintBoardService from "@/services/board/complaint/ComplaintBoardService";
-import ClubBoardService from "@/services/board/club/ClubBoardService";
 import DeptBoardService from "@/services/board/dept/DeptBoardService";
+
+import ClubBoardService from '@/services/board/club/ClubBoardService';
+
+
 
 export default {
   data() {
@@ -669,28 +669,28 @@ export default {
   },
 
   methods: {
-    // 회원 탈퇴 소프트 삭제 함수
-    async withdraw(userId) {
-      if (this.user.password !== this.confirmPassword) {
-        alert("비밀번호가 일치하지 않습니다");
-        return;
-      }
-      try {
-        let result = confirm("정말로 탈퇴 하시겠습니까?");
-        if (result) {
-          let response = UserService.deleteUser(userId);
-          console.log(response);
-          AuthService.logout(); // LOCAL저장소에서 USER객체 삭제해주기
-          this.$store.commit("logout"); //
-          alert("회원 탈퇴가 완료되었습니다");
-          this.$router.push("/");
-        } else {
-          return;
-        }
-      } catch (e) {
-        console.log(e);
-      }
-    },
+    // // 회원 탈퇴 소프트 삭제 함수
+    // async withdraw(userId) {
+    //   if (this.user.password !== this.confirmPassword) {
+    //     alert("비밀번호가 일치하지 않습니다");
+    //     return;
+    //   }
+    //   try {
+    //     let result = confirm("정말로 탈퇴 하시겠습니까?");
+    //     if (result) {
+    //       let response = UserService.deleteUser(userId);
+    //       console.log(response);
+    //       AuthService.logout(); // LOCAL저장소에서 USER객체 삭제해주기
+    //       this.$store.commit("logout"); //
+    //       alert("회원 탈퇴가 완료되었습니다");
+    //       this.$router.push("/");
+    //     } else {
+    //       return;
+    //     }
+    //   } catch (e) {
+    //     console.log(e);
+    //   }
+    // },
 
     // 유저 상세조회 : 프로필
     async findUserInfo(userId) {
