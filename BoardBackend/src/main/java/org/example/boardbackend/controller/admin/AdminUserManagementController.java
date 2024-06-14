@@ -87,7 +87,7 @@ public class AdminUserManagementController {
     @DeleteMapping("/delete/{userId}")
     public ResponseEntity<Object> deleteUser(@PathVariable String userId){
         try {
-            log.debug("디버그"+userId);
+            log.debug("디버그 " + userId);
             userService.removeById(userId);
             return new ResponseEntity<>(HttpStatus.OK);
         }catch (Exception e){

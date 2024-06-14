@@ -32,14 +32,14 @@ import java.util.Optional;
  */
 @Slf4j
 @RestController
-@RequestMapping("/api/user/")
+@RequestMapping("/api/user")
 @RequiredArgsConstructor
 public class UserController {
 
     private final UserService userService;
 
 //    todo : userId 상세 조회
-    @GetMapping("{userId}")
+    @GetMapping("/{userId}")
     public ResponseEntity<Object> findByUserID(@PathVariable String userId){
         try {
             Optional<User> user = userService.findById(userId);

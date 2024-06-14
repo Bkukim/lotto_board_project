@@ -28,9 +28,10 @@ import java.util.Optional;
 @Repository
 public interface UserRepository extends JpaRepository<User, String> {
 
-    //    todo 관리자 : 이름으로 회원찾기
+    //    todo 관리자 : 이름으로 회원찾기 // JPA기본함수는 자동으로 N인거만 보이게 되어있음. 쿼리는 소프트삭제시 직접 넣어주기
     @Query(value = "SELECT * FROM LOTTO_USER\n" +
             "WHERE USER_NAME LIKE '%'|| :userName ||'%'"+
+            "AND WITHDRAW_YN = 'N'"+
             "ORDER BY USER_NAME ASC"
             ,nativeQuery = true)
     public Page<User> findByUserName(@Param("userName") String userName, Pageable pageable);
