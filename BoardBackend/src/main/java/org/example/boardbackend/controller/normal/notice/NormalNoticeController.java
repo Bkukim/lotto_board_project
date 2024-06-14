@@ -40,8 +40,8 @@ public class NormalNoticeController {
     private final NoticeRedisService noticeRedisService;
 
     //todo: 공지사항 clob이 string 변환 => entity에 컬럼추가해 주니 됨 @Column(name = "CONTENT")
-    @GetMapping("/all/{eventYn}")
-    public ResponseEntity<Object> getAllNotice(@PathVariable String eventYn, // 이벤트 가 존재하면 true 보내게
+    @GetMapping("/all")
+    public ResponseEntity<Object> getAllNotice(/*@RequestParam String eventYn, // 이벤트 가 존재하면 true 보내게*/
                                                @RequestParam String title,
                                                @RequestParam int page,
                                                @RequestParam int size) {
@@ -49,13 +49,13 @@ public class NormalNoticeController {
             Pageable pageable = PageRequest.of(page, size);
             Map<String, Object> response = new HashMap<>();
             Page<INoticeDto> notices;
-            if (eventYn.equals("y")) { // 이벤트가 있을경우 레디스 사용
+//            if (eventYn.equals("Y")) { // 이벤트가 있을경우 레디스 사용
                 notices = noticeRedisService
                         .redisFindByTitleContaining(title, pageable);
-            } else {
-                notices = noticeRedisService
-                        .findByTitleContaining(title, pageable);
-            }
+//            } else {
+//                notices = noticeRedisService
+//                        .findByTitleContaining(title, pageable);
+//            }
             response.put("notices", notices.getContent());
             response.put("currentPage", notices.getNumber());
             response.put("totalItems", notices.getTotalElements());
@@ -67,12 +67,13 @@ public class NormalNoticeController {
 
     }
 
-    @GetMapping("/{noticeId}/{eventYn}")
+
+    @GetMapping("/{noticeId}")
     public ResponseEntity<Object> getNoticeByNoticeId(@PathVariable long noticeId,
-                                                      @PathVariable boolean eventYn) {
+                                                      @RequestParam String eventYn) {
         try {
             Optional<Notice> notice;
-            if (eventYn) {
+            if (eventYn.equals("Y")) {
                 notice = noticeRedisService.redisFindById(noticeId);
             } else {
                 notice = noticeRedisService.findById(noticeId);
@@ -83,33 +84,33 @@ public class NormalNoticeController {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-
-    //    todo: 상세조회 만들기
-//    조회(select) -> get 방식 -> @GetMapping
-    @GetMapping("/{noticeId}")
-    public ResponseEntity<Object> findById(
-            @PathVariable int noticeId
-    ) {
-        log.debug("컨트롤러1");
-        try {
-//            상세조회 서비스 실행
-            Optional<Notice> noticeOptional
-                    = noticeRedisService.findById(noticeId);
-
-            if (noticeOptional.isEmpty() == true) {
-//                데이터 없음
-                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-            } else {
-//                조회 성공
-                return new ResponseEntity<>(noticeOptional.get(), HttpStatus.OK);
-
-            }
-        } catch (Exception e) {
-            log.debug("컨트롤러2");
-
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-    }
+//
+//    //    todo: 상세조회 만들기
+////    조회(select) -> get 방식 -> @GetMapping
+//    @GetMapping("/{noticeId}")
+//    public ResponseEntity<Object> findById(
+//            @PathVariable int noticeId
+//    ) {
+//        log.debug("컨트롤러1");
+//        try {
+////            상세조회 서비스 실행
+//            Optional<Notice> noticeOptional
+//                    = noticeRedisService.findById(noticeId);
+//
+//            if (noticeOptional.isEmpty() == true) {
+////                데이터 없음
+//                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+//            } else {
+////                조회 성공
+//                return new ResponseEntity<>(noticeOptional.get(), HttpStatus.OK);
+//
+//            }
+//        } catch (Exception e) {
+//            log.debug("컨트롤러2");
+//
+//            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+//        }
+//    }
 
     //    todo: 조회수 update
     @PutMapping("/notice-update-views/{noticeId}")

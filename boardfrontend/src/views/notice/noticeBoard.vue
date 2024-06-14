@@ -110,7 +110,7 @@
             class="col-5"
             
           >
-            <router-link :to="`/notice/notice-check/` + data.noticeId"
+            <router-link :to="`/notice/notice-check/` + data.noticeId+'/'+data.eventYN"
             style="
               color: #444444;
               font-weight: bold;
@@ -153,12 +153,12 @@ export default {
     return {
       notices: [],
       title: "",
-      eventYn: "n",
 
       // 공통속성
       page: 1, // 현재페이지번호
       count: 0, // 전체데이터개수
       pageSize: 10, // 1페이지당개수(select태그)
+      
     };
   },
   methods: {
@@ -167,7 +167,6 @@ export default {
       try {
         // TODO: 1) 공통 전체조회 함수 실행
         let response = await NoticeService.getAll(
-          this.eventYn,
           this.title, // 검색어
           this.page - 1, // 현재페이지번호-1
           this.pageSize // 1페이지당개수(size)

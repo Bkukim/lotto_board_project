@@ -100,8 +100,8 @@ const routes = [
   },
   // 공지사항 -> 상세조회
   {
-    path: "/notice/notice-check/:noticeId",
-    meta: { showHeader: true }, // 기본적으로 헤더를 보이게 설정
+path: "/notice/notice-check/:noticeId/:eventYN",
+meta: { showHeader: true }, // 기본적으로 헤더를 보이게 설정
     component: () => import("../views/notice/NoticeCheck.vue"),
   },
   // 공지사항 -> 글쓰기

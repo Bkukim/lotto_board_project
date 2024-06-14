@@ -45,7 +45,7 @@ import java.util.Optional;
 @RestController
 @RequestMapping("/api/user/dept")
 @RequiredArgsConstructor
-public class DeptBoardController {
+public class UserDeptBoardController {
 
     private final DeptBoardService deptBoardService;
     private final DepartmentService departmentService;
