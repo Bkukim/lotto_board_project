@@ -233,15 +233,16 @@ export default {
         title: "",
         content: "",
         views: 0,
+        eventYN:"N"
       },
     };
   },
   methods: {
     // 상세조회
-    async get(noticeId) {
+    async get(noticeId,eventYN) {
       // todo: 공통 상세조회 함수: get()
       try {
-        let response = await NoticeService.getNotice(noticeId);
+        let response = await NoticeService.getNotice(noticeId,eventYN);
         this.notice = response.data;
         // 로깅
         console.log(response.data.views);
@@ -290,7 +291,7 @@ export default {
   },
   async mounted() {
     // 상세조회 실행
-    await this.get(this.$route.params.noticeId);
+    await this.get(this.$route.params.noticeId,this.$route.params.eventYN);
     this.viewsUp();
     window.scrollTo(0, 0);
   },

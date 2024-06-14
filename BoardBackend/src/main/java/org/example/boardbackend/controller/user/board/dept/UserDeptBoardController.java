@@ -2,7 +2,6 @@ package org.example.boardbackend.controller.user.board.dept;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.example.boardbackend.constant.DeptCode;
 import org.example.boardbackend.model.dto.board.dept.DeptBoardDto;
 import org.example.boardbackend.model.dto.board.dept.DeptRecommentDto;
 import org.example.boardbackend.model.entity.board.dept.DeptBoard;
@@ -44,7 +43,7 @@ import java.util.Optional;
 @RestController
 @RequestMapping("/api/user/dept")
 @RequiredArgsConstructor
-public class DeptBoardController {
+public class UserDeptBoardController {
 
     private final DeptBoardService deptBoardService;
     private final DepartmentService departmentService;

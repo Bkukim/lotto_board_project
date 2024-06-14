@@ -79,13 +79,12 @@ public class EventService {
 //
 //    }
     @Scheduled(fixedDelay = 1000)
-    public void scheduler(){
+    public void scheduler(Event event,long noticeId){
         if(validEnd()){
             log.info("===== 선착순 이벤트가 종료되었습니다. =====");
             return;
         }
-        log.info("===== 1 =====");
-
+        publish(event, noticeId);
     }
 
     public boolean validEnd(){

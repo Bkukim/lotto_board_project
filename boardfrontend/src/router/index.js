@@ -67,7 +67,7 @@ const routes = [
   },
   // 공지사항 -> 상세조회
   {
-    path: "/notice/notice-check/:noticeId",
+    path: "/notice/notice-check/:noticeId/:eventYN",
     component: () => import("../views/notice/NoticeCheck.vue"),
   },
 
