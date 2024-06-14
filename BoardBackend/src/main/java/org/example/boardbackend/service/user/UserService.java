@@ -8,6 +8,7 @@ import org.example.boardbackend.repository.user.UserRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 
@@ -85,21 +86,22 @@ public class UserService {
             ,  long birthday
             ,  String phoneNum
             ,  String email
-            ,  String department
+            ,  String deptId
             ,  String normalAddress
             ,  String detailAddress
             ,  String userId){
-        userRepository.updateUserById( userName
+        userRepository.updateUserById(userName
                 ,   birthday
                 ,   phoneNum
                 ,   email
-                ,   department
+                ,   deptId
                 ,   normalAddress
                 ,   detailAddress
                 ,   userId);
     }
 
     // todo 유저 삭제 함수 (소프트 삭제)
+    @Transactional
     public boolean removeById(String userId){
         if (userRepository.existsById(userId)) {
             userRepository.deleteById(userId);

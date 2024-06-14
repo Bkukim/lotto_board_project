@@ -27,7 +27,9 @@
         </router-link>
       </li>
       <li>
+
         <router-link to="/admin/member/manage" class="nav-link" exact-active-class="active">
+
           <svg class="bi me-2" width="16" height="16"><use xlink:href="#speedometer2"/></svg>
           회원관리
         </router-link>
@@ -45,7 +47,9 @@
         </router-link>
       </li> -->
       <li>
+
         <router-link to="/admin/report" class="nav-link" exact-active-class="active">
+
           <svg class="bi me-2" width="16" height="16"><use xlink:href="#grid"/></svg>
           신고게시글 관리
         </router-link>

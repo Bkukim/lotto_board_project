@@ -1,7 +1,6 @@
 import { createRouter, createWebHistory } from "vue-router";
 import HomeView from "../views/HomeView.vue";
 
-
 const routes = [
   {
     path: "/",
@@ -12,9 +11,10 @@ const routes = [
   {
     path: "/admin/home",
     component: () => import("../views/admin/AdminHome.vue"),
-    meta: { showHeader: false }, // 관리자 페이지에서는 헤더를 숨김
-  },
 
+    meta: { showHeader: false }, // 관리자 페이지에서는 헤더를 숨김
+
+  },
   {
     path: "/about",
     component: () => import("../views/AboutView.vue"),
@@ -28,8 +28,6 @@ const routes = [
     meta: { showHeader: true }, // 기본적으로 헤더를 보이게 설정
 
   },
-
-
   // 마이페이지
   {
     path: "/member/mypage",
@@ -37,7 +35,6 @@ const routes = [
     meta: { showHeader: true }, // 기본적으로 헤더를 보이게 설정
 
   },
-
   // 카카오 로그인
   {
     path: "/auth-redirect",
@@ -155,6 +152,11 @@ const routes = [
     meta: { showHeader: true }, // 기본적으로 헤더를 보이게 설정
     component: () => import("../views/club/ClubBoardWrite.vue"),
   },
+  // // 동아리 게시판 -> 매칭글 수정
+  // {
+  //   path: "/club/update/:clubBoardId",
+  //   component: () => import("../views/club/ClubBoardUpdate.vue"),
+  // },
   // 동아리 게시판 -> 매칭 모집글 게시글
   {
     path: "/club/club-boardRecruitment/:clubBoardId",
@@ -197,15 +199,12 @@ const routes = [
     meta: { showHeader: true }, // 기본적으로 헤더를 보이게 설정
     component: () => import("../views/hot/hotBoard.vue"),
   },
-
   // 부서 게시판
-
   {
     path: "/dept/:deptId",
     meta: { showHeader: true }, // 기본적으로 헤더를 보이게 설정
     component: () => import("../views/dept/DeptBoard.vue"),
   },
-
   // 부서 게시판 : 재정부
   {
     path: "/dept/B0002",
@@ -224,7 +223,6 @@ const routes = [
     meta: { showHeader: true }, // 기본적으로 헤더를 보이게 설정
     component: () => import("../views/dept/PromotionBoard.vue"),
   },
-
   // 부서 게시판 : 상세페이지
   {
     path: "/dept/board/detail/:deptBoardId",
@@ -243,18 +241,18 @@ const routes = [
     meta: { showHeader: true }, // 기본적으로 헤더를 보이게 설정
     component: () => import("../views/dept/DeptBoardUpdate.vue"),
   },
-    // 관리자 회원 관리
-    {
-      path: "/admin/member/manage",
-      component: () => import("../views/admin/AdminMemberManagement.vue"),
-    },
+  // 관리자 회원 관리
+  {
+    path: "/admin/member/manage",
+    component: () => import("../views/admin/AdminMemberManagement.vue"),
+  },
   // 관리자 신고 게시판
   {
     path: "/admin/report",
     meta: { showHeader: false }, // 관리자 페이지에서는 헤더를 숨김
     component: () => import("../views/admin/AdminReportBoard.vue"),
   },
-   // 관리자 신고 게시판 : 상세페이지
+  // 관리자 신고 게시판 : 상세페이지
   {
     path: "/admin/report/:reportId",
     meta: { showHeader: false }, // 관리자 페이지에서는 헤더를 숨김

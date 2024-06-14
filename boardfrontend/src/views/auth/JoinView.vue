@@ -563,14 +563,14 @@ export default {
         alert("비밀번호와 비밀번호 확인이 일치하지 않습니다");
         return;
       }
-      if (this.user.pwQuestion == "") {
-        alert("비밀번호 확인 질문을 입력해주세요");
-        return;
-      }
-      if (this.user.pwAnswer == "") {
-        alert("비밀번호 질문 확인을 입력해주세요");
-        return;
-      }
+      // if (this.user.pwQuestion == "") {
+      //   alert("비밀번호 확인 질문을 입력해주세요");
+      //   return;
+      // }
+      // if (this.user.pwAnswer == "") {
+      //   alert("비밀번호 질문 확인을 입력해주세요");
+      //   return;
+      // }
 
       if (this.user.userName == "") {
         alert("이름을 입력해주세요");
