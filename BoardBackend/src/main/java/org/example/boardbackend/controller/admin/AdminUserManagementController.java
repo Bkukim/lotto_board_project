@@ -10,10 +10,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -39,7 +36,7 @@ public class AdminUserManagementController {
 
     private final UserService userService;
 
-    //    todo: UserName으로 회원 조회
+    //    todo: 관리자 : UserName으로 회원 조회
     @GetMapping("/manage")
     public ResponseEntity<Object> findUserName(
             @RequestParam(defaultValue = "") String userName,
@@ -69,6 +66,32 @@ public class AdminUserManagementController {
                 return new ResponseEntity<>(HttpStatus.NO_CONTENT);
             }
         } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    // todo 관리자 : 회원 정보 수정 함수 : 회원정보수정
+    @PutMapping("/update/{userId}")
+    public ResponseEntity<Object> updateUser(@PathVariable String userId,
+                                             @RequestBody User user){
+        try {
+            userService.updateUserById(user.getUserName(), user.getBirthday(),user.getPhoneNum(), user.getEmail(), user.getDeptId(), user.getNormalAddress(), user.getDetailAddress(), user.getUserId());
+            return new ResponseEntity<>(user, HttpStatus.OK);
+        }catch (Exception e){
+            log.debug(e.getMessage());
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    // todo 관리자 : 회원 소프트 삭제 함수 : 회원 탈퇴
+    @DeleteMapping("/delete/{userId}")
+    public ResponseEntity<Object> deleteUser(@PathVariable String userId){
+        try {
+            log.debug("디버그"+userId);
+            userService.removeById(userId);
+            return new ResponseEntity<>(HttpStatus.OK);
+        }catch (Exception e){
+            log.debug(e.getMessage());
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }

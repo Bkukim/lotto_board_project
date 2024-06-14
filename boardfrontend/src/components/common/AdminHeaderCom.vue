@@ -28,7 +28,7 @@
         </a>
       </li>
       <li>
-        <a href="/admin/notice-update/:noticeId" class="nav-link link-dark">
+        <a href="/admin/member/manage" class="nav-link link-dark">
           <svg class="bi me-2" width="16" height="16"><use xlink:href="#speedometer2"/></svg>
           회원관리
         </a>
@@ -46,7 +46,7 @@
         </a>
       </li>
       <li>
-        <a href="#" class="nav-link link-dark">
+        <a href="/admin/report" class="nav-link link-dark">
           <svg class="bi me-2" width="16" height="16"><use xlink:href="#grid"/></svg>
           신고게시글 관리
         </a>

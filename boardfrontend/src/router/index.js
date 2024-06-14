@@ -1,7 +1,6 @@
 import { createRouter, createWebHistory } from "vue-router";
 import HomeView from "../views/HomeView.vue";
 
-
 const routes = [
   {
     path: "/",
@@ -11,9 +10,7 @@ const routes = [
   {
     path: "/admin/home",
     component: () => import("../views/admin/AdminHome.vue"),
-    
   },
-
   {
     path: "/about",
     component: () => import("../views/AboutView.vue"),
@@ -23,14 +20,11 @@ const routes = [
     path: "/member/login",
     component: () => import("../views/auth/LoginView.vue"),
   },
-
-
   // 마이페이지
   {
     path: "/member/mypage",
     component: () => import("../views/auth/MyPage.vue"),
   },
-
   // 카카오 로그인
   {
     path: "/auth-redirect",
@@ -121,6 +115,11 @@ const routes = [
     path: "/club/club-boardDetail",
     component: () => import("../views/club/ClubBoardWrite.vue"),
   },
+  // // 동아리 게시판 -> 매칭글 수정
+  // {
+  //   path: "/club/update/:clubBoardId",
+  //   component: () => import("../views/club/ClubBoardUpdate.vue"),
+  // },
   // 동아리 게시판 -> 매칭 모집글 게시글
   {
     path: "/club/club-boardRecruitment/:clubBoardId",
@@ -156,14 +155,11 @@ const routes = [
     path: "/hot/hotBoard",
     component: () => import("../views/hot/hotBoard.vue"),
   },
-
   // 부서 게시판
-
   {
     path: "/dept/:deptId",
     component: () => import("../views/dept/DeptBoard.vue"),
   },
-
   // 부서 게시판 : 재정부
   {
     path: "/dept/B0002",
@@ -179,7 +175,6 @@ const routes = [
     path: "/dept/D0004",
     component: () => import("../views/dept/PromotionBoard.vue"),
   },
-
   // 부서 게시판 : 상세페이지
   {
     path: "/dept/board/detail/:deptBoardId",
@@ -195,17 +190,17 @@ const routes = [
     path: "/dept/board/Update/:deptBoardId",
     component: () => import("../views/dept/DeptBoardUpdate.vue"),
   },
-    // 관리자 회원 관리
-    {
-      path: "/admin/member/manage",
-      component: () => import("../views/admin/AdminMemberManagement.vue"),
-    },
+  // 관리자 회원 관리
+  {
+    path: "/admin/member/manage",
+    component: () => import("../views/admin/AdminMemberManagement.vue"),
+  },
   // 관리자 신고 게시판
   {
     path: "/admin/report",
     component: () => import("../views/admin/AdminReportBoard.vue"),
   },
-   // 관리자 신고 게시판 : 상세페이지
+  // 관리자 신고 게시판 : 상세페이지
   {
     path: "/admin/report/:reportId",
     component: () => import("../views/admin/AdminReportBoardDetail.vue"),

@@ -49,17 +49,4 @@ public class UserController {
             return new ResponseEntity<>(e.getMessage(),HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-
-    // todo  회원 소프트 삭제 함수 : 1. 회원 탈퇴
-    @DeleteMapping("/delete/{userId}")
-    public ResponseEntity<Object> deleteUser(@PathVariable String userId){
-        try {
-            log.debug(userId);
-            userService.removeById(userId);
-            return new ResponseEntity<>(HttpStatus.OK);
-        }catch (Exception e){
-            log.debug(e.getMessage());
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-    }
 }

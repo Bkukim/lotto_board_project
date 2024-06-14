@@ -9,11 +9,9 @@
           style="background-color: #162b59"
         >
           <div class="circle"></div>
-
           <p style="color: #fff; margin-top: 20px; font-size: 20px">
             {{ userId }}
           </p>
-
           <ul
             class="nav flex-column mt-3"
             style="
@@ -26,7 +24,6 @@
               text-align: center;
             "
           >
-
             <li class="nav-item">
               <a
                 class="nav-link"
@@ -37,7 +34,6 @@
               >
             </li>
             <li class="nav-item">
-
               <a
                 class="nav-link"
                 href="#"
@@ -45,7 +41,6 @@
                 @click="showWrittenPosts"
                 >작성한 글</a
               >
-
             </li>
             <li class="nav-item">
               <a
@@ -73,8 +68,6 @@
           <!-- 1. 프로필 -->
           <template v-if="displayedContent === 'profile'">
             <h3 class="mb-5 mt-5">My Profile</h3>
-
-
             <div
               class="container"
               style="
@@ -83,7 +76,6 @@
                 align-items: center;
               "
             >
-
               <div
                 class="row justify-content-md-center"
                 style="
@@ -147,7 +139,6 @@
                 >
                   자유게시판
                 </h3>
-
                 <div class="col-11">
                   <table class="table mt-5 text-center">
                     <thead>
@@ -187,7 +178,6 @@
                           >
                             삭제
                           </button>
-
                         </td>
                       </tr>
                     </tbody>
@@ -201,14 +191,12 @@
                         :total-rows="freeBoardCount"
                         :per-page="freeBoardPageSize"
                       ></b-pagination>
-
                     </div>
                   </div>
                 </div>
               </div>
 
               <div class="row mt-3 border justify-content-center">
-
                 <h3
                   style="
                     text-align: left;
@@ -218,7 +206,6 @@
                 >
                   부서게시판
                 </h3>
-
                 <div class="col-11">
                   <table class="table mt-5 text-center">
                     <thead>
@@ -230,12 +217,11 @@
                       </tr>
                     </thead>
                     <tbody>
-
                       <tr v-for="(data, index) in deptBoardList" :key="index">
                         <td class="col-8">
                           <router-link
                             :to="'/dept/board/detail/' + data.deptBoardId"
-                            style="text-decoration: none"
+                            style="text-decoration: none; color: #333"
                             class="alltext router-link-exact-active custom-pagination"
                             >{{ data.title }}</router-link
                           >
@@ -258,7 +244,6 @@
                           >
                             삭제
                           </button>
-
                         </td>
                       </tr>
                     </tbody>
@@ -272,7 +257,6 @@
                         :total-rows="deptBoardCount"
                         :per-page="deptBoardPageSize"
                       ></b-pagination>
-
                     </div>
                   </div>
                 </div>
@@ -312,7 +296,7 @@
                               '/complaint/complaint-boardDetail/' +
                               data.complaintBoardId
                             "
-                            style="text-decoration: none"
+                            style="text-decoration: none; color: #333"
                             class="alltext router-link-exact-active custom-pagination"
                             >{{ data.title }}</router-link
                           >
@@ -355,7 +339,6 @@
                   </table>
                 </div>
               </div>
-
               <div class="row mt-3 border justify-content-center">
                 <h3
                   style="
@@ -384,7 +367,7 @@
 
                             :to="'/complaint/complaint-boardDetail/' + data.complaintBoardId"
 
-                            style="text-decoration: none"
+                            style="text-decoration: none; color: #333"
                             class="alltext router-link-exact-active custom-pagination"
                             >{{ data.title }}</router-link
                           >
@@ -398,7 +381,6 @@
                             @click="
                               goUpdateComplaintBoard(data.complaintBoardId)
                             "
-
                           >
                             수정
                           </button>
@@ -407,9 +389,7 @@
                           <button
                             type="button"
                             class="btn btn-success"
-
                             @click="deleteNotice(data.noticeId)"
-
                           >
                             삭제
                           </button>
@@ -428,19 +408,16 @@
                           ></b-pagination>
                         </div>
                       </div>
-
                     </tbody>
                   </table>
                   <div class="row justify-content-center mt-4">
                     <div class="col-auto">
-
                       <b-pagination
                         class="col-12 mb-3 custom-pagination"
                         v-model="clubBoardPage"
                         :total-rows="clubBoardCount"
                         :per-page="clubBoardPageSize"
                       ></b-pagination>
-
                     </div>
                   </div>
                 </div>
@@ -454,11 +431,9 @@
               <br />
               <br />
               <br />
-
               <h2 class="text-center mb-5" style="letter-spacing: -1.5px">
                 새로운 비밀번호 설정
               </h2>
-
               <div class="container" style="background-color: #f2f2f2">
                 <div class="row justify-content-md-center" v-if="result">
                   <div class="col-8">
@@ -639,7 +614,6 @@
                 </div>
               </div>
             </div>
-
           </template>
         </div>
       </div>
@@ -713,28 +687,28 @@ export default {
   },
 
   methods: {
-    // 회원 탈퇴 소프트 삭제 함수
-    async withdraw(userId) {
-      if (this.user.password !== this.confirmPassword) {
-        alert("비밀번호가 일치하지 않습니다");
-        return;
-      }
-      try {
-        let result = confirm("정말로 탈퇴 하시겠습니까?");
-        if (result) {
-          let response = UserService.deleteUser(userId);
-          console.log(response);
-          AuthService.logout(); // LOCAL저장소에서 USER객체 삭제해주기
-          this.$store.commit("logout"); //
-          alert("회원 탈퇴가 완료되었습니다");
-          this.$router.push("/");
-        } else {
-          return;
-        }
-      } catch (e) {
-        console.log(e);
-      }
-    },
+    // // 회원 탈퇴 소프트 삭제 함수
+    // async withdraw(userId) {
+    //   if (this.user.password !== this.confirmPassword) {
+    //     alert("비밀번호가 일치하지 않습니다");
+    //     return;
+    //   }
+    //   try {
+    //     let result = confirm("정말로 탈퇴 하시겠습니까?");
+    //     if (result) {
+    //       let response = UserService.deleteUser(userId);
+    //       console.log(response);
+    //       AuthService.logout(); // LOCAL저장소에서 USER객체 삭제해주기
+    //       this.$store.commit("logout"); //
+    //       alert("회원 탈퇴가 완료되었습니다");
+    //       this.$router.push("/");
+    //     } else {
+    //       return;
+    //     }
+    //   } catch (e) {
+    //     console.log(e);
+    //   }
+    // },
 
     // 유저 상세조회 : 프로필
     async findUserInfo(userId) {

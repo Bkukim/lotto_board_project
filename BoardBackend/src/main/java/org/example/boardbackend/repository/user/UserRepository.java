@@ -30,13 +30,14 @@ public interface UserRepository extends JpaRepository<User, String> {
 
     //    todo 관리자 : 이름으로 회원찾기
     @Query(value = "SELECT * FROM LOTTO_USER\n" +
-            "WHERE USER_NAME = :userName"
+            "WHERE USER_NAME LIKE '%'|| :userName ||'%'"+
+            "ORDER BY USER_NAME ASC"
             ,nativeQuery = true)
     public Page<User> findByUserName(@Param("userName") String userName, Pageable pageable);
 
 //    todo 아이디 찾기
     @Query(value = "SELECT * FROM LOTTO_USER\n" +
-            "WHERE USER_ID = :userId"
+            "WHERE USER_ID LIKE '%'|| :userId ||'%'"
             ,nativeQuery = true)
     public Optional<User> findByUserId(@Param("userId") String userId);
 
@@ -70,7 +71,7 @@ public interface UserRepository extends JpaRepository<User, String> {
             ",BIRTHDAY = :birthday\n" +
             ",PHONE_NUM = :phoneNum\n" +
             ",EMAIL = :email\n" +
-            ",DEPARTMENT = :department\n"+
+            ",DEPT_ID = :deptId\n"+
             ",NORMAL_ADDRESS = :normalAddress\n" +
             ",DETAIL_ADDRESS = :detailAddress\n" +
             "WHERE USER_ID = :userId "
@@ -80,7 +81,7 @@ public interface UserRepository extends JpaRepository<User, String> {
             , @Param("birthday") long birthday
             , @Param("phoneNum") String phoneNum
             , @Param("email") String email
-            , @Param("department") String department
+            , @Param("deptId") String deptId
             , @Param("normalAddress") String normalAddress
             , @Param("detailAddress") String detailAddress
             , @Param("userId") String userId
