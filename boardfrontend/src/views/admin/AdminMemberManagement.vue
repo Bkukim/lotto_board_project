@@ -290,7 +290,7 @@ export default {
         birthday: "",
         email: "",
         phoneNum: "",
-        normalAddress: "",
+        address:"",
         detailAddress: "",
         deptId: "",
       },
@@ -321,11 +321,12 @@ export default {
         birthday: this.user.birthday,
         email: this.user.email,
         phoneNum: this.user.phoneNum,
-        normalAddress: this.address + "," + this.extraAddress,
-        detailAddress: this.user.detailAddress,
-        deptId: this.deptId,
+        // normalAddress: this.user.address,
+        // detailAddress: this.user.detailAddress,
+        deptId: this.user.deptId,
       };
       try {
+        console.log("부서명",data);
         let response = await UserService.updateUser(data);
         console.log(response.data);
         alert("회원 정보가 수정되었습니다.");
@@ -346,8 +347,8 @@ export default {
       try {
         let result = confirm("정말로 이 회원을 삭제 하시겠습니까?");
         if (result) {
-          alert(userId)
           let response = await UserService.deleteUser(userId);
+          // alert(userId);
           console.log(response);
           AuthService.logout(); // LOCAL저장소에서 USER객체 삭제해주기
           this.$store.commit("logout"); //
@@ -390,7 +391,7 @@ export default {
   },
   mounted() {
     this.retrieveUser();
-    this.getUser(this.user.userId);
+    // this.getUser(this.user.userId);
     window.scrollTo(0, 0);
   },
 };
