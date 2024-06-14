@@ -54,6 +54,7 @@
           <div class="col-12">
             <h3 class="section-title">매치 데이터</h3>
             <p v-if="clubBoard">{{ clubBoard.location }}</p>
+            <p v-if="clubBoard">{{ clubBoard.content }}</p>
           </div>
         </div>
 
@@ -71,7 +72,7 @@
       </div>
 
       <!-- 뉴스 섹션 -->
-      <div class="news-container rounded-section" style="background-color: #ffffff; max-height: 400px; overflow-y: auto; flex-basis: calc(35% + 10px); position: sticky; top: 5px; margin-right: -10px;">
+      <div class="news-container rounded-section" style="background-color: #ffffff; max-height: 420px; flex-basis: calc(35% + 10px); position: sticky; top: 5px; margin-right: -10px;">
         <div v-if="clubBoard" class="date-container">{{ formatDate(clubBoard.startTime) }}</div>
         <div v-if="clubBoard" class="club-title">{{ clubBoard.title }}</div>
         <div v-if="clubBoard" class="news-content">

@@ -375,7 +375,7 @@
                           <button
                             type="button"
                             class="btn btn-success"
-                            @click="goUpdateClubBoard(data.clubBoarId)"
+                            @click="goUpdateClubBoard(data.clubBoardId)"
                           >
                             수정
                           </button>
@@ -392,17 +392,6 @@
                       </tr>
                       <!-- {/* paging 시작 */} -->
                       <!-- TODO: 1페이지당 화면에 보일 개수 조정(select태그) -->
-                      <div class="row justify-content-center mt-4">
-                        <div class="col-auto">
-                          <b-pagination
-                            class="col-12 mb-3 custom-pagination"
-                            v-model="page"
-                            :total-rows="count"
-                            :per-page="pageSize"
-                            @click="retrieveComplaintBoardListUserId"
-                          ></b-pagination>
-                        </div>
-                      </div>
                     </tbody>
                   </table>
                   <div class="row justify-content-center mt-4">
@@ -869,6 +858,10 @@ export default {
       } catch (e) {
         console.log(e);
       }
+    },
+    // 4. 동호회게시판 : 내가 쓴 글 수정 함수
+    async goUpdateClubBoard(clubBoardId) {
+      this.$router.push(`/club/update/` + clubBoardId);
     },
 
     // 프로필 표시 메소드
