@@ -1,7 +1,7 @@
 <template>
   <div>
     <!-- 머리말 -->
-    <HeaderCom/>
+    <HeaderCom v-if="$route.meta.showHeader"  />
 
 
     <!-- 본문 -->
