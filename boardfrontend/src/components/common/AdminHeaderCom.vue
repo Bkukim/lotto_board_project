@@ -15,7 +15,7 @@
         <li><a class="dropdown-item" href="#">설정</a></li>
         <li><a class="dropdown-item" href="#">프로필?</a></li>
         <li><hr class="dropdown-divider"></li>
-        <li><a class="dropdown-item" href="#">로그아웃</a></li>
+        <li><a class="dropdown-item" href="#" @click="handleLogout">로그아웃</a></li>
       </ul>
     </div>
     <hr>
@@ -66,8 +66,23 @@
 </template>
 
 <script>
+import AuthService from '@/services/auth/AuthService';
+
 export default {
   // name: 'Sidebar'
+  methods: {
+        handleLogout() {
+      let result = confirm("정말로 로그아웃 하시겠습니까?");
+      if (result) {
+        AuthService.logout(); // LOCAL저장소에서 USER객체 삭제해주기
+        this.$store.commit("logout"); //
+        this.$store.state.notifyCount = 0;
+        this.$router.push("/member/login");
+      } else {
+        return;
+      }
+    },
+  },
 };
 </script>
 
