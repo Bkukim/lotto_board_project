@@ -188,11 +188,68 @@ public class ClubBoardService {
 
 
     //  TODO: 수정 함수
-    public ClubBoard update(ClubBoard clubBoard) {
-        ClubBoard clubBoard2 = clubBoardRepository.save(clubBoard);
+    @Transactional
+    public void update(long clubBoardId, CreateClubArticleDto dto, MultipartFile[] imgFiles) {
+        // 기존 ClubBoard를 가져와 업데이트
+        ClubBoard clubBoard = clubBoardRepository.findById(clubBoardId)
+                .orElseThrow(() -> new RuntimeException("ClubBoard not found"));
 
-        return clubBoard2;
+        clubBoard.setUserId(dto.getUserId());
+        clubBoard.setLikes(dto.getLikes());
+        clubBoard.setContent(dto.getContent());
+        clubBoard.setLocation(dto.getLocation());
+        clubBoard.setAddress(dto.getAddress());
+        clubBoard.setParticipationFee(dto.getParticipationFee());
+        clubBoard.setStartTime(dto.getStartTime());
+        clubBoard.setEndTime(dto.getEndTime());
+        clubBoard.setRecruitmentDeadline(dto.getRecruitmentDeadline());
+        clubBoard.setMaxQuota(dto.getMaxQuota());
+        clubBoard.setMinQuota(dto.getMinQuota());
+        clubBoard.setPeoplesMatch(dto.getPeoplesMatch());
+        clubBoard.setMaterial(dto.getMaterial());
+        clubBoard.setSex(dto.getSex());
+        clubBoard.setMatchForm(dto.getMatchForm());
+        clubBoard.setTitle(dto.getTitle());
+        clubBoard = clubBoardRepository.save(clubBoard);
+
+        // 기존 FieldPic 삭제
+        List<FieldPic> existingPics = fieldPicRepository.findByClubBoard_ClubBoardId(clubBoardId);
+        fieldPicRepository.deleteAll(existingPics);
+
+        // 새 이미지를 추가
+        if (imgFiles != null) {
+            List<FieldPic> fieldPics = new ArrayList<>();
+            for (MultipartFile imgFile : imgFiles) {
+                try {
+                    // 1. UUID 생성
+                    String uuid = UUID.randomUUID().toString().replace("-", "");
+
+                    // 2. 다운로드 URL 생성
+                    String downloadUrl = ServletUriComponentsBuilder
+                            .fromCurrentContextPath()
+                            .path("/api/user/board/club/img/")
+                            .path(uuid)
+                            .toUriString();
+
+                    // 3. FieldPic 생성
+                    byte[] imgFileBytes = imgFile.getBytes(); // IOException 발생 가능
+                    FieldPic fieldPic = FieldPic.builder()
+                            .uuid(uuid)
+                            .clubBoard(clubBoard)
+                            .imgUrl(downloadUrl)
+                            .imgFile(imgFileBytes)
+                            .build();
+                    fieldPics.add(fieldPic);
+                } catch (IOException e) {
+                    // 예외 처리 로직 추가
+                    e.printStackTrace();
+                    throw new RuntimeException("Failed to process image file", e);
+                }
+            }
+            fieldPicRepository.saveAll(fieldPics);
+        }
     }
+
 
     //  TODO: 삭제 함수
     @Transactional

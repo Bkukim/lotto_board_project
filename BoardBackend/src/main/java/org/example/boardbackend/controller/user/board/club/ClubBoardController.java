@@ -123,16 +123,21 @@ public class ClubBoardController {
 
     //  TODO: 수정 함수
     @PutMapping("/club/update/{clubBoardId}")
-    public ResponseEntity<Object> update(
+    public ResponseEntity<String> updateClubBoard(
             @PathVariable long clubBoardId,
-            @RequestBody ClubBoard clubBoard
-    ) {
+            @RequestParam("data") String data,
+            @RequestParam("imgFiles") MultipartFile[] imgFiles) {
         try {
-            ClubBoard clubBoard2 = clubBoardService.update(clubBoard);
+            // JSON 문자열을 CreateClubArticleDto 객체로 변환
+            ObjectMapper objectMapper = new ObjectMapper();
+            CreateClubArticleDto dto = objectMapper.readValue(data, CreateClubArticleDto.class);
 
-            return new ResponseEntity<>(clubBoard2, HttpStatus.OK);
+            // 서비스 호출
+            clubBoardService.update(clubBoardId, dto, imgFiles);
+            return ResponseEntity.ok("ClubBoard updated successfully");
         } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to update ClubBoard");
         }
     }
 

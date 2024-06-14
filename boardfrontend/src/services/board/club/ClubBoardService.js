@@ -13,11 +13,12 @@ class ClubBoardService {
     });
   }
   // TODO: 수정
-  updateClub(clubBoardId, data) {
-    let formData = new FormData();
-    Object.keys(data).forEach((key) => formData.append(key, data[key]));
+  updateClub(clubBoardId, formData) {
     return http.put(`/user/board/club/update/${clubBoardId}`, formData, {
-      headers: AuthHeader(),
+      headers: {
+        ...AuthHeader(),
+        "Content-Type": "multipart/form-data"
+      }
     });
   }
   // TODO: 삭제
@@ -26,7 +27,7 @@ class ClubBoardService {
       headers: AuthHeader(),
     });
   }
-  // TODO: createClub 함수 수정
+  // TODO: 저장 함수
   createClub(formData) {
     return http.post("/user/board/club/create", formData, {
       headers: {
