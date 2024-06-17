@@ -69,7 +69,59 @@
         <div class="col text-center">
           <!-- 1. 프로필 -->
           <template v-if="displayedContent === 'profile'">
-            <h3 class="mb-5 mt-5">My Profile</h3>
+            <!-- <h3 class="mb-5 mt-5">My Profile</h3> -->
+
+            <div class="withdrawal-container" style="height: 800px">
+              <div class="withdrawal-box">
+                <h5
+                  class="card-header mb-5"
+                  style="font-size: 45px; font-weight: bold; color: #162b59"
+                >
+                  My Profile
+                </h5>
+                <!-- <p class="card-text mt-3 mb-5" style="padding-top: 30px">
+                  회원 탈퇴 시 계정정보 삭제 및 공지사항 확인이 불가합니다.
+                  <br />
+                  정말로 삭제하시겠습니까?
+                </p> -->
+                <p style="padding: 10px; margin-top: 10px; text-align: left;">
+                  사용자 ID:
+                  <span
+                    style="
+                      font-weight: bold;
+                      border: #cccccc 1px solid;
+                      padding: 10px 50px;
+                    "
+                    >{{ userId }}</span
+                  >
+                </p>
+
+
+                <p style="padding: 10px; margin-top: 10px;text-align: left;">
+                  이름
+                  <span
+                    style="
+                      font-weight: bold;
+                      border: #cccccc 1px solid;
+                      padding: 10px 50px;
+                    "
+                    >{{ user.userName }}</span
+                  >
+                </p>
+
+                <p style="padding: 10px; margin-top: 10px;text-align: left;">
+                  연락처:
+                  <span
+                    style="
+                      font-weight: bold;
+                      border: #cccccc 1px solid;
+                      padding: 10px 50px;
+                    "
+                    >{{ user.phoneNum }}</span
+                  >
+                </p>
+              </div>
+            </div>
 
             <div
               class="container"
@@ -128,14 +180,17 @@
 
           <!-- 2. 작성한 글 -->
           <template v-else-if="displayedContent === 'writtenPosts'">
-            <h3 class="mt-5">내가 작성한 글</h3>
-            <div class="container" style="height: auto">
+            <h3 class="mt-5" style="letter-spacing: -1.5px">내가 작성한 글</h3>
+            <div class="container" style="height: auto; width: 1000px">
               <div class="row mt-5 border justify-content-center">
                 <h3
+                  class="align-items-center"
                   style="
                     text-align: left;
                     font-size: 20px;
                     letter-spacing: -1.2px;
+                    background-color: #f2f2f2;
+                    padding-bottom: 20px;
                   "
                 >
                   자유게시판
@@ -202,6 +257,9 @@
                     text-align: left;
                     font-size: 20px;
                     letter-spacing: -1.2px;
+                    letter-spacing: -1.2px;
+                    background-color: #f2f2f2;
+                    padding-bottom: 20px;
                   "
                 >
                   부서게시판
@@ -269,6 +327,9 @@
                     text-align: left;
                     font-size: 20px;
                     letter-spacing: -1.2px;
+                    letter-spacing: -1.2px;
+                    background-color: #f2f2f2;
+                    padding-bottom: 20px;
                   "
                 >
                   건의게시판
@@ -346,6 +407,9 @@
                     text-align: left;
                     font-size: 20px;
                     letter-spacing: -1.2px;
+                    letter-spacing: -1.2px;
+                    background-color: #f2f2f2;
+                    padding-bottom: 20px;
                   "
                 >
                   동호회 게시판
@@ -427,11 +491,11 @@
               <br />
               <br />
 
-              <h2 class="text-center mb-5" style="letter-spacing: -1.5px">
+              <h2 class="text-center mb-5" style="letter-spacing: -3px">
                 새로운 비밀번호 설정
               </h2>
 
-              <div class="container" style="background-color: #f2f2f2">
+              <div class="container shadow" style="background-color: #f2f2f2">
                 <div class="row justify-content-md-center" v-if="result">
                   <div class="col-8">
                     <div
@@ -631,9 +695,7 @@ import UserService from "@/services/user/UserService";
 import ComplaintBoardService from "@/services/board/complaint/ComplaintBoardService";
 import DeptBoardService from "@/services/board/dept/DeptBoardService";
 
-import ClubBoardService from '@/services/board/club/ClubBoardService';
-
-
+import ClubBoardService from "@/services/board/club/ClubBoardService";
 
 export default {
   data() {
