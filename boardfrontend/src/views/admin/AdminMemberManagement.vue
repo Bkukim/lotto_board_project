@@ -64,7 +64,7 @@
               <th scope="col">생년월일</th>
               <th scope="col">이메일</th>
               <th scope="col">전화번호</th>
-              <!-- <th scope="col">주소</th> -->
+              <th scope="col">주소</th>
               <th scope="col">부서</th>
               <th scope="col">수정</th>
               <th scope="col">삭제</th>
@@ -79,7 +79,7 @@
               <td>{{ data.birthday }}</td>
               <td>{{ data.email }}</td>
               <td>{{ data.phoneNum }}</td>
-              <!-- <td>{{ data.normalAddress + " " + data.detailAddress }}</td> -->
+              <td>{{ data.normalAddress + " " + data.detailAddress }}</td>
               <td>{{ data.deptId }}</td>
               <td>
                 <button
@@ -177,7 +177,7 @@
                             />
                           </div>
                           <!-- 6. 기본 주소 -->
-                          <!-- <div class="mb-3 row">
+                          <div class="mb-3 row">
                             <label for="message-text" class="col-form-label text-start"
                               ><strong style="font-size: 18px;">기본 주소</strong></label
                             >
@@ -187,9 +187,9 @@
                               id="recipient-name"
                               v-model="user.normalAddress"
                             />
-                          </div> -->
+                          </div>
                           <!-- 6. 상세 주소 -->
-                          <!-- <div class="mb-3 row">
+                          <div class="mb-3 row">
                             <label for="message-text" class="col-form-label text-start"
                               ><strong style="font-size: 18px;">상세 주소</strong></label
                             >
@@ -199,7 +199,7 @@
                               id="recipient-name"
                               v-model="user.detailAddress"
                             />
-                          </div> -->
+                          </div>
                           <!-- 7. 부서 -->
                           <div class="mb-3 row">
                             <label for="message-text" class="col-form-label text-start"
@@ -290,7 +290,7 @@ export default {
         birthday: "",
         email: "",
         phoneNum: "",
-        address:"",
+        normalAddress:"",
         detailAddress: "",
         deptId: "",
       },
@@ -321,8 +321,8 @@ export default {
         birthday: this.user.birthday,
         email: this.user.email,
         phoneNum: this.user.phoneNum,
-        // normalAddress: this.user.address,
-        // detailAddress: this.user.detailAddress,
+        normalAddress: this.user.normalAddress,
+        detailAddress: this.user.detailAddress,
         deptId: this.user.deptId,
       };
       try {

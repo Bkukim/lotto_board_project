@@ -1,4 +1,4 @@
-package org.example.boardbackend.model.entity.report;
+package org.example.boardbackend.model.entity.board.free;
 
 import static com.querydsl.core.types.PathMetadataFactory.*;
 
@@ -15,7 +15,7 @@ import com.querydsl.core.types.Path;
 @Generated("com.querydsl.codegen.DefaultEntitySerializer")
 public class QFreeBoardReport extends EntityPathBase<FreeBoardReport> {
 
-    private static final long serialVersionUID = -792963576L;
+    private static final long serialVersionUID = 104630088L;
 
     public static final QFreeBoardReport freeBoardReport = new QFreeBoardReport("freeBoardReport");
 
