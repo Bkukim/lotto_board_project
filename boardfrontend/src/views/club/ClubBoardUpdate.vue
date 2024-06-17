@@ -4,9 +4,6 @@
     <div class="form-container">
       <div class="match-form">
         <input type="file" multiple @change="handlePhotoUpload" class="file-input" />
-        <div class="file-names" v-if="fileNames.length">
-          <p v-for="fileName in fileNames" :key="fileName">{{ fileName }}</p>
-        </div>
         <div class="match-points">
           <!-- 성별 선택 -->
           <div class="select-wrapper">
@@ -103,7 +100,6 @@ export default {
         sex: "",
       },
       imgFiles: [], // 여러 파일을 저장하기 위한 배열
-      fileNames: [] // 파일명을 저장하기 위한 배열
     };
   },
   methods: {
@@ -129,7 +125,6 @@ export default {
             title: data.title,
             sex: data.sex,
           };
-          this.fileNames = data.fieldPics.map(pic => pic.imgUrl); // 기존 이미지 URL 추가
         }
       } catch (error) {
         console.error("Error fetching club board details:", error);
@@ -137,9 +132,8 @@ export default {
     },
     handlePhotoUpload(event) {
       this.imgFiles = Array.from(event.target.files);
-      this.fileNames = this.imgFiles.map(file => file.name); // 파일명을 추출하여 저장
       console.log("Selected files:", this.imgFiles);
-      // 파일 크기 확인 로직 추가
+       // 파일 크기 확인 로직 추가
       const maxSize = 10 * 1024 * 1024; // 10MB
       for (let file of this.imgFiles) {
         if (file.size > maxSize) {
@@ -172,6 +166,8 @@ export default {
           this.imgFiles.forEach((file) => {
             formData.append(`imgFiles`, file);
           });
+        } else {
+          formData.append("imgFiles", ""); // imgFiles 파트가 비어있어도 추가
         }
 
         for (var pair of formData.entries()) {
@@ -237,10 +233,6 @@ export default {
 
 .file-input {
   color: #999999;
-  margin-bottom: 20px;
-}
-
-.file-names {
   margin-bottom: 20px;
 }
 

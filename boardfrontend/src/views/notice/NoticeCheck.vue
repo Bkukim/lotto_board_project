@@ -620,6 +620,7 @@ export default {
         title: "",
         content: "",
         views: 0,
+        eventYN:"N"
       },
       // replyVisible: false, // 답글 입력 폼의 표시 여부를 관리하는 변수
       replyToCommentId: null, // 어떤 댓글에 대한 답글인지 식별하기 위한 변수
@@ -684,9 +685,10 @@ export default {
     },
 
     // freeBoardId로 상세조회 : 화면뜰때 실행
-    async retrieveGetNotice(noticeId) {
+    async retrieveGetNotice(noticeId,eventYN) {
+      // todo: 공통 상세조회 함수: get()
       try {
-        let response = await NoticeService.getNotice(noticeId);
+        let response = await NoticeService.getNotice(noticeId,eventYN);
         this.notice = response.data;
         console.log(response.data);
       } catch (e) {
@@ -850,6 +852,9 @@ export default {
     this.retrieveGetNotice(this.$route.params.noticeId);
     this.retrieveNoticeComment(this.$route.params.noticeId);
     // this.retrieveFreeBoardRecomment(this.$route.params.freeBoardId);
+    // 상세조회 실행
+    await this.get(this.$route.params.noticeId,this.$route.params.eventYN);
+    this.viewsUp();
     window.scrollTo(0, 0);
   },
 };

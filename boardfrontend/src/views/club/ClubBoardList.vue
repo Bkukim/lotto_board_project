@@ -195,7 +195,7 @@ export default {
       this.selectedDateIndex = 7; // 새로운 날짜 범위에서 중간 날짜를 선택
     },
     async fetchWeatherForecast() {
-      const apiKey = '8dd072cece1b405883082135242105'; // API 키
+      const apiKey = '5114682ae35f4a5abaf62021241406'; // API 키
       const city = 'Busan';
       const url = `http://api.weatherapi.com/v1/forecast.json?key=${apiKey}&q=${city}&days=7`;
 

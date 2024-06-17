@@ -9,11 +9,9 @@
           style="background-color: #162b59"
         >
           <div class="circle"></div>
-
           <p style="color: #fff; margin-top: 20px; font-size: 20px">
             {{ userId }}
           </p>
-
           <ul
             class="nav flex-column mt-3"
             style="
@@ -195,7 +193,6 @@
                 >
                   자유게시판
                 </h3>
-
                 <div class="col-11">
                   <table class="table mt-5 text-center">
                     <thead>
@@ -264,7 +261,6 @@
                 >
                   부서게시판
                 </h3>
-
                 <div class="col-11">
                   <table class="table mt-5 text-center">
                     <thead>
@@ -280,7 +276,7 @@
                         <td class="col-8">
                           <router-link
                             :to="'/dept/board/detail/' + data.deptBoardId"
-                            style="text-decoration: none"
+                            style="text-decoration: none; color: #333"
                             class="alltext router-link-exact-active custom-pagination"
                             >{{ data.title }}</router-link
                           >
@@ -357,7 +353,7 @@
                               '/complaint/complaint-boardDetail/' +
                               data.complaintBoardId
                             "
-                            style="text-decoration: none"
+                            style="text-decoration: none; color: #333"
                             class="alltext router-link-exact-active custom-pagination"
                             >{{ data.title }}</router-link
                           >
@@ -400,7 +396,6 @@
                   </table>
                 </div>
               </div>
-
               <div class="row mt-3 border justify-content-center">
                 <h3
                   style="
@@ -428,8 +423,10 @@
                       <tr v-for="(data, index) in clubBoardList" :key="index">
                         <td class="col-8">
                           <router-link
+
                             :to="`/club/club-boardRecruitment/${data.clubBoardId}`"
                             style="text-decoration: none"
+
                             class="alltext router-link-exact-active custom-pagination"
                             >{{ data.title }}</router-link
                           >
@@ -439,7 +436,7 @@
                           <button
                             type="button"
                             class="btn btn-success"
-                            @click="goUpdateClubBoard(data.clubBoarId)"
+                            @click="goUpdateClubBoard(data.clubBoardId)"
                           >
                             수정
                           </button>
@@ -448,7 +445,9 @@
                           <button
                             type="button"
                             class="btn btn-success"
+
                             @click="deleteClubBoard(data.clubBoardId)"
+
                           >
                             삭제
                           </button>
@@ -456,17 +455,6 @@
                       </tr>
                       <!-- {/* paging 시작 */} -->
                       <!-- TODO: 1페이지당 화면에 보일 개수 조정(select태그) -->
-                      <div class="row justify-content-center mt-4">
-                        <div class="col-auto">
-                          <b-pagination
-                            class="col-12 mb-3 custom-pagination"
-                            v-model="page"
-                            :total-rows="count"
-                            :per-page="pageSize"
-                            @click="retrieveComplaintBoardListUserId"
-                          ></b-pagination>
-                        </div>
-                      </div>
                     </tbody>
                   </table>
                   <div class="row justify-content-center mt-4">
@@ -491,11 +479,13 @@
               <br />
               <br />
 
+
               <h2 class="text-center mb-5" style="letter-spacing: -3px">
                 새로운 비밀번호 설정
               </h2>
 
               <div class="container shadow" style="background-color: #f2f2f2">
+
                 <div class="row justify-content-md-center" v-if="result">
                   <div class="col-8">
                     <div
@@ -745,28 +735,28 @@ export default {
   },
 
   methods: {
-    // 회원 탈퇴 소프트 삭제 함수
-    async withdraw(userId) {
-      if (this.user.password !== this.confirmPassword) {
-        alert("비밀번호가 일치하지 않습니다");
-        return;
-      }
-      try {
-        let result = confirm("정말로 탈퇴 하시겠습니까?");
-        if (result) {
-          let response = UserService.deleteUser(userId);
-          console.log(response);
-          AuthService.logout(); // LOCAL저장소에서 USER객체 삭제해주기
-          this.$store.commit("logout"); //
-          alert("회원 탈퇴가 완료되었습니다");
-          this.$router.push("/");
-        } else {
-          return;
-        }
-      } catch (e) {
-        console.log(e);
-      }
-    },
+    // // 회원 탈퇴 소프트 삭제 함수
+    // async withdraw(userId) {
+    //   if (this.user.password !== this.confirmPassword) {
+    //     alert("비밀번호가 일치하지 않습니다");
+    //     return;
+    //   }
+    //   try {
+    //     let result = confirm("정말로 탈퇴 하시겠습니까?");
+    //     if (result) {
+    //       let response = UserService.deleteUser(userId);
+    //       console.log(response);
+    //       AuthService.logout(); // LOCAL저장소에서 USER객체 삭제해주기
+    //       this.$store.commit("logout"); //
+    //       alert("회원 탈퇴가 완료되었습니다");
+    //       this.$router.push("/");
+    //     } else {
+    //       return;
+    //     }
+    //   } catch (e) {
+    //     console.log(e);
+    //   }
+    // },
 
     // 유저 상세조회 : 프로필
     async findUserInfo(userId) {
@@ -934,6 +924,10 @@ export default {
       } catch (e) {
         console.log(e);
       }
+    },
+    // 4. 동호회게시판 : 내가 쓴 글 수정 함수
+    async goUpdateClubBoard(clubBoardId) {
+      this.$router.push(`/club/update/` + clubBoardId);
     },
 
     // 프로필 표시 메소드

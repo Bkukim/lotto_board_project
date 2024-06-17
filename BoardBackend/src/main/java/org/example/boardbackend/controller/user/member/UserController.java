@@ -32,14 +32,14 @@ import java.util.Optional;
  */
 @Slf4j
 @RestController
-@RequestMapping("/api/user/")
+@RequestMapping("/api/user")
 @RequiredArgsConstructor
 public class UserController {
 
     private final UserService userService;
 
 //    todo : userId 상세 조회
-    @GetMapping("{userId}")
+    @GetMapping("/{userId}")
     public ResponseEntity<Object> findByUserID(@PathVariable String userId){
         try {
             Optional<User> user = userService.findById(userId);
@@ -47,19 +47,6 @@ public class UserController {
         }catch (Exception e){
             log.debug(e.getMessage());
             return new ResponseEntity<>(e.getMessage(),HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-    }
-
-    // todo  회원 소프트 삭제 함수 : 1. 회원 탈퇴
-    @DeleteMapping("/delete/{userId}")
-    public ResponseEntity<Object> deleteUser(@PathVariable String userId){
-        try {
-            log.debug(userId);
-            userService.removeById(userId);
-            return new ResponseEntity<>(HttpStatus.OK);
-        }catch (Exception e){
-            log.debug(e.getMessage());
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 }

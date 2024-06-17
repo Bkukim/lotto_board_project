@@ -34,7 +34,7 @@ class BoardBackendApplicationTests {
 				.collect(Collectors.toList());
 		workers.forEach(Thread::start);
 		countDownLatch.await();
-		gifticonService.scheduler();
+//		gifticonService.scheduler();
 		Thread.sleep(5000); // 기프티콘 발급 스케줄러 작업 시간
 
 

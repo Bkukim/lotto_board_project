@@ -12,14 +12,14 @@ class UserService{
 
     // 회원 정보 수정
    updateUser(data){
-      return http.put(`/user/update/${data.userId}`,data,{
+      return http.put(`/admin/user/update/${data.userId}`,data,{
          headers: AuthHeader()
        });
    }
 
-    // 회원 탈퇴 : 삭제 함수
+    // 회원 삭제 함수 : 회원 탈퇴
    deleteUser(userId){
-      return http.delete(`/user/delete/${userId}`,{
+      return http.delete(`/admin/user/delete/${userId}`,{
          headers: AuthHeader()
        });
    }

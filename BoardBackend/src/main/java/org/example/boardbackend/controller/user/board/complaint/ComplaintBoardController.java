@@ -104,7 +104,7 @@ public class ComplaintBoardController {
         try {
 //            DB 서비스 저장 함수 실행
             ComplaintBoard complaintBoard1 = complaintBoardService.save(complaintBoard);
-            log.debug("디버그"+complaintBoard1.toString());
+            log.debug("디버그" + complaintBoard1.toString());
 //            성공(OK) 메세지 + 저장된객체
             return new ResponseEntity<>(complaintBoard1, HttpStatus.OK);
         } catch (Exception e) {
