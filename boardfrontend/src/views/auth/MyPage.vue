@@ -883,6 +883,10 @@ export default {
 
     async updatePw() {
       try {
+                      if (this.newPw == "") {
+        alert("비밀번호를 입력해주세요");
+        return;
+      }
         let data = {
           userId: this.userId,
           newPw: this.newPw,
@@ -893,6 +897,7 @@ export default {
             this.$store.state.user.userId,
             data
           );
+
           if (response.data) {
             this.$store.state.user.userId = "";
             this.result = true;

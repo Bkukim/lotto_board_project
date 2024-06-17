@@ -1,4 +1,4 @@
-package org.example.boardbackend.model.entity.report;
+package org.example.boardbackend.model.entity.board.free;
 
 import jakarta.persistence.*;
 import lombok.*;

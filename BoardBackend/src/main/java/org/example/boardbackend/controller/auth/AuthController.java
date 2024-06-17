@@ -261,4 +261,10 @@ public class AuthController {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
+    @GetMapping("/exist-pw")
+    public ResponseEntity<Object> checkByPw(@RequestBody UserReq userReq){
+        boolean result = userService.confirmByPw(userReq);
+        return ResponseEntity.ok(result);
+    }
 }

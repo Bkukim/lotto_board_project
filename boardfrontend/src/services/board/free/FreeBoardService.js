@@ -85,6 +85,16 @@ class FreeBoardService {
       }
     );
   }
+
+    // TODO: 신고 게시글 전체 조회
+    getAllBoardReport(userId, page, size) {
+      return http.get(
+        `/admin/report/free?userId=${userId}&page=${page}&size=${size}`,
+        {
+          headers: AuthHeader(),
+        }
+      );
+    }
 }
 
 export default new FreeBoardService();
