@@ -6,11 +6,11 @@
     <div class="content-wrapper" style="flex: 1; padding: 20px; height: auto;">
       <h2 class="text-center my-5 font-weight-bold" style="letter-spacing: -1.5px;">공지사항 통합관리</h2>
       <div class="d-flex justify-content-between align-items-center mb-4">
-        <h3 class="section-title" style="letter-spacing: -1.5px;">공지사항 목록</h3>
+        <h3 class="section-title mt-5 mb-5" style="letter-spacing: -3px; font-size: 25px;">공지사항 목록</h3>
         <div class="d-flex justify-content align-items-center">
           <button
             type="button"
-            class="btn btn-primary mb-2"
+            class="btn btn-primary "
             @click="goNoticeAdd"
             style="margin-right: 10px;"
           >
@@ -70,8 +70,8 @@
             </div>
           </div>
           <div v-show="activeTab === 'dept'">
-            <div class="table-responsive">
-              <table class="table table-hover table-striped mt-3">
+            <div class="table-responsive shadow">
+              <table class="table table-hover ">
                 <thead class="thead-dark">
                   <tr>
                     <th scope="col">번호</th>
@@ -102,8 +102,8 @@
             </div>
           </div>
           <div v-show="activeTab === 'complaint'">
-            <div class="table-responsive">
-              <table class="table table-hover table-striped mt-3">
+            <div class="table-responsive shadow">
+              <table class="table table-hover ">
                 <thead class="thead-dark">
                   <tr>
                     <th scope="col">번호</th>
@@ -134,8 +134,8 @@
             </div>
           </div>
           <div v-show="activeTab === 'group'">
-            <div class="table-responsive">
-              <table class="table table-hover table-striped mt-3">
+            <div class="table-responsive shadow">
+              <table class="table table-hover">
                 <thead class="thead-dark">
                   <tr>
                     <th scope="col">번호</th>

@@ -243,6 +243,7 @@
             <router-link v-if="isAdminLoggedIn" to="/admin/home">
               관리자 페이지
             </router-link>
+            
           </div>
         </div>
       </nav>
@@ -319,6 +320,7 @@ export default {
       // 관리자 로그인 여부 계산
       return this.$store.state.user.role === 'admin';
     }
+    
   },
   },
   mounted() {
@@ -330,6 +332,25 @@ export default {
 </script>
 
 <style>
+/* 예시: 반응형 디자인 */
+@media (max-width: 992px) {
+  .navbar {
+    height: auto;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  /* 추가적인 반응형 스타일 조정 */
+}
+
+@media (max-width: 576px) {
+  .navbar {
+    flex-direction: column;
+    align-items: center;
+    padding: 5px 0;
+  }
+  /* 추가적인 반응형 스타일 조정 */
+}
+
 /* 헤더 색상 변경 / 높이 설정 */
 .navbar {
   background-color: rgb(255, 255, 255);

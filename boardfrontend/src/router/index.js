@@ -98,12 +98,13 @@ const routes = [
     meta: { showHeader: true }, // 기본적으로 헤더를 보이게 설정
 
   },
-  // 공지사항 -> 상세조회
-  {
-path: "/notice/notice-check/:noticeId/:eventYN",
-meta: { showHeader: true }, // 기본적으로 헤더를 보이게 설정
-    component: () => import("../views/notice/NoticeCheck.vue"),
-  },
+
+ // 공지사항 -> 상세조회
+ {
+  path: "/notice/notice-check/:noticeId/:eventYN",
+  component: () => import("../views/notice/NoticeCheck.vue"),
+},
+
   // 공지사항 -> 글쓰기
   {
     path: "/admin/notice-add",
@@ -152,11 +153,13 @@ meta: { showHeader: true }, // 기본적으로 헤더를 보이게 설정
     meta: { showHeader: true }, // 기본적으로 헤더를 보이게 설정
     component: () => import("../views/club/ClubBoardWrite.vue"),
   },
-  // // 동아리 게시판 -> 매칭글 수정
-  // {
-  //   path: "/club/update/:clubBoardId",
-  //   component: () => import("../views/club/ClubBoardUpdate.vue"),
-  // },
+
+  // 동아리 게시판 -> 매칭글 수정
+  {
+    path: "/club/update/:clubBoardId",
+    component: () => import("../views/club/ClubBoardUpdate.vue"),
+  },
+
   // 동아리 게시판 -> 매칭 모집글 게시글
   {
     path: "/club/club-boardRecruitment/:clubBoardId",
@@ -205,6 +208,9 @@ meta: { showHeader: true }, // 기본적으로 헤더를 보이게 설정
     meta: { showHeader: true }, // 기본적으로 헤더를 보이게 설정
     component: () => import("../views/dept/DeptBoard.vue"),
   },
+
+  
+
   // 부서 게시판 : 재정부
   {
     path: "/dept/B0002",
@@ -224,6 +230,7 @@ meta: { showHeader: true }, // 기본적으로 헤더를 보이게 설정
     component: () => import("../views/dept/PromotionBoard.vue"),
   },
   // 부서 게시판 : 상세페이지
+
   {
     path: "/dept/board/detail/:deptBoardId",
     meta: { showHeader: true }, // 기본적으로 헤더를 보이게 설정
