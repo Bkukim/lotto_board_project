@@ -26,6 +26,7 @@ public class FreeBoardLikeRepository2 {
     private final JPAQueryFactory jpaQueryFactory;
 //    QFreeBoardLike qFreeBoardLike;
     QFreeBoard qFreeBoard;
+
     public void updateCount(FreeBoard freeBoard, boolean b) {
         if (b) {
             jpaQueryFactory.update(qFreeBoard.freeBoard)

@@ -65,6 +65,7 @@ export default {
   },
   data() {
     return {
+      // todo:  null 대신 undefined
       editor: undefined,
       notice: {
         title: "",

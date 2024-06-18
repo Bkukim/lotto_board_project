@@ -3,19 +3,25 @@ package org.example.boardbackend.service.board.free;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.kafka.common.errors.DuplicateResourceException;
+import org.example.boardbackend.model.dto.board.free.FreeBoardDto;
 import org.example.boardbackend.model.dto.board.free.FreeBoardLikeDto;
+import org.example.boardbackend.model.dto.notice.INoticeDto;
 import org.example.boardbackend.model.entity.auth.User;
 import org.example.boardbackend.model.entity.board.free.FreeBoard;
 import org.example.boardbackend.model.entity.board.free.FreeBoardLike;
+import org.example.boardbackend.model.entity.notice.Notice;
 import org.example.boardbackend.repository.board.free.FreeBoardLikeRepository;
 import org.example.boardbackend.repository.board.free.FreeBoardLikeRepository2;
 import org.example.boardbackend.repository.board.free.FreeBoardRepository;
 import org.example.boardbackend.repository.user.UserRepository;
 import org.springframework.data.crossstore.ChangeSetPersister;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.lang.reflect.Member;
+import java.util.List;
 
 
 /**
@@ -49,60 +55,107 @@ public class FreeBoardLikeService {
     private final FreeBoardLikeRepository freeBoardLikeRepository;
     private final FreeBoardLikeRepository2 freeBoardLikeRepository2;
 
-    //    TODO: 추가
-    @Transactional
-    public void insert(FreeBoardLikeDto freeBoardLikeDto) throws Exception {
-        User user = userRepository.findById(freeBoardLikeDto.getUserId())
-                .orElseThrow(() -> new NotFoundException("Could not found user id : " + freeBoardLikeDto.getUserId()));
+//    chat
+//@Transactional
+//public void saveFreeBoardLike(String userId, Long freeBoardId) throws Exception {
+//    User user = userRepository.findById(userId)
+//            .orElseThrow(() -> new Exception("User not found with id: " + userId));
+//    FreeBoard freeBoard = freeBoardRepository.findById(freeBoardId)
+//            .orElseThrow(() -> new Exception("FreeBoard not found with id: " + freeBoardId));
 //
-        FreeBoard freeBoard = freeBoardRepository.findById(freeBoardLikeDto.getFreeBoardId())
-                .orElseThrow(() -> new NotFoundException("Could not found free board id : " + freeBoardLikeDto.getUserId()));
+//    FreeBoardLike freeBoardLike = FreeBoardLike.builder()
+//            .userId(user)
+//            .freeBoardId(freeBoard)
+//            .build();
+//
+//    freeBoardLikeRepository.save(freeBoardLike);
+//}
 
-        // 이미 좋아요되어있으면 에러 반환
-        if (freeBoardLikeRepository.findByUserAndFreeBoard(user, freeBoard).isPresent()) {
-            //TODO 409에러로 변경
-            throw new DuplicateResourceException("already exist data by user id :" + user.getUserId() + " ,"
-                    + "free board id : " + freeBoard.getFreeBoardId());
-        }
-
-        FreeBoardLike freeBoardLike = FreeBoardLike.builder()
-                .freeBoard(freeBoard)
-                .user(user)
-                .build();
-
-        freeBoardLikeRepository.save(freeBoardLike);
-        freeBoardLikeRepository2.updateCount(freeBoard,true);
-    }
-    //
-//        todo : 삭제
-    @Transactional
-    public void delete(FreeBoardLikeDto freeBoardLikeDto) {
-
-        User user = userRepository.findById(freeBoardLikeDto.getUserId())
-                .orElseThrow(() -> new NotFoundException("Could not found user id : " + freeBoardLikeDto.getUserId()));
-
-        FreeBoard freeBoard = freeBoardRepository.findById(freeBoardLikeDto.getFreeBoardId())
-                .orElseThrow(() -> new NotFoundException("Could not found free board id : " + freeBoardLikeDto.getFreeBoardId()));
-
-        FreeBoardLike freeBoardLike = freeBoardLikeRepository.findByUserAndFreeBoard(user, freeBoard)
-                .orElseThrow(() -> new NotFoundException("Could not found like id"));
-
-        freeBoardLikeRepository.delete(freeBoardLike);
-        freeBoardLikeRepository2.updateCount(freeBoard,false);
-
-//    boardRepository.subLikeCount(board);
+    //todo: 해당 유저 like 조회
+    public List<FreeBoardLikeDto> findByNoticeTypeDept(String userId, long freeBoardId) {
+        List<FreeBoardLikeDto> freeBoardLikeDto2 = freeBoardLikeRepository.findAllByUserIdContainingAndFreeBoardId(freeBoardId);
+        return freeBoardLikeDto2;
     }
 
 
-    // 예외처리 해주는 클래스
-    public class NotFoundException extends RuntimeException {
-
-        public NotFoundException(String message) {
-            super(message);
-        }
-
-        public NotFoundException(String message, Throwable cause) {
-            super(message, cause);
-        }
+    // todo: 저장
+    public FreeBoardLike save(FreeBoardLike freeBoardLike) {
+        FreeBoardLike freeBoardLike1 = freeBoardLikeRepository.save(freeBoardLike);
+        return freeBoardLike1;
     }
+
+    // todo: 수정
+    public FreeBoardLike update(FreeBoardLike freeBoardLike) {
+        FreeBoardLike freeBoardLike1 = freeBoardLikeRepository.save(freeBoardLike);
+        return freeBoardLike1;
+    }
+
+    // todo: 식제
+    public boolean removeById(long likeId) {
+
+        if (freeBoardLikeRepository.existsById(likeId)) {
+            freeBoardLikeRepository.deleteById(likeId);
+            return true;
+        }
+        return false;
+    }
+
+
+// todo: 예제 방식으로 해본것, 복잡해서 선생님 방식으로 변경하기
+//    //    TODO: 추가
+//    @Transactional
+//    public void insert(FreeBoardLikeDto freeBoardLikeDto) throws Exception {
+//        User user = userRepository.findById(freeBoardLikeDto.getUserId())
+//                .orElseThrow(() -> new NotFoundException("Could not found user id : " + freeBoardLikeDto.getUserId()));
+////
+//        FreeBoard freeBoard = freeBoardRepository.findById(freeBoardLikeDto.getFreeBoardId())
+//                .orElseThrow(() -> new NotFoundException("Could not found free board id : " + freeBoardLikeDto.getUserId()));
+//
+//        // 이미 좋아요되어있으면 에러 반환
+//        if (freeBoardLikeRepository.findByUserAndFreeBoard(user, freeBoard).isPresent()) {
+//            //TODO 409에러로 변경
+//            throw new DuplicateResourceException("already exist data by user id :" + user.getUserId() + " ,"
+//                    + "free board id : " + freeBoard.getFreeBoardId());
+//        }
+//
+//        FreeBoardLike freeBoardLike = FreeBoardLike.builder()
+//                .freeBoard(freeBoard)
+//                .user(user)
+//                .build();
+//
+//        freeBoardLikeRepository.save(freeBoardLike);
+//        freeBoardLikeRepository2.updateCount(freeBoard,true);
+//    }
+//    //
+////        todo : 삭제
+//    @Transactional
+//    public void delete(FreeBoardLikeDto freeBoardLikeDto) {
+//
+//        User user = userRepository.findById(freeBoardLikeDto.getUserId())
+//                .orElseThrow(() -> new NotFoundException("Could not found user id : " + freeBoardLikeDto.getUserId()));
+//
+//        FreeBoard freeBoard = freeBoardRepository.findById(freeBoardLikeDto.getFreeBoardId())
+//                .orElseThrow(() -> new NotFoundException("Could not found free board id : " + freeBoardLikeDto.getFreeBoardId()));
+//
+//        FreeBoardLike freeBoardLike = freeBoardLikeRepository.findByUserAndFreeBoard(user, freeBoard)
+//                .orElseThrow(() -> new NotFoundException("Could not found like id"));
+//
+//        freeBoardLikeRepository.delete(freeBoardLike);
+//        freeBoardLikeRepository2.updateCount(freeBoard,false);
+//
+////    boardRepository.subLikeCount(board);
+//    }
+//
+//
+//    // 예외처리 해주는 클래스
+//    public class NotFoundException extends RuntimeException {
+//
+//        public NotFoundException(String message) {
+//            super(message);
+//        }
+//
+//        public NotFoundException(String message, Throwable cause) {
+//            super(message, cause);
+//        }
+//    }
 }

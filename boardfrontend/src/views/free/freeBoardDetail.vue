@@ -68,7 +68,7 @@
         <button
           type="button"
           class="btn btn-light"
-          @click="likeUp"
+          @click="likeUpSave"
           style="
             border: none;
             text-align: center;
@@ -80,6 +80,20 @@
           <img src="@/assets/img/like_icon.png" width="40" height="40" />
           공감해요
           {{ this.freeBoard.likes }}
+        </button>
+        <button
+          type="button"
+          class="btn btn-light"
+          @click="deleteLike"
+          style="
+            border: none;
+            text-align: center;
+            height: 8vh;
+            width: 15vw;
+            padding: 1vw;
+          "
+        >
+          공감삭제하기
         </button>
         <button
           type="button"
@@ -100,8 +114,6 @@
       </div> -->
     </div>
     <!--  첫번째 게시판 큰 박스 끝-->
-
-    
 
     <!-- 삭제 -->
     <div class="container text-center mt-5">
@@ -344,10 +356,9 @@
             }}
           </button>
 
-
           <!-- 답변(대댓글)들 -->
           <div v-if="replyToCommentId === data.freeBoardCommentId">
-          <hr>
+            <hr />
 
             <div v-for="(data, index) in data.freeBoardRecomments" :key="index">
               <div
@@ -372,7 +383,7 @@
                     class="row"
                     style="color: #333333; text-align: left; font-weight: bold"
                   >
-                  └>   
+                    └>
                     <div
                       style="
                         background: #ccc;
@@ -388,11 +399,26 @@
 
                   <!-- (대댓글 시간) -->
                   <div class="col" style="color: #999999; font-weight: bold">
-                    <span style="color: #999999; font-weight: 100; margin-left: 55px;"> 
-                    {{ data.insertTime }}</span>
+                    <span
+                      style="
+                        color: #999999;
+                        font-weight: 100;
+                        margin-left: 55px;
+                      "
+                    >
+                      {{ data.insertTime }}</span
+                    >
 
                     <!-- (대댓글 내용) -->
-                    <div class="col" style="color: #333; font-weight: 300 ;margin-left: 55px; margin-top: 10px;">
+                    <div
+                      class="col"
+                      style="
+                        color: #333;
+                        font-weight: 300;
+                        margin-left: 55px;
+                        margin-top: 10px;
+                      "
+                    >
                       {{ data.content }}
                     </div>
                   </div>
@@ -563,6 +589,9 @@ export default {
       // 댓글 글자수
 
       charCount: 0,
+
+      // TODO:  like table 저장
+      freeBoardLike: {},
     };
   },
   watch: {
@@ -670,17 +699,56 @@ export default {
       }
     },
 
-    // 수정 함수
-    async likeUp() {
-      this.freeBoard.likes = +1;
-
+    // 세이브함수
+    async likeUpSave() {
       try {
-        let response = await FreeBoardService.updateLike(
-          this.freeBoard.likes
-        );
-        // 로깅
+        // +하고 이동
+        // like 테이블에 저장
+        const data = {
+          userId: this.$store.state.user.userId,
+          freeBoardId: this.freeBoard.freeBoardId,
+        };
+
+        // freeBoardLike 테이블 저장
+        let response = await FreeBoardService.saveLike(data);
         console.log(response.data);
-        this.$router.push("/free/free-board/:freeBoardId");
+      } catch (e) {
+        console.log("오류" + e);
+      }
+    },
+    async likeUpUpdate() {
+      try {
+        // 업데이트로freeboard 있는 like도 수정해줘야함
+        let likes1 = (this.freeBoard.likes = +1);
+        const data = {
+          userId: this.$store.state.user.userId,
+          content: this.freeBoard.content,
+          title: this.freeBoard.title,
+          likes: likes1,
+        };
+        // freeBoard 좋아요 수 업데이트
+        let response = await FreeBoardService.updateLike(
+          data,
+          this.freeBoard.freeBoardId
+        );
+        console.log(data);
+        console.log("게시판아이디" + this.freeBoard.freeBoardId);
+
+        console.log(response.data);
+      } catch (e) {
+        console.log("오류" + e);
+      }
+    },
+    async deleteLike() {
+      console.log("liketable"+this.freeBoardLike.likeId);
+      
+      try {
+        let response = await FreeBoardService.deleteLike(
+          this.freeBoardLike.likeId
+        );
+
+        // 로깅
+        console.log(response);
       } catch (e) {
         console.log(e);
       }
