@@ -50,7 +50,7 @@ public class Notice extends BaseTimeEntity {
     @Column(name = "CONTENT")
     private String content;
     @Column(name = "EVENT_YN")
-    private String eventYn;
+    private String eventYN;
     private String noticeType;
     private long eventWinnerQuota;
     @Column(name = "VIEWS")

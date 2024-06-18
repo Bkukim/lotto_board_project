@@ -38,7 +38,6 @@ public class NoticeService {
     // todo 공지사항 제목으로 검색 페이지 ::전체조회
     public Page<INoticeDto> findByTitleContaining(String title, Pageable pageable) {
         Page<INoticeDto> notices = noticeRepository.findByTitleContaining(title,pageable);
-
         return notices;
     }
 //   todo: 부서조회 , 페이징 없음

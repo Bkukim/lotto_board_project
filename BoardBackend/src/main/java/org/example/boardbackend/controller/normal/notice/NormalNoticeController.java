@@ -71,10 +71,10 @@ public class NormalNoticeController {
 
     @GetMapping("/{noticeId}")
     public ResponseEntity<Object> getNoticeByNoticeId(@PathVariable long noticeId,
-                                                      @RequestParam String eventYn) {
+                                                      @RequestParam String eventYN) {
         try {
             Optional<Notice> notice;
-            if (eventYn.equals("Y")) {
+            if (eventYN.equals("Y")) {
                 notice = noticeRedisService.redisFindById(noticeId);
             } else {
                 notice = noticeRedisService.findById(noticeId);
