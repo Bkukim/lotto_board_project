@@ -83,11 +83,19 @@
         <!-- 매치 진행방식 섹션 -->
         <div
           class="row rounded-section"
-          style="background-color: #ffffff; margin-bottom: 20px; min-height: 200px"
+          style="
+            background-color: #ffffff;
+            margin-bottom: 20px;
+            min-height: 200px;
+          "
         >
           <div class="col-12">
             <h3 class="section-title">매치 진행방식</h3>
-            <p class="match-details" v-if="clubBoard" v-html="formattedContent(clubBoard.content)"></p>
+            <p
+              class="match-details"
+              v-if="clubBoard"
+              v-html="formattedContent(clubBoard.content)"
+            ></p>
           </div>
         </div>
 
@@ -95,7 +103,11 @@
         <div
           v-if="isAuthor"
           class="row rounded-section"
-          style="background-color: #ffffff; margin-bottom: 20px; min-height: 200px"
+          style="
+            background-color: #ffffff;
+            margin-bottom: 20px;
+            min-height: 200px;
+          "
         >
           <div class="col-12 text-center">
             <h3 class="section-title">신청 현황</h3>
@@ -105,7 +117,9 @@
                 :key="participant.id"
                 class="participant-item"
               >
-                <span style="font-weight: bold; font-size: 20px;">{{ participant.userId }}</span>
+                <span style="font-weight: bold; font-size: 20px">{{
+                  participant.userId
+                }}</span>
                 <div v-if="participant.approval === 'N'">
                   <button
                     @click="toggleApproval(participant.userId)"
@@ -158,8 +172,8 @@
             </div>
           </div>
           <div class="likes-container">
-            <i class="fas fa-heart small-heart"></i>
-            <span>{{ clubBoard.likes }}</span>
+            <i class="fas fa-heart liked" style="color: red;"></i>
+            <span style="color: grey; margin-left: 5px;">{{ clubBoard.likes }}</span>
           </div>
           <hr class="separator" />
           <div class="fee-time-info">
@@ -221,6 +235,7 @@
 <script>
 import store from "@/store"; // Vuex store import
 import ClubBoardService from "@/services/board/club/ClubBoardService";
+import ClubBoardLikeService from "@/services/board/club/ClubBoardLikeService";
 import ParticipantsService from "@/services/board/club/ParticipantsService";
 
 export default {
@@ -235,6 +250,7 @@ export default {
       isApplied: false, // 신청 여부 상태 추가
       isAuthor: false, // 작성자 여부 상태 추가
       participants: [], // 신청자 목록 추가
+      likeId: null, // 좋아요 ID 상태 추가
     };
   },
   methods: {
@@ -252,6 +268,7 @@ export default {
 
         this.imageLoading = false;
         await this.checkParticipant(); // 신청 여부 확인
+        await this.checkLike(); // 좋아요 여부 확인
         if (this.isAuthor) {
           await this.fetchParticipants(); // 작성자인 경우 신청자 목록 조회
         }
@@ -362,52 +379,70 @@ export default {
     formatCurrency(value) {
       return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
     },
-    toggleLike() {
-      this.isLiked = !this.isLiked;
+    async toggleLike() {
+      const clubBoardId = this.$route.params.clubBoardId;
+      const userId = store.state.user.userId; // Vuex store에서 로그인한 유저 ID 가져오기
+
+      if (this.isLiked) {
+        if (!this.likeId) {
+          console.error("Like ID is not defined");
+          return;
+        }
+        try {
+          await ClubBoardLikeService.deleteClubBoardLike(this.likeId);
+          this.isLiked = false;
+          this.likeId = null;
+          this.clubBoard.likes -= 1;
+        } catch (error) {
+          console.error("Error deleting like:", error);
+        }
+      } else {
+        try {
+          const response = await ClubBoardLikeService.createClubBoardLike({
+            userId,
+            clubBoardId,
+          });
+          this.isLiked = true;
+          this.likeId = response.data.likeId;
+          this.clubBoard.likes += 1;
+        } catch (error) {
+          console.error("Error creating like:", error);
+          if (
+            error.response &&
+            error.response.data === "Already liked by this user"
+          ) {
+            // 이미 좋아요가 존재하는 경우 상태를 유지
+            this.isLiked = true;
+          }
+        }
+      }
     },
-    async applyForClub() {
+    async checkLike() {
       const clubBoardId = this.$route.params.clubBoardId;
       const userId = store.state.user.userId; // Vuex store에서 로그인한 유저 ID 가져오기
       try {
-        const response = await ParticipantsService.createParticipant(
-          clubBoardId,
-          userId
-        );
-        alert("신청이 성공적으로 완료되었습니다.");
-        this.isApplied = true; // 신청 완료 후 상태 업데이트
-        console.log("신청 성공:", response.data);
+        const response =
+          await ClubBoardLikeService.findLikeIdByUserIdAndClubBoardId(
+            userId,
+            clubBoardId
+          );
+        if (response.status === 204) {
+          // NO_CONTENT 상태 코드 처리
+          this.isLiked = false;
+          this.likeId = null;
+        } else {
+          this.isLiked = true;
+          this.likeId = response.data;
+        }
       } catch (error) {
-        alert("신청에 실패했습니다. 다시 시도해주세요.");
-        console.error("신청 실패:", error);
-      }
-    },
-    async cancelApplication() {
-      const clubBoardId = this.$route.params.clubBoardId;
-      const userId = store.state.user.userId; // Vuex store에서 로그인한 유저 ID 가져오기
-      try {
-        await ParticipantsService.deleteParticipant(clubBoardId, userId);
-        alert("신청이 성공적으로 취소되었습니다.");
-        this.isApplied = false; // 신청 취소 후 상태 업데이트
-        console.log("신청 취소 성공");
-      } catch (error) {
-        alert("신청 취소에 실패했습니다. 다시 시도해주세요.");
-        console.error("신청 취소 실패:", error);
-      }
-    },
-    async toggleApproval(userId) {
-      const clubBoardId = this.$route.params.clubBoardId;
-      try {
-        await ParticipantsService.toggleApproval(clubBoardId, userId);
-        alert("승인 상태가 변경되었습니다.");
-        await this.fetchParticipants(); // 승인 후 신청자 목록 갱신
-      } catch (error) {
-        alert("승인 상태 변경에 실패했습니다. 다시 시도해주세요.");
-        console.error("승인 상태 변경 실패:", error);
+        console.error("Error checking like:", error);
+        this.isLiked = false;
+        this.likeId = null; // 에러 발생 시 likeId 초기화
       }
     },
     formattedContent(content) {
-      return content.replace(/\n/g, '<br/>');
-    }
+      return content.replace(/\n/g, "<br/>");
+    },
   },
   async mounted() {
     window.scrollTo(0, 0);
@@ -670,7 +705,6 @@ export default {
   display: flex;
   align-items: center;
   font-size: 14px;
-  color: gray;
   margin-top: 10px;
 }
 
