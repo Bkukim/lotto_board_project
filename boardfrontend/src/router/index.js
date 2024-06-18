@@ -208,29 +208,7 @@ const routes = [
     meta: { showHeader: true }, // 기본적으로 헤더를 보이게 설정
     component: () => import("../views/dept/DeptBoard.vue"),
   },
-
-  
-
-  // 부서 게시판 : 재정부
-  {
-    path: "/dept/B0002",
-    meta: { showHeader: true }, // 기본적으로 헤더를 보이게 설정
-    component: () => import("../views/dept/FinanceBoard.vue"),
-  },
-  // 부서 게시판 : 기획부
-  {
-    path: "/dept/C0003",
-    meta: { showHeader: true }, // 기본적으로 헤더를 보이게 설정
-    component: () => import("../views/dept/PlanningBoard.vue"),
-  },
-  // 부서 게시판 : 홍보부
-  {
-    path: "/dept/D0004",
-    meta: { showHeader: true }, // 기본적으로 헤더를 보이게 설정
-    component: () => import("../views/dept/PromotionBoard.vue"),
-  },
   // 부서 게시판 : 상세페이지
-
   {
     path: "/dept/board/detail/:deptBoardId",
     meta: { showHeader: true }, // 기본적으로 헤더를 보이게 설정

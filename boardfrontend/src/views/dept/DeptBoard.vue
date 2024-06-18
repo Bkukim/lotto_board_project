@@ -165,6 +165,7 @@ export default {
     // 회원 부서 확인 함수
     async checkUserDeptId() {
       try {
+        console.log("접근")
         let response = await UserService.get(this.$store.state.user.userId);
         console.log("유저asdf", response.data);
         if (response.data.deptId != this.deptId) {

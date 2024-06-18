@@ -2,7 +2,6 @@ package org.example.boardbackend.service.board.free;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.example.boardbackend.config.WebConfig;
 import org.example.boardbackend.model.dto.board.free.FreeBoardDto;
 import org.example.boardbackend.model.dto.board.free.IFreeBoardRecommentDto;
 import org.example.boardbackend.model.dto.notice.INoticeDto;
@@ -11,6 +10,7 @@ import org.example.boardbackend.model.entity.board.free.FreeBoardComment;
 import org.example.boardbackend.model.entity.board.free.FreeBoardRecomment;
 import org.example.boardbackend.model.entity.board.free.FreeBoardReport;
 import org.example.boardbackend.model.entity.notify.Notify;
+import org.example.boardbackend.model.entity.board.free.FreeBoardReport;
 import org.example.boardbackend.repository.board.free.FreeBoardCommentRepository;
 import org.example.boardbackend.repository.board.free.FreeBoardRecommentRepository;
 import org.example.boardbackend.repository.board.free.FreeBoardReportRepository;
@@ -20,6 +20,7 @@ import org.example.boardbackend.service.notify.NotifyService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -48,7 +49,7 @@ public class FreeBoardService {
     private final NotifyService notifyService;
     private final FreeBoardCommentRepository freeBoardCommentRepository;
     private final FreeBoardRecommentRepository freeBoardRecommentRepository;
-    private final WebConfig webConfig;
+    private final FreeBoardReportRepository freeBoardReportRepository;
 
     //    todo 전체 조회
     public Page<FreeBoardDto> selectByTitleContaining(
@@ -160,7 +161,13 @@ public class FreeBoardService {
                 = freeBoardRepository.findFreeBoardByUserIdContaining(userId, pageable);
         return page;
     }
-
+  
+    // todo : 신고 저장함수
+    @Transactional
+    public void saveReport(FreeBoardReport freeBoardReport){
+        freeBoardReportRepository.save(freeBoardReport);
+    }
+  
     //   todo : 관리자 : 신고 게시판 조회
     public Page<FreeBoardReport> findFreeBoardReportsByUserIdContaining(String userId, Pageable pageable){
 

@@ -1,6 +1,7 @@
 package org.example.boardbackend.repository.board.free;
 
 import org.example.boardbackend.model.entity.board.free.FreeBoardReport;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -10,9 +11,9 @@ import org.springframework.stereotype.Repository;
 
 /**
  * packageName : org.example.boardbackend.repository.board.free
- * fileName : freeBoardReportRepository
- * author : hayj6
- * date : 2024-06-14(014)
+ * fileName : FreeBoardReport
+ * author : PC
+ * date : 2024-06-17
  * description :
  * 요약 :
  * <p>

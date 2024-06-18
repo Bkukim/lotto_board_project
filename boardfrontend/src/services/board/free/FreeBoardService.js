@@ -85,6 +85,11 @@ class FreeBoardService {
       }
     );
   }
+  reportFreeBoard(data){
+    return http.post("user/board/free/report/save",data, {
+      headers: AuthHeader(),
+    });
+  }
 
     // TODO: 신고 게시글 전체 조회
     getAllFreeBoardReport(userId, page, size) {
