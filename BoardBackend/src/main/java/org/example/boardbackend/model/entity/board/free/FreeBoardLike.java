@@ -24,6 +24,12 @@ import static jakarta.persistence.FetchType.LAZY;
  */
 @Entity
 @Table(name = "LOTTO_FREE_BOARD_LIKE")
+@SequenceGenerator(
+        name = "SQ_LOTTO_FREE_BOARD_LIKE_GENERATOR",
+        sequenceName = "SQ_LOTTO_FREE_BOARD_LIKE",
+        initialValue = 1,
+        allocationSize = 1
+)
 @Getter
 @Setter
 @ToString
@@ -33,33 +39,37 @@ import static jakarta.persistence.FetchType.LAZY;
 @DynamicInsert
 @DynamicUpdate
 public class FreeBoardLike {
-//    joinColumn =
+    //    joinColumn =
 //    엔티티 간의 관계를 매핑할 때 사용됩니다.
 //    주로 관계형 데이터베이스에서 테이블 간의 관계를 정의하는 데 사용됩니다.
     @Id
-    @Column(name="LIKE_ID")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE,
+            generator = "SQ_LOTTO_FREE_BOARD_LIKE_GENERATOR")
+    @Column(name = "LIKE_ID")
     private long likeId;
 
-    @ManyToOne(fetch = LAZY)
-    @JoinColumn(name = "USER_ID")
-    private User user;
+//todo:응답에 문제 있떤 이유 아래때문에
 
-    @ManyToOne(fetch = LAZY)
-    @JoinColumn(name = "FREE_BOARD_ID")
-    private FreeBoard freeBoard;
-
-
+//    @ManyToOne(fetch = LAZY)
 //    @JoinColumn(name = "USER_ID")
-//    private String userId;
+//    private User userId;
 //
+//    @ManyToOne(fetch = LAZY)
 //    @JoinColumn(name = "FREE_BOARD_ID")
-//    private long freeBoardId;
+//    private FreeBoard freeBoardId;
 
-    @Builder
-    public FreeBoardLike(User user, FreeBoard freeBoard) {
-        this.user = user;
-        this.freeBoard = freeBoard;
-    }
+
+    @JoinColumn(name = "USER_ID")
+    private String userId;
+
+    @JoinColumn(name = "FREE_BOARD_ID")
+    private long freeBoardId;
+
+//    @Builder
+//    public FreeBoardLike(User user, FreeBoard freeBoard) {
+//        this.userId = user;
+//        this.freeBoardId = freeBoard;
+//    }
 
 //@AllArgsConstructor이거 있으면 아래처럼 직접설정해줄 필요가 없음ㄷ
 //    public FreeBoardLike(long likeId, String userId, long freeBoardId) {

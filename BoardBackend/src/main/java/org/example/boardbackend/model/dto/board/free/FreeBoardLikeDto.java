@@ -16,20 +16,12 @@ import lombok.*;
  * -----------------------------------------------------------
  * 2024-06-05         KimDJ          최초 생성
  */
-@Setter
-@Getter
-@ToString
-//생성자 어노테이션
-@AllArgsConstructor
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class FreeBoardLikeDto {
-    //    like dto, 회원id, 게시펀id get
-    private String userId;
-    private long freeBoardId;
 
-//    public FreeBoardLikeDto(String userId, long freeBoardId){
-//        this.userId=userId;
-//        this.freeBoardId=freeBoardId;
-//    }
+public interface FreeBoardLikeDto {
+
+    long getLikeId();
+    String getUserId();
+    long getFreeBoardId();
+
 
 }

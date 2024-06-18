@@ -38,16 +38,7 @@ class FreeBoardService {
     });
   }
 
-  // TODO: 수정함수 : updateLike 공감해요 버튼에 적용될것
-  updateLike(freeBoardId, data) {
-    return http.put(`/user/board-like/insert-like/{userId}`, data,
-    //    {
-    //   headers: AuthHeader(),
-    // }
-    )
-    ;
-  }
-
+  
 
   // TODO: 댓글 조회 : freeBoardId
   getFreeBoardComment(freeBoardId, page, size) {
@@ -85,6 +76,35 @@ class FreeBoardService {
       }
     );
   }
+
+
+  // TODO: 좋아요 관련 함수모음
+  // todo: 좋ㅇ아요 테이블에 생성 함수
+  saveLike(data) {
+    return http.post(`/user/free/board-like/save-like/`, data, 
+    //   {
+    //   headers: AuthHeader(),
+    // }
+  );
+  }
+ 
+  // TODO: 삭제
+  deleteLike(likeId) {
+    return http.delete(`/user/free/board-like/deletion/${likeId}`,
+    //    {
+    //   headers: AuthHeader(),
+    // }
+  );
+  }
+    // TODO: 수정함수 : updateLike 공감해요 버튼에 적용될것
+    updateLike(freeBoardId, data2) {
+      console.log("서비스입니다"+freeBoardId)
+      return http.put(
+        `/user/free/board-like/update-like/${freeBoardId}`,
+        data2
+        //    {
+        //   headers: AuthHeader(),
+        // }
   reportFreeBoard(data){
     return http.post("user/board/free/report/save",data, {
       headers: AuthHeader(),

@@ -75,7 +75,7 @@
         <button
           type="button"
           class="btn btn-light"
-          @click="likeUp"
+          @click="likeUpSave"
           style="
             border: none;
             text-align: center;
@@ -92,6 +92,21 @@
         <button
           type="button"
           class="btn btn-light"
+          @click="deleteLike"
+          style="
+            border: none;
+            text-align: center;
+            height: 8vh;
+            width: 15vw;
+            padding: 1vw;
+          "
+        >
+          공감삭제하기
+        </button>
+        <button
+          type="button"
+          class="btn btn-light"
+      
           style="margin-left: 3vh; height: 8vh; width: 10vw; padding: 1vw"
           data-bs-toggle="modal"
           data-bs-target="#reportModal"
@@ -197,6 +212,7 @@
       </div> -->
     </div>
     <!--  첫번째 게시판 큰 박스 끝-->
+
 
     <!-- TODO: 좋아요버튼 -->
     <!-- <div class="d-flex justify-content-center mt-3">
@@ -679,6 +695,9 @@ export default {
       // 댓글 글자수
 
       charCount: 0,
+
+      // TODO:  like table 저장
+      freeBoardLike: {},
     };
   },
   watch: {
@@ -800,15 +819,57 @@ export default {
       }
     },
 
-    // 수정 함수
-    async likeUp() {
-      this.freeBoard.likes = +1;
-
+    // 세이브함수
+    async likeUpSave() {
       try {
-        let response = await FreeBoardService.updateLike(this.freeBoard.likes);
-        // 로깅
+        // +하고 이동
+        // like 테이블에 저장
+        const data = {
+          userId: this.$store.state.user.userId,
+          freeBoardId: this.freeBoard.freeBoardId,
+        };
+
+        // freeBoardLike 테이블 저장
+        let response = await FreeBoardService.saveLike(data);
         console.log(response.data);
-        this.$router.push("/free/free-board/:freeBoardId");
+      } catch (e) {
+        console.log("오류" + e);
+      }
+    },
+    async likeUpUpdate() {
+      try {
+        // 업데이트로freeboard 있는 like도 수정해줘야함
+        let likes1 = (this.freeBoard.likes = +1);
+        const data = {
+          userId: this.$store.state.user.userId,
+          content: this.freeBoard.content,
+          title: this.freeBoard.title,
+          likes: likes1,
+        };
+        // freeBoard 좋아요 수 업데이트
+        let response = await FreeBoardService.updateLike(
+          data,
+          this.freeBoard.freeBoardId
+        );
+        console.log(data);
+        console.log("게시판아이디" + this.freeBoard.freeBoardId);
+
+
+        console.log(response.data);
+      } catch (e) {
+        console.log("오류" + e);
+      }
+    },
+    async deleteLike() {
+      console.log("liketable"+this.freeBoardLike.likeId);
+      
+      try {
+        let response = await FreeBoardService.deleteLike(
+          this.freeBoardLike.likeId
+        );
+
+        // 로깅
+        console.log(response);
       } catch (e) {
         console.log(e);
       }
