@@ -231,6 +231,10 @@
     <!-- 중앙 파랑 띠? -->
     <div class="main_bn_box">Growth through Technology</div>
 
+    <div class="widgets-container container text-center mt-5">
+      <CalendarWidget />
+      <!-- <MemoWidget /> -->
+    </div>
 
     <!-- 로또의 새로운 소식 (중앙정렬) -->
     <!-- <div class="container text-center">
@@ -282,7 +286,13 @@
 </template>
 
 <script>
+import CalendarWidget from './CalendarWidget.vue';
+// import MemoWidget from './MemoWidget.vue';
 export default {
+  components:{
+    CalendarWidget,
+    // MemoWidget
+  },
   data() {
     return {
       hotList: [1, 2, 3, 4, 5],
@@ -292,6 +302,7 @@ export default {
   mounted() {
     console.log(this.$store.state.notifyCount);
   },
+
 };
 </script>
 
@@ -303,7 +314,7 @@ export default {
 /* 메인배너 */
 .main-banner {
   height: 250px;
-  width: 1920px; /* 고정된 너비 설정 */
+  width: 100%; /* 고정된 너비 설정 */
   background-image: url("@/assets/img/MAIN_BN4.jpg"); /* 배경 이미지 설정 */
   background-repeat: no-repeat;
   background-size: cover; /* 요소에 맞게 이미지 확대 */
@@ -326,7 +337,7 @@ export default {
 }
 
 .main_bn_box {
-  height: 15vh;
+  height: 150px;
   width: auto;
   background-color: #4480fe;
   margin: 150px 0 0 0;
@@ -389,4 +400,10 @@ export default {
 .router-link:hover {
   text-decoration: none;
 }
+.widgets-container {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 50px;
+}
+
 </style>
