@@ -691,232 +691,66 @@ export default {
       charCount: 0,
     };
   },
-  watch: {
-    "newComment.content"(newVal) {
-      this.charCount = newVal.length;
-    },
-  },
+ 
   methods: {
-    toggleReplyForm(commentId) {
-      // 클릭된 답글 버튼이 이미 열려있는 상태이면 폼을 닫고, 그렇지 않으면 엽니다.
-      this.replyVisible =
-        this.replyVisible && this.replyToCommentId === commentId ? false : true;
-      this.replyToCommentId =
-        this.replyToCommentId === commentId ? null : commentId;
+    async get(noticeId,eventYN) {
 
-      // 현재 선택된 댓글 ID 업데이트
-      this.newReply.content = ""; // 입력 폼 내용 초기화
-      this.charCountReply = 0; // 글자 수 초기화
-    },
-
-    // 댓글 작성 시 글자 수 세기
-    updateCharacterCount() {
-      if (this.newComment.content.length > 300) {
-        this.newComment.content = this.newComment.content.slice(0, 300);
-      }
-      this.charCount = this.newComment.content.length;
-    },
-
-    // freeBoardId로 상세조회 : 화면뜰때 실행
-
-    async retrieveGetNotice(noticeId,eventYN) {
       // todo: 공통 상세조회 함수: get()
       try {
         let response = await NoticeService.getNotice(noticeId,eventYN);
         this.notice = response.data;
-        console.log(response.data);
+        // 로깅
+        console.log(response.data.views);
+
       } catch (e) {
-        alert("에러");
         console.log(e);
       }
     },
 
-    // freeBoardId로 댓글조회 : 화면뜰때 실행
-    async retrieveNoticeComment(noticeId) {
-      try {
-        let response = await NoticeService.getNoticeComment(
-          noticeId,
-          this.page - 1,
-          this.pageSize
-        );
-        // TODO: 복습 : 2) 객체분할 할당
-        const { noticeComments, totalItems } = response.data; // 부서배열(벡엔드 전송)
-        // TODO: 3) 바인딩변수(속성)에 저장
-        this.noticeComments = noticeComments; // 부서배열(벡엔드 전송)
-        this.count = totalItems; // 전체페이지수(벡엔드 전송)
-        this.retrieveNoticeRecomment(noticeId);
-        // TODO: 4) 프론트 로깅 : console.log
-        // console.log("response.data",response.data);
-        // console.log("this.comments" ,this.freeBoardComments);
-
-      } catch (e) {
-        // alert("페이징 댓글 에러");
-        console.log(e);
-      }
-    },
-
-    // 댓글 등록 함수
-    async submitComment() {
-      if (!this.newComment.content.trim()) {
-        alert("댓글을 입력해주세요.");
-        return;
-      }
-      try {
-        let data = {
-          userId: this.newComment.userId,
-
-          noticeId: this.notice.noticeId,
-          content: this.newComment.content,
-          secretCommentYn: "N",
-        };
-        await NoticeService.createNoticeComment(data);
-      } catch (e) {
-        // alert("댓글 등록 중 에러가 발생했습니다.");
-        console.log(e);
-      }
-      this.newComment.content = "";
-      this.charCount = 0;
-
-      this.retrieveNoticeComment(this.$route.params.noticeId);
-    },
-
-    // 댓글 등록 함수
-    async submitComment() {
-      if (!this.newComment.content.trim()) {
-        alert("댓글을 입력해주세요.");
-        return;
-      }
-      try {
-        let data = {
-          userId: this.newComment.userId,
-
-          noticeId: this.notice.noticeId,
-          content: this.newComment.content,
-          secretCommentYn: "N",
-        };
-        await NoticeService.createNoticeComment(data);
-      } catch (e) {
-        // alert("댓글 등록 중 에러가 발생했습니다.");
-        console.log(e);
-      }
-      this.newComment.content = "";
-      this.charCount = 0;
-
-      this.retrieveNoticeComment(this.$route.params.noticeId);
-    },
-
-
-    // 삭제 함수
     async deleteNotice() {
       try {
-        if (confirm("정말로 삭제하시겠습니까?")) {
-          let response = await NoticeService.deleteNotice(
-            this.notice.noticeId
-          );
-          // 로깅
-          console.log(response.data);
-          alert("게시글이 삭제되었습니다.");
-          this.$router.push("/notice/notice-board");
-        } else {
-          return;
-        }
-      } catch (e) {
-        console.log(e);
-      }
-    },
+        alert("정말로 삭제하시겠습니까?");
+        let response = await NoticeService.delete(this.notice.noticeId);
 
 
-    // 수정 함수
-    async likeUp() {
-      this.notice.likes = +1;
-
-      try {
-        let response = await NoticeService.updateLike(
-          this.notice.likes
-        );
         // 로깅
         console.log(response.data);
-        this.$router.push("/notice/notice-board/:noticeId");
+        alert("정상적으로 삭제되었습니다.");
+        this.$router.push("/notice/notice-board");
       } catch (e) {
         console.log(e);
       }
     },
-    
 
-    // 답글 버튼 클릭 시 호출되는 메소드
-    showReplyForm(noticeCommentId) {
-      this.replyVisible = true;
-      this.replyToCommentId = noticeCommentId;
+    goUpdate() {
+      this.$router.push(`/admin/notice-update/${this.notice.noticeId}`);
 
     },
-
-    // 답글 글자 수 세기
-    updateReplyCharacterCount() {
-      if (this.newReply.content.length > 300) {
-        this.newReply.content = this.newReply.content.slice(0, 300);
-      }
-      this.charCountReply = this.newReply.content.length;
-    },
-
-    // 대댓글(답글) 조회
-    async retrieveNoticeRecomment(noticeId) {
-      console.log("진입");
+    async viewsUp() {
       try {
-        let response = await NoticeService.getNoticeRecomment(
-          noticeId
-        );
-        this.noticeRecomments = response.data; // 부서배열(벡엔드 전송)
-
-        console.log("댓글들", this.noticeComments);
-        console.log("대댓글들", this.noticeRecomments);
-        // 댓글 배열에 대댓글 속성을 추가하는 함수
-        this.noticeComments.forEach((comment) => {
-          comment.noticeRecomments = this.noticeRecomments.filter(
-            (reply) => reply.noticeCommentId === comment.noticeCommentId
-          );
-        });
-        console.log("댓글마다 대댓글 잘 드갔나", this.noticeComments);
-        // TODO: 4) 프론트 로깅 : console.log
-        // console.log("response.data",response.data);
-        // console.log("this.comments" ,this.freeBoardComments);
-      } catch (e) {
-        // alert("페이징 대댓글 에러");
-        console.log(e);
-      }
-    },
-    // 대댓글(답글) 등록
-    async submitReply(commentId) {
-      if (!this.newReply.content.trim()) {
-        // alert("답글을 입력해주세요.");
-        return;
-      }
-      try {
+        // +하고 이동
+        let views = (this.notice.views = this.notice.views + 1);
+        // todo: 오타였음, views
         let data = {
-          userId: this.newReply.userId,
-          noticeBoardCommentId: commentId, // 부모 댓글 ID
-          content: this.newReply.content,
-          secretCommentYn: "N",
+          views: views,
+          noticeId: this.notice.noticeId,
+          title: this.notice.title,
+          noticeType: this.notice.noticeType,
+          content: this.notice.content,
         };
-
-        console.log("대댓글의 댓글 아이디", data.noticeCommentId);
-
-        await NoticeService.createNoticeRecomment(data);
+        console.log(data);
+        let response = await NoticeService.updateVeiws(
+          this.notice.noticeId,
+          data
+        );
+        console.log(response.data);
       } catch (e) {
         console.log(e);
       }
-      this.newReply.content = "";
-      this.charCountReply = 0;
-      this.replyVisible = false; // 답글 입력 폼 숨기기
-      // alert("답글이 등록되었습니다.");
-      this.retrieveNoticeComment(this.$route.params.noticeId);
     },
-  },
-  async mounted() {
-    this.retrieveGetNotice(this.$route.params.noticeId);
-    this.retrieveNoticeComment(this.$route.params.noticeId);
-    // this.retrieveFreeBoardRecomment(this.$route.params.freeBoardId);
+    },
 
-    // 상세조회 실행
+  async mounted() {
     await this.get(this.$route.params.noticeId,this.$route.params.eventYN);
     this.viewsUp();
     window.scrollTo(0, 0);

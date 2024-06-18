@@ -35,4 +35,6 @@ public interface FreeBoardRecommentRepository extends JpaRepository<FreeBoardRec
     List<IFreeBoardRecommentDto> findFreeBoardRecommentsByFreeBoardCommentIdOrderByInsertTimeDesc(@Param("freeBoardId") long freeBoardId);
 
     List<FreeBoardRecomment> findAllByFreeBoardCommentId(long freeBoardCommentId);
+
+    Long countByFreeBoardCommentId(long freeBoardCommentId);
 }
