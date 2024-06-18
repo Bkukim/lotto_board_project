@@ -2,16 +2,19 @@ package org.example.boardbackend.controller.user.member;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.example.boardbackend.model.dto.board.dept.DeptBoardDto;
 import org.example.boardbackend.model.entity.auth.User;
 import org.example.boardbackend.service.user.UserService;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.parameters.P;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 
 /**
@@ -29,14 +32,14 @@ import java.util.Optional;
  */
 @Slf4j
 @RestController
-@RequestMapping("/api/user/")
+@RequestMapping("/api/user")
 @RequiredArgsConstructor
 public class UserController {
 
     private final UserService userService;
 
 //    todo : userId 상세 조회
-    @GetMapping("{userId}")
+    @GetMapping("/{userId}")
     public ResponseEntity<Object> findByUserID(@PathVariable String userId){
         try {
             Optional<User> user = userService.findById(userId);

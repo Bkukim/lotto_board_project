@@ -5,15 +5,15 @@ import AuthHeader from "../auth/AuthHeader";
 
 class NoticeService {
   // TODO: 전체 조회
-  getAll(eventYn, title, page, size) {
+  getAll( title, page, size) {
     return http.get(
-      `/normal/notice/all/${eventYn}?title=${title}&page=${page}&size=${size}`
+      `/normal/notice/all?title=${title}&page=${page}&size=${size}`
     );
   }
 
   // todo: 상세조회
-  getNotice(noticeId) {
-    return http.get(`/normal/notice/${noticeId}`);
+  getNotice(noticeId,eventYN) {
+    return http.get(`/normal/notice/${noticeId}?eventYN=${eventYN}`);
   }
   
   // todo: 관리자 권한 상세조회

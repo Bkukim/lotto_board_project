@@ -2,29 +2,16 @@ package org.example.boardbackend.service.board.dept;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.example.boardbackend.config.WebConfig;
-import org.example.boardbackend.constant.DeptCode;
 import org.example.boardbackend.model.dto.board.dept.DeptBoardDto;
 import org.example.boardbackend.model.dto.board.dept.DeptRecommentDto;
-import org.example.boardbackend.model.dto.board.free.FreeBoardDto;
-import org.example.boardbackend.model.dto.board.free.IFreeBoardRecommentDto;
 import org.example.boardbackend.model.entity.board.dept.DeptBoard;
 import org.example.boardbackend.model.entity.board.dept.DeptBoardReport;
 import org.example.boardbackend.model.entity.board.dept.DeptComment;
 import org.example.boardbackend.model.entity.board.dept.DeptRecomment;
-import org.example.boardbackend.model.entity.board.free.FreeBoard;
-import org.example.boardbackend.model.entity.board.free.FreeBoardComment;
-import org.example.boardbackend.model.entity.board.free.FreeBoardRecomment;
-import org.example.boardbackend.model.entity.notify.Notify;
 import org.example.boardbackend.repository.board.dept.DeptBoardRepository;
 import org.example.boardbackend.repository.board.dept.DeptCommentRepository;
 import org.example.boardbackend.repository.board.dept.DeptRecommentRepository;
-import org.example.boardbackend.repository.board.dept.DeptReportRepository;
-import org.example.boardbackend.repository.board.free.FreeBoardCommentRepository;
-import org.example.boardbackend.repository.board.free.FreeBoardRecommentRepository;
-import org.example.boardbackend.repository.board.free.FreeBoardRepository;
-import org.example.boardbackend.repository.user.UserRepository;
-import org.example.boardbackend.service.notify.NotifyService;
+import org.example.boardbackend.repository.board.dept.DeptBoardReportRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -55,7 +42,7 @@ public class DeptBoardService {
     private final DeptBoardRepository deptBoardRepository;
     private final DeptCommentRepository deptCommentRepository;
     private final DeptRecommentRepository deptRecommentRepository;
-    private final DeptReportRepository deptReportRepository;
+    private final DeptBoardReportRepository deptReportRepository;
 
     //    todo 전체 조회
     public Page<DeptBoardDto> selectByTitleContaining(
@@ -138,5 +125,21 @@ public class DeptBoardService {
     @Transactional
     public void saveReport(DeptBoardReport deptBoardReport){
         deptReportRepository.save(deptBoardReport);
+    }
+
+    //    todo : userId가 작성한 글 전체조회
+    public Page<DeptBoardDto> findDeptBoardByUserIdContaining(String userId, Pageable pageable)
+    {
+        Page<DeptBoardDto> page
+                = deptBoardRepository.findDeptBoardByUserIdContaining(userId, pageable);
+        return page;
+    }
+
+    //   todo : 관리자 : 신고 게시판 조회
+    public Page<DeptBoardReport> findDeptBoardReportsByUserIdContaining(String userId, Pageable pageable){
+
+        Page<DeptBoardReport> reports = deptReportRepository.findDeptBoardReportsByUserIdContaining(userId, pageable);
+
+        return reports;
     }
 }

@@ -49,6 +49,7 @@ public class Notice extends BaseTimeEntity {
     @Lob
     @Column(name = "CONTENT")
     private String content;
+    @Column(name = "EVENT_YN")
     private String eventYn;
     private String noticeType;
     private long eventWinnerQuota;

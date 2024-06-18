@@ -1,4 +1,4 @@
-package org.example.boardbackend.model.entity.report;
+package org.example.boardbackend.model.entity.board.free;
 
 import jakarta.persistence.*;
 import lombok.*;
@@ -21,7 +21,7 @@ import org.hibernate.annotations.DynamicUpdate;
  * 2024-05-22         KimDJ          최초 생성
  */
 @Entity
-@Table(name = "FREE_BOARD_REPORT")
+@Table(name = "LOTTO_FREE_BOARD_REPORT")
 @SequenceGenerator(
         name = "SQ_FREE_BOARD_REPORT_GENERATOR"
         , sequenceName = "SQ_FREE_BOARD_REPORT"

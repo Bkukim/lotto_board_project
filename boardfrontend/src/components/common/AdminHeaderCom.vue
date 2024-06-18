@@ -1,95 +1,160 @@
 <template>
-  <div>
-    <nav class="navbar bg-light fixed-top">
-      <div class="container-fluid">
-        <a class="navbar-brand" href="#" style="font-weight: bold; color: #162b59; font-size: 50px;">LOTTO ADMIN</a>
-        <button
-          class="navbar-toggler"
-          type="button"
-          data-bs-toggle="offcanvas"
-          data-bs-target="#offcanvasNavbar"
-          aria-controls="offcanvasNavbar"
+  <div
+    class="d-flex flex-column flex-shrink-0 p-3"
+    style="
+      width: 300px;
+      height: auto;
+      padding: 150px 0 150px 0;
+      background: linear-gradient(to right, #ffffff 0%, #99ccff 170%);
+    "
+  >
+    <router-link
+      to="/"
+      class="d-flex align-items-center mb-3 mb-md-0 me-md-auto link-dark text-decoration-none"
+      style="padding: 50px 0"
+    >
+      <svg class="bi me-2" width="40" height="32">
+        <use xlink:href="#bootstrap" />
+      </svg>
+      <h2
+        class="fs-4"
+        style="font-weight: bold; color: #0d6efd; text-align: center"
+      >
+        LOTTO ADMIN
+      </h2>
+    </router-link>
+
+    <div class="dropdown d-flex align-items-center" style="margin-left: 60px">
+      <a
+        href="#"
+        class="d-flex align-items-center link-dark text-decoration-none dropdown-toggle"
+        id="dropdownUser1"
+        data-bs-toggle="dropdown"
+        aria-expanded="false"
+      >
+        <img
+          src="https://github.com/mdo.png"
+          alt=""
+          width="32"
+          height="32"
+          class="rounded-circle me-2"
+        />
+        <strong>로또 관리자</strong>
+      </a>
+      <ul
+        class="dropdown-menu text-small shadow"
+        aria-labelledby="dropdownUser1"
+      >
+        <li>
+          <router-link class="dropdown-item" to="/"
+            >홈페이지 바로가기</router-link
+          >
+        </li>
+        <li><a class="dropdown-item" href="#">설정</a></li>
+        <li><a class="dropdown-item" href="#">프로필?</a></li>
+        <li><hr class="dropdown-divider" /></li>
+        <li>
+          <a class="dropdown-item" href="#" @click="handleLogout">로그아웃</a>
+        </li>
+      </ul>
+    </div>
+    <hr />
+    <ul class="nav nav-pills flex-column mb-auto">
+      <li class="nav-itemmm">
+        <router-link
+          to="/admin/home"
+          class="nav-link"
+          exact-active-class="active"
         >
-          <span class="navbar-toggler-icon"></span>
-        </button>
-        <div
-          class="offcanvas offcanvas-end"
-          tabindex="-1"
-          id="offcanvasNavbar"
-          aria-labelledby="offcanvasNavbarLabel"
+          <svg class="bi me-2" width="16" height="16">
+            <use xlink:href="#home" />
+          </svg>
+          Home
+        </router-link>
+      </li>
+      <li>
+        <router-link
+          to="/admin/member/manage"
+          class="nav-link"
+          exact-active-class="active"
         >
-          <div class="offcanvas-header">
-            <h5 class="offcanvas-title" id="offcanvasNavbarLabel" style="font-weight: bold;">lotto Administrator page</h5>
-            <button
-              type="button"
-              class="btn-close"
-              data-bs-dismiss="offcanvas"
-              aria-label="Close"
-            ></button>
-          </div>
-          <div class="offcanvas-body">
-            <ul class="navbar-nav justify-content-end flex-grow-1 pe-3 mt-5" style="font-size: 23px; gap: 25px; letter-spacing: -1px;">
-              <li class="nav-item">
-                <a class="nav-link active" aria-current="page" href="#" style="font-weight: 100;">공지사항 관리</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="#">자유게시판 관리</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="#">신고 게시글 관리</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="#">동아리 게시판 관리</a>
-              </li>
-              <li class="nav-item dropdown">
-                <a
-                  class="nav-link dropdown-toggle"
-                  href="#"
-                  role="button"
-                  data-bs-toggle="dropdown"
-                  aria-expanded="false"
-                >
-                  부서게시판 관리
-                </a>
-                <ul class="dropdown-menu">
-                  <li><a class="dropdown-item" href="#">건의사항 관리</a></li>
-                  <li><a class="dropdown-item" href="#">Another action</a></li>
-                  <li>
-                    <hr class="dropdown-divider" />
-                  </li>
-                  <li>
-                    <a class="dropdown-item" href="#">Something else here</a>
-                  </li>
-                </ul>
-              </li>
-            </ul>
-            <form class="d-flex mt-3" role="search">
-              <input
-                class="form-control me-2"
-                type="search"
-                placeholder="Search"
-                aria-label="Search"
-              />
-              <button class="btn btn-outline-success" type="submit" id="s_all">
-                Search
-              </button>
-            </form>
-          </div>
-        </div>
-      </div>
-    </nav>
+          <svg class="bi me-2" width="16" height="16">
+            <use xlink:href="#speedometer2" />
+          </svg>
+          회원관리
+        </router-link>
+      </li>
+      <li>
+        <router-link
+          to="/admin/notice-master"
+          class="nav-link"
+          exact-active-class="active"
+        >
+          <svg class="bi me-2" width="16" height="16">
+            <use xlink:href="#speedometer2" />
+          </svg>
+          공지사항 관리
+        </router-link>
+      </li>
+      <!-- <li>
+        <router-link to="/admin/club-posts" class="nav-link" exact-active-class="active">
+          <svg class="bi me-2" width="16" height="16"><use xlink:href="#table"/></svg>
+          동아리게시글 관리
+        </router-link>
+      </li> -->
+      <li>
+        <router-link
+          to="/admin/report"
+          class="nav-link"
+          exact-active-class="active"
+        >
+          <svg class="bi me-2" width="16" height="16">
+            <use xlink:href="#grid" />
+          </svg>
+          신고게시글 관리
+        </router-link>
+      </li>
+      <li>
+        <router-link
+          to="/admin/other"
+          class="nav-link"
+          exact-active-class="active"
+        >
+          <svg class="bi me-2" width="16" height="16">
+            <use xlink:href="#people-circle" />
+          </svg>
+          모하징
+        </router-link>
+      </li>
+    </ul>
+    <hr />
   </div>
 </template>
-<script>
 
+<script>
+import AuthService from "@/services/auth/AuthService";
+
+export default {
+  // name: 'Sidebar'
+  methods: {
+    handleLogout() {
+      let result = confirm("정말로 로그아웃 하시겠습니까?");
+      if (result) {
+        AuthService.logout(); // LOCAL저장소에서 USER객체 삭제해주기
+        this.$store.commit("logout"); //
+        this.$store.state.notifyCount = 0;
+        this.$router.push("/member/login");
+      } else {
+        return;
+      }
+    },
+  },
+};
 </script>
-<style>
-#s_all{
-    border: 1px solid #162b59;
-    color: #162b59;
-}
-#s_all:hover {
-  background-color: #2d61d056;
-  border: none;
+
+<style scoped>
+.active {
+  background-color: #0d6efd;
+  color: white !important;
 }
 </style>

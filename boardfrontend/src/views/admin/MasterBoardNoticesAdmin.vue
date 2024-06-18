@@ -1,178 +1,176 @@
-<!-- 관리자 :: 각 게시판별 공지사항 조회 :MasterBoardNoticesAdmin.vue -->
 <template>
-  <AdminHeaderCom />
-  <div class="container" style="height: 1700px;">
-    <h2 class="mt-5 mb-5"  style="text-align: center; font-weight: 500;" >공지사항 통합관리</h2>
-    <!-- 테이블 옆 버튼 3개 -->
-    <div class="col-12 d-flex align-items-start justify-content-end">
-      <div class="d-flex flex-column">
-        <button type="button" class="btn btn-primary mb-2" @click="goNoticeAdd">
-          공지사항 등록
-        </button>
-        <button type="button" class="btn btn-success">공지사항 전체삭제</button>
+  <HeaderCom :hideHeader="true" />
+  <!-- 관리자 페이지에서는 헤더를 숨김 -->
+  <div class="main-container d-flex" style="height: 900px;">
+    <AdminHeaderCom class="sidebar" :hideHeader="true" />
+    <div class="content-wrapper" style="flex: 1; padding: 20px; height: auto;">
+      <h2 class="text-center my-5 font-weight-bold" style="letter-spacing: -1.5px;">공지사항 통합관리</h2>
+      <div class="d-flex justify-content-between align-items-center mb-4">
+        <h3 class="section-title mt-5 mb-5" style="letter-spacing: -3px; font-size: 25px;">공지사항 목록</h3>
+        <div class="d-flex justify-content align-items-center">
+          <button
+            type="button"
+            class="btn btn-primary "
+            @click="goNoticeAdd"
+            style="margin-right: 10px;"
+          >
+            공지사항 등록
+          </button>
+          <button type="button" class="btn btn-success">
+            공지사항 전체삭제
+          </button>
+        </div>
       </div>
-    </div>
-    <!-- 게시판별 공지사항  div 총 3개 -->
-    <!--자유게시판 공지사항  -->
-    <div class="row mt-5 border justify-content-center">
-      <h3>자유게시판</h3>
-      <!-- 테이블시작, 작게 왼쪽 -->
-      <div class="col-11">
-        <table class="table mt-5 text-center">
-          <thead>
-            <tr>
-              <th scope="col">번호</th>
-              <th scope="col">유형</th>
-              <th scope="col">제목</th>
-              <th scope="col">등록일</th>
-              <th scope="col">삭제</th>
-            </tr>
-          </thead>
-          <tbody>
-            <!-- 반복문 시작할 행 -->
-            <tr v-for="(data, index) in noticeFree" :key="index">
-              <td>
-                {{ index + 1 }}
-              </td>
-              <td>{{ data.noticeType }}</td>
-              <td>{{ data.title }}</td>
-              <td>{{ data.insertTime }}</td>
-              <td>
-                <button
-                  type="button"
-                  class="btn btn-success"
-                  @click="deleteNotice(data.noticeId)"
-                >
-                  삭제
-                </button>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    </div>
-
-    <!-- 부서게시판 공지사항 -->
-    <div class="row mt-3 border justify-content-center">
-      <h3>부서게시판</h3>
-      <!-- 테이블시작, 작게 왼쪽 -->
-      <div class="col-11">
-        <table class="table mt-5 text-center">
-          <thead>
-            <tr>
-              <th scope="col">번호</th>
-              <th scope="col">유형</th>
-              <th scope="col">제목</th>
-              <th scope="col">등록일</th>
-              <th scope="col">삭제</th>
-            </tr>
-          </thead>
-          <tbody>
-            <!-- 반복문 시작할 행 -->
-            <tr v-for="(data, index) in noticeDept" :key="index">
-              <td>
-                {{ index + 1 }}
-              </td>
-              <!-- dto에 없어서 noticeType이 안나왔던것 안나오면 dto한번더 확인 -->
-              <td>{{ data.noticeType }}</td>
-              <td>{{ data.title }}</td>
-              <td>{{ data.insertTime }}</td>
-              <td>
-                <button
-                  type="button"
-                  class="btn btn-success"
-                  @click="deleteNotice(data.noticeId)"
-                >
-                  삭제
-                </button>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    </div>
-
-    <!-- 건의게시판 공지사항 -->
-    <div class="row mt-3 border justify-content-center">
-      <h3>건의게시판</h3>
-      <!-- 테이블시작, 작게 왼쪽 -->
-      <div class="col-11">
-        <table class="table mt-5 text-center">
-          <thead>
-            <tr>
-              <th scope="col">번호</th>
-              <th scope="col">유형</th>
-              <th scope="col">제목</th>
-              <th scope="col">등록일</th>
-              <th scope="col">삭제</th>
-            </tr>
-          </thead>
-          <tbody>
-            <!-- 반복문 시작할 행 -->
-            <tr v-for="(data, index) in noticeComplaint" :key="index">
-              <td>
-                {{ index + 1 }}
-              </td>
-              <!-- dto에 없어서 noticeType이 안나왔던것 안나오면 dto한번더 확인 -->
-              <td>{{ data.noticeType }}</td>
-              <td>{{ data.title }}</td>
-              <td>{{ data.insertTime }}</td>
-              <td>
-                <button
-                  type="button"
-                  class="btn btn-success"
-                  @click="deleteNotice(data.noticeId)"
-                >
-                  삭제
-                </button>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    </div>
-
-    <!-- 동호회 게시판 공지사항 -->
-    <div class="row mt-3 border justify-content-center">
-      <h3>동호회 게시판</h3>
-      <!-- 테이블시작, 작게 왼쪽 -->
-      <div class="col-11">
-        <table class="table mt-5 text-center">
-          <thead>
-            <tr>
-              <th scope="col">번호</th>
-              <th scope="col">유형</th>
-              <th scope="col">제목</th>
-              <th scope="col">등록일</th>
-              <th scope="col">삭제</th>
-            </tr>
-          </thead>
-          <tbody>
-            <!-- 반복문 시작할 행 -->
-            <tr v-for="(data, index) in noticeGroup" :key="index">
-              <td>
-                {{ index + 1 }}
-              </td>
-              <!-- dto에 없어서 noticeType이 안나왔던것 안나오면 dto한번더 확인 -->
-              <td>{{ data.noticeType }}</td>
-              <td>{{ data.title }}</td>
-              <td>{{ data.insertTime }}</td>
-              <td>
-                <button
-                  type="button"
-                  class="btn btn-success"
-                  @click="deleteNotice(data.noticeId)"
-                >
-                  삭제
-                </button>
-              </td>
-            </tr>
-          </tbody>
-        </table>
+      <div class="tab-container">
+        <ul class="nav nav-tabs">
+          <li class="nav-item" @click="activeTab = 'free'">
+            <a class="nav-link" :class="{active: activeTab === 'free'}">자유게시판</a>
+          </li>
+          <li class="nav-item" @click="activeTab = 'dept'">
+            <a class="nav-link" :class="{active: activeTab === 'dept'}">부서게시판</a>
+          </li>
+          <li class="nav-item" @click="activeTab = 'complaint'">
+            <a class="nav-link" :class="{active: activeTab === 'complaint'}">건의게시판</a>
+          </li>
+          <li class="nav-item" @click="activeTab = 'group'">
+            <a class="nav-link" :class="{active: activeTab === 'group'}">동호회 게시판</a>
+          </li>
+        </ul>
+        <div class="tab-content">
+          <div v-show="activeTab === 'free'">
+            <div class="table-responsive shadow" >
+              <table class="table table-hover" >
+                <thead class="thead-dark" >
+                  <tr>
+                    <th scope="col">번호</th>
+                    <th scope="col">유형</th>
+                    <th scope="col">제목</th>
+                    <th scope="col">등록일</th>
+                    <th scope="col">삭제</th>
+                  </tr>
+                </thead>
+                <tbody >
+                  <tr v-for="(data, index) in noticeFree" :key="index" >
+                    <td >{{ index + 1 }}</td>
+                    <td>{{ data.noticeType }}</td>
+                    <td>{{ data.title }}</td>
+                    <td>{{ data.insertTime }}</td>
+                    <td>
+                      <button
+                        type="button"
+                        class="btn btn-danger"
+                        @click="deleteNotice(data.noticeId)"
+                      >
+                        삭제
+                      </button>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <div v-show="activeTab === 'dept'">
+            <div class="table-responsive shadow">
+              <table class="table table-hover ">
+                <thead class="thead-dark">
+                  <tr>
+                    <th scope="col">번호</th>
+                    <th scope="col">유형</th>
+                    <th scope="col">제목</th>
+                    <th scope="col">등록일</th>
+                    <th scope="col">삭제</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr v-for="(data, index) in noticeDept" :key="index">
+                    <td>{{ index + 1 }}</td>
+                    <td>{{ data.noticeType }}</td>
+                    <td>{{ data.title }}</td>
+                    <td>{{ data.insertTime }}</td>
+                    <td>
+                      <button
+                        type="button"
+                        class="btn btn-danger"
+                        @click="deleteNotice(data.noticeId)"
+                      >
+                        삭제
+                      </button>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <div v-show="activeTab === 'complaint'">
+            <div class="table-responsive shadow">
+              <table class="table table-hover ">
+                <thead class="thead-dark">
+                  <tr>
+                    <th scope="col">번호</th>
+                    <th scope="col">유형</th>
+                    <th scope="col">제목</th>
+                    <th scope="col">등록일</th>
+                    <th scope="col">삭제</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr v-for="(data, index) in noticeComplaint" :key="index">
+                    <td>{{ index + 1 }}</td>
+                    <td>{{ data.noticeType }}</td>
+                    <td>{{ data.title }}</td>
+                    <td>{{ data.insertTime }}</td>
+                    <td>
+                      <button
+                        type="button"
+                        class="btn btn-danger"
+                        @click="deleteNotice(data.noticeId)"
+                      >
+                        삭제
+                      </button>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <div v-show="activeTab === 'group'">
+            <div class="table-responsive shadow">
+              <table class="table table-hover">
+                <thead class="thead-dark">
+                  <tr>
+                    <th scope="col">번호</th>
+                    <th scope="col">유형</th>
+                    <th scope="col">제목</th>
+                    <th scope="col">등록일</th>
+                    <th scope="col">삭제</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr v-for="(data, index) in noticeGroup" :key="index">
+                    <td>{{ index + 1 }}</td>
+                    <td>{{ data.noticeType }}</td>
+                    <td>{{ data.title }}</td>
+                    <td>{{ data.insertTime }}</td>
+                    <td>
+                      <button
+                        type="button"
+                        class="btn btn-danger"
+                        @click="deleteNotice(data.noticeId)"
+                      >
+                        삭제
+                      </button>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
 </template>
+
 <script>
 import AdminHeaderCom from "@/components/common/AdminHeaderCom.vue";
 import NoticeService from "@/services/notice/NoticeService";
@@ -181,6 +179,12 @@ export default {
   components: {
     AdminHeaderCom,
   },
+  props: {
+    hideHeader: {
+      type: Boolean,
+      default: true, // 기본값을 false로 설정
+    },
+  },
   data() {
     return {
       // 받아올 각 부서의 공지사항 목록들
@@ -188,17 +192,13 @@ export default {
       noticeFree: [],
       noticeComplaint: [],
       noticeGroup: [],
-      // complaint: [],
-      // free: [],
-      // participants: [],
-
       // 공통속성
       pageSize: 25, // 1페이지당개수(select태그)
+      activeTab: 'free', // 추가된 부분: 활성화된 탭 상태
     };
   },
-  // 함수
-  methods: {
     // TODO:  부서
+  methods: {
     async retrieveNoticeDept() {
       try {
         // TODO: 1) 공통 전체조회 함수 실행
@@ -212,9 +212,8 @@ export default {
         console.log(e);
       }
     },
-
-    // TODO:Free
-    async retrieveNoticeFree() {
+     // TODO:Free
+     async retrieveNoticeFree() {
       try {
         // TODO: 1) 공통 전체조회 함수 실행
         let response = await NoticeService.getFree(
@@ -277,12 +276,12 @@ export default {
     // gonotice
     goNoticeAdd() {
       this.$router.push("/admin/notice-add");
-      },
+    },
     //   if (this.pageSize == 25) {
     //     alert("공지사항이 25개 이상입니다");
     //   }
     //   else{
-        
+
     // },
   },
   // 마운티드
@@ -294,4 +293,52 @@ export default {
   },
 };
 </script>
-<style></style>
+
+
+<style scoped>
+.main-container {
+  display: flex;
+}
+
+.sidebar {
+  width: 250px;
+  background-color: #343a40;
+  color: white;
+}
+
+.content-wrapper {
+  background-color: #f8f9fa;
+  padding: 20px;
+}
+
+.table {
+  background-color: #fff;
+  border: 1px solid #dee2e6;
+}
+
+.table thead {
+  background-color: #343a40;
+  color: #fff;
+}
+
+.table tbody tr:hover {
+  background-color: #f1f1f1;
+}
+
+.table th, .table td {
+  vertical-align: middle;
+}
+
+.tab-container {
+  margin-top: 20px;
+}
+
+.nav-tabs .nav-link {
+  border: 1px solid #dee2e6;
+  border-bottom-color: transparent;
+}
+
+.nav-tabs .nav-link.active {
+  border-color: #dee2e6 #dee2e6 #fff;
+}
+</style>

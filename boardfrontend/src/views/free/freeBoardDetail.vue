@@ -1,4 +1,11 @@
 <template>
+  <link
+    href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css"
+    rel="stylesheet"
+    integrity="sha384-KyZXEAg3QhqLMpG8r+Knujsl5+ENtDY6Q7r7W+hXGCv3vzvK79BmwJ4tcGw8g6Bq"
+    crossorigin="anonymous"
+  />
+
   <!-- 전체 박스 -->
   <div class="fbd_all" style="height: auto">
     <!-- 해당 게시판 이름 부분 -->
@@ -81,6 +88,7 @@
           공감해요
           {{ this.freeBoard.likes }}
         </button>
+
         <button
           type="button"
           class="btn btn-light"
@@ -98,11 +106,101 @@
         <button
           type="button"
           class="btn btn-light"
-          style="margin-left: 3vh; height: 8vh; width: 8vw; padding: 1vw"
+      
+          style="margin-left: 3vh; height: 8vh; width: 10vw; padding: 1vw"
+          data-bs-toggle="modal"
+          data-bs-target="#reportModal"
         >
+          <img src="@/assets/img/report_icon.png" width="40" height="40" />
           신고
         </button>
+
+        <!-- 모달 -->
+        <div
+          class="modal fade"
+          id="reportModal"
+          tabindex="-1"
+          aria-labelledby="reportModalLabel"
+          aria-hidden="true"
+        >
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5
+                  class="modal-title"
+                  id="reportModalLabel"
+                  style="font-weight: bold"
+                >
+                  <img
+                    src="@/assets/img/report_icon.png"
+                    width="20"
+                    height="20"
+                  />
+                  신고하기
+                </h5>
+                <button
+                  type="button"
+                  class="btn-close"
+                  data-bs-dismiss="modal"
+                  aria-label="Close"
+                ></button>
+              </div>
+              <div class="modal-body">
+                <!-- 여기에 신고 폼을 추가하세요 -->
+                <!-- 예시: -->
+                <form>
+                  <div class="mb-3">
+                    <label for="reportReason" class="form-label"
+                      >신고 이유를 작성해주세요.</label
+                    >
+                    <textarea
+                      class="form-control"
+                      id="reportReason"
+                      rows="3"
+                      v-model="reportContent"
+                    ></textarea>
+                  </div>
+                  <button class="btn btn-primary" @click="report" >제출</button>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 목록으로 버튼 -->
+        <div class="col mb-5">
+          <router-link
+            :to="'/free/free-board' "
+            class="fbd_d container text-center"
+            style="
+              width: 150px;
+              text-decoration: none;
+              background-color: #3363cc;
+              font-size: 15px;
+              text-align: center;
+              height: 40px;
+              border-radius: 50px;
+              margin-top: 50px;
+            "
+          >
+            <div
+              style="
+                display: flex;
+                align-items: center;
+                justify-content: center;
+              "
+            >
+              <div
+                class="router-text"
+                style=" margin-top: 10px; color: #fff; text-align: center;  font-weight: 300;"
+              >
+                목록으로
+              </div>
+            </div>
+          </router-link>
+        </div>
       </div>
+
       <!-- 파일첨부 -->
       <!-- <div class="mt-5" style="width: 500px">
         <input
@@ -114,6 +212,14 @@
       </div> -->
     </div>
     <!--  첫번째 게시판 큰 박스 끝-->
+
+
+    <!-- TODO: 좋아요버튼 -->
+    <!-- <div class="d-flex justify-content-center mt-3">
+      <button type="button" class="btn btn-primary" @click="likeUp">
+        공감해요 {{ this.freeBoard.likes }}
+      </button>
+    </div> -->
 
     <!-- 삭제 -->
     <div class="container text-center mt-5">
@@ -146,8 +252,6 @@
               <div
                 class="router-text"
                 style="
-                  margin-right: 20px;
-                  margin-top: 10px;
                   color: #ffffff;
                   text-align: center;
                 "
@@ -182,7 +286,7 @@
             >
               <div
                 class="router-text"
-                style="margin-right: 20px; margin-top: 10px; color: #ffffff"
+                style=" margin-top: 10px; color: #ffffff"
               >
                 수정
               </div>
@@ -581,6 +685,8 @@ export default {
         content: "",
       },
 
+      reportContent:"", // 신고내용
+
       // 페이징
       page: 1, // 현재페이지번호
       count: 0, // 전체데이터개수
@@ -600,6 +706,20 @@ export default {
     },
   },
   methods: {
+    async report(){
+      try {
+        let data={
+          userId : this.$store.state.user.userId,
+          freeBoardId : this.freeBoard.freeBoardId,
+          content:this.reportContent
+        }
+       await FreeBoardService.reportFreeBoard(data);
+       
+      } catch (error) {
+        console.log(error);
+      }
+      this.$router.push("/free/free-boardDetail/" + this.freeBoard.freeBoardId)
+    },
     toggleReplyForm(commentId) {
       // 클릭된 답글 버튼이 이미 열려있는 상태이면 폼을 닫고, 그렇지 않으면 엽니다.
       this.replyVisible =
@@ -733,6 +853,7 @@ export default {
         );
         console.log(data);
         console.log("게시판아이디" + this.freeBoard.freeBoardId);
+
 
         console.log(response.data);
       } catch (e) {

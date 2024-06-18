@@ -2,19 +2,19 @@ package org.example.boardbackend.controller.user.board.free;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.example.boardbackend.model.dto.board.free.FreeBoardCommentDto;
 import org.example.boardbackend.model.dto.board.free.FreeBoardDto;
 import org.example.boardbackend.model.dto.board.free.IFreeBoardRecommentDto;
 import org.example.boardbackend.model.entity.board.free.FreeBoard;
 import org.example.boardbackend.model.entity.board.free.FreeBoardComment;
 import org.example.boardbackend.model.entity.board.free.FreeBoardRecomment;
-import org.example.boardbackend.repository.board.free.FreeBoardCommentRepository;
+import org.example.boardbackend.model.entity.notify.Notify;
+import org.example.boardbackend.model.entity.board.free.FreeBoardReport;
 import org.example.boardbackend.service.board.free.FreeBoardService;
+import org.example.boardbackend.service.notify.NotifyService;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -44,7 +44,9 @@ import java.util.Optional;
 public class FreeBoardController {
 
     private final FreeBoardService freeBoardService;
-
+    private final NotifyService notifyService;
+    @Value("${adminId}")
+    private String adminId;
     //    todo 전체 조회 + 제목 검색 + 페이징
     @GetMapping("/free")
     public ResponseEntity<Object> findAll(
@@ -287,4 +289,23 @@ public class FreeBoardController {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
+    // todo 부서 신고 알림 함수
+    @PostMapping("/free/report/save")
+    public ResponseEntity<Object> reportDeptBoard(@RequestBody FreeBoardReport freeBoardReport) {
+        try {
+            // 신고 저장
+            freeBoardService.saveReport(freeBoardReport);
+            // 2. 알림 보내기
+            FreeBoard freeBoard = freeBoardService.findById(freeBoardReport.getFreeBoardId()).get();
+            String notifyContent = "게시물 신고가 접수되었습니다.   "  + "\"" + freeBoard.getTitle() + "\"";
+            String notifyUrl = "free/free-boardDetail/" + freeBoard.getFreeBoardId(); // todo 주소 바꾸기
+            notifyService.send(adminId, Notify.NotificationType.REPORT,notifyContent,notifyUrl);
+            return new ResponseEntity<>(HttpStatus.OK);
+        } catch (Exception e) {
+            log.debug("디버그 :: "+e.getMessage());
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
 }

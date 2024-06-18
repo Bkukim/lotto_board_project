@@ -1,6 +1,7 @@
 package org.example.boardbackend.repository.board.complaint;
 
 import org.example.boardbackend.model.dto.board.complaint.ComplaintBoardDto;
+import org.example.boardbackend.model.dto.board.free.FreeBoardDto;
 import org.example.boardbackend.model.entity.board.complaint.ComplaintBoard;
 import org.example.boardbackend.model.entity.board.free.FreeBoard;
 import org.springframework.data.domain.Page;
@@ -26,6 +27,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface ComplaintBoardRepository extends JpaRepository<ComplaintBoard, Long> {
 
+//    todo : title로 검색
     @Query(value = "SELECT COMPLAINT_BOARD_ID AS complaintBoardId, TITLE AS title, USER_ID AS userId, INSERT_TIME AS insertTime, LIKES AS likes, STATUS AS status FROM LOTTO_COMPLAINT_BOARD\n" +
             "WHERE TITLE LIKE '%'|| :title ||'%'"+
             "ORDER BY INSERT_TIME DESC"
@@ -35,4 +37,14 @@ public interface ComplaintBoardRepository extends JpaRepository<ComplaintBoard, 
     Page<ComplaintBoardDto> findComplaintBoardByTitleContaining(@Param("title") String title,
                                                                 Pageable pageable
     );
+
+    //    todo userId가 작성한 글 보기
+    @Query(value = "SELECT COMPLAINT_BOARD_ID AS complaintBoardId, USER_ID AS userId, TITLE AS title, INSERT_TIME AS insertTime, LIKES AS likes FROM LOTTO_COMPLAINT_BOARD\n" +
+            "WHERE USER_ID LIKE '%'|| :userId ||'%'"+
+            "ORDER BY INSERT_TIME DESC"
+            ,countQuery = "SELECT count (*) FROM LOTTO_COMPLAINT_BOARD\n" +
+            "WHERE USER_ID LIKE '%'|| :userId ||'%'"
+            ,nativeQuery = true)
+    Page<ComplaintBoardDto> findComplaintBoardByUserIdContaining(@Param("userId") String userId,
+                                                       Pageable pageable);
 }

@@ -2,7 +2,8 @@
   <div class="container text-center" id="fb_all">
     <h3 class="mb-5 mt-5">{{ department.deptName }} 게시판</h3>
     <p class="mb-5">
-      {{ department.deptName }} 게시판은 {{ department.deptName }}의 공간으로 건의관련 답변은 드리지 않습니다. <br />
+      {{ department.deptName }} 게시판은 {{ department.deptName }}의 공간으로
+      건의관련 답변은 드리지 않습니다. <br />
       건의관련 및 문의사항은 건의게시판을 이용해주시길 바랍니다.
     </p>
 
@@ -100,20 +101,20 @@
       </tbody>
     </table>
 
-    <!-- 글쓰기 버튼-->
-    <div class="mt-5">
-      <router-link to="">
-        <button
-          class="btn btn-outline-secondary"
-          type="button"
-          id="button-Writing"
-          style="margin-left: 1220px"
-          @click="goAddDeptBoard"
-        >
-          글쓰기
-        </button>
-      </router-link>
+
+
+    <!-- 글쓰기 버튼 -->
+    <div class="text-end mt-5">
+      <button
+        class="btn btn-outline-secondary"
+        type="button"
+        id="button-Writing"
+        @click="goAddDeptBoard"
+      >
+        글쓰기
+      </button>
     </div>
+
 
     <!-- 페이징 -->
     <!-- {/* paging 시작 */} -->
@@ -164,8 +165,9 @@ export default {
     // 회원 부서 확인 함수
     async checkUserDeptId() {
       try {
+        console.log("접근")
         let response = await UserService.get(this.$store.state.user.userId);
-        console.log("유저asdf",response.data);
+        console.log("유저asdf", response.data);
         if (response.data.deptId != this.deptId) {
           alert("해당 부서원이 아니므로 접근할 수 없습니다");
           this.$router.push("/");

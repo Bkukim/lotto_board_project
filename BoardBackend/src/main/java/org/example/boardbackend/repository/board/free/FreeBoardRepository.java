@@ -2,6 +2,7 @@ package org.example.boardbackend.repository.board.free;
 
 import org.example.boardbackend.model.dto.board.free.FreeBoardDto;
 import org.example.boardbackend.model.entity.board.free.FreeBoard;
+import org.example.boardbackend.model.entity.board.free.FreeBoardReport;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -37,6 +38,7 @@ public interface FreeBoardRepository extends JpaRepository<FreeBoard, Long> {
 
 //    Page<FreeBoard> findAllByTitleContaining(@Param("title") String title, Pageable pageable);
 
+//    todo : title로 검색
     @Query(value = "SELECT FREE_BOARD_ID AS freeBoardId, USER_ID AS userId, TITLE AS title, INSERT_TIME AS insertTime, LIKES AS likes FROM LOTTO_FREE_BOARD\n" +
             "WHERE TITLE LIKE '%'|| :title ||'%'"+
             "ORDER BY INSERT_TIME DESC"
@@ -50,8 +52,9 @@ public interface FreeBoardRepository extends JpaRepository<FreeBoard, Long> {
 //    List<FreeBoardSummary> findAllWithoutContent();
 
     //    todo userId가 작성한 글 보기
-    @Query(value = "SELECT * FROM LOTTO_FREE_BOARD\n" +
-            "WHERE USER_ID LIKE '%'|| :userId ||'%'"
+    @Query(value = "SELECT FREE_BOARD_ID AS freeBoardId, USER_ID AS userId, TITLE AS title, INSERT_TIME AS insertTime, LIKES AS likes FROM LOTTO_FREE_BOARD\n" +
+            "WHERE USER_ID LIKE '%'|| :userId ||'%'"+
+            "ORDER BY INSERT_TIME DESC"
             ,countQuery = "SELECT count (*) FROM LOTTO_FREE_BOARD\n" +
             "WHERE USER_ID LIKE '%'|| :userId ||'%'"
             ,nativeQuery = true)

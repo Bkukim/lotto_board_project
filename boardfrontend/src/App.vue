@@ -1,7 +1,8 @@
 <template>
   <div>
     <!-- 머리말 -->
-    <HeaderCom />
+    <HeaderCom v-if="$route.meta.showHeader"  />
+
 
     <!-- 본문 -->
     <div class="qhsans">
@@ -19,7 +20,8 @@ import FoterView from '@/components/common/FoterView.vue';
 export default {
   components: {
     HeaderCom,
-    FoterView
+    FoterView,
+
   },
 };
 </script>
