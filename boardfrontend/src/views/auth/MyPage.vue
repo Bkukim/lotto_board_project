@@ -51,7 +51,7 @@
                 >비밀번호 변경하기</a
               >
             </li>
-            <li class="nav-item">
+            <!-- <li class="nav-item">
               <a
                 class="nav-link"
                 href="#"
@@ -59,7 +59,7 @@
                 @click="showWithdrawal"
                 >회원탈퇴</a
               >
-            </li>
+            </li> -->
           </ul>
         </div>
 
@@ -77,101 +77,46 @@
                 >
                   My Profile
                 </h5>
-                <!-- <p class="card-text mt-3 mb-5" style="padding-top: 30px">
-                  회원 탈퇴 시 계정정보 삭제 및 공지사항 확인이 불가합니다.
-                  <br />
-                  정말로 삭제하시겠습니까?
-                </p> -->
-                <p style="padding: 10px; margin-top: 10px; text-align: left;">
-                  사용자 ID:
-                  <span
-                    style="
-                      font-weight: bold;
-                      border: #cccccc 1px solid;
-                      padding: 10px 50px;
-                    "
-                    >{{ userId }}</span
-                  >
-                </p>
-
-
-                <p style="padding: 10px; margin-top: 10px;text-align: left;">
-                  이름
-                  <span
-                    style="
-                      font-weight: bold;
-                      border: #cccccc 1px solid;
-                      padding: 10px 50px;
-                    "
-                    >{{ user.userName }}</span
-                  >
-                </p>
-
-                <p style="padding: 10px; margin-top: 10px;text-align: left;">
-                  연락처:
-                  <span
-                    style="
-                      font-weight: bold;
-                      border: #cccccc 1px solid;
-                      padding: 10px 50px;
-                    "
-                    >{{ user.phoneNum }}</span
-                  >
-                </p>
-              </div>
-            </div>
-
-            <div
-              class="container"
-              style="
-                display: flex;
-                justify-content: center;
-                align-items: center;
-              "
-            >
-              <div
-                class="row justify-content-md-center"
-                style="
-                  background-color: #f2f2f2;
-                  text-align: center;
-                  padding: 50px 0 50px 0;
-                "
-              >
+         
                 <p
                   style="
-                    background-color: #fff;
+                    background-color: #f2f2f2;
                     padding: 10px;
                     margin-top: 10px;
-                    width: 700px;
+                    width: 500px;
                     border-radius: 20px;
                   "
                 >
-                  사용자 ID: <span style="font-weight: bold">{{ userId }}</span>
+                  ID: <span style="font-weight: bold">{{ userId }}</span>
                 </p>
+
                 <p
                   style="
-                    background-color: #fff;
+                    background-color: #f2f2f2;
                     padding: 10px;
                     margin-top: 10px;
-                    width: 700px;
+                    width: 500px;
                     border-radius: 20px;
                   "
                 >
-                  이름:
-                  <span style="font-weight: bold">{{ user.userName }}</span>
+                  이름: <span style="font-weight: bold">{{ user.userName }}</span>
                 </p>
+             
                 <p
                   style="
-                    background-color: #fff;
+                    background-color: #f2f2f2;
                     padding: 10px;
                     margin-top: 10px;
-                    width: 700px;
+                    width: 500px;
                     border-radius: 20px;
                   "
                 >
-                  휴대폰 번호:
-                  <span style="font-weight: bold">{{ user.phoneNum }}</span>
+                  전화번호: <span style="font-weight: bold">{{ user.phoneNum }}</span>
                 </p>
+
+          
+                <h5 style="text-align: right; font-size: 15px; padding-top: 10px;">@LOTTO COMPANY </h5>
+
               </div>
             </div>
           </template>
@@ -619,7 +564,7 @@
               </div>
             </div> -->
 
-            <div class="withdrawal-container" style="height: 800px">
+            <!-- <div class="withdrawal-container" style="height: 800px">
               <div class="withdrawal-box">
                 <h5
                   class="card-header"
@@ -663,7 +608,7 @@
                   </button>
                 </div>
               </div>
-            </div>
+            </div> -->
           </template>
         </div>
       </div>
