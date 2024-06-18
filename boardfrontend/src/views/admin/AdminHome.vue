@@ -1,7 +1,8 @@
 <template>
+
   <!-- <HeaderCom :hideHeader="false" /> -->
   <!-- 관리자 페이지에서는 헤더를 숨김 -->
-  <div class="main-container d-flex" style="height: auto;">
+  <div class="main-container d-flex" style="height: auto; ">
     <!-- <AdminHeaderCom class="sidebar" /> -->
     <AdminHeaderCom class="sidebar" :hideHeader="true" />
     <br>
@@ -9,8 +10,8 @@
     <br>
     <br>
     <br>
-    <div class="main-content">
-      <h2 class="container text-center my-4" style="letter-spacing: -1.5px;">관리자 대시보드</h2>
+    <div class="main-content" style="padding-top: 50px;">
+      <h2 class="container mb-5 text-center my-4" style="letter-spacing: -1.5px;">관리자 대시보드</h2>
 
       <div class="container">
         <!-- 대시보드 카드 섹션 -->
@@ -42,8 +43,8 @@
           <div class="col-lg-3 col-md-6 mb-4">
             <div class="card">
               <div class="card-body">
-                <h5 class="card-title">평균 주문 금액</h5>
-                <p class="card-text">$38,500</p>
+                <h5 class="card-title">평균 방문자</h5>
+                <p class="card-text">38,500명</p>
               </div>
             </div>
           </div>

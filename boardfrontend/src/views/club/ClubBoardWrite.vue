@@ -3,7 +3,7 @@
     <h3 class="form-title">매칭 글 작성</h3>
     <div class="form-container">
       <div class="match-form">
-<input type="file" multiple @change="handlePhotoUpload" class="file-input" />
+        <input type="file" multiple @change="handlePhotoUpload" class="file-input" />
         <div class="match-points">
           <!-- 성별 선택 -->
           <div class="select-wrapper">
@@ -53,15 +53,15 @@
         <div class="time-wrapper">
           <div class="time-setting">
             <label for="startTime" class="time-label">시작 시간 설정</label>
-            <input type="datetime-local" id="startTime" v-model="matchDetails.startTime" class="time-input" />
+            <input type="datetime-local" id="startTime" v-model="matchDetails.startTime" class="time-input" step="1800" />
           </div>
           <div class="time-setting">
             <label for="endTime" class="time-label">종료 시간 설정</label>
-            <input type="datetime-local" id="endTime" v-model="matchDetails.endTime" class="time-input" />
+            <input type="datetime-local" id="endTime" v-model="matchDetails.endTime" class="time-input" step="1800" />
           </div>
           <div class="time-setting">
             <label for="recruitmentDeadline" class="time-label">모집 마감 시간 설정</label>
-            <input type="datetime-local" id="recruitmentDeadline" v-model="matchDetails.recruitmentDeadline" class="time-input" />
+            <input type="datetime-local" id="recruitmentDeadline" v-model="matchDetails.recruitmentDeadline" class="time-input" step="1800" />
           </div>
         </div>
         <!-- 장소 및 기타 정보 입력 -->
@@ -69,7 +69,7 @@
         <input type="text" v-model="matchDetails.address" placeholder="주소 검색" readonly @click="openAddressSearch" class="input-field full-width" />
         <input type="text" v-model="matchDetails.participationFee" placeholder="참가비 설정" class="input-field full-width" />
         <textarea v-model="matchDetails.title" placeholder="구장 정보 입력" class="textarea-field"></textarea>
-        <textarea v-model="matchDetails.content" placeholder="매치 진행 방식 입력" class="textarea-field"></textarea>
+        <textarea v-model="matchDetails.content" placeholder="매치 진행 방식 입력" class="textarea-field content-field"></textarea>
         <button @click="submitForm" class="submit-button">제출하기</button>
       </div>
     </div>
@@ -106,7 +106,7 @@ export default {
     handlePhotoUpload(event) {
       this.imgFiles = Array.from(event.target.files);
       console.log("Selected files:", this.imgFiles);
-       // 파일 크기 확인 로직 추가
+      // 파일 크기 확인 로직 추가
       const maxSize = 10 * 1024 * 1024; // 10MB
       for (let file of this.imgFiles) {
         if (file.size > maxSize) {
@@ -147,6 +147,7 @@ export default {
 
         let response = await ClubBoardService.createClub(formData);
         console.log("Response data:", response.data);
+        alert("모집 게시글이 성공적으로 작성되었습니다.");
         this.$router.push("/club/club-board");
       } catch (e) {
         console.error("Error:", e);
@@ -279,6 +280,10 @@ export default {
   border-radius: 4px;
   margin-bottom: 10px;
   box-sizing: border-box;
+}
+
+.content-field {
+  white-space: pre-wrap; /* 줄 바꿈과 공백 유지 */
 }
 
 .submit-button {

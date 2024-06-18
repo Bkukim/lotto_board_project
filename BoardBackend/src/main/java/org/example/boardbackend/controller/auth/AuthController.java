@@ -272,4 +272,10 @@ public class AuthController {
         emailService.sendSimpleEmail(email, userId);
         return "이메일 발송 성공";
     }
+  
+    @GetMapping("/exist-pw")
+    public ResponseEntity<Object> checkByPw(@RequestBody UserReq userReq){
+        boolean result = userService.confirmByPw(userReq);
+        return ResponseEntity.ok(result);
+    }
 }

@@ -1,9 +1,9 @@
 <template>
   <div class="match-form-wrapper">
-    <h3 class="form-title">매칭 글 수정</h3>
+    <h3 class="form-title">매칭 글 작성</h3>
     <div class="form-container">
       <div class="match-form">
-        <input type="file" multiple @change="handlePhotoUpload" class="file-input" />
+<input type="file" multiple @change="handlePhotoUpload" class="file-input" />
         <div class="match-points">
           <!-- 성별 선택 -->
           <div class="select-wrapper">
@@ -70,7 +70,7 @@
         <input type="text" v-model="matchDetails.participationFee" placeholder="참가비 설정" class="input-field full-width" />
         <textarea v-model="matchDetails.title" placeholder="구장 정보 입력" class="textarea-field"></textarea>
         <textarea v-model="matchDetails.content" placeholder="매치 진행 방식 입력" class="textarea-field"></textarea>
-        <button @click="submitForm" class="submit-button">수정하기</button>
+        <button @click="submitForm" class="submit-button">제출하기</button>
       </div>
     </div>
   </div>
@@ -103,33 +103,6 @@ export default {
     };
   },
   methods: {
-    async fetchClubBoardDetails() {
-      const clubBoardId = this.$route.params.clubBoardId;
-      try {
-        const response = await ClubBoardService.getClubOnce(clubBoardId);
-        const data = response.data;
-        if (data) {
-          this.matchDetails = {
-            content: data.content,
-            location: data.location,
-            address: data.address,
-            participationFee: data.participationFee,
-            startTime: data.startTime,
-            endTime: data.endTime,
-            recruitmentDeadline: data.recruitmentDeadline,
-            maxQuota: data.maxQuota,
-            minQuota: data.minQuota,
-            peoplesMatch: data.peoplesMatch,
-            material: data.material,
-            matchForm: data.matchForm,
-            title: data.title,
-            sex: data.sex,
-          };
-        }
-      } catch (error) {
-        console.error("Error fetching club board details:", error);
-      }
-    },
     handlePhotoUpload(event) {
       this.imgFiles = Array.from(event.target.files);
       console.log("Selected files:", this.imgFiles);
@@ -166,18 +139,14 @@ export default {
           this.imgFiles.forEach((file) => {
             formData.append(`imgFiles`, file);
           });
-        } else {
-          formData.append("imgFiles", ""); // imgFiles 파트가 비어있어도 추가
         }
 
         for (var pair of formData.entries()) {
           console.log(pair[0] + ', ' + pair[1]);
         }
 
-        const clubBoardId = this.$route.params.clubBoardId;
-        let response = await ClubBoardService.updateClub(clubBoardId, formData);
+        let response = await ClubBoardService.createClub(formData);
         console.log("Response data:", response.data);
-        alert("모집 게시글이 성공적으로 수정되었습니다.");
         this.$router.push("/club/club-board");
       } catch (e) {
         console.error("Error:", e);
@@ -194,9 +163,8 @@ export default {
       }
     },
   },
-  async mounted() {
+  mounted() {
     console.log("Store state user:", store.state.user.userId);
-    await this.fetchClubBoardDetails();
   },
 };
 </script>

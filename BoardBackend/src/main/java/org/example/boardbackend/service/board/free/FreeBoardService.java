@@ -4,9 +4,11 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.example.boardbackend.model.dto.board.free.FreeBoardDto;
 import org.example.boardbackend.model.dto.board.free.IFreeBoardRecommentDto;
+import org.example.boardbackend.model.dto.notice.INoticeDto;
 import org.example.boardbackend.model.entity.board.free.FreeBoard;
 import org.example.boardbackend.model.entity.board.free.FreeBoardComment;
 import org.example.boardbackend.model.entity.board.free.FreeBoardRecomment;
+import org.example.boardbackend.model.entity.board.free.FreeBoardReport;
 import org.example.boardbackend.model.entity.notify.Notify;
 import org.example.boardbackend.model.entity.board.free.FreeBoardReport;
 import org.example.boardbackend.repository.board.free.FreeBoardCommentRepository;
@@ -41,6 +43,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class FreeBoardService {
 
+    private final FreeBoardReportRepository freeBoardReportRepository;
     private final FreeBoardRepository freeBoardRepository;
     private final UserRepository userRepository;
     private final NotifyService notifyService;
@@ -158,11 +161,18 @@ public class FreeBoardService {
                 = freeBoardRepository.findFreeBoardByUserIdContaining(userId, pageable);
         return page;
     }
-
+  
     // todo : 신고 저장함수
     @Transactional
     public void saveReport(FreeBoardReport freeBoardReport){
         freeBoardReportRepository.save(freeBoardReport);
     }
+  
+    //   todo : 관리자 : 신고 게시판 조회
+    public Page<FreeBoardReport> findFreeBoardReportsByUserIdContaining(String userId, Pageable pageable){
 
+        Page<FreeBoardReport> reports = freeBoardReportRepository.findFreeBoardReportsByUserIdContaining(userId, pageable);
+
+        return reports;
+    }
 }

@@ -1,31 +1,58 @@
 <template>
-  <div style="background-color: #f2f2f2; padding-bottom: 50px;">
+  <div style="background-color: #f2f2f2; padding-bottom: 50px">
     <!-- 큰 이미지 배너 -->
     <div class="container d-flex justify-content-center text-center">
-      <div v-if="clubBoard && !mapView && imgUrls.length" style="width: 1000px; position: relative;">
+      <div
+        v-if="clubBoard && !mapView && imgUrls.length"
+        style="width: 1000px; position: relative"
+      >
         <div class="img-gallery">
-          <img 
+          <img
             v-if="imgUrls[currentImageIndex]"
             :src="imgUrls[currentImageIndex]"
-            alt="club_photo" 
-            class="d-inline-block align-text-top" 
-            style="width: 1000px; height: 500px;" 
+            alt="club_photo"
+            class="d-inline-block align-text-top"
+            style="width: 1000px; height: 500px"
           />
-          <button @click="prevImage" class="nav-button prev-button">&#10094;</button>
-          <button @click="nextImage" class="nav-button next-button">&#10095;</button>
+          <button @click="prevImage" class="nav-button prev-button">
+            &#10094;
+          </button>
+          <button @click="nextImage" class="nav-button next-button">
+            &#10095;
+          </button>
         </div>
       </div>
-      <div v-else-if="mapView" id="map" style="width: 1000px; height: 500px;" ref="map"></div>
-      <div v-else style="width: 1000px; height: 500px; display: flex; justify-content: center; align-items: center;">
+      <div
+        v-else-if="mapView"
+        id="map"
+        style="width: 1000px; height: 500px"
+        ref="map"
+      ></div>
+      <div
+        v-else
+        style="
+          width: 1000px;
+          height: 500px;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+        "
+      >
         <div>Loading...</div>
       </div>
     </div>
 
-    <div class="container text-center d-flex" style="width: 1000px; margin: 0 auto;">
+    <div
+      class="container text-center d-flex"
+      style="width: 1000px; margin: 0 auto"
+    >
       <!-- 왼쪽 섹션 -->
-      <div style="flex: 1; margin-right: 20px;">
+      <div style="flex: 1; margin-right: 20px">
         <!-- 매치 포인트 섹션 -->
-        <div class="row rounded-section" style="background-color: #ffffff; margin-bottom: 20px; height: 200px;">
+        <div
+          class="row rounded-section"
+          style="background-color: #ffffff; margin-bottom: 20px; height: 200px"
+        >
           <div class="col-12">
             <h3 class="section-title">매치 포인트</h3>
             <div v-if="clubBoard" class="match-point-content">
@@ -35,11 +62,15 @@
               </div>
               <div class="match-point-item">
                 <i class="fas fa-futbol"></i>
-                <span>{{ clubBoard.peoplesMatch }} {{ clubBoard.matchForm }}</span>
+                <span
+                  >{{ clubBoard.peoplesMatch }} {{ clubBoard.matchForm }}</span
+                >
               </div>
               <div class="match-point-item">
                 <i class="fas fa-users"></i>
-                <span>{{ clubBoard.minQuota }} ~ {{ clubBoard.maxQuota }}명</span>
+                <span
+                  >{{ clubBoard.minQuota }} ~ {{ clubBoard.maxQuota }}명</span
+                >
               </div>
               <div class="match-point-item">
                 <i class="fas fa-running"></i>
@@ -49,54 +80,108 @@
           </div>
         </div>
 
-        <!-- 매치 데이터 섹션 -->
-        <div class="row rounded-section" style="background-color: #ffffff; margin-bottom: 20px; height: 500px;">
+        <!-- 매치 진행방식 섹션 -->
+        <div
+          class="row rounded-section"
+          style="background-color: #ffffff; margin-bottom: 20px; min-height: 200px"
+        >
           <div class="col-12">
-            <h3 class="section-title">매치 데이터</h3>
-            <p v-if="clubBoard">{{ clubBoard.location }}</p>
-            <p v-if="clubBoard">{{ clubBoard.content }}</p>
+            <h3 class="section-title">매치 진행방식</h3>
+            <p class="match-details" v-if="clubBoard" v-html="formattedContent(clubBoard.content)"></p>
           </div>
         </div>
 
-        <!-- 매치 진행방식 섹션 -->
-        <div class="row rounded-section" style="background-color: #ffffff; margin-bottom: 20px; height: 500px;">
-          <div class="col-12">
-            <h3 class="section-title">매치 진행방식</h3>
-            <ul>
-              <li>모든 파울은 사이드라인에서 킥인</li>
-              <li>골키퍼에게 백패스 가능 손으로는 잡으면 안 돼요</li>
-              <li>사람을 향한 태클 금지</li>
+        <!-- 신청 현황 확인 섹션 -->
+        <div
+          v-if="isAuthor"
+          class="row rounded-section"
+          style="background-color: #ffffff; margin-bottom: 20px; min-height: 200px"
+        >
+          <div class="col-12 text-center">
+            <h3 class="section-title">신청 현황</h3>
+            <ul class="participant-status">
+              <li
+                v-for="participant in participants"
+                :key="participant.id"
+                class="participant-item"
+              >
+                <span style="font-weight: bold; font-size: 20px;">{{ participant.userId }}</span>
+                <div v-if="participant.approval === 'N'">
+                  <button
+                    @click="toggleApproval(participant.userId)"
+                    class="approve-button"
+                  >
+                    승인하기
+                  </button>
+                </div>
+                <div v-else>
+                  <button
+                    @click="toggleApproval(participant.userId)"
+                    class="second-cancel-button"
+                  >
+                    승인취소
+                  </button>
+                </div>
+              </li>
             </ul>
           </div>
         </div>
       </div>
 
       <!-- 뉴스 섹션 -->
-      <div class="news-container rounded-section" style="background-color: #ffffff; max-height: 420px; flex-basis: calc(35% + 10px); position: sticky; top: 5px; margin-right: -10px;">
-        <div v-if="clubBoard" class="date-container">{{ formatDate(clubBoard.startTime) }}</div>
+      <div
+        class="news-container rounded-section"
+        style="
+          background-color: #ffffff;
+          flex-basis: calc(35% + 10px);
+          position: sticky;
+          top: 5px;
+          margin-right: -10px;
+          max-height: 40vh;
+          overflow-y: auto;
+        "
+      >
+        <div v-if="clubBoard" class="date-container">
+          {{ formatDate(clubBoard.startTime) }}
+        </div>
         <div v-if="clubBoard" class="club-title">{{ clubBoard.title }}</div>
         <div v-if="clubBoard" class="news-content">
           <div class="address-container">
             <div class="address-text">{{ clubBoard.address }}</div>
             <div class="address-actions">
-              <button @click="copyAddress" class="small-button">주소 복사</button>
-              <button @click="toggleMapView" class="small-button">지도 보기</button>
+              <button @click="copyAddress" class="small-button">
+                주소 복사
+              </button>
+              <button @click="toggleMapView" class="small-button">
+                지도 보기
+              </button>
             </div>
           </div>
           <div class="likes-container">
             <i class="fas fa-heart small-heart"></i>
             <span>{{ clubBoard.likes }}</span>
           </div>
-          <hr class="separator">
+          <hr class="separator" />
           <div class="fee-time-info">
-            <span class="fee-info">{{ formatCurrency(clubBoard.participationFee) }}원</span>
-            <span class="time-info"> / {{ calculateMatchDuration(clubBoard.startTime, clubBoard.endTime) }}</span>
+            <span class="fee-info"
+              >{{ formatCurrency(clubBoard.participationFee) }}원</span
+            >
+            <span class="time-info">
+              /
+              {{
+                calculateMatchDuration(clubBoard.startTime, clubBoard.endTime)
+              }}</span
+            >
           </div>
           <div class="like-apply-container">
             <div class="like-container">
-              <i 
-                :class="{'fas fa-heart liked': isLiked, 'far fa-heart': !isLiked}" 
-                @click="toggleLike">
+              <i
+                :class="{
+                  'fas fa-heart liked': isLiked,
+                  'far fa-heart': !isLiked,
+                }"
+                @click="toggleLike"
+              >
               </i>
               <div class="like-text">
                 <p>모집 게시글이 마음에 든다면</p>
@@ -104,7 +189,20 @@
               </div>
             </div>
             <div class="apply-container">
-              <button @click="apply" class="apply-button">신청하기</button>
+              <button
+                v-if="!isApplied"
+                @click="applyForClub"
+                class="apply-button"
+              >
+                신청하기
+              </button>
+              <button
+                v-else
+                @click="cancelApplication"
+                class="first-cancel-button"
+              >
+                취소하기
+              </button>
             </div>
           </div>
         </div>
@@ -112,16 +210,18 @@
     </div>
 
     <!-- 푸터 -->
-    <footer style="background-color: #f2f2f2; padding: 20px;">
+    <footer style="background-color: #f2f2f2; padding: 20px">
       <div class="container">
-        <p class="text-center">© 2024 Your Company. All Rights Reserved.</p>
+        <p class="text-center">© 2024 LOTTO Company. All Rights Reserved.</p>
       </div>
     </footer>
   </div>
 </template>
 
 <script>
+import store from "@/store"; // Vuex store import
 import ClubBoardService from "@/services/board/club/ClubBoardService";
+import ParticipantsService from "@/services/board/club/ParticipantsService";
 
 export default {
   data() {
@@ -131,7 +231,10 @@ export default {
       currentImageIndex: 0,
       mapView: false,
       imageLoading: true,
-      isLiked: false
+      isLiked: false,
+      isApplied: false, // 신청 여부 상태 추가
+      isAuthor: false, // 작성자 여부 상태 추가
+      participants: [], // 신청자 목록 추가
     };
   },
   methods: {
@@ -140,16 +243,43 @@ export default {
       try {
         const response = await ClubBoardService.getClubOnce(clubBoardId);
         const data = response.data;
-        
+
         if (data.length > 0) {
           this.clubBoard = data[0];
-          this.imgUrls = data.map(item => item.imgUrl);
+          this.imgUrls = data.map((item) => item.imgUrl);
+          this.isAuthor = this.clubBoard.userId === store.state.user.userId; // 작성자 여부 확인
         }
 
         this.imageLoading = false;
+        await this.checkParticipant(); // 신청 여부 확인
+        if (this.isAuthor) {
+          await this.fetchParticipants(); // 작성자인 경우 신청자 목록 조회
+        }
       } catch (error) {
         console.error("Error fetching club board details:", error);
         this.imageLoading = false;
+      }
+    },
+    async checkParticipant() {
+      const clubBoardId = this.$route.params.clubBoardId;
+      const userId = store.state.user.userId; // Vuex store에서 로그인한 유저 ID 가져오기
+      try {
+        const response = await ParticipantsService.checkParticipant(
+          clubBoardId,
+          userId
+        );
+        this.isApplied = response.data.isApplied;
+      } catch (error) {
+        console.error("Error checking participant:", error);
+      }
+    },
+    async fetchParticipants() {
+      const clubBoardId = this.$route.params.clubBoardId;
+      try {
+        const response = await ParticipantsService.getParticipants(clubBoardId);
+        this.participants = response.data;
+      } catch (error) {
+        console.error("Error fetching participants:", error);
       }
     },
     prevImage() {
@@ -178,7 +308,9 @@ export default {
       const kakao = window.kakao;
       const container = this.$refs.map;
       if (!container) {
-        console.error("지도를 초기화할 수 없습니다: 컨테이너 요소를 찾을 수 없습니다.");
+        console.error(
+          "지도를 초기화할 수 없습니다: 컨테이너 요소를 찾을 수 없습니다."
+        );
         return;
       }
       const options = {
@@ -195,7 +327,8 @@ export default {
             position: coords,
           });
           const infowindow = new kakao.maps.InfoWindow({
-            content: '<div style="width:150px;text-align:center;padding:6px 0;">경기장소</div>',
+            content:
+              '<div style="width:150px;text-align:center;padding:6px 0;">경기장소</div>',
           });
           infowindow.open(map, marker);
           map.setCenter(coords);
@@ -205,16 +338,18 @@ export default {
     formatDate(datetime) {
       const date = new Date(datetime);
       const day = date.getDate();
-      const dayOfWeek = ['일', '월', '화', '수', '목', '금', '토'][date.getDay()];
+      const dayOfWeek = ["일", "월", "화", "수", "목", "금", "토"][
+        date.getDay()
+      ];
       const month = date.getMonth() + 1;
-      const hours = String(date.getHours()).padStart(2, '0');
-      const minutes = String(date.getMinutes()).padStart(2, '0');
+      const hours = String(date.getHours()).padStart(2, "0");
+      const minutes = String(date.getMinutes()).padStart(2, "0");
       return `${month}월 ${day}일 ${dayOfWeek}요일 ${hours}:${minutes}`;
     },
     copyAddress() {
       const address = this.clubBoard.address;
       navigator.clipboard.writeText(address).then(() => {
-        alert('주소가 복사되었습니다.');
+        alert("주소가 복사되었습니다.");
       });
     },
     calculateMatchDuration(startTime, endTime) {
@@ -225,19 +360,59 @@ export default {
       return `${hours}시간`;
     },
     formatCurrency(value) {
-      return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+      return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
     },
     toggleLike() {
       this.isLiked = !this.isLiked;
     },
-    apply() {
-      alert("신청하기 버튼이 클릭되었습니다.");
+    async applyForClub() {
+      const clubBoardId = this.$route.params.clubBoardId;
+      const userId = store.state.user.userId; // Vuex store에서 로그인한 유저 ID 가져오기
+      try {
+        const response = await ParticipantsService.createParticipant(
+          clubBoardId,
+          userId
+        );
+        alert("신청이 성공적으로 완료되었습니다.");
+        this.isApplied = true; // 신청 완료 후 상태 업데이트
+        console.log("신청 성공:", response.data);
+      } catch (error) {
+        alert("신청에 실패했습니다. 다시 시도해주세요.");
+        console.error("신청 실패:", error);
+      }
+    },
+    async cancelApplication() {
+      const clubBoardId = this.$route.params.clubBoardId;
+      const userId = store.state.user.userId; // Vuex store에서 로그인한 유저 ID 가져오기
+      try {
+        await ParticipantsService.deleteParticipant(clubBoardId, userId);
+        alert("신청이 성공적으로 취소되었습니다.");
+        this.isApplied = false; // 신청 취소 후 상태 업데이트
+        console.log("신청 취소 성공");
+      } catch (error) {
+        alert("신청 취소에 실패했습니다. 다시 시도해주세요.");
+        console.error("신청 취소 실패:", error);
+      }
+    },
+    async toggleApproval(userId) {
+      const clubBoardId = this.$route.params.clubBoardId;
+      try {
+        await ParticipantsService.toggleApproval(clubBoardId, userId);
+        alert("승인 상태가 변경되었습니다.");
+        await this.fetchParticipants(); // 승인 후 신청자 목록 갱신
+      } catch (error) {
+        alert("승인 상태 변경에 실패했습니다. 다시 시도해주세요.");
+        console.error("승인 상태 변경 실패:", error);
+      }
+    },
+    formattedContent(content) {
+      return content.replace(/\n/g, '<br/>');
     }
   },
   async mounted() {
     window.scrollTo(0, 0);
     await this.fetchClubBoardDetails();
-  }
+  },
 };
 </script>
 
@@ -303,6 +478,8 @@ export default {
   font-size: 30px;
   letter-spacing: -1px;
   font-weight: 600;
+  word-wrap: break-word;
+  width: 100%;
 }
 
 .news-content {
@@ -420,6 +597,47 @@ export default {
   background-color: #0d1f3c;
 }
 
+.first-cancel-button {
+  background-color: red;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  padding: 10px 20px;
+  cursor: pointer;
+}
+
+.first-cancel-button:hover {
+  background-color: darkred;
+}
+
+.second-cancel-button {
+  background-color: red;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  padding: 5px 10px;
+  cursor: pointer;
+  margin-left: 10px;
+}
+
+.second-cancel-button:hover {
+  background-color: darkred;
+}
+
+.approve-button {
+  background-color: #28a745;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  padding: 5px 10px;
+  cursor: pointer;
+  margin-left: 10px;
+}
+
+.approve-button:hover {
+  background-color: #218838;
+}
+
 .rounded-section {
   border-radius: 15px;
 }
@@ -459,5 +677,33 @@ export default {
 .likes-container .small-heart {
   color: red;
   margin-right: 5px;
+}
+
+.participant-status {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.participant-item {
+  display: flex;
+  align-items: center;
+  margin: 10px 0;
+  width: 100%;
+}
+
+.participant-item span {
+  margin-right: 10px;
+}
+
+.participant-item div {
+  margin-left: 10px;
+}
+
+.match-details {
+  white-space: pre-wrap;
+  text-align: left;
+  margin-left: 20px;
 }
 </style>

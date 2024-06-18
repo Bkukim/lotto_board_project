@@ -27,7 +27,7 @@
               "
             >
               <div class="router-text" style="margin-right: 50px">
-                이달의 HOT
+                이달의 HOT!
               </div>
               <img
                 src="@/assets/img/hot_icon.png"
@@ -120,7 +120,7 @@
       </div>
 
       <div class="row">
-        <!-- 이달의 HOT -->
+        <!--자유게시판 -->
         <div class="col mt-5">
           <router-link
             to="/hot/hotBoard"
@@ -138,7 +138,7 @@
                 자유게시판
               </div>
               <img
-                src="@/assets/img/hot_icon.png"
+                src="@/assets/img/main_free.png"
                 alt="Loo"
                 width="70"
                 height="70"
@@ -154,7 +154,7 @@
             style="width: 500px; margin-left: 50px"
           >
             <!-- 테이블 시작-->
-            <table class="table mt-5">건의게시판
+            <table class="table mt-5">
               <thead>
                 <tr>
                   <th scope="col" style="font-size: 14px">작성자</th>
@@ -174,7 +174,7 @@
           </div>
         </div>
 
-        <!-- 커뮤니티2 -->
+        <!-- 건의게시판 -->
         <div class="col mt-5">
           <router-link
             to="/"
@@ -188,9 +188,9 @@
                 justify-content: center;
               "
             >
-              <div class="router-text" style="margin-right: 50px">자유게시판</div>
+              <div class="router-text" style="margin-right: 50px">건의게시판</div>
               <img
-                src="@/assets/img/Community_icon.png"
+                src="@/assets/img/main_cp.png"
                 alt="Loo"
                 width="70"
                 height="70"
@@ -302,14 +302,16 @@ export default {
 
 /* 메인배너 */
 .main-banner {
-  height: 20vh;
-  width: auto;
-  background-image: url("@/assets/img/MAIN_BN3.jpg") ; /* 배경 이미지 설정 */
-  background-size: 100%; /* 요소에 맞게 이미지 확대 */
-  background-position: center; /* 이미지 중앙 정렬 */
+  height: 250px;
+  width: 1920px; /* 고정된 너비 설정 */
+  background-image: url("@/assets/img/MAIN_BN4.jpg"); /* 배경 이미지 설정 */
+  background-repeat: no-repeat;
+  background-size: cover; /* 요소에 맞게 이미지 확대 */
+  background-position: center; 
   display: flex;
   justify-content: center;
   align-items: center;
+  margin: 0 auto; /* 가로로 가운데 정렬 */
 }
 
 /* 로또의 새로운 소식 */

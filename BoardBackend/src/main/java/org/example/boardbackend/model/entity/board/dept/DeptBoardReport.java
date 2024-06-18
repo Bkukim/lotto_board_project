@@ -43,6 +43,6 @@ public class DeptBoardReport extends BaseTimeEntity {
     private long reportId;
     private String userId;
     private long deptBoardId;
-    private String comment;
+    private String content;
 
 }
