@@ -12,6 +12,7 @@ import org.example.boardbackend.model.dto.member.NewPw;
 import org.example.boardbackend.model.entity.auth.User;
 import org.example.boardbackend.security.jwt.JwtUtils;
 import org.example.boardbackend.service.social.SocialLoginService;
+import org.example.boardbackend.service.user.EmailService;
 import org.example.boardbackend.service.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -260,5 +261,15 @@ public class AuthController {
             log.debug(e.getMessage());
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
+    }
+
+    private final EmailService emailService;
+    // ?는 requestParam, ?이하는 변수를 알아서 받음 / 그냥은 PathVariable, {}가 들어감
+    @PutMapping("/sendEmail")
+    public String sendEmail(@RequestParam String email, @RequestParam String userId){
+        log.debug("이메일"+email);
+        log.debug("아이디"+userId);
+        emailService.sendSimpleEmail(email, userId);
+        return "이메일 발송 성공";
     }
 }

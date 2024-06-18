@@ -7,7 +7,7 @@ class NoticeService {
   // TODO: 전체 조회
   getAll( title, page, size) {
     return http.get(
-      `/normal/notice/all/?title=${title}&page=${page}&size=${size}`
+      `/normal/notice/all?title=${title}&page=${page}&size=${size}`
     );
   }
 

@@ -51,7 +51,7 @@ public class NormalNoticeController {
             Page<INoticeDto> notices;
 //            if (eventYn.equals("Y")) { // 이벤트가 있을경우 레디스 사용
                 notices = noticeRedisService
-                        .redisFindByTitleContaining(title, pageable);
+                        .findByTitleContaining(title, pageable);
 //            } else {
 //                notices = noticeRedisService
 //                        .findByTitleContaining(title, pageable);
@@ -62,6 +62,7 @@ public class NormalNoticeController {
             response.put("totalPages", notices.getTotalPages());
             return new ResponseEntity<>(response, HttpStatus.OK);
         } catch (Exception e) {
+            log.debug("공지사항 전체 " + e.getMessage());
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
 

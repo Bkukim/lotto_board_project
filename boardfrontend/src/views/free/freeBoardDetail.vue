@@ -142,9 +142,10 @@
                       class="form-control"
                       id="reportReason"
                       rows="3"
+                      v-model="reportContent"
                     ></textarea>
                   </div>
-                  <button type="submit" class="btn btn-primary">제출</button>
+                  <button class="btn btn-primary" @click="report" >제출</button>
                 </form>
               </div>
             </div>
@@ -668,6 +669,8 @@ export default {
         content: "",
       },
 
+      reportContent:"", // 신고내용
+
       // 페이징
       page: 1, // 현재페이지번호
       count: 0, // 전체데이터개수
@@ -684,6 +687,20 @@ export default {
     },
   },
   methods: {
+    async report(){
+      try {
+        let data={
+          userId : this.$store.state.user.userId,
+          freeBoardId : this.freeBoard.freeBoardId,
+          content:this.reportContent
+        }
+       await FreeBoardService.reportFreeBoard(data);
+       
+      } catch (error) {
+        console.log(error);
+      }
+      this.$router.push("/free/free-boardDetail/" + this.freeBoard.freeBoardId)
+    },
     toggleReplyForm(commentId) {
       // 클릭된 답글 버튼이 이미 열려있는 상태이면 폼을 닫고, 그렇지 않으면 엽니다.
       this.replyVisible =
