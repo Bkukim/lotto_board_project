@@ -7,7 +7,7 @@
   />
 
   <!-- 전체 박스 -->
-  <div class="fbd_all" style="height: auto">
+  <div class="fbd_all" style="height: auto;">
     <!-- 해당 게시판 이름 부분 -->
     <div class="container text-center mb-5">
       <h3 style="text-align: left" id="fbd_h3">자유 게시판 글 상세보기</h3>
@@ -58,7 +58,7 @@
         </div>
       </div>
 
-      <div
+      <!-- <div
         style="
           text-align: left;
           padding: 20px 0 20px 30px;
@@ -68,7 +68,19 @@
           word-wrap: break-word;
           word-break: break-all;
         "
-        v-html="freeBoard.content"
+      ></div> -->
+       
+        <div style="max-width: 320px; display: block; "  v-html="freeBoard.content"></div>
+        <div
+        style="
+          text-align: left;
+          padding: 20px 0 20px 30px;
+          font-size: 15px;
+          font-weight: 600;
+          border-bottom: 1px solid #cccccc;
+          word-wrap: break-word;
+          word-break: break-all;
+        "
       ></div>
       <!-- TODO: 좋아요버튼 -->
       <div class="mt-5 text-center">
@@ -900,7 +912,6 @@ export default {
 
     // 대댓글(답글) 조회
     async retrieveFreeBoardRecomment(freeBoardId) {
-      console.log("진입");
       try {
         let response = await FreeBoardService.getFreeBoardRecomment(
           freeBoardId
@@ -909,6 +920,7 @@ export default {
 
         console.log("댓글들", this.freeBoardComments);
         console.log("대댓글들", this.freeBoardRecomments);
+        
         // 댓글 배열에 대댓글 속성을 추가하는 함수
         this.freeBoardComments.forEach((comment) => {
           comment.freeBoardRecomments = this.freeBoardRecomments.filter(
@@ -916,11 +928,7 @@ export default {
           );
         });
         console.log("댓글마다 대댓글 잘 드갔나", this.freeBoardComments);
-        // TODO: 4) 프론트 로깅 : console.log
-        // console.log("response.data",response.data);
-        // console.log("this.comments" ,this.freeBoardComments);
       } catch (e) {
-        // alert("페이징 대댓글 에러");
         console.log(e);
       }
     },

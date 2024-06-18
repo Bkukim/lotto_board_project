@@ -28,7 +28,7 @@
     <div class="container text-center" style="background-color: #e2e2e28c">
       <div
         class="container text-center"
-        style="gap: 5px; width: 650px"
+        style="gap: 5px; width: 650px;"
         id="search_box"
       >
         <div class="row">

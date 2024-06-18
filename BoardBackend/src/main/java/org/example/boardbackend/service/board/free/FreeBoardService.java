@@ -148,9 +148,16 @@ public class FreeBoardService {
         return freeBoardCommentRepository.findFreeBoardCommentsByFreeBoardIdOrderByInsertTimeAsc(freeBoardId, pageable);
     }
 
+
+
     //    todo: 대댓글 조회 함수
     public List<IFreeBoardRecommentDto> getRecommentByFreeBoardId(long freeBoardId) {
         return freeBoardRecommentRepository.findFreeBoardRecommentsByFreeBoardCommentIdOrderByInsertTimeDesc(freeBoardId);
+    }
+
+    // todo 대댓글 갯수 조회
+    public Long countRecommentByFreeBoardCommentId(long commentId){
+        return freeBoardRecommentRepository.countByFreeBoardCommentId(commentId);
     }
 
     //    todo : userId가 작성한 글 전체조회

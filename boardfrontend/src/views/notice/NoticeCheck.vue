@@ -194,6 +194,7 @@ export default {
         eventYN: "N",
       },
 
+
       // 페이징
       page: 1, // 현재페이지번호
       count: 0, // 전체데이터개수
@@ -205,18 +206,22 @@ export default {
     };
   },
 
+ 
   methods: {
-    async get(noticeId, eventYN) {
+    async get(noticeId,eventYN) {
+
       // todo: 공통 상세조회 함수: get()
       try {
         let response = await NoticeService.getNotice(noticeId, eventYN);
         this.notice = response.data;
         // 로깅
         console.log(response.data.views);
+
       } catch (e) {
         console.log(e);
       }
     },
+
     async deleteNotice() {
       try {
         alert("정말로 삭제하시겠습니까?");
@@ -230,8 +235,10 @@ export default {
         console.log(e);
       }
     },
+
     goUpdate() {
       this.$router.push(`/admin/notice-update/${this.notice.noticeId}`);
+
     },
     async viewsUp() {
       try {
@@ -255,12 +262,11 @@ export default {
         console.log(e);
       }
     },
-  },
+
+    },
 
   async mounted() {
-    // 상세조회 실행
-    await this.get(this.$route.params.noticeId);
-    await this.get(this.$route.params.noticeId, this.$route.params.eventYN);
+    await this.get(this.$route.params.noticeId,this.$route.params.eventYN);
     this.viewsUp();
     window.scrollTo(0, 0);
   },

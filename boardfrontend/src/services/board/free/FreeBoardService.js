@@ -77,6 +77,7 @@ class FreeBoardService {
 
   reportFreeBoard(data) {
     return http.post("user/board/free/report/save", data, {
+
       headers: AuthHeader(),
     });
   }
