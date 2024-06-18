@@ -93,6 +93,16 @@ class DeptBoardService {
       }
     );
   }
+
+  // TODO: 신고 게시글 전체 조회
+  getAllDeptBoardReport(userId, page, size) {
+    return http.get(
+      `/admin/report/dept?userId=${userId}&page=${page}&size=${size}`,
+      {
+        headers: AuthHeader(),
+      }
+    );
+  }
 }
 
 export default new DeptBoardService();

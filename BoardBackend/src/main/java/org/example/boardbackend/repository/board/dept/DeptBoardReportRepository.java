@@ -24,7 +24,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface DeptBoardReportRepository extends JpaRepository<DeptBoardReport, Long> {
     //    todo : userId로 검색 -> 반복적으로 문제를 일으키는 사용자의 게시물을 검토할 때 유용
-    @Query(value = "SELECT REPORT_ID AS reportId, USER_ID AS userId, DEPT_BOARD_ID AS deptBoardId, CONTENT AS content, INSERT_TIME AS insertTime FROM LOTTO_DEPT_BOARD_REPORT\n" +
+    @Query(value = "SELECT * FROM LOTTO_DEPT_BOARD_REPORT\n" +
             "WHERE USER_ID LIKE '%'|| :userId ||'%'"+
             "ORDER BY INSERT_TIME DESC"
             , countQuery = "SELECT count(*)FROM LOTTO_DEPT_BOARD_REPORT\n" +

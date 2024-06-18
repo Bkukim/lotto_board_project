@@ -21,7 +21,7 @@ public class QDeptBoardReport extends EntityPathBase<DeptBoardReport> {
 
     public final org.example.boardbackend.model.common.QBaseTimeEntity _super = new org.example.boardbackend.model.common.QBaseTimeEntity(this);
 
-    public final StringPath comment = createString("comment");
+    public final StringPath content = createString("content");
 
     public final NumberPath<Long> deptBoardId = createNumber("deptBoardId", Long.class);
 
