@@ -9,7 +9,9 @@ import org.example.boardbackend.model.dto.board.club.FieldPicDto;
 import org.example.boardbackend.model.dto.board.free.FreeBoardDto;
 import org.example.boardbackend.model.entity.auth.User;
 import org.example.boardbackend.model.entity.board.club.ClubBoard;
+import org.example.boardbackend.model.entity.board.club.ClubBoardLike;
 import org.example.boardbackend.model.entity.board.club.FieldPic;
+import org.example.boardbackend.repository.board.club.ClubBoardLikeRepository;
 import org.example.boardbackend.repository.board.club.ClubBoardRepository;
 import org.example.boardbackend.repository.board.club.FieldPicRepository;
 import org.example.boardbackend.repository.user.UserRepository;
@@ -52,8 +54,7 @@ public class ClubBoardService {
     ModelMapper modelMapper = new ModelMapper();
     private final ClubBoardRepository clubBoardRepository;
     private final FieldPicRepository fieldPicRepository;
-    private final UserRepository userRepository;
-
+    private final ClubBoardLikeRepository clubBoardLikeRepository;
 
     // TODO: 전체 조회 함수
     public List<ClubBoard> getAllClub() {
