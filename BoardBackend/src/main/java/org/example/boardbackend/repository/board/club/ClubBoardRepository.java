@@ -1,6 +1,7 @@
 package org.example.boardbackend.repository.board.club;
 
 import org.example.boardbackend.model.dto.board.club.ClubBoardDto;
+import org.example.boardbackend.model.dto.board.dept.DeptBoardDto;
 import org.example.boardbackend.model.entity.board.club.ClubBoard;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -37,12 +38,19 @@ public interface ClubBoardRepository extends JpaRepository<ClubBoard, Long> {
             "WHERE CB.CLUB_BOARD_ID = :clubBoardId", nativeQuery = true)
     List<Map<String, Object>> findClubBoardWithPics(@Param("clubBoardId") long clubBoardId);
 
-//  TODO: userId로 작성한 글 보기
-@Query(value = "SELECT CLUB_BOARD_ID AS clubBoardId, USER_ID AS userId, TITLE AS title, INSERT_TIME AS insertTime, LIKES AS likes FROM LOTTO_CLUB_BOARD\n" +
-        "WHERE USER_ID LIKE '%'|| :userId ||'%'"+
-        "ORDER BY INSERT_TIME DESC"
-        ,countQuery = "SELECT count (*) FROM LOTTO_CLUB_BOARD\n" +
-        "WHERE USER_ID LIKE '%'|| :userId ||'%'"
-        ,nativeQuery = true)
-Page<ClubBoardDto> findClubBoardByUserIdContaining(@Param("userId") String userId, Pageable pageable);
+    //  TODO: userId로 작성한 글 보기
+    @Query(value = "SELECT CLUB_BOARD_ID AS clubBoardId, USER_ID AS userId, TITLE AS title, INSERT_TIME AS insertTime, LIKES AS likes FROM LOTTO_CLUB_BOARD\n" +
+            "WHERE USER_ID LIKE '%'|| :userId ||'%'" +
+            "ORDER BY INSERT_TIME DESC"
+            , countQuery = "SELECT count (*) FROM LOTTO_CLUB_BOARD\n" +
+            "WHERE USER_ID LIKE '%'|| :userId ||'%'"
+            , nativeQuery = true)
+    Page<ClubBoardDto> findClubBoardByUserIdContaining(@Param("userId") String userId, Pageable pageable);
+
+    @Query(value = "SELECT CLUB_BOARD_ID AS clubBoardId, USER_ID AS userId, TITLE AS title, INSERT_TIME AS insertTime, LIKES AS likes FROM LOTTO_CLUB_BOARD\n" +
+            "WHERE TITLE LIKE '%'|| :title ||'%'"
+            , countQuery = "SELECT count(*)FROM LOTTO_DEPARTMENT_BOARD\n" +
+            "WHERE TITLE LIKE '%'|| :title ||'%'"
+            , nativeQuery = true)
+    Page<ClubBoardDto> findAllByTitleContaining(@Param("title") String title, Pageable pageable);
 }

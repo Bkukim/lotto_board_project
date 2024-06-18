@@ -78,14 +78,14 @@ public class EventService {
 //        publish(event, noticeId);
 //
 //    }
-    @Scheduled(fixedDelay = 1000)
-    public void scheduler(Event event,long noticeId){
-        if(validEnd()){
-            log.info("===== 선착순 이벤트가 종료되었습니다. =====");
-            return;
-        }
-        publish(event, noticeId);
-    }
+//    @Scheduled(fixedDelay = 1000)
+//    public void scheduler(Event event,long noticeId){
+//        if(validEnd()){
+//            log.info("===== 선착순 이벤트가 종료되었습니다. =====");
+//            return;
+//        }
+//        publish(event, noticeId);
+//    }
 
     public boolean validEnd(){
         return this.eventCount != null

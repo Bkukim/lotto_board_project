@@ -830,7 +830,6 @@ export default {
 
     // 대댓글(답글) 조회
     async retrieveFreeBoardRecomment(freeBoardId) {
-      console.log("진입");
       try {
         let response = await FreeBoardService.getFreeBoardRecomment(
           freeBoardId
@@ -839,6 +838,7 @@ export default {
 
         console.log("댓글들", this.freeBoardComments);
         console.log("대댓글들", this.freeBoardRecomments);
+        
         // 댓글 배열에 대댓글 속성을 추가하는 함수
         this.freeBoardComments.forEach((comment) => {
           comment.freeBoardRecomments = this.freeBoardRecomments.filter(
@@ -846,11 +846,7 @@ export default {
           );
         });
         console.log("댓글마다 대댓글 잘 드갔나", this.freeBoardComments);
-        // TODO: 4) 프론트 로깅 : console.log
-        // console.log("response.data",response.data);
-        // console.log("this.comments" ,this.freeBoardComments);
       } catch (e) {
-        // alert("페이징 대댓글 에러");
         console.log(e);
       }
     },
