@@ -87,11 +87,13 @@
                     placeholder="Search"
                     aria-label="Search"
                   />
-                  <button
+                  <router-link
                     class="btn btn-outline-success search-button"
                     type="submit"
                     style="border: none"
                     id="s_all"
+                    to="/member/search"
+     
                   >
                     <img
                       src="@/assets/img/serch_icon.png"
@@ -101,7 +103,7 @@
                       class="d-inline-block align-text-top"
                       style="margin-left: -10px; margin-right: -10px"
                     />
-                  </button>
+                  </router-link>
                 </form>
               </div>
             </nav>
@@ -240,10 +242,13 @@
             </div>
 
             <!-- 관리자 페이지 버튼 -->
-            <router-link v-if="isAdminLoggedIn" to="/admin/home">
+            <router-link
+              v-if="isAdminLoggedIn"
+              to="/admin/home"
+              class="btn btn-primary admin-page-btn"
+            >
               관리자 페이지
             </router-link>
-            
           </div>
         </div>
       </nav>
@@ -316,12 +321,11 @@ export default {
     },
 
     computed: {
-    isAdminLoggedIn() {
+      isAdminLoggedIn() {
       // 관리자 로그인 여부 계산
       return this.$store.state.user.role === 'admin';
-    }
-    
-  },
+    },
+    },
   },
   mounted() {
     this.getAllDepartment();
@@ -507,5 +511,10 @@ export default {
 .notification-link:hover {
   color: black;
   text-decoration: underline;
+}
+.admin-page-btn {
+  margin-left: 10px;
+  background-color: #2d61d0;
+  color: white;
 }
 </style>

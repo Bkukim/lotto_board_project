@@ -172,7 +172,7 @@ public ResponseEntity<Object> findById(
 }
 
 //todo: 수정함수
-    @PutMapping("notice-update/{noticeId}")
+    @PutMapping("/notice-update/{noticeId}")
     public  ResponseEntity<Object> update(
             @PathVariable long noticeId
             , @RequestBody Notice notice

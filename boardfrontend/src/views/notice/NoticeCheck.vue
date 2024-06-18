@@ -91,7 +91,8 @@
           data-bs-target="#reportModal"
 
         >
-          <img src="@/assets/img/report_icon.png" width="40" height="40" />
+        <!-- <img src="@/assets/img/report_icon.png" width="40" height="40" /> -->
+
           신고
         </button>
 
@@ -107,6 +108,7 @@
             <div class="modal-content">
               <div class="modal-header">
                 <h5 class="modal-title" id="reportModalLabel" style="font-weight: bold;">
+
                   <img
                     src="@/assets/img/report_icon.png"
                     width="20"
@@ -142,6 +144,7 @@
           </div>
         </div>
       </div>
+
 
 
           <!-- 목록으로 버튼 -->
@@ -218,6 +221,9 @@
               <div
                 class="router-text"
                 style="
+                  margin-right: 20px;
+                  margin-top: 10px;
+
                   color: #ffffff;
                   text-align: center;
                 "
@@ -240,7 +246,8 @@
             >
               <div
                 class="router-text"
-                style=" color: #ffffff;
+                style="margin-right: 20px; margin-top: 10px; color: #ffffff;
+
                 width: 300px;
                 text-decoration: none;
                 background-color: #162b59;
@@ -647,6 +654,32 @@ export default {
         userId: this.$store.state.user?.userId, // 로그인된 사용자 ID
         content: "",
       },
+      // replyVisible: false, // 답글 입력 폼의 표시 여부를 관리하는 변수
+      replyToCommentId: null, // 어떤 댓글에 대한 답글인지 식별하기 위한 변수
+
+      // 새로 작성할 답글
+      newReply: {
+        userId: this.$store.state.user?.userId,
+        content: "",
+      },
+
+      // 답글 글자 수
+      charCountReply: 0,
+
+  
+
+      // 기존 댓글 목록
+      noticeBoardComments: [],
+
+      // 기존 대댓글 목록
+      noticeBoardRecomments: [],
+
+      // 새로 작성할 댓글
+      newComment: {
+        userId: this.$store.state.user?.userId, // 로그인된 사용자 ID
+        content: "",
+      },
+
 
       // 페이징
       page: 1, // 현재페이지번호
@@ -661,20 +694,24 @@ export default {
  
   methods: {
     async get(noticeId,eventYN) {
+
       // todo: 공통 상세조회 함수: get()
       try {
         let response = await NoticeService.getNotice(noticeId,eventYN);
         this.notice = response.data;
         // 로깅
         console.log(response.data.views);
+
       } catch (e) {
         console.log(e);
       }
     },
+
     async deleteNotice() {
       try {
         alert("정말로 삭제하시겠습니까?");
         let response = await NoticeService.delete(this.notice.noticeId);
+
 
         // 로깅
         console.log(response.data);
@@ -684,8 +721,10 @@ export default {
         console.log(e);
       }
     },
+
     goUpdate() {
       this.$router.push(`/admin/notice-update/${this.notice.noticeId}`);
+
     },
     async viewsUp() {
       try {
@@ -712,8 +751,6 @@ export default {
     },
 
   async mounted() {
-    // 상세조회 실행
-    await this.get(this.$route.params.noticeId);
     await this.get(this.$route.params.noticeId,this.$route.params.eventYN);
     this.viewsUp();
     window.scrollTo(0, 0);
