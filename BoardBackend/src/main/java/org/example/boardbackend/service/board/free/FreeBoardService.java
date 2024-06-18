@@ -49,7 +49,6 @@ public class FreeBoardService {
     private final NotifyService notifyService;
     private final FreeBoardCommentRepository freeBoardCommentRepository;
     private final FreeBoardRecommentRepository freeBoardRecommentRepository;
-    private final FreeBoardReportRepository freeBoardReportRepository;
 
     //    todo 전체 조회
     public Page<FreeBoardDto> selectByTitleContaining(

@@ -111,33 +111,37 @@
         >
           <div class="col-12 text-center">
             <h3 class="section-title">신청 현황</h3>
-            <ul class="participant-status">
-              <li
-                v-for="participant in participants"
-                :key="participant.id"
-                class="participant-item"
-              >
-                <span style="font-weight: bold; font-size: 20px">{{
-                  participant.userId
-                }}</span>
-                <div v-if="participant.approval === 'N'">
-                  <button
-                    @click="toggleApproval(participant.userId)"
-                    class="approve-button"
-                  >
-                    승인하기
-                  </button>
-                </div>
-                <div v-else>
-                  <button
-                    @click="toggleApproval(participant.userId)"
-                    class="second-cancel-button"
-                  >
-                    승인취소
-                  </button>
-                </div>
-              </li>
-            </ul>
+            <table class="table table-bordered table-striped">
+              <thead>
+                <tr>
+                  <th style="text-align: center;">참가자</th>
+                  <th style="text-align: center;">승인 상태</th>
+                  <th style="text-align: center;">승인하기</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr v-for="participant in participants" :key="participant.id">
+                  <td>{{ participant.userId }}</td>
+                  <td>{{ participant.approval === 'N' ? '미승인' : '승인됨' }}</td>
+                  <td>
+                    <button
+                      v-if="participant.approval === 'N'"
+                      @click="approveParticipant(participant.userId)"
+                      class="approve-button"
+                    >
+                      승인하기
+                    </button>
+                    <button
+                      v-else
+                      @click="cancelApproval(participant.userId)"
+                      class="second-cancel-button"
+                    >
+                      승인취소
+                    </button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
           </div>
         </div>
       </div>
@@ -202,7 +206,7 @@
                 <p>좋아요를 눌러보세요!</p>
               </div>
             </div>
-            <div class="apply-container">
+            <div v-if="!isAuthor" class="apply-container">
               <button
                 v-if="!isApplied"
                 @click="applyForClub"
@@ -378,6 +382,57 @@ export default {
     },
     formatCurrency(value) {
       return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    },
+    async applyForClub() {
+      const clubBoardId = this.$route.params.clubBoardId;
+      const userId = store.state.user.userId; // Vuex store에서 로그인한 유저 ID 가져오기
+      try {
+        const response = await ParticipantsService.createParticipant(
+          clubBoardId,
+          userId
+        );
+        alert("신청이 성공적으로 완료되었습니다.");
+        this.isApplied = true; // 신청 완료 후 상태 업데이트
+        console.log("신청 성공:", response.data);
+      } catch (error) {
+        alert("신청에 실패했습니다. 다시 시도해주세요.");
+        console.error("신청 실패:", error);
+      }
+    },
+    async cancelApplication() {
+      const clubBoardId = this.$route.params.clubBoardId;
+      const userId = store.state.user.userId; // Vuex store에서 로그인한 유저 ID 가져오기
+      try {
+        await ParticipantsService.deleteParticipant(clubBoardId, userId);
+        alert("신청이 성공적으로 취소되었습니다.");
+        this.isApplied = false; // 신청 취소 후 상태 업데이트
+        console.log("신청 취소 성공");
+      } catch (error) {
+        alert("신청 취소에 실패했습니다. 다시 시도해주세요.");
+        console.error("신청 취소 실패:", error);
+      }
+    },
+    async approveParticipant(userId) {
+      const clubBoardId = this.$route.params.clubBoardId;
+      try {
+        await ParticipantsService.toggleApproval(clubBoardId, userId);
+        alert("승인 상태가 변경되었습니다.");
+        await this.fetchParticipants(); // 승인 후 신청자 목록 갱신
+      } catch (error) {
+        alert("승인 상태 변경에 실패했습니다. 다시 시도해주세요.");
+        console.error("승인 상태 변경 실패:", error);
+      }
+    },
+    async cancelApproval(userId) {
+      const clubBoardId = this.$route.params.clubBoardId;
+      try {
+        await ParticipantsService.toggleApproval(clubBoardId, userId);
+        alert("승인 상태가 변경되었습니다.");
+        await this.fetchParticipants(); // 승인 후 신청자 목록 갱신
+      } catch (error) {
+        alert("승인 상태 변경에 실패했습니다. 다시 시도해주세요.");
+        console.error("승인 상태 변경 실패:", error);
+      }
     },
     async toggleLike() {
       const clubBoardId = this.$route.params.clubBoardId;
@@ -650,9 +705,7 @@ export default {
   color: white;
   border: none;
   border-radius: 5px;
-  padding: 5px 10px;
   cursor: pointer;
-  margin-left: 10px;
 }
 
 .second-cancel-button:hover {
@@ -664,9 +717,7 @@ export default {
   color: white;
   border: none;
   border-radius: 5px;
-  padding: 5px 10px;
   cursor: pointer;
-  margin-left: 10px;
 }
 
 .approve-button:hover {
@@ -739,5 +790,47 @@ export default {
   white-space: pre-wrap;
   text-align: left;
   margin-left: 20px;
+}
+
+.table {
+  width: 100%;
+  margin-bottom: 1rem;
+  color: #212529;
+  border-collapse: collapse;
+}
+
+.table th,
+.table td {
+  padding: 0.75rem;
+  vertical-align: top;
+  border-top: 1px solid #dee2e6;
+  text-align: center;
+}
+
+.table thead th {
+  vertical-align: bottom;
+  border-bottom: 2px solid #dee2e6;
+}
+
+.table tbody + tbody {
+  border-top: 2px solid #dee2e6;
+}
+
+.table-bordered {
+  border: 1px solid #dee2e6;
+}
+
+.table-bordered th,
+.table-bordered td {
+  border: 1px solid #dee2e6;
+}
+
+.table-bordered thead th,
+.table-bordered thead td {
+  border-bottom-width: 2px;
+}
+
+.table-striped tbody tr:nth-of-type(odd) {
+  background-color: rgba(0, 0, 0, 0.05);
 }
 </style>
