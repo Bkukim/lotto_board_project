@@ -13,97 +13,91 @@ const routes = [
     component: () => import("../views/admin/AdminHome.vue"),
 
     meta: { showHeader: false }, // 관리자 페이지에서는 헤더를 숨김
-
   },
   {
     path: "/about",
     component: () => import("../views/AboutView.vue"),
     meta: { showHeader: true }, // 기본적으로 헤더를 보이게 설정
-
   },
   // 로그인
   {
     path: "/member/login",
     component: () => import("../views/auth/LoginView.vue"),
     meta: { showHeader: true }, // 기본적으로 헤더를 보이게 설정
-
   },
   // 마이페이지
   {
     path: "/member/mypage",
     component: () => import("../views/auth/MyPage.vue"),
     meta: { showHeader: true }, // 기본적으로 헤더를 보이게 설정
-
   },
   // 카카오 로그인
   {
     path: "/auth-redirect",
     component: () => import("../views/auth/KakaoRedirectView.vue"),
     meta: { showHeader: true }, // 기본적으로 헤더를 보이게 설정
-
   },
   // 카카오 로그인 시 추가 정보 기입
   {
     path: "/member/login/additional-info/:userId",
     component: () => import("../views/auth/KakaoAdditionalInfo.vue"),
     meta: { showHeader: true }, // 기본적으로 헤더를 보이게 설정
-
   },
   // 회원가입 페이지
   {
     path: "/member/join",
     component: () => import("../views/auth/JoinView.vue"),
     meta: { showHeader: true }, // 기본적으로 헤더를 보이게 설정
-
   },
   // 회원가입 환영 페이지
   {
     path: "/member/join/welcome",
     component: () => import("../views/auth/WelcomeView.vue"),
     meta: { showHeader: true }, // 기본적으로 헤더를 보이게 설정
-
   },
   // 아이디 찾기 페이지
   {
     path: "/member/find-id",
     component: () => import("../views/auth/FindId.vue"),
     meta: { showHeader: true }, // 기본적으로 헤더를 보이게 설정
-
   },
   // 비밀번호 찾기 페이지
   {
     path: "/member/find-pwd",
     component: () => import("../views/auth/FindPwd.vue"),
     meta: { showHeader: true }, // 기본적으로 헤더를 보이게 설정
-
   },
   // 비밀번호 재설정 페이지
   {
     path: "/member/new-pw",
     component: () => import("../views/auth/NewPwdView.vue"),
     meta: { showHeader: true }, // 기본적으로 헤더를 보이게 설정
-
+  },
+  // 검색 페이지
+  {
+    path: "/member/search",
+    component: () => import("../views/auth/SearchView.vue"),
+    meta: { showHeader: true }, // 기본적으로 헤더를 보이게 설정
   },
   // 회원정보 수정 페이지
   {
     path: "/member/user-modify",
     component: () => import("../views/user/UserModifyView.vue"),
     meta: { showHeader: true }, // 기본적으로 헤더를 보이게 설정
-
   },
+
   // 공지사항
   {
     path: "/notice/notice-board",
     component: () => import("../views/notice/noticeBoard.vue"),
     meta: { showHeader: true }, // 기본적으로 헤더를 보이게 설정
-
   },
 
- // 공지사항 -> 상세조회
- {
-  path: "/notice/notice-check/:noticeId/:eventYN",
-  component: () => import("../views/notice/NoticeCheck.vue"),
-},
+  // 공지사항 -> 상세조회
+  {
+    path: "/notice/notice-check/:noticeId/:eventYN",
+    component: () => import("../views/notice/NoticeCheck.vue"),
+  },
 
   // 공지사항 -> 글쓰기
   {

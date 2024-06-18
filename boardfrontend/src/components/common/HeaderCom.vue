@@ -87,11 +87,13 @@
                     placeholder="Search"
                     aria-label="Search"
                   />
-                  <button
+                  <router-link
                     class="btn btn-outline-success search-button"
                     type="submit"
                     style="border: none"
                     id="s_all"
+                    to="/member/search"
+     
                   >
                     <img
                       src="@/assets/img/serch_icon.png"
@@ -101,7 +103,7 @@
                       class="d-inline-block align-text-top"
                       style="margin-left: -10px; margin-right: -10px"
                     />
-                  </button>
+                  </router-link>
                 </form>
               </div>
             </nav>

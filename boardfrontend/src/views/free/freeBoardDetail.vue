@@ -7,7 +7,7 @@
   />
 
   <!-- 전체 박스 -->
-  <div class="fbd_all" style="height: auto">
+  <div class="fbd_all" style="height: auto;">
     <!-- 해당 게시판 이름 부분 -->
     <div class="container text-center mb-5">
       <h3 style="text-align: left" id="fbd_h3">자유 게시판 글 상세보기</h3>
@@ -58,7 +58,7 @@
         </div>
       </div>
 
-      <div
+      <!-- <div
         style="
           text-align: left;
           padding: 20px 0 20px 30px;
@@ -68,7 +68,19 @@
           word-wrap: break-word;
           word-break: break-all;
         "
-        v-html="freeBoard.content"
+      ></div> -->
+       
+        <div style="max-width: 320px; display: block; "  v-html="freeBoard.content"></div>
+        <div
+        style="
+          text-align: left;
+          padding: 20px 0 20px 30px;
+          font-size: 15px;
+          font-weight: 600;
+          border-bottom: 1px solid #cccccc;
+          word-wrap: break-word;
+          word-break: break-all;
+        "
       ></div>
       <!-- TODO: 좋아요버튼 -->
       <div class="mt-5 text-center">
