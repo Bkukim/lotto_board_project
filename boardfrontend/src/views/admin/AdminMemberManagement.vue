@@ -1,281 +1,225 @@
 <template>
-  <div class="main-container d-flex" style="height: auto">
+  <div class="main-container">
     <AdminHeaderCom />
 
     <div class="main-content">
-      <div class="container text-center" id="fb_all">
-        <h3 class="mb-5 mt-5">회원 관리</h3>
-
-        <!-- 검색 박스 -->
-        <div class="container text-center" style="gap: 5px" id="search_box">
-          <div class="row">
-            <div class="col">
-              <!-- <button
-            class="btn btn-primary dropdown-toggle"
-            type="button"
-            data-bs-toggle="dropdown"
-            aria-expanded="false"
-            id="search_ck"
-          >
-            
-          </button> -->
-              <!-- <ul class="dropdown-menu">
-            <li><a class="dropdown-item" href="#">Action</a></li>
-            <li><a class="dropdown-item" href="#">Another action</a></li>
-            <li><a class="dropdown-item" href="#">Something else here</a></li>
-          </ul> -->
-            </div>
-            <div class="col">
-              <!-- 검색어를 입력하세요 -->
-              <div class="input-group mb-3">
-                <input
-                  type="text"
-                  class="form-control"
-                  aria-label="Sizing example input"
-                  aria-describedby="inputGroup-sizing-default"
-                  placeholder="검색할 회원명을 입력하세요."
-                  v-model="searchName"
-                />
-              </div>
-            </div>
-            <!-- 검색 버튼 -->
-            <div class="col-auto">
-              <!-- col-auto로 변경하여 너비를 자동 조정 -->
-              <button
-                class="btn btn-outline-secondary"
-                type="button"
-                id="button-search"
-                @click="searchUserName"
-              >
-                검색
-              </button>
+      <h2 class="text-center mt-5 mb-5">회원 관리</h2>
+      <!-- 검색 박스 -->
+      <div class="search-box container text-center">
+        <div class="row">
+          <div class="col">
+            <!-- 검색어 입력 -->
+            <div class="input-group mb-3">
+              <input
+                type="text"
+                class="form-control"
+                placeholder="검색할 회원명을 입력하세요."
+                v-model="searchName"
+              />
             </div>
           </div>
-        </div>
-        <!-- 검색박스 끝 -->
-
-        <!-- 테이블 -->
-        <table class="table mt-5">
-          <thead>
-            <tr>
-              <th scope="col">번호</th>
-              <th scope="col">아이디</th>
-              <th scope="col">이름</th>
-              <th scope="col">생년월일</th>
-              <th scope="col">이메일</th>
-              <th scope="col">전화번호</th>
-              <th scope="col">주소</th>
-              <th scope="col">부서</th>
-              <th scope="col">수정</th>
-              <th scope="col">삭제</th>
-            </tr>
-          </thead>
-          <tbody>
-            <!-- 반복문 시작할 행 -->
-            <tr v-for="(data, index) in userList" :key="index">
-              <td>{{ (page - 1) * pageSize + index + 1 }}</td>
-              <td>{{ data.userId }}</td>
-              <td>{{ data.userName }}</td>
-              <td>{{ data.birthday }}</td>
-              <td>{{ data.email }}</td>
-              <td>{{ data.phoneNum }}</td>
-              <td>{{ data.normalAddress + " " + data.detailAddress }}</td>
-              <td>{{ data.deptId }}</td>
-              <td>
-                <button
-                  class="btn btn-outline-secondary"
-                  type="button"
-                  id="button-search"
-                  data-bs-toggle="modal"
-                  data-bs-target="#exampleModal"
-                  data-bs-whatever="@mdo"
-                  @click="getUser(data.userId)"
-                >
-                  수정
-                </button>
-                <!-- 회원 수정 모달 -->
-                <div
-                  class="modal fade"
-                  id="exampleModal"
-                  tabindex="-1"
-                  aria-labelledby="exampleModalLabel"
-                  aria-hidden="true"
-                >
-                  <div class="modal-dialog">
-                    <div class="modal-content">
-                      <div class="modal-header">
-                        <h1 class="modal-title fs-5" id="exampleModalLabel">
-                          회원수정
-                        </h1>
-                        <button
-                          type="button"
-                          class="btn-close"
-                          data-bs-dismiss="modal"
-                          aria-label="Close"
-                        ></button>
-                      </div>
-                      <div class="modal-body">
-                        <form>
-                          <!-- 1. 아이디 -->
-                          <div class="mb-3 row">
-                            <label for="recipient-name" class="col-form-label text-start"
-                              ><strong style="font-size: 18px;">아이디</strong></label
-                            >
-                            <input
-                              type="text"
-                              class="form-control"
-                              id="recipient-name"
-                              v-model="user.userId"
-                            />
-                          </div>
-                          <!-- 2. 이름 -->
-                          <div class="mb-3 row">
-                            <label for="message-text" class="col-form-label text-start"
-                              ><strong style="font-size: 18px;">이름</strong></label
-                            >
-                            <input
-                              type="text"
-                              class="form-control"
-                              id="recipient-name"
-                              v-model="user.userName"
-                            />
-                          </div>
-                          <!-- 3. 생년월일 -->
-                          <div class="mb-3 row">
-                            <label for="message-text" class="col-form-label text-start"
-                              ><strong style="font-size: 18px;">생년월일</strong></label
-                            >
-                            <input
-                              type="text"
-                              class="form-control"
-                              id="recipient-name"
-                              v-model="user.birthday"
-                            />
-                          </div>
-                          <!-- 4. 이메일 -->
-                          <div class="mb-3 row">
-                            <label for="message-text" class="col-form-label text-start"
-                              ><strong style="font-size: 18px;">이메일</strong></label
-                            >
-                            <input
-                              type="text"
-                              class="form-control"
-                              id="recipient-name"
-                              v-model="user.email"
-                            />
-                          </div>
-                          <!-- 5. 전화번호 -->
-                          <div class="mb-3 row">
-                            <label for="message-text" class="col-form-label text-start"
-                              ><strong style="font-size: 18px;">전화번호</strong></label
-                            >
-                            <input
-                              type="text"
-                              class="form-control"
-                              id="recipient-name"
-                              v-model="user.phoneNum"
-                            />
-                          </div>
-                          <!-- 6. 기본 주소 -->
-                          <div class="mb-3 row">
-                            <label for="message-text" class="col-form-label text-start"
-                              ><strong style="font-size: 18px;">기본 주소</strong></label
-                            >
-                            <input
-                              type="text"
-                              class="form-control"
-                              id="recipient-name"
-                              v-model="user.normalAddress"
-                            />
-                          </div>
-                          <!-- 6. 상세 주소 -->
-                          <div class="mb-3 row">
-                            <label for="message-text" class="col-form-label text-start"
-                              ><strong style="font-size: 18px;">상세 주소</strong></label
-                            >
-                            <input
-                              type="text"
-                              class="form-control"
-                              id="recipient-name"
-                              v-model="user.detailAddress"
-                            />
-                          </div>
-                          <!-- 7. 부서 -->
-                          <div class="mb-3 row">
-                            <label for="message-text" class="col-form-label text-start"
-                              ><strong style="font-size: 18px;">부서</strong></label
-                            >
-                            <select
-                              class="form-select"
-                              id="deptId"
-                              v-model="user.deptId"
-                            >
-                              <option value="A0001">회계부</option>
-                              <option value="B0002">재정부</option>
-                              <option value="C0003">기획부</option>
-                              <option value="D0004">홍보부</option>
-                            </select>
-                          </div>
-                        </form>
-                      </div>
-                      <div class="modal-footer">
-                        <button
-                          type="button"
-                          class="btn btn-secondary"
-                          data-bs-dismiss="modal"
-                        >
-                          닫기
-                        </button>
-                        <button
-                          type="button"
-                          class="btn"
-                          id="button-search"
-                          @click="updateUser"
-                        >
-                          저장
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <!-- 회원 수정 모달 끝 -->
-              </td>
-              <td>
-                <button
-                  class="btn btn-secondary"
-                  type="button"
-                  @click="deleteUser(data.userId)"
-                >
-                  삭제
-                </button>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-
-        <!-- 페이징 -->
-        <!-- {/* paging 시작 */} -->
-        <div class="row justify-content-center mt-5">
-          <div class="col-auto" style="margin-top: 50px">
-            <b-pagination
-              class="custom-pagination col-12 mb-3"
-              v-model="page"
-              :total-rows="count"
-              :per-page="pageSize"
-              @click="retrieveUser"
-            ></b-pagination>
+          <div class="col-auto">
+            <!-- 검색 버튼 -->
+            <button
+              class="btn btn-primary"
+              type="button"
+              @click="searchUserName"
+              style="margin-left: -600px;"
+            >
+              검색
+            </button>
           </div>
         </div>
       </div>
+      <!-- 검색박스 끝 -->
+
+      <!-- 테이블 -->
+      <table class="table  table-hover mt-5">
+        <thead>
+          <tr>
+            <th scope="col">번호</th>
+            <th scope="col">아이디</th>
+            <th scope="col">이름</th>
+            <th scope="col">생년월일</th>
+            <th scope="col">이메일</th>
+            <th scope="col">전화번호</th>
+            <th scope="col">주소</th>
+            <th scope="col">부서</th>
+            <th scope="col">수정</th>
+            <th scope="col">삭제</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-for="(data, index) in userList" :key="index">
+            <td>{{ (page - 1) * pageSize + index + 1 }}</td>
+            <td>{{ data.userId }}</td>
+            <td>{{ data.userName }}</td>
+            <td>{{ data.birthday }}</td>
+            <td>{{ data.email }}</td>
+            <td>{{ data.phoneNum }}</td>
+            <td>{{ data.normalAddress + " " + data.detailAddress }}</td>
+            <td>{{ data.deptId }}</td>
+            <td>
+              <button
+                class="btn btn-outline-primary"
+                type="button"
+                data-bs-toggle="modal"
+                data-bs-target="#exampleModal"
+                @click="getUser(data.userId)"
+              >
+                수정
+              </button>
+              <!-- 회원 수정 모달 -->
+              <div
+                class="modal fade"
+                id="exampleModal"
+                tabindex="-1"
+                aria-labelledby="exampleModalLabel"
+                aria-hidden="true"
+              >
+                <div class="modal-dialog">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h5 class="modal-title">회원수정</h5>
+                      <button
+                        type="button"
+                        class="btn-close"
+                        data-bs-dismiss="modal"
+                      ></button>
+                    </div>
+                    <div class="modal-body">
+                      <form>
+                        <div class="mb-3">
+                          <label class="form-label">아이디</label>
+                          <input
+                            type="text"
+                            class="form-control"
+                            v-model="user.userId"
+                          />
+                        </div>
+                        <div class="mb-3">
+                          <label class="form-label">이름</label>
+                          <input
+                            type="text"
+                            class="form-control"
+                            v-model="user.userName"
+                          />
+                        </div>
+                        <div class="mb-3">
+                          <label class="form-label">생년월일</label>
+                          <input
+                            type="text"
+                            class="form-control"
+                            v-model="user.birthday"
+                          />
+                        </div>
+                        <div class="mb-3">
+                          <label class="form-label">이메일</label>
+                          <input
+                            type="text"
+                            class="form-control"
+                            v-model="user.email"
+                          />
+                        </div>
+                        <div class="mb-3">
+                          <label class="form-label">전화번호</label>
+                          <input
+                            type="text"
+                            class="form-control"
+                            v-model="user.phoneNum"
+                          />
+                        </div>
+                        <div class="mb-3">
+                          <label class="form-label">기본 주소</label>
+                          <input
+                            type="text"
+                            class="form-control"
+                            v-model="user.normalAddress"
+                          />
+                        </div>
+                        <div class="mb-3">
+                          <label class="form-label">상세 주소</label>
+                          <input
+                            type="text"
+                            class="form-control"
+                            v-model="user.detailAddress"
+                          />
+                        </div>
+                        <div class="mb-3">
+                          <label class="form-label">부서</label>
+                          <select
+                            class="form-select"
+                            v-model="user.deptId"
+                          >
+                            <option value="A0001">회계부</option>
+                            <option value="B0002">재정부</option>
+                            <option value="C0003">기획부</option>
+                            <option value="D0004">홍보부</option>
+                          </select>
+                        </div>
+                      </form>
+                    </div>
+                    <div class="modal-footer">
+                      <button
+                        type="button"
+                        class="btn btn-secondary"
+                        data-bs-dismiss="modal"
+                      >
+                        닫기
+                      </button>
+                      <button
+                        type="button"
+                        class="btn btn-primary"
+                        @click="updateUser"
+                      >
+                        저장
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <!-- 회원 수정 모달 끝 -->
+            </td>
+            <td>
+              <button
+                class="btn btn-danger"
+                type="button"
+                @click="deleteUser(data.userId)"
+              >
+                삭제
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+      <!-- 페이징 -->
+      <div class="pagination-container">
+        <b-pagination
+          class="custom-pagination"
+          v-model="page"
+          :total-rows="count"
+          :per-page="pageSize"
+          @click="retrieveUser"
+        ></b-pagination>
+      </div>
     </div>
   </div>
-  <!-- 자유게시판 중앙정렬 전체박스 끝 -->
+
+  <br>
+  <br>
+  <br>
+  <br>
+  <br>
+  <br>
+  <br>
 </template>
 
 <script>
 import UserService from "@/services/user/UserService";
 import AdminHeaderCom from "@/components/common/AdminHeaderCom.vue";
 import AuthService from "@/services/auth/AuthService";
+import Swal from 'sweetalert2'; // SweetAlert2 가져오기
 
 export default {
   components: {
@@ -290,7 +234,7 @@ export default {
         birthday: "",
         email: "",
         phoneNum: "",
-        normalAddress:"",
+        normalAddress: "",
         detailAddress: "",
         deptId: "",
       },
@@ -326,15 +270,20 @@ export default {
         deptId: this.user.deptId,
       };
       try {
-        console.log("부서명",data);
+        console.log("부서명", data);
         let response = await UserService.updateUser(data);
         console.log(response.data);
-        alert("회원 정보가 수정되었습니다.");
+        Swal.fire("회원 정보가 수정되었습니다.");
         // this.closeModal(); // 모달 닫기
         this.retrieveUser(); // 사용자 정보 다시 불러오기
         // this.$router.push("/admin/member/manage");
       } catch (e) {
-        alert("회원 정보 수정에 실패하였습니다.");
+        Swal.fire({
+          title: "수정 실패",
+          text: "회원 정보 수정에 실패하였습니다.",
+          icon: "error",
+          confirmButtonText: "확인"
+        });
         console.log(e); // 에러 출력
       }
     },
@@ -345,16 +294,28 @@ export default {
     // 회원 탈퇴 소프트 삭제 함수
     async deleteUser(userId) {
       try {
-        let result = confirm("정말로 이 회원을 삭제 하시겠습니까?");
+        let result = await Swal.fire({
+          title: "삭제 확인",
+          text: "정말로 이 회원을 삭제 하시겠습니까?",
+          icon: "warning",
+          showCancelButton: true,
+          confirmButtonText: "삭제",
+          cancelButtonText: "취소"
+        });
         if (result) {
           let response = await UserService.deleteUser(userId);
           // alert(userId);
           console.log(response);
           AuthService.logout(); // LOCAL저장소에서 USER객체 삭제해주기
           this.$store.commit("logout"); //
-          alert("회원 삭제가 완료되었습니다");
-          // this.$router.push("/admin/home");
-          this.retrieveUser();
+          Swal.fire({
+            title: "삭제 완료",
+            text: "회원 삭제가 완료되었습니다.",
+            icon: "success",
+            confirmButtonText: "확인"
+        }).then(() => {
+          this.retrieveUser(); // 사용자 정보 다시 불러오기
+        });
         } else {
           return;
         }
@@ -473,5 +434,65 @@ p {
 }
 #router_hv:hover {
   text-decoration: underline 1px solid;
+}
+.search-box .input-group {
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.table {
+  margin-top: 20px;
+}
+
+.table thead th {
+  background-color: #007bff;
+  color: white;
+}
+
+.table tbody tr:hover {
+  background-color: #f1f1f1;
+}
+
+.btn-outline-primary {
+  border-color: #007bff;
+  color: #007bff;
+}
+
+.btn-outline-primary:hover {
+  background-color: #007bff;
+  color: white;
+}
+
+.modal-header {
+  background-color: #007bff;
+  color: white;
+}
+
+.modal-footer .btn-secondary {
+  background-color: #6c757d;
+}
+
+.modal-footer .btn-primary {
+  background-color: #007bff;
+}
+
+.pagination-container {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.custom-pagination .page-link {
+  color: #007bff;
+}
+
+.custom-pagination .page-link:hover {
+  background-color: #007bff;
+  color: white;
+}
+
+.custom-pagination .page-item.active .page-link {
+  background-color: #007bff;
+  border-color: #007bff;
 }
 </style>

@@ -26,7 +26,7 @@
             <!-- 유형선택 -->
             <select class="form-select" v-model="notice.noticeType">
               <option value="전체">전체</option>
-              <option value="전체">이벤트</option>
+              <option value="이벤트">이벤트</option>
               <option value="부서">부서</option>
               <option value="자유">자유</option>
               <option value="건의">건의</option>
@@ -81,6 +81,8 @@ import AdminHeaderCom from "@/components/common/AdminHeaderCom.vue";
 import Editor from "@toast-ui/editor";
 import "@toast-ui/editor/dist/toastui-editor.css";
 import NoticeService from "@/services/notice/NoticeService";
+import Swal from "sweetalert2";  // SweetAlert2 가져오기
+import "sweetalert2/dist/sweetalert2.min.css"; // SweetAlert2 CSS 가져오기
 
 export default {
   components: {
@@ -94,7 +96,6 @@ export default {
   },
   data() {
     return {
-      // todo:  null 대신 undefined
       editor: undefined,
       notice: {
         title: "",
@@ -115,19 +116,33 @@ export default {
         // 공지사항 객체 생성
         const notice = {
           title: this.notice.title,
-          noticeType : this.notice.noticeType,
+          noticeType: this.notice.noticeType,
           content: content,
         };
-        // 벡엔드로 공지사항 객체 추가 요청
+        // 백엔드로 공지사항 객체 추가 요청
         let response = await NoticeService.create(notice);
         // 콘솔에 결과 출력
-        this.$router.push("/notice/notice-board");
-
         console.log(response);
+        
+        // 공지사항 등록 성공 팝업
+        Swal.fire({
+          title: "등록 완료",
+          text: "글이 등록되었습니다.",
+          icon: "success",
+          confirmButtonText: "확인"
+        }).then(() => {
+          // 확인 버튼 클릭 시 관리자 홈으로 리다이렉트
+          this.$router.push("/admin/notice-master");
+        });
+
         // TODO: 서버 응답에 따른 후속 처리 추가
       } catch (e) {
         console.log(e);
       }
+    },
+    cancel() {
+      // 취소 버튼 클릭 시 이전 페이지로 이동
+      this.$router.go(-1);
     },
   },
   mounted() {
@@ -135,12 +150,6 @@ export default {
       el: this.$refs.editor,
       initialEditType: "wysiwyg",
       height: "500px",
-      // hooks: {
-      //   addImageBlobHook: async (blob, callback) => {
-      //     const imageUrl = await this.uploadImage(blob);
-      //     callback(imageUrl, blob.name);
-      //   },
-      // },
     });
     window.scrollTo(0, 0);
   },

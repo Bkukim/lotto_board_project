@@ -191,7 +191,9 @@ export default {
         title: "",
         content: "",
         views: 0,
+
         eventYN: "N",
+
       },
 
 
@@ -236,11 +238,13 @@ export default {
       }
     },
 
+
     goUpdate() {
       this.$router.push(`/admin/notice-update/${this.notice.noticeId}`);
 
     },
     async viewsUp() {
+
       try {
         // +하고 이동
         let views = (this.notice.views = this.notice.views + 1);

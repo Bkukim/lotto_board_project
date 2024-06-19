@@ -110,10 +110,12 @@ class FreeBoardService {
     });
   }
 
+
   // TODO: 신고 게시글 취소 : 신고테이블 상태변경
   updateFreeBoardReport(freeBoardId) {
     console.log(freeBoardId);
     return http.put(`/admin/report/free/update/${freeBoardId}`, {
+
 
       headers: AuthHeader(),
     });

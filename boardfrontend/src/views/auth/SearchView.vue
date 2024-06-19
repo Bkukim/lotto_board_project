@@ -45,7 +45,9 @@
               data-bs-toggle="dropdown"
               aria-expanded="false"
               id="search_ck"
-              style="background-color: #162b59; border: none"
+
+              style="background-color: #162b59; border: none; color: #fff"
+
             >
               -- 통합검색 선택 ---
             </button>
@@ -154,11 +156,23 @@
     </table>
 
     <br />
-    <router-link to="#">
+    <!-- <router-link to="#">
       <h6 style="text-align: right; font-size: 14px; letter-spacing: -1.3px">
         결과 더 보기 >
       </h6>
-    </router-link>
+    </router-link> -->
+
+    <!-- 공지사항 페이징  -->
+    <div class="row justify-content-center mt-4">
+      <div class="col-auto">
+        <b-pagination
+          class="col-12 mb-3 custom-pagination"
+          v-model="freeBoardPage"
+          :total-rows="freeBoardCount"
+          :per-page="freeBoardPageSize"
+        ></b-pagination>
+      </div>
+    </div>
 
     <br />
     <br />
@@ -213,11 +227,23 @@
       </tbody>
     </table>
     <br />
-    <router-link to="#">
+    <!-- <router-link to="#">
       <h6 style="text-align: right; font-size: 14px; letter-spacing: -1.3px">
         결과 더 보기 >
       </h6>
-    </router-link>
+    </router-link> -->
+
+    <!-- 자유게시판 페이징 -->
+    <div class="row justify-content-center mt-4">
+      <div class="col-auto">
+        <b-pagination
+          class="col-12 mb-3 custom-pagination"
+          v-model="deptBoardPage"
+          :total-rows="deptBoardCount"
+          :per-page="deptBoardPageSize"
+        ></b-pagination>
+      </div>
+    </div>
 
     <br />
     <br />
@@ -271,11 +297,23 @@
       </tbody>
     </table>
     <br />
-    <router-link to="#">
+    <!-- <router-link to="#">
       <h6 style="text-align: right; font-size: 14px; letter-spacing: -1.3px">
         결과 더 보기 >
       </h6>
-    </router-link>
+    </router-link> -->
+
+    <!-- 동아리게시판 페이징 -->
+    <div class="row justify-content-center mt-4">
+      <div class="col-auto">
+        <b-pagination
+          class="col-12 mb-3 custom-pagination"
+          v-model="deptBoardPage"
+          :total-rows="deptBoardCount"
+          :per-page="deptBoardPageSize"
+        ></b-pagination>
+      </div>
+    </div>
 
     <br />
     <br />
@@ -329,11 +367,23 @@
       </tbody>
     </table>
     <br />
-    <router-link to="#">
+    <!-- <router-link to="#">
       <h6 style="text-align: right; font-size: 14px; letter-spacing: -1.3px">
         결과 더 보기 >
       </h6>
-    </router-link>
+    </router-link> -->
+
+    <!-- 건의게시판 페이징 -->
+    <div class="row justify-content-center mt-4">
+      <div class="col-auto">
+        <b-pagination
+          class="col-12 mb-3 custom-pagination"
+          v-model="complaintBoardPage"
+          :total-rows="complaintBoardCount"
+          :per-page="complaintBoardPageSize"
+        ></b-pagination>
+      </div>
+    </div>
   </div>
   <br />
   <br />
@@ -346,11 +396,34 @@
   <br />
 </template>
 <script>
+
 import SearchService from "@/services/search/SearchService";
+
 
 export default {
   data() {
     return {
+
+      // 자유게시판 페이지네이션 상태
+      freeBoardPage: 1,
+      freeBoardCount: 0,
+      freeBoardPageSize: 3,
+      // 부서게시판 페이지네이션 상태
+
+      deptBoardPage: 1,
+      deptBoardCount: 0,
+      deptBoardPageSize: 3,
+
+      // 건의게시판 페이지네이션 상태
+      complaintBoardPage: 1,
+      complaintBoardCount: 0,
+      complaintBoardPageSize: 3,
+
+      // 동호회게시판 페이지네이션 상태
+      clubBoardPage: 1,
+      clubBoardCount: 0,
+      clubBoardPageSize: 3,
+
       notices: [],
       noticesTotalItems: 0,
       freeBoards: [],
@@ -362,6 +435,7 @@ export default {
       searchTitle: "",
       page: 1, // 현재페이지번호
       pageSize: 10, // 1페이지당개수(select태그)
+
     };
   },
   methods: {
