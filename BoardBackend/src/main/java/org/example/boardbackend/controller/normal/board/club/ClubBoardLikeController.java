@@ -1,4 +1,4 @@
-package org.example.boardbackend.controller.user.board.club;
+package org.example.boardbackend.controller.normal.board.club;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -26,7 +26,7 @@ import java.util.Optional;
 @Slf4j
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/api/user/board/club/likes")
+@RequestMapping("/api/normal/board/club/likes")
 public class ClubBoardLikeController {
     private final ClubBoardLikeService clubBoardLikeService;
 

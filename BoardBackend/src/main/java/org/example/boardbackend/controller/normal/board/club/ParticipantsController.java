@@ -1,4 +1,4 @@
-package org.example.boardbackend.controller.user.board.club;
+package org.example.boardbackend.controller.normal.board.club;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -28,7 +28,7 @@ import java.util.Map;
 @Slf4j
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/api/user/club-board")
+@RequestMapping("/api/normal/club-board")
 public class ParticipantsController {
     private final ParticipantsService participantsService;
 
