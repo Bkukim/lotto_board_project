@@ -1,12 +1,12 @@
 package org.example.boardbackend.model.entity.board.free;
 
 import jakarta.persistence.*;
+import jakarta.persistence.Table;
 import lombok.*;
 import org.example.boardbackend.model.common.BaseTimeEntity;
+import org.example.boardbackend.model.common.BaseTimeEntity3;
 import org.example.boardbackend.model.entity.auth.User;
-import org.hibernate.annotations.DynamicInsert;
-import org.hibernate.annotations.DynamicUpdate;
-import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -40,7 +40,10 @@ import java.util.List;
 @AllArgsConstructor
 @DynamicInsert
 @DynamicUpdate
-public class FreeBoard extends BaseTimeEntity {
+// soft delete jpa 어노테이션
+@Where(clause = "DELETE_YN = 'N'")
+@SQLDelete(sql ="UPDATE LOTTO_FREE_BOARD SET DELETE_YN = 'Y' WHERE FREE_BOARD_ID = ?")
+public class FreeBoard extends BaseTimeEntity3{
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE

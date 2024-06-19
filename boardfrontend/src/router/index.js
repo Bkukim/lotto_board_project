@@ -82,8 +82,14 @@ const routes = [
     path: "/member/new-pw",
     component: () => import("../views/auth/NewPwdView.vue"),
     meta: { showHeader: true }, // 기본적으로 헤더를 보이게 설정
-
   },
+    // // 검색 페이지
+    // {
+    //   path: "/member/search",
+    //   component: () => import("../views/auth/SearchView.vue"),
+    //   meta: { showHeader: true }, // 기본적으로 헤더를 보이게 설정
+    // },
+  
   // 회원정보 수정 페이지
   {
     path: "/member/user-modify",
@@ -237,12 +243,14 @@ const routes = [
     meta: { showHeader: false }, // 관리자 페이지에서는 헤더를 숨김
     component: () => import("../views/admin/AdminReportBoard.vue"),
   },
-  // 관리자 신고 게시판 : 상세페이지
-  {
-    path: "/admin/report/:reportId",
-    meta: { showHeader: false }, // 관리자 페이지에서는 헤더를 숨김
-    component: () => import("../views/admin/AdminReportBoardDetail.vue"),
-  },
+  // // 관리자 신고 게시판 : 상세페이지
+  // {
+  //   path: "/admin/report/:reportId",
+  //   meta: { showHeader: false }, // 관리자 페이지에서는 헤더를 숨김
+  //   component: () => import("../views/admin/AdminReportBoardDetail.vue"),
+  // },
+
+  
 ];
 
 const router = createRouter({

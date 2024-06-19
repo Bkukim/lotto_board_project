@@ -1,10 +1,10 @@
-// 관리자 신고 게시판
+// 관리자 신고 게시글
 <template>
   <div class="main-container d-flex" style="height: auto">
     <AdminHeaderCom />
     <div class="main-content">
       <div class="container text-center" id="fb_all">
-        <h3 class="mb-5 mt-5">관리자 신고 게시판 관리</h3>
+        <h3 class="mb-5 mt-5">관리자 신고 게시글 관리</h3>
         <!-- <p class="mb-5">
       자유게시판은 자유로운 의견을 남기는 공간으로 건의관련 답변은 드리지
       않습니다. <br />
@@ -84,6 +84,20 @@
                 >부서게시판</a
               >
             </li>
+            <li class="nav-item" @click="activeTab = 'freeprocessed'">
+              <a
+                class="nav-link"
+                :class="{ active: activeTab === 'freeprocessed' }"
+                >자유게시판 처리 완료</a
+              >
+            </li>
+            <li class="nav-item" @click="activeTab = 'deptprocessed'">
+              <a
+                class="nav-link"
+                :class="{ active: activeTab === 'deptprocessed' }"
+                >부서게시판 처리 완료</a
+              >
+            </li>
           </ul>
           <div class="tab-content">
             <!-- 자유 신고테이블 -->
@@ -102,7 +116,7 @@
                       <th scope="col">작성자</th>
                       <th scope="col">등록일</th>
                       <!-- <th scope="col">좋아요</th> -->
-                      <th scope="col">반려</th>
+                      <th scope="col">취소</th>
                       <th scope="col">삭제</th>
                       <!-- <th scope="col">조회수</th> -->
                     </tr>
@@ -138,12 +152,9 @@
                           class="btn btn-outline-secondary"
                           type="button"
                           id="button-search"
-                          data-bs-toggle="modal"
-                          data-bs-target="#exampleModal"
-                          data-bs-whatever="@mdo"
-                          @click="getUser(data.userId)"
+                          @click="updateFreeBoardReport(data.freeBoardId)"
                         >
-                          반려
+                          취소
                         </button>
                       </td>
                       <td>
@@ -151,10 +162,7 @@
                           class="btn btn-outline-secondary"
                           type="button"
                           id="button-search"
-                          data-bs-toggle="modal"
-                          data-bs-target="#exampleModal"
-                          data-bs-whatever="@mdo"
-                          @click="deleteFreeBoardReport"
+                          @click="deleteFreeBoardReport(data.freeBoardId)"
                         >
                           삭제
                         </button>
@@ -172,6 +180,7 @@
                   <thead>
                     <tr>
                       <th scope="col">번호</th>
+                      <th scope="col">부서</th>
                       <th
                         scope="col"
                         style="text-align: left; padding-left: 100px"
@@ -181,7 +190,7 @@
                       <th scope="col">작성자</th>
                       <th scope="col">등록일</th>
                       <!-- <th scope="col">좋아요</th> -->
-                      <th scope="col">반려</th>
+                      <th scope="col">취소</th>
                       <th scope="col">삭제</th>
                       <!-- <th scope="col">조회수</th> -->
                     </tr>
@@ -193,6 +202,82 @@
                       :key="index"
                     >
                       <td>{{ (page - 1) * pageSize + index + 1 }}</td>
+                      <td>{{ data.deptId }}</td>
+                      <td
+                        id="router_hv"
+                        style="text-align: left; padding-left: 100px"
+                      >
+                        <router-link
+                          style="
+                            color: #444444;
+                            font-weight: bold;
+                            text-decoration: none;
+                          "
+                          :to="'/dept/board/detail/' + data.deptBoardId"
+                          class="router-link-exact-active alltext"
+                        >
+                          {{ data.content }}
+                        </router-link>
+                      </td>
+                      <td>{{ data.userId }}</td>
+                      <td>{{ data.insertTime }}</td>
+                      <!-- <td>{{ data.likes }}</td> -->
+                      <td>
+                        <button
+                          class="btn btn-outline-secondary"
+                          type="button"
+                          id="button-search"
+                          @click="updateDeptBoardReport(data.deptBoardId)"
+                        >
+                          취소
+                        </button>
+                      </td>
+                      <td>
+                        <button
+                          class="btn btn-outline-secondary"
+                          type="button"
+                          id="button-search"
+                          @click="deleteDeptBoardReport(data.deptBoardId)"
+                        >
+                          삭제
+                        </button>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+            <!-- 자유 신고 처리 완료 -->
+            <div v-show="activeTab === 'freeprocessed'">
+              <div class="table-responsive shadow">
+                <table class="table mt-5">
+                  <thead>
+                    <tr>
+                      <th scope="col">번호</th>
+                      <!-- <th scope="col">부서</th> -->
+                      <th
+                        scope="col"
+                        style="text-align: left; padding-left: 100px"
+                      >
+                        신고 사유
+                      </th>
+                      <th scope="col">작성자</th>
+                      <th scope="col">등록일</th>
+                      <!-- <th scope="col">좋아요</th> -->
+                      <th scope="col">상태</th>
+                      <!-- <th scope="col">삭제</th> -->
+                      <!-- <th scope="col">조회수</th> -->
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <!-- 반복문 시작할 행 -->
+                    <tr
+                      v-for="(data, index) in freeBoardReportsListProcessed"
+                      :key="index"
+                    >
+                      <td>{{ (page - 1) * pageSize + index + 1 }}</td>
+                      <!-- <td>{{data.deptId}}</td> -->
                       <td
                         id="router_hv"
                         style="text-align: left; padding-left: 100px"
@@ -212,32 +297,72 @@
                       <td>{{ data.userId }}</td>
                       <td>{{ data.insertTime }}</td>
                       <!-- <td>{{ data.likes }}</td> -->
-                      <td>
+                      <td>처리 완료</td>
+                      <!-- <td>
                         <button
                           class="btn btn-outline-secondary"
                           type="button"
                           id="button-search"
-                          data-bs-toggle="modal"
-                          data-bs-target="#exampleModal"
-                          data-bs-whatever="@mdo"
-                          @click="getUser(data.userId)"
-                        >
-                          반려
-                        </button>
-                      </td>
-                      <td>
-                        <button
-                          class="btn btn-outline-secondary"
-                          type="button"
-                          id="button-search"
-                          data-bs-toggle="modal"
-                          data-bs-target="#exampleModal"
-                          data-bs-whatever="@mdo"
-                          @click="getUser(data.userId)"
+                          @click="deleteDeptBoardReport(data.deptBoardId)"
                         >
                           삭제
                         </button>
+                      </td> -->
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+            <!-- 부서 신고 처리 완료 -->
+            <div v-show="activeTab === 'deptprocessed'">
+              <div class="table-responsive shadow">
+                <table class="table mt-5">
+                  <thead>
+                    <tr>
+                      <th scope="col">번호</th>
+                      <!-- <th scope="col">부서</th> -->
+                      <th
+                        scope="col"
+                        style="text-align: left; padding-left: 100px"
+                      >
+                        신고 사유
+                      </th>
+                      <th scope="col">작성자</th>
+                      <th scope="col">등록일</th>
+                      <!-- <th scope="col">좋아요</th> -->
+                      <th scope="col">상태</th>
+                      <!-- <th scope="col">조회수</th> -->
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <!-- 반복문 시작할 행 -->
+                    <tr
+                      v-for="(data, index) in deptBoardReportsListProcessed"
+                      :key="index"
+                    >
+                      <td>{{ (page - 1) * pageSize + index + 1 }}</td>
+                      <!-- <td>{{data.deptId}}</td> -->
+                      <td
+                        id="router_hv"
+                        style="text-align: left; padding-left: 100px"
+                      >
+                        <router-link
+                          style="
+                            color: #444444;
+                            font-weight: bold;
+                            text-decoration: none;
+                          "
+                          :to="'/dept/board/detail/' + data.deptBoardId"
+                          class="router-link-exact-active alltext"
+                        >
+                          {{ data.content }}
+                        </router-link>
                       </td>
+                      <td>{{ data.userId }}</td>
+                      <td>{{ data.insertTime }}</td>
+                      <!-- <td>{{ data.likes }}</td> -->
+          <td>처리 완료</td>
                     </tr>
                   </tbody>
                 </table>
@@ -263,7 +388,7 @@
 
         <!-- 페이징 -->
         <!-- {/* paging 시작 */} -->
-        <div class="row justify-content-center mt-5">
+        <!-- <div class="row justify-content-center mt-5">
           <div class="col-auto" style="margin-top: 50px">
             <b-pagination
               class="custom-pagination col-12 mb-3"
@@ -273,7 +398,7 @@
               @click="retrieveFreeBoardReport"
             ></b-pagination>
           </div>
-        </div>
+        </div> -->
       </div>
     </div>
   </div>
@@ -293,7 +418,8 @@ export default {
     return {
       freeBoardReportsList: [],
       deptBoardReportsList: [],
-      freeBoardList:{},
+      deptBoardReportsListProcessed: [],
+      freeBoardReportsListProcessed: [],
 
       searchTitle: "",
 
@@ -304,7 +430,7 @@ export default {
     };
   },
   methods: {
-    // 자유 신고 전체조회 함수
+    // 자유 : 신고 전체조회 함수
     async retrieveFreeBoardReport() {
       try {
         // TODO: 1) 공통 전체조회 함수 실행
@@ -319,15 +445,37 @@ export default {
         this.freeBoardReportsList = freeBoardReportsList; // 부서배열(벡엔드 전송)
         this.count = totalItems; // 전체페이지수(벡엔드 전송)
         // TODO: 4) 프론트 로깅 : console.log
-        console.log(response.data);
+        console.log("sdfgsdfgs",this.freeBoardReportsList);
       } catch (e) {
         console.log(e);
       }
     },
 
-    // 부서 신고 전체조회 함수
+    // 자유 : 신고 처리완료 전체조회 함수
+    async retrieveFreeBoardReportProcessed() {
+      try {
+        // TODO: 1) 공통 전체조회 함수 실행
+        let response = await FreeBoardService.getAllFreeBoardReportProcessed(
+          this.searchTitle, // 검색어
+          this.page - 1, // 현재페이지번호-1
+          this.pageSize // 1페이지당개수(size)
+        );
+        // TODO: 복습 : 2) 객체분할 할당
+        const { freeBoardReportsListProcessed, totalItems } = response.data; // 부서배열(벡엔드 전송)
+        // TODO: 3) 바인딩변수(속성)에 저장
+        this.freeBoardReportsListProcessed = freeBoardReportsListProcessed; // 부서배열(벡엔드 전송)
+        this.count = totalItems; // 전체페이지수(벡엔드 전송)
+        // TODO: 4) 프론트 로깅 : console.log
+        console.log("asdfasdF",this.freeBoardReportsListProcessed);
+      } catch (e) {
+        console.log(e);
+      }
+    },
+
+    // 부서 : 신고 전체조회 함수
     async retrieveDeptBoardReport() {
       try {
+        // alert("부서게시판 신고");
         // TODO: 1) 공통 전체조회 함수 실행
         let response = await DeptBoardService.getAllDeptBoardReport(
           this.searchTitle, // 검색어
@@ -345,6 +493,28 @@ export default {
         console.log(e);
       }
     },
+
+    // 자유 : 신고 처리완료 전체조회 함수
+    async retrieveDeptBoardReportProcessed() {
+      try {
+        // TODO: 1) 공통 전체조회 함수 실행
+        let response = await DeptBoardService.getAllDeptBoardReportProcessed(
+          this.searchTitle, // 검색어
+          this.page - 1, // 현재페이지번호-1
+          this.pageSize // 1페이지당개수(size)
+        );
+        // TODO: 복습 : 2) 객체분할 할당
+        const { freeBoardReportsListProcessed, totalItems } = response.data; // 부서배열(벡엔드 전송)
+        // TODO: 3) 바인딩변수(속성)에 저장
+        this.freeBoardReportsListProcessed = freeBoardReportsListProcessed; // 부서배열(벡엔드 전송)
+        this.count = totalItems; // 전체페이지수(벡엔드 전송)
+        // TODO: 4) 프론트 로깅 : console.log
+        console.log(response.data);
+      } catch (e) {
+        console.log(e);
+      }
+    },
+
     // 검색 함수
     async searchFreeBoardReport() {
       console.log("검색 함수 호출");
@@ -360,17 +530,77 @@ export default {
     //   this.$router.push("/free/free-boardAdd");
     // },
 
-        // 삭제 함수
-    async deleteFreeBoardReport() {
+    // 자유 취소 함수
+    async updateFreeBoardReport(freeBoardId) {
+      try {
+        if (confirm("취소하시겠습니까?")) {
+          // let response = await FreeBoardService.deleteFreeBoardReport(freeBoardId);
+          let response = await FreeBoardService.updateFreeBoardReport(
+            freeBoardId
+          );
+          console.log(response);
+          alert("취소완료");
+          console.log(response.data);
+          this.retrieveFreeBoardReport(); // 목록 갱신
+        } else {
+          return;
+        }
+      } catch (e) {
+        console.log(e);
+      }
+    },
+
+       // 부서 취소 함수
+    async updateDeptBoardReport(deptBoardId) {
+      try {
+        if (confirm("취소하시겠습니까?")) {
+          // let response = await FreeBoardService.deleteFreeBoardReport(freeBoardId);
+          let response = await DeptBoardService.updateDeptBoardReport(
+            deptBoardId
+          );
+          console.log(response);
+          alert("취소완료");
+          console.log(response.data);
+          this.retrieveDeptBoardReport(); // 목록 갱신
+        } else {
+          return;
+        }
+      } catch (e) {
+        console.log(e);
+      }
+    },
+
+    // 자유 삭제 함수
+    async deleteFreeBoardReport(freeBoardId) {
       try {
         if (confirm("정말로 삭제하시겠습니까?")) {
-          let response = await FreeBoardService.deleteFreeBoard(
-            this.freeBoardList.freeBoardId
+          let response = await FreeBoardService.deleteFreeBoardReport(
+            freeBoardId
+          );
+          // 로깅
+          // FreeBoardService.updateFreeBoardReport(freeBoardId);
+          console.log(response.data);
+          alert("게시글이 삭제되었습니다.");
+          this.retrieveFreeBoardReport(); // 목록 갱신
+        } else {
+          return;
+        }
+      } catch (e) {
+        console.log(e);
+      }
+    },
+
+    // 부서 삭제 함수
+    async deleteDeptBoardReport(deptBoardId) {
+      try {
+        if (confirm("정말로 삭제하시겠습니까?")) {
+          let response = await DeptBoardService.deleteDeptBoardReport(
+            deptBoardId
           );
           // 로깅
           console.log(response.data);
           alert("게시글이 삭제되었습니다.");
-          this.$router.push("/admin/report");
+          this.retrieveDeptBoardReport(); // 목록 갱신
         } else {
           return;
         }
@@ -381,7 +611,9 @@ export default {
   },
   mounted() {
     this.retrieveFreeBoardReport();
+    this.retrieveFreeBoardReportProcessed();
     this.retrieveDeptBoardReport();
+    this.retrieveDeptBoardReportProcessed();
     window.scrollTo(0, 0);
   },
 };

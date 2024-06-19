@@ -19,9 +19,12 @@ public class QDeptBoard extends EntityPathBase<DeptBoard> {
 
     public static final QDeptBoard deptBoard = new QDeptBoard("deptBoard");
 
-    public final org.example.boardbackend.model.common.QBaseTimeEntity _super = new org.example.boardbackend.model.common.QBaseTimeEntity(this);
+    public final org.example.boardbackend.model.common.QBaseTimeEntity3 _super = new org.example.boardbackend.model.common.QBaseTimeEntity3(this);
 
     public final StringPath content = createString("content");
+
+    //inherited
+    public final StringPath deleteYn = _super.deleteYn;
 
     public final NumberPath<Long> deptBoardId = createNumber("deptBoardId", Long.class);
 

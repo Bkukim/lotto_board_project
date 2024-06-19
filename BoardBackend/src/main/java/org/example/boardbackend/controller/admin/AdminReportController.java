@@ -14,9 +14,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
 import java.util.List;
@@ -112,4 +110,135 @@ public class AdminReportController {
         }
     }
 
+    //    todo 관리자 자유 : 신고게시글 삭제버튼
+    @DeleteMapping("/free/deletion/{freeBoardId}")
+    public ResponseEntity<Void> deleteFreeBoard(@PathVariable Long freeBoardId) {
+        try {
+            freeBoardService.deleteByFreeBoardId(freeBoardId);
+            freeBoardService.updateByReportId(freeBoardId);
+            return ResponseEntity.noContent().build();
+        } catch (Exception e){
+            log.debug(e.getMessage());
+            return (ResponseEntity<Void>) ResponseEntity.internalServerError();
+        }
+    }
+
+    //    todo 관리자 부서 : 신고게시글 삭제버튼
+    @DeleteMapping("/dept/deletion/{deptBoardId}")
+    public ResponseEntity<Void> deleteDeptBoard(@PathVariable Long deptBoardId) {
+        try {
+            deptBoardService.deleteByDeptBoardId(deptBoardId);
+            deptBoardService.updateByDeptReportId(deptBoardId);
+            return ResponseEntity.noContent().build();
+        } catch (Exception e){
+            log.debug(e.getMessage());
+            return (ResponseEntity<Void>) ResponseEntity.internalServerError();
+        }
+    }
+
+//    //    todo 관리자 신고게시글 삭제버튼
+//    @DeleteMapping("/free/update/{reportId}")
+//    public ResponseEntity<Void> deleteFreeBoard(@PathVariable Long reportId, @RequestBody FreeBoardReport freeBoardReport) {
+//        try {
+//            freeBoardService.updateByReportId(reportId);
+//            return ResponseEntity.noContent().build();
+//        } catch (Exception e){
+//            log.debug(e.getMessage());
+//            return (ResponseEntity<Void>) ResponseEntity.internalServerError();
+//        }
+//    }
+
+    //    todo: 자유게시판 신고 처리완료 글 조회
+    @GetMapping("/free/processed")
+    public ResponseEntity<Object> findFreeReportIsProcessed(
+            @RequestParam(defaultValue = "") String userId,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size
+    ) {
+        try {
+//            페이징 객체 생성
+            Pageable pageable = PageRequest.of(page, size);
+
+//            전체 조회 서비스 실행
+            Page<FreeBoardReport> freeBoardReportsProcessed
+                    = freeBoardService.findFreeBoardReportsByUserIdAndIsProcessed(userId, pageable);
+
+//            공통 페이징 객체 생성 : 자료구조 맵 사용
+            Map<String, Object> response = new HashMap<>();
+            response.put("freeBoardReportsListProcessed", freeBoardReportsProcessed.getContent());       // faq 배열
+            response.put("currentPage", freeBoardReportsProcessed.getNumber());       // 현재페이지번호
+            response.put("totalItems", freeBoardReportsProcessed.getTotalElements()); // 총건수(개수)
+            response.put("totalPages", freeBoardReportsProcessed.getTotalPages());    // 총페이지수
+
+            if (freeBoardReportsProcessed.isEmpty() == false) {
+//                조회 성공
+                return new ResponseEntity<>(response, HttpStatus.OK);
+            } else {
+//                데이터 없음
+                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+            }
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    //    todo: 부서게시판 신고 처리완료 글 조회
+    @GetMapping("/dept/processed")
+    public ResponseEntity<Object> findDeptReportIsProcessed(
+            @RequestParam(defaultValue = "") String userId,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size
+    ) {
+        try {
+//            페이징 객체 생성
+            Pageable pageable = PageRequest.of(page, size);
+
+//            전체 조회 서비스 실행
+            Page<DeptBoardReport> deptBoardReportsProcessed
+                    = deptBoardService.findDeptBoardReportsByUserIdAndIsProcessed(userId, pageable);
+
+//            공통 페이징 객체 생성 : 자료구조 맵 사용
+            Map<String, Object> response = new HashMap<>();
+            response.put("deptBoardReportsListProcessed", deptBoardReportsProcessed.getContent());       // faq 배열
+            response.put("currentPage", deptBoardReportsProcessed.getNumber());       // 현재페이지번호
+            response.put("totalItems", deptBoardReportsProcessed.getTotalElements()); // 총건수(개수)
+            response.put("totalPages", deptBoardReportsProcessed.getTotalPages());    // 총페이지수
+
+            if (deptBoardReportsProcessed.isEmpty() == false) {
+//                조회 성공
+                return new ResponseEntity<>(response, HttpStatus.OK);
+            } else {
+//                데이터 없음
+                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+            }
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    //    todo 관리자 자유 : 신고게시글 취소 버튼
+    @PutMapping("/free/update/{freeBoardId}")
+    public ResponseEntity<Void> updateFreeBoard(@PathVariable Long freeBoardId) {
+        try {
+            log.debug("하유 정 ㅠ바보");
+            freeBoardService.updateByReportId(freeBoardId);
+            return ResponseEntity.noContent().build();
+        } catch (Exception e){
+            log.debug(e.getMessage());
+            return (ResponseEntity<Void>) ResponseEntity.internalServerError();
+        }
+    }
+
+    //    todo 관리자 부서 : 신고게시글 취소 버튼
+    @PutMapping("/dept/update/{freeBoardId}")
+    public ResponseEntity<Void> updateDeptBoard(@PathVariable Long deptBoardId) {
+        try {
+            log.debug("하유 정 ㅠ바보");
+            deptBoardService.updateByDeptReportId(deptBoardId);
+            return ResponseEntity.noContent().build();
+        } catch (Exception e){
+            log.debug(e.getMessage());
+            return (ResponseEntity<Void>) ResponseEntity.internalServerError();
+        }
+    }
 }
