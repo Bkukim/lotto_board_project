@@ -230,10 +230,10 @@ public class AdminReportController {
     }
 
     //    todo 관리자 부서 : 신고게시글 취소 버튼
-    @PutMapping("/dept/update/{freeBoardId}")
+    @PutMapping("/dept/update/{deptBoardId}")
     public ResponseEntity<Void> updateDeptBoard(@PathVariable Long deptBoardId) {
         try {
-            log.debug("하유 정 ㅠ바보");
+            log.debug("응 니얼굴");
             deptBoardService.updateByDeptReportId(deptBoardId);
             return ResponseEntity.noContent().build();
         } catch (Exception e){

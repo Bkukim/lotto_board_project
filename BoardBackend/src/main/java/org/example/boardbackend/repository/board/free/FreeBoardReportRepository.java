@@ -51,7 +51,7 @@ public interface FreeBoardReportRepository extends JpaRepository<FreeBoardReport
     @Query("UPDATE FreeBoardReport e SET e.isProcessed = 'Y' WHERE e.freeBoardId = :freeBoardId")
     void updateByFreeBoardId(@Param("freeBoardId") long freeBoardId);
 
-    //    todo : userId로 검색 -> 반복적으로 문제를 일으키는 사용자의 게시물을 검토할 때 유용
+    //    todo : 신고 게시물 처리완료
     @Query(value = "SELECT * FROM LOTTO_FREE_BOARD_REPORT\n" +
             "WHERE USER_ID LIKE '%'|| :userId ||'%'"+
             "AND IS_PROCESSED = 'Y'"+
