@@ -34,9 +34,15 @@ public class ParticipantsController {
 
 //  TODO: 생성 함수
     @PostMapping("/participants")
-    public ResponseEntity<Participants> createParticipant(@RequestParam long clubBoardId, @RequestParam String userId) {
-        Participants participant = participantsService.createParticipant(clubBoardId, userId);
-        return ResponseEntity.ok(participant);
+    public ResponseEntity<?> createParticipant(@RequestParam long clubBoardId, @RequestParam String userId) {
+        try {
+            Participants participant = participantsService.createParticipant(clubBoardId, userId);
+            participantsService.sendNotification(clubBoardId); // 알림 보내기 호출
+            return ResponseEntity.ok(participant);
+        } catch (Exception e) {
+            e.printStackTrace(); // 예외를 콘솔에 출력
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+        }
     }
 
 //  TODO: 삭제 함수
@@ -65,16 +71,25 @@ public ResponseEntity<Map<String, Boolean>> checkParticipant(@RequestParam long 
 //  TODO: 신청 승인 함수
     @PutMapping("/participants/approve")
     public ResponseEntity<Void> approveParticipant(@RequestParam long clubBoardId, @RequestParam String userId) {
-        participantsService.approveParticipant(clubBoardId, userId);
-        return ResponseEntity.ok().build();
+        try {
+            participantsService.approveParticipant(clubBoardId, userId);
+            participantsService.sendNotificationForApproval(clubBoardId, userId); // 승인 알림 보내기 호출
+            return ResponseEntity.ok().build();
+        } catch (Exception e) {
+            e.printStackTrace(); // 예외를 콘솔에 출력
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
     }
 
+    // TODO: 신청 승인/취소 함수
     @PutMapping("/participants/toggle-approval")
     public ResponseEntity<?> toggleApproval(@RequestParam long clubBoardId, @RequestParam String userId) {
         try {
-            participantsService.toggleApproval(clubBoardId, userId);
+            participantsService.approveParticipant(clubBoardId, userId);
+            participantsService.sendNotificationForApproval(clubBoardId, userId); // 알림 보내기 호출
             return ResponseEntity.ok().body("승인 상태가 성공적으로 변경되었습니다.");
         } catch (Exception e) {
+            e.printStackTrace(); // 예외를 콘솔에 출력
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("승인 상태 변경 실패");
         }
     }
