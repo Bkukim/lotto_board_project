@@ -103,7 +103,8 @@
         <!-- 반복문 시작할 행 -->
         <tr v-for="(data, index) in notices" :key="index">
           <td class="text-center">
-            {{ index + 1 }}
+            {{ count - ((page - 1) * pageSize + index) }}
+            <!-- {{ index + 1 }} -->
           </td>
           <td
             @click="viewsUp"
@@ -137,7 +138,7 @@
           v-model="page"
           :total-rows="count"
           :per-page="pageSize"
-          @click="retrieveQna"
+          @click="retrieveNotice"
         ></b-pagination>
       </div>
     </div>

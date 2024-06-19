@@ -35,13 +35,26 @@ public interface NoticeRepository extends JpaRepository<Notice, Long> {
             ", UPDATE_TIME AS updateTime\n" +
             ", INSERT_TIME AS insertTime\n" +
             "FROM LOTTO_NOTICE\n" +
-            "WHERE TITLE LIKE '%'|| :title ||'%'"
+            "WHERE TITLE LIKE '%'|| :title ||'%'" +
+            "order by insert_Time desc"
             , countQuery = "SELECT COUNT(*)\n" +
             "FROM LOTTO_NOTICE\n" +
             "WHERE TITLE LIKE '%'|| :title ||'%'"
             , nativeQuery = true
     )
     Page<INoticeDto> findByTitleContaining(@Param("title") String title, Pageable pageable);
+
+//todo: [전체]
+    @Query(value = "SELECT NOTICE_ID AS noticeId\n" +
+            ", TITLE AS title" +
+            ", VIEWS AS views" +
+            ", INSERT_TIME AS insertTime" +
+            ", NOTICE_TYPE AS noticeType\n" +
+            "FROM LOTTO_NOTICE\n" +
+            " WHERE NOTICE_TYPE = '전체'" +
+            "order by insert_Time desc",
+            nativeQuery = true)
+    List<INoticeDto> findByNoticeTypeAll(INoticeDto iNoticeDto);
 // todo: 부서게시판 조회
 
     @Query(value = "SELECT NOTICE_ID AS noticeId\n" +
@@ -50,7 +63,8 @@ public interface NoticeRepository extends JpaRepository<Notice, Long> {
             ", INSERT_TIME AS insertTime" +
             ", NOTICE_TYPE AS noticeType\n" +
             "FROM LOTTO_NOTICE\n" +
-            " WHERE NOTICE_TYPE = '부서'",
+            " WHERE NOTICE_TYPE = '부서'" +
+            "order by insert_Time desc",
             nativeQuery = true)
     List<INoticeDto> findByNoticeTypeDept(INoticeDto iNoticeDto);
 
@@ -62,7 +76,8 @@ public interface NoticeRepository extends JpaRepository<Notice, Long> {
         ", INSERT_TIME AS insertTime" +
         ", NOTICE_TYPE AS noticeType\n" +
         "FROM LOTTO_NOTICE\n" +
-        " WHERE NOTICE_TYPE = '자유'",
+        " WHERE NOTICE_TYPE = '자유'" +
+        "order by insert_Time desc",
         nativeQuery = true)
 List<INoticeDto> findByNoticeTypeFree(INoticeDto iNoticeDto);
 
@@ -73,7 +88,8 @@ List<INoticeDto> findByNoticeTypeFree(INoticeDto iNoticeDto);
         ", INSERT_TIME AS insertTime" +
         ", NOTICE_TYPE AS noticeType\n" +
         "FROM LOTTO_NOTICE\n" +
-        " WHERE NOTICE_TYPE = '건의'",
+        " WHERE NOTICE_TYPE = '건의'" +
+        "order by insert_Time desc",
         nativeQuery = true)
 List<INoticeDto> findByNoticeTypeComplaint(INoticeDto iNoticeDto);
 
@@ -84,7 +100,8 @@ List<INoticeDto> findByNoticeTypeComplaint(INoticeDto iNoticeDto);
         ", INSERT_TIME AS insertTime" +
         ", NOTICE_TYPE AS noticeType\n" +
         "FROM LOTTO_NOTICE\n" +
-        " WHERE NOTICE_TYPE = '동호회'",
+        " WHERE NOTICE_TYPE = '동호회'" +
+        "order by insert_Time desc",
         nativeQuery = true)
 List<INoticeDto> findByNoticeTypeGroup(INoticeDto iNoticeDto);
 

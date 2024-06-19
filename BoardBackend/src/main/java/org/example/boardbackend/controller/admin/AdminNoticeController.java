@@ -62,7 +62,30 @@ public class AdminNoticeController {
         }
     }
 
-    //  Todo: 자유
+    //  Todo: type
+    @GetMapping("/master-all")
+    public ResponseEntity<Object> findAllType(INoticeDto iNoticeDto) {
+        try {
+            // 전체 조회 서비스 실행
+            List<INoticeDto> noticeAll = noticeService.findByNoticeTypeAll(iNoticeDto);
+
+            Map<String, Object> response = new HashMap<>();
+//            todo: 맵 <키, 벨류> 둘중 하나가 틀렸는지 꼭 확인할 것
+            response.put("noticeAll", noticeAll);
+            response.put("totalItems", noticeAll.size()); // 총건수(개수)
+
+            if (!noticeAll.isEmpty()) {
+                // 조회 성공
+                return new ResponseEntity<>(response, HttpStatus.OK);
+            } else {
+                // 데이터 없음
+                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+            }
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
     @GetMapping("/master-free")
     public ResponseEntity<Object> findFree(INoticeDto iNoticeDto) {
         try {
@@ -107,7 +130,8 @@ public class AdminNoticeController {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
- @GetMapping("/master-group")
+
+    @GetMapping("/master-group")
     public ResponseEntity<Object> findGroup(INoticeDto iNoticeDto) {
         try {
             // 전체 조회 서비스 실행
@@ -144,39 +168,39 @@ public class AdminNoticeController {
         }
     }
 
-// todo: 관리자 권한 상세조회
+    // todo: 관리자 권한 상세조회
 // todo: 관리자 권한 상세조회
 //    todo: 상세조회 만들기
 //    조회(select) -> get 방식 -> @GetMapping
-@GetMapping("/{noticeId}")
-public ResponseEntity<Object> findById(
-        @PathVariable int noticeId
-) {
-    try {
+    @GetMapping("/{noticeId}")
+    public ResponseEntity<Object> findById(
+            @PathVariable int noticeId
+    ) {
+        try {
 //            상세조회 서비스 실행
-        Optional<Notice> noticeOptional
-                = noticeService.findById(noticeId);
+            Optional<Notice> noticeOptional
+                    = noticeService.findById(noticeId);
 
-        if (noticeOptional.isEmpty() == true) {
+            if (noticeOptional.isEmpty() == true) {
 //                데이터 없음
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        } else {
+                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+            } else {
 //                조회 성공
-            return new ResponseEntity<>(noticeOptional.get(), HttpStatus.OK);
+                return new ResponseEntity<>(noticeOptional.get(), HttpStatus.OK);
 
+            }
+        } catch (Exception e) {
+
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
-    } catch (Exception e) {
-
-        return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
     }
-}
 
-//todo: 수정함수
+    //todo: 수정함수
     @PutMapping("/notice-update/{noticeId}")
-    public  ResponseEntity<Object> update(
+    public ResponseEntity<Object> update(
             @PathVariable long noticeId
             , @RequestBody Notice notice
-    ){
+    ) {
         noticeService.save(notice);
         return new ResponseEntity<>(HttpStatus.OK);
     }
@@ -196,6 +220,21 @@ public ResponseEntity<Object> findById(
                 return new ResponseEntity<>(HttpStatus.NO_CONTENT);
             }
 
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    //    todo: 전체 함수
+    @DeleteMapping("/delete-all")
+    public ResponseEntity<Object> deleteAll() {
+        try {
+            boolean success = noticeService.removeAll();
+            if (success) {
+                return new ResponseEntity<>(HttpStatus.OK);
+            } else {
+                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+            }
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
