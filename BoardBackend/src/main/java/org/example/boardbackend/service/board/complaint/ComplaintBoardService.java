@@ -63,26 +63,7 @@ public class ComplaintBoardService {
         return complaintBoardOptional;
     }
 
-    // TODO 댓글 저장 기능
-    // 1. boardId로 게시글 주인의 객체 가져오기,  1. 댓글을 저장, 2 알림 보내기
-    public void saveComment(ComplaintBoardComment complaintBoardComment){
-        ComplaintBoard complaintBoard = complaintBoardRepository.findById(complaintBoardComment.getComplaintBoardId()).get();
 
-
-        String boardWriter = complaintBoard.getUserId();
-        log.debug("여기는 서비스1");
-
-//        FreeBoardComment freeBoardComment = new FreeBoardComment(freeBoardComment.getUserId(),freeBoard.getFreeBoardId(),freeBoardComment.getContent(),freeBoardComment.getSecretCommentYn());
-
-        // 1. 댓글 저장
-        complaintBoardCommentRepository.save(complaintBoardComment);
-        log.debug("여기는 서비스2");
-
-        // 2. 알림 보내기
-        String notifyContent = "게시물에 댓글이 달렸습니다.";
-        String notifyUrl = webConfig.getFrontDomain() + "/complaint/complaint-board/" + complaintBoard.getComplaintBoardId();
-        notifyService.send(boardWriter, Notify.NotificationType.COMMENT,notifyContent,notifyUrl);
-    }
 
     //   todo:  저장 함수
     public ComplaintBoard save(ComplaintBoard complaintBoard) {
@@ -104,11 +85,6 @@ public class ComplaintBoardService {
         } else {
             return false;
         }
-    }
-
-    //    todo: 댓글 조회 함수
-    public Page<ComplaintBoardComment> getCommentByComplaintBoardId(long complaintBoardId, Pageable pageable) {
-        return complaintBoardCommentRepository.findComplaintBoardCommentsByComplaintBoardId(complaintBoardId, pageable);
     }
 
     //    todo : userId가 작성한 글 전체조회

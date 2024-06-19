@@ -61,6 +61,12 @@ class ComplaintService {
       }
     );
   }
+  // TODO: 댓글 삭제
+  deleteComplaintBoardComment(commentId) {
+    return http.delete(`/admin/board/complaint/delete/comment/${commentId}`, {
+      headers: AuthHeader(),
+    });
+  }
 }
 
 export default new ComplaintService();

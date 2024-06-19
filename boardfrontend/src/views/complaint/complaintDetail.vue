@@ -378,63 +378,84 @@
       <br />
       <br />
       
-      <!-- 댓글들 -->
+<!-- 댓글들 -->
+<div
+  class="container text-left"
+  v-for="(data, index) in complaintBoardComments"
+  :key="index"
+>
+  <div class="lotto_new col row-cols-lg-4 gap-5 justify-content-left mb-3">
+    <!-- 아이디 -->
+    <div
+      class="row mt-5"
+      style="color: #333333; text-align: left; font-weight: bold"
+    >
       <div
-        class="container text-left"
-        v-for="(data, index) in complaintBoardComments"
-        :key="index"
-      >
-        <div
-          class="lotto_new col row-cols-lg-4 gap-5 justify-content-left mb-3"
-        >
-          <!-- 아이디 -->
-          <div
-            class="row mt-5"
-            style="color: #333333; text-align: left; font-weight: bold"
-          >
-            <div
-              style="
-                background: #162b59;
-                height: 30px;
-                width: 30px;
-                border-radius: 50%;
-                margin-right: 5px;
-              "
-            ></div>
-            {{ data.userId }}
-          </div>
+        style="
+          background: #162b59;
+          height: 30px;
+          width: 30px;
+          border-radius: 50%;
+          margin-right: 5px;
+        "
+      ></div>
+      {{ data.userId }}
+    </div>
 
-          <!-- 시간 -->
-          <div
-            class="row"
-            style="color: #999999; text-align: left; margin-left: 22px"
-          >
-            {{ data.insertTime }}
-          </div>
-        </div>
-        <!-- 답변 -->
-        <div
-          style="
-            padding-bottom: 30px;
-            border-bottom: 1px solid #cccccc;
-            text-align: left;
-            word-wrap: break-word;
-            word-break: break-all;
-            margin-left: 22px;
-          "
-        >
-          {{ data.content }}
-          <br />
-          <!-- <button
-            style="border: none; margin-top: 15px"
-            @click="toggleReplyForm(data.complaintBoardCommentId)"
-          >
-            {{
-              replyToCommentId === data.complaintBoardCommentId ? "답글접기" : "답글"
-            }}
-          </button> -->
-        </div>
+    <!-- 시간 -->
+    <div
+      class="row"
+      style="color: #999999; text-align: left; margin-left: 22px"
+    >
+      {{ data.insertTime }}
+    </div>
+  </div>
+  <!-- 답변 -->
+  <div
+    style="
+      padding-bottom: 30px;
+      border-bottom: 1px solid #cccccc;
+      text-align: left;
+      word-wrap: break-word;
+      word-break: break-all;
+      margin-left: 22px;
+      position: relative;
+    "
+  >
+    {{ data.content }}
+    <br />
+    <button
+      v-if="isAdmin"
+      @click="deleteComment(data.complaintBoardCommentId)"
+      class="container text-center mt-3"
+      style="
+        width: 150px;
+        text-decoration: none;
+        background-color: #162b59;
+        font-size: 18px;
+        text-align: center;
+        height: 40px;
+        font-weight: 100;
+        position: absolute;
+        bottom: 10px;
+        right: 10px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border-radius: 5px;
+      "
+    >
+      <div
+        style="
+          color: #ffffff;
+          font-weight: 100;
+        "
+      >
+        댓글 삭제하기
       </div>
+    </button>
+  </div>
+</div>
 
       <!-- 페이징 -->
       <!-- {/* paging 시작 */} -->
@@ -517,6 +538,13 @@ export default {
 
       charCount: 0,
     };
+  },
+  computed: {
+    // 로그인한 계정이 관리자인지 확인하기
+    isAdmin() {
+      const user = this.$store.state.user;
+      return user && user.roles && user.roles.includes("ROLE_ADMIN");
+    },
   },
   watch: {
     "newComment.content"(newVal) {
@@ -622,6 +650,23 @@ export default {
         console.log(e);
       }
     },
+
+    // 댓글 삭제 함수
+  async deleteComment(commentId) {
+    console.log("Deleting comment with ID:", commentId); // Debugging line
+    if (!commentId) {
+      console.log("No commentId provided");
+      return;
+    }
+    try {
+      if (confirm("정말로 댓글을 삭제하시겠습니까?")) {
+        await ComplaintBoardService.deleteComplaintBoardComment(commentId);
+        this.retrieveComplaintBoardComment(this.$route.params.complaintBoardId);
+      }
+    } catch (e) {
+      console.log(e);
+    }
+  },
 
     // 수정 함수
     async likeUp() {
