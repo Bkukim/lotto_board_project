@@ -40,7 +40,12 @@ public class NoticeService {
         Page<INoticeDto> notices = noticeRepository.findByTitleContaining(title,pageable);
         return notices;
     }
-//   todo: 부서조회 , 페이징 없음
+//   todo: 전체조회 , 페이징 없음
+    public List<INoticeDto> findByNoticeTypeAll(INoticeDto iNoticeDto) {
+        List<INoticeDto> notice = noticeRepository.findByNoticeTypeAll(iNoticeDto);
+        return notice;
+    }
+    //   todo: 부서조회 , 페이징 없음
     public List<INoticeDto> findByNoticeTypeDept(INoticeDto iNoticeDto) {
         List<INoticeDto> notice = noticeRepository.findByNoticeTypeDept(iNoticeDto);
         return notice;
@@ -94,6 +99,17 @@ public class NoticeService {
             return true;
         }
         return false;
+    }
+    // todo  삭제 함수
+    public boolean removeAll() {
+        try {
+            noticeRepository.deleteAll();
+            return true;
+        } catch (Exception e) {
+            // 예외 발생 시 로깅 추가 (선택 사항)
+            System.err.println("Error occurred while deleting all notices: " + e.getMessage());
+            return false;
+        }
     }
 
 }
