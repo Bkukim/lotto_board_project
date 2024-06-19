@@ -974,7 +974,6 @@ export default {
       }
     },
 
-
     // 답글 버튼 클릭 시 호출되는 메소드
     showReplyForm(freeBoardCommentId) {
       this.replyVisible = true;
