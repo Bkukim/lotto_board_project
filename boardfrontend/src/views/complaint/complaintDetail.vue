@@ -8,10 +8,12 @@
 
   <!-- 전체 박스 -->
   <div class="fbd_all" style="height: auto">
+    <br>
+    <br>
     <!-- 해당 게시판 이름 부분 -->
-    <div class="container text-center mb-5">
-      <h3 style="text-align: left" id="fbd_h3">건의 게시판 글 상세보기</h3>
-    </div>
+    <!-- <div class="container text-center mb-5"> -->
+      <!-- <h3 style="text-align: left" id="fbd_h3">건의 게시판 글 상세보기</h3> -->
+    <!-- </div> -->
     <!-- 해당 게시판 이름 부분  끝-->
 
     <!--  첫번째 게시판 큰 박스-->
@@ -443,7 +445,7 @@
             v-model="page"
             :total-rows="count"
             :per-page="pageSize"
-            @click="retrievecomplaintBoardComment(this.$route.params.complaintBoardId)"
+            @click="retrieveComplaintBoardComment(this.$route.params.complaintBoardId)"
           ></b-pagination>
         </div>
       </div>
@@ -463,6 +465,7 @@
   <br />
   <!-- 전체 박스 끝 -->
 </template>
+
 <script>
 import ComplaintBoardService from "@/services/board/complaint/ComplaintBoardService";
 // import { ref } from "vue";
@@ -592,7 +595,7 @@ export default {
         };
         await ComplaintBoardService.createComplaintBoardComment(data);
       } catch (e) {
-        // alert("댓글 등록 중 에러가 발생했습니다.");
+        alert("관리자만 답변할 수 있습니다.");
         console.log(e);
       }
       this.newComment.content = "";

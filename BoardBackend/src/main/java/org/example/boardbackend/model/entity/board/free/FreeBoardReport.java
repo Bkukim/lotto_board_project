@@ -5,6 +5,8 @@ import lombok.*;
 import org.example.boardbackend.model.common.BaseTimeEntity;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.Where;
 
 /**
  * packageName : org.example.boardbackend.model.entity.report
@@ -36,6 +38,7 @@ import org.hibernate.annotations.DynamicUpdate;
 @AllArgsConstructor
 @DynamicInsert
 @DynamicUpdate
+// soft delete jpa 어노테이션
 public class FreeBoardReport extends BaseTimeEntity {
     //    시퀀스 명 바꾸기
     @Id
@@ -46,6 +49,6 @@ public class FreeBoardReport extends BaseTimeEntity {
     private String userId;
     private long freeBoardId;
     private String content;
-
+    private String isProcessed;
 
 }

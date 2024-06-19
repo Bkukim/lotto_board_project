@@ -11,6 +11,7 @@ class FreeBoardService {
       }
     );
   }
+
   //   TODO: 상세 조회
   getFreeBoardId(freeBoardId) {
     return http.get(`/user/board/free/${freeBoardId}`, {
@@ -31,14 +32,13 @@ class FreeBoardService {
       headers: AuthHeader(),
     });
   }
-  // TODO: 수정함수 : qnaId
+  // TODO: 수정함수
   updateFreeBoard(freeBoardId, data) {
     return http.put(`/user/board/free/update/${freeBoardId}`, data, {
       headers: AuthHeader(),
     });
   }
 
-  
 
   // TODO: 댓글 조회 : freeBoardId
   getFreeBoardComment(freeBoardId, page, size) {
@@ -77,49 +77,59 @@ class FreeBoardService {
     );
   }
 
-
-  // TODO: 좋아요 관련 함수모음
-  // todo: 좋ㅇ아요 테이블에 생성 함수
-  saveLike(data) {
-    return http.post(`/user/free/board-like/save-like/`, data, 
-    //   {
-    //   headers: AuthHeader(),
-    // }
-  );
-  }
- 
-  // TODO: 삭제
-  deleteLike(likeId) {
-    return http.delete(`/user/free/board-like/deletion/${likeId}`,
-    //    {
-    //   headers: AuthHeader(),
-    // }
-  );
-  }
-    // TODO: 수정함수 : updateLike 공감해요 버튼에 적용될것
-    updateLike(freeBoardId, data2) {
-      console.log("서비스입니다"+freeBoardId)
-      return http.put(
-        `/user/free/board-like/update-like/${freeBoardId}`,
-        data2)
-        //    {
-        //   headers: AuthHeader(),
-        }
-  reportFreeBoard(data){
-    return http.post("user/board/free/report/save",data, {
+  reportFreeBoard(data) {
+    return http.post("user/board/free/report/save", data, {
       headers: AuthHeader(),
     });
   }
 
-    // TODO: 신고 게시글 전체 조회
-    getAllFreeBoardReport(userId, page, size) {
-      return http.get(
-        `/admin/report/free?userId=${userId}&page=${page}&size=${size}`,
-        {
-          headers: AuthHeader(),
-        }
-      );
-    }
+  // TODO: 신고 게시글 전체 조회
+  getAllFreeBoardReport(userId, page, size) {
+    return http.get(
+      `/admin/report/free?userId=${userId}&page=${page}&size=${size}`,
+      {
+        headers: AuthHeader(),
+      }
+    );
+  }
+
+  // TODO: 신고 게시글 처리완료 전체 조회
+  getAllFreeBoardReportProcessed(userId, page, size) {
+    return http.get(
+      `/admin/report/free/processed?userId=${userId}&page=${page}&size=${size}`,
+      {
+        headers: AuthHeader(),
+      }
+    );
+  }
+
+  // TODO: 신고 게시글 삭제 : 자유게시판 삭제, 신고테이블 상태변경
+  deleteFreeBoardReport(freeBoardId) {
+    return http.delete(`/admin/report/free/deletion/${freeBoardId}`, {
+      headers: AuthHeader(),
+    });
+  }
+
+
+  // TODO: 신고 게시글 취소 : 신고테이블 상태변경
+  updateFreeBoardReport(freeBoardId) {
+    console.log(freeBoardId);
+    return http.put(`/admin/report/free/update/${freeBoardId}`, {
+
+
+      headers: AuthHeader(),
+    });
+  }
+
+
+  // // TODO: 신고 게시글 삭제 : isProcessed Y로 수정함수
+  // updateFreeBoardReport(reportId) {
+  //   let data={}
+  //   return http.put(`/user/board/free/update/${reportId}`, data, {
+  //     headers: AuthHeader(),
+  //   });
+  // }
+
 }
 
 export default new FreeBoardService();

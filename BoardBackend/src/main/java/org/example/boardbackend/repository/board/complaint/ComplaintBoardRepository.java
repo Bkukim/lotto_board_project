@@ -38,6 +38,7 @@ public interface ComplaintBoardRepository extends JpaRepository<ComplaintBoard, 
                                                                 Pageable pageable
     );
 
+
     //    todo userId가 작성한 글 보기
     @Query(value = "SELECT COMPLAINT_BOARD_ID AS complaintBoardId, USER_ID AS userId, TITLE AS title, INSERT_TIME AS insertTime, LIKES AS likes FROM LOTTO_COMPLAINT_BOARD\n" +
             "WHERE USER_ID LIKE '%'|| :userId ||'%'"+

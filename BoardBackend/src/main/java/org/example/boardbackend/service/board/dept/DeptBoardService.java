@@ -8,6 +8,7 @@ import org.example.boardbackend.model.entity.board.dept.DeptBoard;
 import org.example.boardbackend.model.entity.board.dept.DeptBoardReport;
 import org.example.boardbackend.model.entity.board.dept.DeptComment;
 import org.example.boardbackend.model.entity.board.dept.DeptRecomment;
+import org.example.boardbackend.model.entity.board.free.FreeBoardReport;
 import org.example.boardbackend.repository.board.dept.DeptBoardRepository;
 import org.example.boardbackend.repository.board.dept.DeptCommentRepository;
 import org.example.boardbackend.repository.board.dept.DeptRecommentRepository;
@@ -42,7 +43,7 @@ public class DeptBoardService {
     private final DeptBoardRepository deptBoardRepository;
     private final DeptCommentRepository deptCommentRepository;
     private final DeptRecommentRepository deptRecommentRepository;
-    private final DeptBoardReportRepository deptReportRepository;
+    private final DeptBoardReportRepository deptBoardReportRepository;
 
     //    todo 전체 조회
     public Page<DeptBoardDto> selectByTitleContaining(
@@ -124,7 +125,7 @@ public class DeptBoardService {
     // todo : 신고 저장함수
     @Transactional
     public void saveReport(DeptBoardReport deptBoardReport){
-        deptReportRepository.save(deptBoardReport);
+        deptBoardReportRepository.save(deptBoardReport);
     }
 
     //    todo : userId가 작성한 글 전체조회
@@ -138,7 +139,29 @@ public class DeptBoardService {
     //   todo : 관리자 : 신고 게시판 조회
     public Page<DeptBoardReport> findDeptBoardReportsByUserIdContaining(String userId, Pageable pageable){
 
-        Page<DeptBoardReport> reports = deptReportRepository.findDeptBoardReportsByUserIdContaining(userId, pageable);
+        Page<DeptBoardReport> reports = deptBoardReportRepository.findDeptBoardReportsByUserIdContaining(userId, pageable);
+
+        return reports;
+    }
+
+    //    todo 신고게시글 삭제버튼 누를시 실행될 함수 : 부서게시판은 삭제
+    public void deleteByDeptBoardId(long deptBoardId) {
+        log.debug("tkdyd?");
+//        freeBoardReportRepository.updateByFreeBoardId(freeBoardId);
+        deptBoardRepository.deleteById(deptBoardId);
+    }
+
+    //    todo 신고게시글 삭제버튼 누를시 실행될 함수 : 신고테이블에서는 Y로 변경
+    public void updateByDeptReportId(long deptBoardId) {
+        log.debug("tkdyd?");
+        deptBoardReportRepository.updateByDeptBoardId(deptBoardId);
+//        freeBoardRepository.deleteById(reportId);
+    }
+
+    //   todo : 관리자 : 신고 게시판 처리완료 조회
+    public Page<DeptBoardReport> findDeptBoardReportsByUserIdAndIsProcessed(String userId, Pageable pageable) {
+
+        Page<DeptBoardReport> reports = deptBoardReportRepository.findDeptBoardReportsByUserIdAndIsProcessed(userId, pageable);
 
         return reports;
     }

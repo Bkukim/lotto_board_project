@@ -4,8 +4,11 @@ import jakarta.persistence.*;
 import lombok.*;
 import org.example.boardbackend.constant.DeptCode;
 import org.example.boardbackend.model.common.BaseTimeEntity;
+import org.example.boardbackend.model.common.BaseTimeEntity3;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.Where;
 
 /**
  * packageName : org.example.boardbackend.model.entity.board.dept
@@ -36,7 +39,10 @@ import org.hibernate.annotations.DynamicUpdate;
 @AllArgsConstructor
 @DynamicInsert
 @DynamicUpdate
-public class DeptBoard extends BaseTimeEntity {
+// soft delete jpa 어노테이션
+@Where(clause = "DELETE_YN = 'N'")
+@SQLDelete(sql ="UPDATE LOTTO_DEPT_BOARD SET DELETE_YN = 'Y' WHERE DEPT_BOARD_ID = ?")
+public class DeptBoard extends BaseTimeEntity3 {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE
             , generator = "SQ_DEPARTMENT_BOARD_GENERATOR"

@@ -1,5 +1,11 @@
-// 관리자 신고 게시판 상세보기 : 미완성
 <template>
+  <link
+    href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css"
+    rel="stylesheet"
+    integrity="sha384-KyZXEAg3QhqLMpG8r+Knujsl5+ENtDY6Q7r7W+hXGCv3vzvK79BmwJ4tcGw8g6Bq"
+    crossorigin="anonymous"
+  />
+
   <!-- 전체 박스 -->
   <div class="fbd_all" style="height: auto">
     <!-- 해당 게시판 이름 부분 -->
@@ -52,6 +58,22 @@
         </div>
       </div>
 
+      <!-- <div
+        style="
+          text-align: left;
+          padding: 20px 0 20px 30px;
+          font-size: 15px;
+          font-weight: 600;
+          border-bottom: 1px solid #cccccc;
+          word-wrap: break-word;
+          word-break: break-all;
+        "
+      ></div> -->
+
+      <div
+        style="max-width: 320px; display: block"
+        v-html="freeBoard.content"
+      ></div>
       <div
         style="
           text-align: left;
@@ -62,34 +84,142 @@
           word-wrap: break-word;
           word-break: break-all;
         "
-        v-html="freeBoard.content"
       ></div>
       <!-- TODO: 좋아요버튼 -->
       <div class="mt-5 text-center">
         <button
           type="button"
           class="btn btn-light"
-          @click="likeUp"
+          @click="upLike"
           style="
             border: none;
             text-align: center;
             height: 8vh;
-            width: 18vw;
+            width: 15vw;
             padding: 1vw;
           "
         >
           <img src="@/assets/img/like_icon.png" width="40" height="40" />
-          공감해요
+          좋아요
           {{ this.freeBoard.likes }}
+        </button>
+
+        <button
+          type="button"
+          class="btn btn-light"
+          @click="deleteLike"
+          style="
+            border: none;
+            text-align: center;
+            height: 8vh;
+            width: 15vw;
+            padding: 1vw;
+          "
+        >
+          공감삭제하기
         </button>
         <button
           type="button"
           class="btn btn-light"
           style="margin-left: 3vh; height: 8vh; width: 10vw; padding: 1vw"
+          data-bs-toggle="modal"
+          data-bs-target="#reportModal"
         >
+          <img src="@/assets/img/report_icon.png" width="40" height="40" />
           신고
         </button>
+
+        <!-- 모달 -->
+        <div
+          class="modal fade"
+          id="reportModal"
+          tabindex="-1"
+          aria-labelledby="reportModalLabel"
+          aria-hidden="true"
+        >
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5
+                  class="modal-title"
+                  id="reportModalLabel"
+                  style="font-weight: bold"
+                >
+                  <img
+                    src="@/assets/img/report_icon.png"
+                    width="20"
+                    height="20"
+                  />
+                  신고하기
+                </h5>
+                <button
+                  type="button"
+                  class="btn-close"
+                  data-bs-dismiss="modal"
+                  aria-label="Close"
+                ></button>
+              </div>
+              <div class="modal-body">
+                <!-- 여기에 신고 폼을 추가하세요 -->
+                <!-- 예시: -->
+                <form>
+                  <div class="mb-3">
+                    <label for="reportReason" class="form-label"
+                      >신고 이유를 작성해주세요.</label
+                    >
+                    <textarea
+                      class="form-control"
+                      id="reportReason"
+                      rows="3"
+                      v-model="reportContent"
+                    ></textarea>
+                  </div>
+                  <button class="btn btn-primary" @click="report">제출</button>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 목록으로 버튼 -->
+        <div class="col mb-5">
+          <router-link
+            :to="'/free/free-board'"
+            class="fbd_d container text-center"
+            style="
+              width: 150px;
+              text-decoration: none;
+              background-color: #3363cc;
+              font-size: 15px;
+              text-align: center;
+              height: 40px;
+              border-radius: 50px;
+              margin-top: 50px;
+            "
+          >
+            <div
+              style="
+                display: flex;
+                align-items: center;
+                justify-content: center;
+              "
+            >
+              <div
+                class="router-text"
+                style="
+                  margin-top: 10px;
+                  color: #fff;
+                  text-align: center;
+                  font-weight: 300;
+                "
+              >
+                목록으로
+              </div>
+            </div>
+          </router-link>
+        </div>
       </div>
+
       <!-- 파일첨부 -->
       <!-- <div class="mt-5" style="width: 500px">
         <input
@@ -103,11 +233,11 @@
     <!--  첫번째 게시판 큰 박스 끝-->
 
     <!-- TODO: 좋아요버튼 -->
-    <div class="d-flex justify-content-center mt-3">
+    <!-- <div class="d-flex justify-content-center mt-3">
       <button type="button" class="btn btn-primary" @click="likeUp">
         공감해요 {{ this.freeBoard.likes }}
       </button>
-    </div>
+    </div> -->
 
     <!-- 삭제 -->
     <div class="container text-center mt-5">
@@ -139,12 +269,7 @@
             >
               <div
                 class="router-text"
-                style="
-                  margin-right: 20px;
-                  margin-top: 10px;
-                  color: #ffffff;
-                  text-align: center;
-                "
+                style="color: #ffffff; text-align: center"
               >
                 삭제
               </div>
@@ -174,10 +299,7 @@
                 justify-content: center;
               "
             >
-              <div
-                class="router-text"
-                style="margin-right: 20px; margin-top: 10px; color: #ffffff"
-              >
+              <div class="router-text" style="margin-top: 10px; color: #ffffff">
                 수정
               </div>
             </div>
@@ -217,7 +339,7 @@
         class="lotto_new row row-cols-lg-4 gap-5 justify-content-left mb-3 mt-5"
       >
         <div class="col" style="color: #595959; font-weight: bold">
-          <span style="color: #999999; font-weight: 200">등록자 |</span>
+          <span style="color: #999999; font-weight: bold">등록자 |</span>
           {{ newComment.userId }}
         </div>
 
@@ -291,6 +413,9 @@
         </div>
       </div>
 
+      <br />
+      <br />
+      <br />
       <!-- 댓글들 -->
       <div
         class="container text-left"
@@ -337,32 +462,99 @@
           "
         >
           {{ data.content }}
+
           <br />
-          <button
-            style="border: none; margin-top: 15px"
-            @click="toggleReplyForm(data.freeBoardCommentId)"
-          >
-            {{
-              replyToCommentId === data.freeBoardCommentId ? "답글접기" : "답글"
-            }}
-          </button>
+          <div v-if="data.freeBoardRecomments?.length">
+            <button
+              style="border: none; margin-top: 15px"
+              @click="toggleReplyForm(data.freeBoardCommentId)"
+            >
+              {{
+                replyToCommentId === data.freeBoardCommentId
+                  ? "답글접기"
+                  : "답글" + "(" + data.freeBoardRecomments?.length + ")"
+              }}
+            </button>
+          </div>
+          <div v-else>
+            <button
+              style="border: none; margin-top: 15px"
+              @click="toggleReplyForm(data.freeBoardCommentId)"
+            >
+              {{
+                replyToCommentId === data.freeBoardCommentId
+                  ? "답글접기"
+                  : "답글" 
+              }}
+            </button>
+          </div>
 
           <!-- 답변(대댓글)들 -->
           <div v-if="replyToCommentId === data.freeBoardCommentId">
+            <hr />
+
             <div v-for="(data, index) in data.freeBoardRecomments" :key="index">
               <div
                 class="lotto_new row row-cols-lg-4 gap-5 justify-content-left mb-3 mt-5"
               >
                 <div class="col" style="color: #595959; font-weight: bold">
-                  <span style="color: #999999; font-weight: 200">등록자 |</span>
-                  {{ data.userId }}
-                </div>
-                <div class="col" style="color: #999999; font-weight: bold">
-                  {{ data.content }}
-                </div>
-                <div class="col" style="color: #999999; font-weight: bold">
-                  <span style="color: #999999; font-weight: 200">날짜 | </span>
-                  {{ data.insertTime }}
+                  <!-- <div
+                    style="
+                      background: #ccc;
+                      height: 30px;
+                      width: 30px;
+                      border-radius: 50%;
+                      margin-right: 5px;
+                    "
+                  ></div> -->
+                  <!-- (대댓글 등록자) -->
+                  <!-- <span style="color: #999999; font-weight: 200">
+                    {{ data.userId }}</span
+                  > -->
+
+                  <div
+                    class="row"
+                    style="color: #333333; text-align: left; font-weight: bold"
+                  >
+                    └>
+                    <div
+                      style="
+                        background: #ccc;
+                        height: 30px;
+                        width: 30px;
+                        border-radius: 50%;
+                        margin-right: 5px;
+                        margin-left: 5px;
+                      "
+                    ></div>
+                    {{ data.userId }}
+                  </div>
+
+                  <!-- (대댓글 시간) -->
+                  <div class="col" style="color: #999999; font-weight: bold">
+                    <span
+                      style="
+                        color: #999999;
+                        font-weight: 100;
+                        margin-left: 55px;
+                      "
+                    >
+                      {{ data.insertTime }}</span
+                    >
+
+                    <!-- (대댓글 내용) -->
+                    <div
+                      class="col"
+                      style="
+                        color: #333;
+                        font-weight: 300;
+                        margin-left: 55px;
+                        margin-top: 10px;
+                      "
+                    >
+                      {{ data.content }}
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
@@ -483,13 +675,13 @@
 </template>
 <script>
 import FreeBoardService from "@/services/board/free/FreeBoardService";
+import FreeBoardLikeService from "@/services/board/free/FreeBoardLikeService";
 // import { ref } from "vue";
 
 // 댓글 글자 작성 수 올라가는 것 확인
 export default {
   data() {
     return {
-      // replyVisible: false, // 답글 입력 폼의 표시 여부를 관리하는 변수
       replyToCommentId: null, // 어떤 댓글에 대한 답글인지 식별하기 위한 변수
 
       // 새로 작성할 답글
@@ -515,12 +707,16 @@ export default {
 
       // 기존 대댓글 목록
       freeBoardRecomments: [],
+      // 대댓글 갯수
+      recommentCount: 0,
 
       // 새로 작성할 댓글
       newComment: {
         userId: this.$store.state.user?.userId, // 로그인된 사용자 ID
         content: "",
       },
+
+      reportContent: "", // 신고내용
 
       // 페이징
       page: 1, // 현재페이지번호
@@ -530,6 +726,13 @@ export default {
       // 댓글 글자수
 
       charCount: 0,
+
+      // TODO:  like table 저장
+      freeBoardLike: {},
+
+      // like함수
+      isLiked: false, //라이크 상태확인
+      likeId: undefined, // 좋아요 ID 상태 추가
     };
   },
   watch: {
@@ -538,6 +741,19 @@ export default {
     },
   },
   methods: {
+    async report() {
+      try {
+        let data = {
+          userId: this.$store.state.user.userId,
+          freeBoardId: this.freeBoard.freeBoardId,
+          content: this.reportContent,
+        };
+        await FreeBoardService.reportFreeBoard(data);
+      } catch (error) {
+        console.log(error);
+      }
+      this.$router.push("/free/free-boardDetail/" + this.freeBoard.freeBoardId);
+    },
     toggleReplyForm(commentId) {
       // 클릭된 답글 버튼이 이미 열려있는 상태이면 폼을 닫고, 그렇지 않으면 엽니다.
       this.replyVisible =
@@ -563,10 +779,74 @@ export default {
       try {
         let response = await FreeBoardService.getFreeBoardId(freeBoardId);
         this.freeBoard = response.data;
+        //TODO: 좋아요 조회 동시에할것
+        await this.checkLike();
         console.log(response.data);
       } catch (e) {
-        alert("에러");
+        alert("에러"+e);
         console.log(e);
+      }
+    },
+    //  좋아요 함수
+    async upLike() {
+      const freeBoardId = this.freeBoard.freeBoardId;
+      const userId = this.$store.state.user.userId; // 로그인한 유저 ID 가져오기
+
+      if (this.isLiked) {
+        if (!this.likeId) {
+          console.error("Like ID is not defined");
+          return;
+        }
+        try {
+          await FreeBoardLikeService.deleteFreeBoardLike(this.likeId);
+          this.isLiked = false;
+          this.likeId = null;
+          this.freeBoard.likes -= 1;
+        } catch (error) {
+          console.error("Error deleting like:", error);
+        }
+      } else {
+        try {
+          const response = await FreeBoardLikeService.createFreeBoardLike({
+            userId,
+            freeBoardId,
+          });
+          this.isLiked = true;
+          this.likeId = response.data.likeId;
+          this.freeBoard.likes += 1;
+        } catch (error) {
+          console.error("Error creating like:", error);
+          if (
+            error.response &&
+            error.response.data === "Already liked by this user"
+          ) {
+            // 이미 좋아요가 존재하는 경우 상태를 유지
+            this.isLiked = true;
+          }
+        }
+      }
+    },
+    // like조회
+    async checkLike() {
+      const freeBoardId = this.$route.params.freeBoardId;
+      const userId = this.$store.state.user.userId; // Vuex store에서 로그인한 유저 ID 가져오기
+      try {
+        const response = await FreeBoardLikeService.getLikeId(
+          userId,
+          freeBoardId
+        );
+        if (response.status === 204) {
+          // NO_CONTENT 상태 코드 처리
+          this.isLiked = false;
+          this.likeId = null;
+        } else {
+          this.isLiked = true;
+          this.likeId = response.data;
+        }
+      } catch (error) {
+        console.error("Error checking like:", error);
+        this.isLiked = false;
+        this.likeId = null; // 에러 발생 시 likeId 초기화
       }
     },
 
@@ -637,17 +917,56 @@ export default {
       }
     },
 
-    // 수정 함수
-    async likeUp() {
-      this.freeBoard.likes = +1;
+    // 세이브함수
+    async likeUpSave() {
+      try {
+        // +하고 이동
+        // like 테이블에 저장
+        const data = {
+          userId: this.$store.state.user.userId,
+          freeBoardId: this.freeBoard.freeBoardId,
+        };
+
+        // freeBoardLike 테이블 저장
+        let response = await FreeBoardService.saveLike(data);
+        console.log(response.data);
+      } catch (e) {
+        console.log("오류" + e);
+      }
+    },
+    async likeUpUpdate() {
+      try {
+        // 업데이트로freeboard 있는 like도 수정해줘야함
+        let likes1 = (this.freeBoard.likes = +1);
+        const data = {
+          userId: this.$store.state.user.userId,
+          content: this.freeBoard.content,
+          title: this.freeBoard.title,
+          likes: likes1,
+        };
+        // freeBoard 좋아요 수 업데이트
+        let response = await FreeBoardService.updateLike(
+          data,
+          this.freeBoard.freeBoardId
+        );
+        console.log(data);
+        console.log("게시판아이디" + this.freeBoard.freeBoardId);
+
+        console.log(response.data);
+      } catch (e) {
+        console.log("오류" + e);
+      }
+    },
+    async deleteLike() {
+      console.log("liketable" + this.freeBoardLike.likeId);
 
       try {
-        let response = await FreeBoardService.updateFreeBoard(
-          this.freeBoard.likes
+        let response = await FreeBoardService.deleteLike(
+          this.freeBoardLike.likeId
         );
+
         // 로깅
-        console.log(response.data);
-        this.$router.push("/free/free-board/:freeBoardId");
+        console.log(response);
       } catch (e) {
         console.log(e);
       }
@@ -669,15 +988,14 @@ export default {
 
     // 대댓글(답글) 조회
     async retrieveFreeBoardRecomment(freeBoardId) {
-      console.log("진입");
       try {
         let response = await FreeBoardService.getFreeBoardRecomment(
           freeBoardId
         );
         this.freeBoardRecomments = response.data; // 부서배열(벡엔드 전송)
-
         console.log("댓글들", this.freeBoardComments);
         console.log("대댓글들", this.freeBoardRecomments);
+
         // 댓글 배열에 대댓글 속성을 추가하는 함수
         this.freeBoardComments.forEach((comment) => {
           comment.freeBoardRecomments = this.freeBoardRecomments.filter(
@@ -685,18 +1003,16 @@ export default {
           );
         });
         console.log("댓글마다 대댓글 잘 드갔나", this.freeBoardComments);
-        // TODO: 4) 프론트 로깅 : console.log
-        // console.log("response.data",response.data);
-        // console.log("this.comments" ,this.freeBoardComments);
       } catch (e) {
-        // alert("페이징 대댓글 에러");
         console.log(e);
       }
     },
+    // 대댓글 갯수 조회
+    getInnerArrayLength(array) {
+      return array.length;
+    },
     // 대댓글(답글) 등록
     async submitReply(commentId) {
-
-
       if (!this.newReply.content.trim()) {
         // alert("답글을 입력해주세요.");
         return;
@@ -723,7 +1039,7 @@ export default {
     },
   },
   async mounted() {
-    this.retrieveGetFreeBoard(this.$route.params.freeBoardId);
+    await this.retrieveGetFreeBoard(this.$route.params.freeBoardId);
     this.retrieveFreeBoardComment(this.$route.params.freeBoardId);
     // this.retrieveFreeBoardRecomment(this.$route.params.freeBoardId);
     window.scrollTo(0, 0);

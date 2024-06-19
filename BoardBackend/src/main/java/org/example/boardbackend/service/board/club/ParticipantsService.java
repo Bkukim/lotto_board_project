@@ -3,8 +3,13 @@ package org.example.boardbackend.service.board.club;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.example.boardbackend.model.entity.board.club.ClubBoard;
 import org.example.boardbackend.model.entity.board.club.Participants;
+import org.example.boardbackend.model.entity.notify.Notify;
+import org.example.boardbackend.repository.board.club.ClubBoardRepository;
 import org.example.boardbackend.repository.board.club.ParticipantsRepository;
+import org.example.boardbackend.service.notify.NotifyService;
+import org.example.boardbackend.service.user.UserService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -28,17 +33,29 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class ParticipantsService {
     private final ParticipantsRepository participantsRepository;
+    private final ClubBoardRepository clubBoardRepository;
+    private final NotifyService notifyService;
+    private final UserService userService;
 
 //  TODO: 저장 함수
-    @Transactional
-    public Participants createParticipant(long clubBoardId, String userId) {
-        Participants participant = Participants.builder()
-                .clubBoardId(clubBoardId)
-                .userId(userId)
-                .approval("N")
-                .build();
+@Transactional
+public Participants createParticipant(long clubBoardId, String userId) {
+    Participants participant = Participants.builder()
+            .clubBoardId(clubBoardId)
+            .userId(userId)
+            .approval("N")
+            .build();
+    return participantsRepository.save(participant);
+}
 
-        return participantsRepository.save(participant);
+    public void sendNotification(long clubBoardId) {
+        ClubBoard clubBoard = clubBoardRepository.findById(clubBoardId)
+                .orElseThrow(() -> new RuntimeException("ClubBoard not found"));
+        String boardWriter = clubBoard.getUserId();
+        String notifyContent = "회원님의 게시물에 새로운 참가 신청이 있습니다.";
+        String notifyUrl = "club/club-boardRecruitment/" + clubBoardId;
+
+        notifyService.send(boardWriter, Notify.NotificationType.CLUB_APPLICATION, notifyContent, notifyUrl);
     }
 
 //  TODO: 삭제 함수
@@ -67,18 +84,18 @@ public boolean checkParticipant(long clubBoardId, String userId) {
         return participantsRepository.findAllByClubBoardId(clubBoardId);
     }
 
-//  TODO: 신청 승인 함수
-    @Transactional
-    public Participants approveParticipant(long clubBoardId, String userId) {
-        Participants participant = participantsRepository.findByClubBoardIdAndUserId(clubBoardId, userId)
-                .orElseThrow(() -> new RuntimeException("Participant not found"));
-        participant.setApproval("Y");
-        return participantsRepository.save(participant);
-    }
+    // TODO: 신청 승인 함수
+//    @Transactional
+//    public Participants approveParticipant(long clubBoardId, String userId) {
+//        Participants participant = participantsRepository.findByClubBoardIdAndUserId(clubBoardId, userId)
+//                .orElseThrow(() -> new RuntimeException("Participant not found"));
+//        participant.setApproval("Y");
+//        return participantsRepository.save(participant);
+//    }
 
-//  TODO: 승인하기 :: 승인취소 버튼
+    // TODO: 승인 상태 변경 함수
     @Transactional
-    public void toggleApproval(long clubBoardId, String userId) {
+    public void approveParticipant(long clubBoardId, String userId) {
         Participants participant = participantsRepository.findByClubBoardIdAndUserId(clubBoardId, userId)
                 .orElseThrow(() -> new RuntimeException("Participant not found"));
         if ("N".equals(participant.getApproval())) {
@@ -87,5 +104,13 @@ public boolean checkParticipant(long clubBoardId, String userId) {
             participant.setApproval("N");
         }
         participantsRepository.save(participant);
+    }
+
+    // 승인 알림 전송 함수
+    public void sendNotificationForApproval(long clubBoardId, String userId) {
+        String notifyContent = "회원님의 참가 신청이 승인되었습니다.";
+        String notifyUrl = "club/club-boardRecruitment/" + clubBoardId;
+
+        notifyService.send(userId, Notify.NotificationType.CLUB_APPROVAL, notifyContent, notifyUrl);
     }
 }
