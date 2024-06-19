@@ -90,7 +90,7 @@
         <button
           type="button"
           class="btn btn-light"
-          @click="likeUpSave"
+          @click="upLike"
           style="
             border: none;
             text-align: center;
@@ -100,7 +100,7 @@
           "
         >
           <img src="@/assets/img/like_icon.png" width="40" height="40" />
-          공감해요
+          좋아요
           {{ this.freeBoard.likes }}
         </button>
 
@@ -675,6 +675,7 @@
 </template>
 <script>
 import FreeBoardService from "@/services/board/free/FreeBoardService";
+import FreeBoardLikeService from "@/services/board/free/FreeBoardLikeService";
 // import { ref } from "vue";
 
 // 댓글 글자 작성 수 올라가는 것 확인
@@ -728,6 +729,10 @@ export default {
 
       // TODO:  like table 저장
       freeBoardLike: {},
+
+      // like함수
+      isLiked: false, //라이크 상태확인
+      likeId: undefined, // 좋아요 ID 상태 추가
     };
   },
   watch: {
@@ -774,10 +779,74 @@ export default {
       try {
         let response = await FreeBoardService.getFreeBoardId(freeBoardId);
         this.freeBoard = response.data;
+        //TODO: 좋아요 조회 동시에할것
+        await this.checkLike();
         console.log(response.data);
       } catch (e) {
-        alert("에러");
+        alert("에러"+e);
         console.log(e);
+      }
+    },
+    //  좋아요 함수
+    async upLike() {
+      const freeBoardId = this.freeBoard.freeBoardId;
+      const userId = this.$store.state.user.userId; // 로그인한 유저 ID 가져오기
+
+      if (this.isLiked) {
+        if (!this.likeId) {
+          console.error("Like ID is not defined");
+          return;
+        }
+        try {
+          await FreeBoardLikeService.deleteFreeBoardLike(this.likeId);
+          this.isLiked = false;
+          this.likeId = null;
+          this.freeBoard.likes -= 1;
+        } catch (error) {
+          console.error("Error deleting like:", error);
+        }
+      } else {
+        try {
+          const response = await FreeBoardLikeService.createFreeBoardLike({
+            userId,
+            freeBoardId,
+          });
+          this.isLiked = true;
+          this.likeId = response.data.likeId;
+          this.freeBoard.likes += 1;
+        } catch (error) {
+          console.error("Error creating like:", error);
+          if (
+            error.response &&
+            error.response.data === "Already liked by this user"
+          ) {
+            // 이미 좋아요가 존재하는 경우 상태를 유지
+            this.isLiked = true;
+          }
+        }
+      }
+    },
+    // like조회
+    async checkLike() {
+      const freeBoardId = this.$route.params.freeBoardId;
+      const userId = this.$store.state.user.userId; // Vuex store에서 로그인한 유저 ID 가져오기
+      try {
+        const response = await FreeBoardLikeService.getLikeId(
+          userId,
+          freeBoardId
+        );
+        if (response.status === 204) {
+          // NO_CONTENT 상태 코드 처리
+          this.isLiked = false;
+          this.likeId = null;
+        } else {
+          this.isLiked = true;
+          this.likeId = response.data;
+        }
+      } catch (error) {
+        console.error("Error checking like:", error);
+        this.isLiked = false;
+        this.likeId = null; // 에러 발생 시 likeId 초기화
       }
     },
 

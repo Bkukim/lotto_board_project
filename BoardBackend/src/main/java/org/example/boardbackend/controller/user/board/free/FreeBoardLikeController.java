@@ -3,6 +3,7 @@ package org.example.boardbackend.controller.user.board.free;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.example.boardbackend.model.dto.board.free.FreeBoardLikeDto;
+import org.example.boardbackend.model.entity.board.club.ClubBoardLike;
 import org.example.boardbackend.model.entity.board.free.FreeBoard;
 import org.example.boardbackend.model.entity.board.free.FreeBoardComment;
 import org.example.boardbackend.model.entity.board.free.FreeBoardLike;
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 //import static jdk.vm.ci.hotspot.HotSpotCompilationRequestResult.success;
 
@@ -46,6 +48,47 @@ public class FreeBoardLikeController {
     private final FreeBoardService freeBoardService;
 
 
+
+    // TODO: 좋아요 생성 함수
+    @PostMapping("/create")
+    public ResponseEntity<FreeBoardLike> createFreeBoardLike(@RequestBody FreeBoardLike freeBoardLike) {
+        FreeBoardLike freeBoardLike1 = freeBoardLikeService.createFreeBoardLike(freeBoardLike);
+        return ResponseEntity.ok(freeBoardLike1);
+    }
+
+    // TODO: 좋아요 상태 확인 함수
+    @GetMapping("/{userId}/{freeBoardId}")
+    public ResponseEntity<FreeBoardLike> getLikeByUserIdAndFreeBoardId(@PathVariable String userId, @PathVariable long freeBoardId) {
+        FreeBoardLike freeBoardLike1 = freeBoardLikeService.getLikeByUserIdAndFreeBoardId(userId, freeBoardId);
+        if (freeBoardLike1 != null) {
+            return ResponseEntity.ok(freeBoardLike1);
+        } else {
+            return ResponseEntity.noContent().build();
+        }
+    }
+
+    // TODO: 좋아요 삭제 함수
+    @DeleteMapping("/delete/{likeId}")
+    public ResponseEntity<?> deleteFreeBoardLike(@PathVariable Long likeId) {
+        try {
+            freeBoardLikeService.deleteFreeBoardLike(likeId);
+            return ResponseEntity.ok().build();
+        } catch (RuntimeException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    // TODO: 좋아요 ID 조회 함수
+    @GetMapping("/get/{userId}/{freeBoardId}")
+    public ResponseEntity<Long> findLikeIdByUserIdAndFreeBoardId(@PathVariable String userId, @PathVariable Long freeBoardId) {
+        Optional<Long> likeId = freeBoardLikeService.findLikeIdByUserIdAndFreeBoardId(userId, freeBoardId);
+        return likeId.map(ResponseEntity::ok)
+                .orElseGet(() -> new ResponseEntity<>(HttpStatus.NO_CONTENT));
+    }
+
+
+
+//    todo: 아래로 실패함수들
     //   todo: 저장함수 likeid 생성
 //    @PostMapping("/save-like")
 //    public ResponseEntity<String> saveLike(@RequestParam String userId, @RequestParam Long freeBoardId) {
@@ -85,53 +128,53 @@ public class FreeBoardLikeController {
 //    }
 //}
 
-//   todo: 저장함수
-    @PostMapping("/save-like/")
-    public ResponseEntity<Object> createLike(
-            @RequestBody FreeBoardLike freeBoardLike
-    ) {
-        try {
-            FreeBoardLike freeBoardLike1 = freeBoardLikeService.save(freeBoardLike);
-            return new ResponseEntity<>(freeBoardLike1, HttpStatus.OK);
-        } catch (Exception e) {
-            log.debug(e.getMessage());
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-    }
-
-    //todo: 수정함수 like+1해주기, like테이블 + freeboardID에 like도 업데이트 되어야함
-    @PutMapping("/update-like/{freeBoardId}")
-    public  ResponseEntity<Object> update(
-            @PathVariable long freeBoardId
-            , @RequestBody FreeBoard freeBoard
-    ){
-        try {
-            freeBoardService.save(freeBoard);
-            return new ResponseEntity<>(HttpStatus.OK);
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    //todo: 삭제함수 like-1해주기, like테이블 + freeboardID에 like도 삭제되어야함
-
-    @DeleteMapping("/deletion/{likeId}")
-    public ResponseEntity<Object> delete(
-            @PathVariable long likeId
-    ) {
-        try {
-            boolean success = freeBoardLikeService.removeById(likeId);
-
-            if (success == true) {
-                return new ResponseEntity<>(HttpStatus.OK);
-            } else {
-                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-            }
-
-        } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-    }
+////   todo: 저장함수
+//    @PostMapping("/save-like/")
+//    public ResponseEntity<Object> createLike(
+//            @RequestBody FreeBoardLike freeBoardLike
+//    ) {
+//        try {
+//            FreeBoardLike freeBoardLike1 = freeBoardLikeService.save(freeBoardLike);
+//            return new ResponseEntity<>(freeBoardLike1, HttpStatus.OK);
+//        } catch (Exception e) {
+//            log.debug(e.getMessage());
+//            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+//        }
+//    }
+//
+//    //todo: 수정함수 like+1해주기, like테이블 + freeboardID에 like도 업데이트 되어야함
+//    @PutMapping("/update-like/{freeBoardId}")
+//    public  ResponseEntity<Object> update(
+//            @PathVariable long freeBoardId
+//            , @RequestBody FreeBoard freeBoard
+//    ){
+//        try {
+//            freeBoardService.save(freeBoard);
+//            return new ResponseEntity<>(HttpStatus.OK);
+//        } catch (Exception e) {
+//            throw new RuntimeException(e);
+//        }
+//    }
+//
+//    //todo: 삭제함수 like-1해주기, like테이블 + freeboardID에 like도 삭제되어야함
+//
+//    @DeleteMapping("/deletion/{likeId}")
+//    public ResponseEntity<Object> delete(
+//            @PathVariable long likeId
+//    ) {
+//        try {
+//            boolean success = freeBoardLikeService.removeById(likeId);
+//
+//            if (success == true) {
+//                return new ResponseEntity<>(HttpStatus.OK);
+//            } else {
+//                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+//            }
+//
+//        } catch (Exception e) {
+//            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+//        }
+//    }
 
 //    @PutMapping("/insert-like/{userId}")
 ////    todo: ResponseResult쓰려면 HttpResponseEntity로 리턴값을 생성해줘야함(예제)

@@ -63,140 +63,49 @@
         "
         v-html="notice.content"
       ></div>
-      <!-- TODO: 좋아요버튼 -->
-      <div class="mt-5 text-center">
-        <button
-          type="button"
-          class="btn btn-light"
-          @click="likeUp"
+
+      <!-- 목록으로 버튼 -->
+      <div class="col mb-5 justify-content-right">
+        <router-link
+          :to="'/notice/notice-board'"
+          class="fbd_d container text-center"
           style="
-            border: none;
+            width: 150px;
+            text-decoration: none;
+            background-color: #3363cc;
+            font-size: 15px;
             text-align: center;
-            height: 8vh;
-            width: 15vw;
-            padding: 1vw;
+            height: 40px;
+            border-radius: 50px;
+            margin-top: 50px;
           "
         >
-          <img src="@/assets/img/like_icon.png" width="40" height="40" />
-          공감해요
-          {{ this.notice.likes }}
-        </button>
-
-        <button
-          type="button"
-          class="btn btn-light"
-
-          style="margin-left: 3vh; height: 8vh; width: 10vw; padding: 1vw"
-          data-bs-toggle="modal"
-          data-bs-target="#reportModal"
-
-        >
-        <!-- <img src="@/assets/img/report_icon.png" width="40" height="40" /> -->
-
-          신고
-        </button>
-
-        <!-- 모달 -->
-        <div
-          class="modal fade"
-          id="reportModal"
-          tabindex="-1"
-          aria-labelledby="reportModalLabel"
-          aria-hidden="true"
-        >
-          <div class="modal-dialog">
-            <div class="modal-content">
-              <div class="modal-header">
-                <h5 class="modal-title" id="reportModalLabel" style="font-weight: bold;">
-
-                  <img
-                    src="@/assets/img/report_icon.png"
-                    width="20"
-                    height="20"
-                  />
-                  신고하기
-                </h5>
-                <button
-                  type="button"
-                  class="btn-close"
-                  data-bs-dismiss="modal"
-                  aria-label="Close"
-                ></button>
-              </div>
-              <div class="modal-body">
-                <!-- 여기에 신고 폼을 추가하세요 -->
-                <!-- 예시: -->
-                <form>
-                  <div class="mb-3">
-                    <label for="reportReason" class="form-label"
-                      >신고 이유를 작성해주세요.</label
-                    >
-                    <textarea
-                      class="form-control"
-                      id="reportReason"
-                      rows="3"
-                    ></textarea>
-                  </div>
-                  <button type="submit" class="btn btn-primary">제출</button>
-                </form>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-
-
-          <!-- 목록으로 버튼 -->
-          <div class="col mb-5">
-          <router-link
-            :to="'/notice/notice-board' "
-            class="fbd_d container text-center"
-            style="
-              width: 150px;
-              text-decoration: none;
-              background-color: #3363cc;
-              font-size: 15px;
-              text-align: center;
-              height: 40px;
-              border-radius: 50px;
-              margin-top: 50px;
-            "
+          <div
+            style="display: flex; align-items: center; justify-content: center"
           >
             <div
+              class="router-text"
               style="
-                display: flex;
-                align-items: center;
-                justify-content: center;
+                margin-top: 10px;
+                color: #fff;
+                text-align: center;
+                font-weight: 300;
               "
             >
-              <div
-                class="router-text"
-                style=" margin-top: 10px; color: #fff; text-align: center;  font-weight: 300;"
-              >
-                목록으로
-              </div>
+              목록으로
             </div>
-          </router-link>
-        </div>
+          </div>
+        </router-link>
+      </div>
     </div>
     <!--  첫번째 게시판 큰 박스 끝-->
 
-
-    <!-- TODO: 좋아요버튼 -->
-    <!-- <div class="d-flex justify-content-center mt-3">
-      <button type="button" class="btn btn-primary" @click="likeUp">
-        공감해요 {{ this.freeBoard.likes }}
-      </button>
-    </div> -->
-
-
     <!-- 삭제 -->
-    <div class="container text-center mt-5" v-if="this.$store.state.user?.role == 'ROLE_ADMIN'">
-      <div
-        class="row"
-        style="margin-top: 100px"
-      >
+    <div
+      class="container text-center mt-5"
+      v-if="this.$store.state.user?.role == 'ROLE_ADMIN'"
+    >
+      <div class="row" style="margin-top: 100px">
         <div class="col">
           <button
             class="fbd_d container text-center"
@@ -220,13 +129,7 @@
             >
               <div
                 class="router-text"
-                style="
-                  margin-right: 20px;
-                  margin-top: 10px;
-
-                  color: #ffffff;
-                  text-align: center;
-                "
+                style="color: #ffffff; text-align: center"
               >
                 삭제
               </div>
@@ -236,18 +139,13 @@
 
         <!-- 수정 -->
         <div class="col mb-5">
-          
+          <div
+            style="display: flex; align-items: center; justify-content: center"
+          >
             <div
+              class="router-text"
               style="
-                display: flex;
-                align-items: center;
-                justify-content: center;
-              "
-            >
-              <div
-                class="router-text"
-                style="margin-right: 20px; margin-top: 10px; color: #ffffff;
-
+                color: #ffffff;
                 width: 300px;
                 text-decoration: none;
                 background-color: #162b59;
@@ -258,344 +156,10 @@
                 line-height: 50px;
               "
               @click="goUpdate"
-              >
-                수정
-              </div>
-            </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- --------------------------------------------------- -->
-
-    <!-- 댓글 작성 및 조회/대댓글-->
-    <div
-      class="container text-center mt-5"
-      id="comments"
-      style="
-        height: auto;
-        border: none;
-        border-radius: 50px;
-        background-color: #ffffff;
-      "
-    >
-      <div
-        style="
-          text-align: left;
-          border-bottom: #cccccc solid 1px;
-          padding: 20px 0 20px 30px;
-          font-size: 20px;
-          font-weight: 600;
-          color: #595959;
-        "
-      >
-        댓글
-      </div>
-
-      <!-- 댓글 입력하기 -->
-      <div
-        class="lotto_new row row-cols-lg-4 gap-5 justify-content-left mb-3 mt-5"
-      >
-        <div class="col" style="color: #595959; font-weight: bold">
-          <span style="color: #999999; font-weight: bold">등록자 |</span>
-          {{ newComment.userId }}
-        </div>
-
-        <div class="col" style="color: #999999">
-          날짜 | {{ newComment.insertTime }}
-        </div>
-      </div>
-
-      <!-- 댓글 글쓰기 칸 -->
-      <div class="mb-5 comment-box" style="border: #595959 1.5px solid">
-        <div class="comment-input">
-          <textarea
-            class="form-control"
-            id="exampleFormControlTextarea1"
-            rows="3"
-            v-model="newComment.content"
-            @input="updateCharacterCount"
-            maxlength="1000"
-            placeholder="댓글을 입력하세요."
-            style="
-              height: 150px;
-              border-bottom: #cccccc 1px solid;
-              word-wrap: break-word;
-              word-break: break-all;
-            "
-          ></textarea>
-          <div
-            class="char-count"
-            style="text-align: left; padding: 10px 0 20px 10px"
-          >
-            글자 수: {{ charCount }}/300
-          </div>
-          <!-- (댓글작성) 등록 버튼-->
-          <button
-            @click="submitComment()"
-            class="fbd_d container text-center mt-3"
-            style="
-              width: 80px;
-              text-decoration: none;
-              background-color: #162b59;
-              font-size: 18px;
-              text-align: center;
-              height: 40px;
-              font-weight: 100;
-              position: absolute;
-              bottom: 10px;
-              right: 10px;
-            "
-          >
-            <div
-              style="
-                display: flex;
-                align-items: center;
-                justify-content: center;
-              "
             >
-              <div
-                class="router-text"
-                style="
-                  margin-right: 5px;
-                  margin-top: 5px;
-                  color: #ffffff;
-                  font-weight: 100;
-                  text-align: center;
-                "
-              >
-                등록
-              </div>
-            </div>
-          </button>
-        </div>
-      </div>
-
-      <br />
-      <br />
-      <br />
-      <!-- 댓글들 -->
-      <div
-        class="container text-left"
-        v-for="(data, index) in noticeBoardComments"
-        :key="index"
-      >
-        <div
-          class="lotto_new col row-cols-lg-4 gap-5 justify-content-left mb-3"
-        >
-          <!-- 아이디 -->
-          <div
-            class="row mt-5"
-            style="color: #333333; text-align: left; font-weight: bold"
-          >
-            <div
-              style="
-                background: #162b59;
-                height: 30px;
-                width: 30px;
-                border-radius: 50%;
-                margin-right: 5px;
-              "
-            ></div>
-            {{ data.userId }}
-          </div>
-
-          <!-- 시간 -->
-          <div
-            class="row"
-            style="color: #999999; text-align: left; margin-left: 22px"
-          >
-            {{ data.insertTime }}
-          </div>
-        </div>
-        <!-- 답변 -->
-        <div
-          style="
-            padding-bottom: 30px;
-            border-bottom: 1px solid #cccccc;
-            text-align: left;
-            word-wrap: break-word;
-            word-break: break-all;
-            margin-left: 22px;
-          "
-        >
-          {{ data.content }}
-          <br />
-          <button
-            style="border: none; margin-top: 15px"
-            @click="toggleReplyForm(data.noticeBoardCommentId)"
-          >
-            {{
-              replyToCommentId === data.noticeBoardCommentId ? "답글접기" : "답글"
-            }}
-          </button>
-
-          <!-- 답변(대댓글)들 -->
-          <div v-if="replyToCommentId === data.noticeBoardCommentId">
-            <hr />
-
-            <div v-for="(data, index) in data.noticeBoardRecomments" :key="index">
-              <div
-                class="lotto_new row row-cols-lg-4 gap-5 justify-content-left mb-3 mt-5"
-              >
-                <div class="col" style="color: #595959; font-weight: bold">
-                  <!-- <div
-                    style="
-                      background: #ccc;
-                      height: 30px;
-                      width: 30px;
-                      border-radius: 50%;
-                      margin-right: 5px;
-                    "
-                  ></div> -->
-                  <!-- (대댓글 등록자) -->
-                  <!-- <span style="color: #999999; font-weight: 200">
-                    {{ data.userId }}</span
-                  > -->
-
-                  <div
-                    class="row"
-                    style="color: #333333; text-align: left; font-weight: bold"
-                  >
-                    └>
-                    <div
-                      style="
-                        background: #ccc;
-                        height: 30px;
-                        width: 30px;
-                        border-radius: 50%;
-                        margin-right: 5px;
-                        margin-left: 5px;
-                      "
-                    ></div>
-                    {{ data.userId }}
-                  </div>
-
-                  <!-- (대댓글 시간) -->
-                  <div class="col" style="color: #999999; font-weight: bold">
-                    <span
-                      style="
-                        color: #999999;
-                        font-weight: 100;
-                        margin-left: 55px;
-                      "
-                    >
-                      {{ data.insertTime }}</span
-                    >
-
-                    <!-- (대댓글 내용) -->
-                    <div
-                      class="col"
-                      style="
-                        color: #333;
-                        font-weight: 300;
-                        margin-left: 55px;
-                        margin-top: 10px;
-                      "
-                    >
-                      {{ data.content }}
-                    </div>
-                  </div>
-                </div>
-              </div>
+              수정
             </div>
           </div>
-
-          <!-- 답변(대댓글) 다는 곳 -->
-          <div
-            v-if="replyVisible && replyToCommentId === data.freeBoardCommentId"
-          >
-            <div
-              class="lotto_new row row-cols-lg-4 gap-5 justify-content-left mb-3 mt-5"
-            >
-              <div class="col" style="color: #595959; font-weight: bold">
-                <span style="color: #999999; font-weight: 200">등록자 |</span>
-                {{ newReply.userId }}
-              </div>
-              <div class="col" style="color: #999999">
-                날짜 | {{ newReply.insertTime }}
-              </div>
-            </div>
-            <div class="mb-5 comment-box" style="border: #595959 1.5px solid">
-              <div class="comment-input">
-                <textarea
-                  class="form-control"
-                  id="replyTextarea"
-                  rows="3"
-                  v-model="newReply.content"
-                  @input="updateReplyCharacterCount"
-                  maxlength="1000"
-                  placeholder="답글을 입력하세요."
-                  style="
-                    height: 150px;
-                    border-bottom: #cccccc 1px solid;
-                    word-wrap: break-word;
-                    word-break: break-all;
-                  "
-                ></textarea>
-                <div
-                  class="char-count"
-                  style="text-align: left; padding: 10px 0 20px 10px"
-                >
-                  글자 수: {{ charCountReply }}/300
-                </div>
-
-                <!-- (답변(대댓글)) 등록 버튼-->
-                <button
-                  @click="submitReply(data.noticeBoardCommentId)"
-                  class="fbd_d container text-center mt-3"
-                  style="
-                    width: 60px;
-                    text-decoration: none;
-                    background-color: #999;
-                    border: none;
-                    font-size: 15px;
-                    text-align: center;
-                    height: 40px;
-                    font-weight: 100;
-                    position: absolute;
-                    bottom: 10px;
-                    right: 10px;
-                  "
-                >
-                  <div
-                    style="
-                      display: flex;
-                      align-items: center;
-                      justify-content: center;
-                    "
-                  >
-                    <div
-                      class="router-text"
-                      style="
-                        margin-right: 5px;
-                        margin-top: 5px;
-                        color: #ffffff;
-                        font-weight: 100;
-                        text-align: center;
-                      "
-                    >
-                      등록
-                    </div>
-                  </div>
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- 페이징 -->
-      <!-- {/* paging 시작 */} -->
-      <div class="row justify-content-center mt-5">
-        <div class="col-auto" style="margin-top: 50px">
-          <b-pagination
-            class="custom-pagination col-12 mb-3"
-            v-model="page"
-            :total-rows="count"
-            :per-page="pageSize"
-            @click="retrieveNoticeBoardComment(this.$route.params.noticeBoardId)"
-          ></b-pagination>
         </div>
       </div>
     </div>
@@ -615,7 +179,7 @@
   <!-- 전체 박스 끝 -->
 </template>
 <script>
-import NoticeService from '@/services/notice/NoticeService';
+import NoticeService from "@/services/notice/NoticeService";
 
 // 댓글 글자 작성 수 올라가는 것 확인
 export default {
@@ -627,33 +191,7 @@ export default {
         title: "",
         content: "",
         views: 0,
-        eventYN:"N"
-      },
-      
-      // replyVisible: false, // 답글 입력 폼의 표시 여부를 관리하는 변수
-      replyToCommentId: null, // 어떤 댓글에 대한 답글인지 식별하기 위한 변수
-
-      // 새로 작성할 답글
-      newReply: {
-        userId: this.$store.state.user?.userId,
-        content: "",
-      },
-
-      // 답글 글자 수
-      charCountReply: 0,
-
-  
-
-      // 기존 댓글 목록
-      noticeBoardComments: [],
-
-      // 기존 대댓글 목록
-      noticeBoardRecomments: [],
-
-      // 새로 작성할 댓글
-      newComment: {
-        userId: this.$store.state.user?.userId, // 로그인된 사용자 ID
-        content: "",
+        eventYN: "N",
       },
 
 
@@ -667,13 +205,14 @@ export default {
       charCount: 0,
     };
   },
+
  
   methods: {
     async get(noticeId,eventYN) {
 
       // todo: 공통 상세조회 함수: get()
       try {
-        let response = await NoticeService.getNotice(noticeId,eventYN);
+        let response = await NoticeService.getNotice(noticeId, eventYN);
         this.notice = response.data;
         // 로깅
         console.log(response.data.views);
@@ -687,7 +226,6 @@ export default {
       try {
         alert("정말로 삭제하시겠습니까?");
         let response = await NoticeService.delete(this.notice.noticeId);
-
 
         // 로깅
         console.log(response.data);
@@ -724,6 +262,7 @@ export default {
         console.log(e);
       }
     },
+
     },
 
   async mounted() {

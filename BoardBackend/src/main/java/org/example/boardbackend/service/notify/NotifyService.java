@@ -73,6 +73,12 @@ public class NotifyService {
         log.debug("send 함수 들옴");
         log.debug(receiver);
         SseEmitter sseEmitter = emitterRepository.findByUserId(receiver);
+
+        if (sseEmitter == null) {
+            log.debug("sseEmitter is null, user is not connected.");
+            return;
+        }
+
         log.debug("보낼 알림 " + sseEmitter.toString());
         sendNotification(receiver, sseEmitter, notificationType, notifyContent);
     }

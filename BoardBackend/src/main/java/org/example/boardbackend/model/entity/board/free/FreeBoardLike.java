@@ -48,33 +48,22 @@ public class FreeBoardLike {
     @Column(name = "LIKE_ID")
     private long likeId;
 
-//todo:응답에 문제 있떤 이유 아래때문에
-
-//    @ManyToOne(fetch = LAZY)
-//    @JoinColumn(name = "USER_ID")
-//    private User userId;
-//
-//    @ManyToOne(fetch = LAZY)
-//    @JoinColumn(name = "FREE_BOARD_ID")
-//    private FreeBoard freeBoardId;
-
-
-    @JoinColumn(name = "USER_ID")
+    @Column(name = "USER_ID", nullable = false)
     private String userId;
-
-    @JoinColumn(name = "FREE_BOARD_ID")
+    // nullable = false 널값들어오지 못하게
+    @Column(name = "FREE_BOARD_ID", nullable = false)
     private long freeBoardId;
 
-//    @Builder
-//    public FreeBoardLike(User user, FreeBoard freeBoard) {
-//        this.userId = user;
-//        this.freeBoardId = freeBoard;
-//    }
 
-//@AllArgsConstructor이거 있으면 아래처럼 직접설정해줄 필요가 없음ㄷ
-//    public FreeBoardLike(long likeId, String userId, long freeBoardId) {
-//        this.likeId = likeId;
-//        this.userId = userId;
-//        this.freeBoardId = freeBoardId;
-//    }
+    public long getLikeId() {return likeId;}
+
+    // 사용자 아이디
+    public String getUserId() {return userId;}
+    public void setUserId(String userId) {this.userId = userId;}
+
+    // 게시판 아이디
+    public long getFreeBoardId() {return freeBoardId;}
+    public void setFreeBoardId(long freeBoardId) {
+        this.freeBoardId = freeBoardId;
+    }
 }
