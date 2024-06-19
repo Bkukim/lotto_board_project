@@ -1,4 +1,4 @@
-package org.example.boardbackend.controller.user.board.complaint;
+package org.example.boardbackend.controller.normal.board.complaint;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -35,7 +35,7 @@ import java.util.Optional;
  */
 @Slf4j
 @RestController
-@RequestMapping("/api/user/board")
+@RequestMapping("/api/normal/board")
 @RequiredArgsConstructor
 public class ComplaintBoardController {
 

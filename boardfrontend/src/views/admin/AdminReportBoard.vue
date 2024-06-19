@@ -12,9 +12,9 @@
     </p> -->
 
         <!-- 검색 박스 -->
-        <div class="container text-center" style="gap: 5px" id="search_box">
-          <div class="row">
-            <div class="col">
+        <!-- <div class="container text-center" style="gap: 5px" id="search_box"> -->
+          <!-- <div class="row"> -->
+            <!-- <div class="col"> -->
               <!-- <button
             class="btn btn-primary dropdown-toggle"
             type="button"
@@ -29,10 +29,10 @@
             <li><a class="dropdown-item" href="#">Another action</a></li>
             <li><a class="dropdown-item" href="#">Something else here</a></li>
           </ul> -->
-            </div>
-            <div class="col">
+            <!-- </div> -->
+            <!-- <div class="col"> -->
               <!-- 검색어를 입력하세요 -->
-              <div class="input-group mb-3">
+              <!-- <div class="input-group mb-3">
                 <input
                   type="text"
                   class="form-control"
@@ -41,34 +41,34 @@
                   placeholder="아이디를 입력하세요."
                   v-model="searchUserId"
                 />
-              </div>
-            </div>
+              </div> -->
+            <!-- </div> -->
             <!-- 검색 버튼 -->
-            <div class="col-auto">
+            <!-- <div class="col-auto"> -->
               <!-- col-auto로 변경하여 너비를 자동 조정 -->
-              <button
+              <!-- <button
                 class="btn btn-outline-secondary"
                 type="button"
                 id="button-search"
                 @click="searchFreeBoardReport"
               >
                 검색
-              </button>
-            </div>
+              </button> -->
+            <!-- </div> -->
             <!--  초기화 버튼 -->
-            <div class="col-auto">
+            <!-- <div class="col-auto"> -->
               <!-- col-auto로 변경하여 너비를 자동 조정 -->
-              <button
+              <!-- <button
                 class="btn btn-outline-secondary"
                 type="button"
                 id="button-reset"
                 @click="resetSearch"
               >
                 초기화
-              </button>
-            </div>
-          </div>
-        </div>
+              </button> -->
+            <!-- </div> -->
+          <!-- </div> -->
+        <!-- </div> -->
         <!-- 검색박스 끝 -->
 
         <!-- 게시판 탭 시작 -->
