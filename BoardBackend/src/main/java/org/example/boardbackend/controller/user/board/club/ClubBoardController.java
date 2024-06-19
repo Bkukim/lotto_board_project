@@ -50,7 +50,7 @@ import java.util.*;
 @Slf4j
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/api/user/board")
+@RequestMapping("/api/normal/board")
 public class ClubBoardController {
     private final ClubBoardService clubBoardService;
     private final FieldPicRepository fieldPicRepository;

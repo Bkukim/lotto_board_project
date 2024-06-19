@@ -26,7 +26,7 @@ import java.util.Optional;
 @Slf4j
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/api/user/board/club/likes")
+@RequestMapping("/api/normal/board/club/likes")
 public class ClubBoardLikeController {
     private final ClubBoardLikeService clubBoardLikeService;
 

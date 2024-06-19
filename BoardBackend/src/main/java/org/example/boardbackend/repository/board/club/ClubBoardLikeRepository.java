@@ -24,4 +24,5 @@ public interface ClubBoardLikeRepository extends JpaRepository<ClubBoardLike, Lo
     Optional<ClubBoardLike> findByUserIdAndClubBoardId(String userId, Long clubBoardId);
     boolean existsByClubBoardIdAndUserId(long clubBoardId, String userId);
     ClubBoardLike findByUserIdAndClubBoardId(String userId, long clubBoardId); // 좋아요 상태 조회용 메소드 추가
+    void deleteByClubBoardId(Long clubBoardId);
 }
