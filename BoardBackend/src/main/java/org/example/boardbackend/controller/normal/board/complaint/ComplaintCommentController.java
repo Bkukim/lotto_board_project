@@ -1,4 +1,4 @@
-package org.example.boardbackend.controller.user.board.complaint;
+package org.example.boardbackend.controller.normal.board.complaint;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

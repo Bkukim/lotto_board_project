@@ -752,7 +752,7 @@ export default {
         this.user = response.data;
         console.log("유저", response.data);
       } catch (e) {
-        alert("에러");
+        alert("로그인을 해주세요");
         console.log(e);
       }
     },

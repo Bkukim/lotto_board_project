@@ -1,4 +1,4 @@
-package org.example.boardbackend.controller.user.member;
+package org.example.boardbackend.controller.normal.member;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -32,13 +32,13 @@ import java.util.Optional;
  */
 @Slf4j
 @RestController
-@RequestMapping("/api/user")
+@RequestMapping("/api/normal")
 @RequiredArgsConstructor
 public class UserController {
 
     private final UserService userService;
 
-//    todo : userId 상세 조회
+//    todo : 마이페이지_프로필 : userId 상세 조회
     @GetMapping("/{userId}")
     public ResponseEntity<Object> findByUserID(@PathVariable String userId){
         try {

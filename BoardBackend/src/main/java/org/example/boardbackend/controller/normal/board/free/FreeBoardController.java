@@ -1,4 +1,4 @@
-package org.example.boardbackend.controller.user.board.free;
+package org.example.boardbackend.controller.normal.board.free;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -39,7 +39,7 @@ import java.util.Optional;
  */
 @Slf4j
 @RestController
-@RequestMapping("/api/user/board")
+@RequestMapping("/api/normal/board")
 @RequiredArgsConstructor
 public class FreeBoardController {
 

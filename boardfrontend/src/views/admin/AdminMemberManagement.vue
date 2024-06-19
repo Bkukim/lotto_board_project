@@ -302,7 +302,7 @@ export default {
           confirmButtonText: "삭제",
           cancelButtonText: "취소"
         });
-        if (result) {
+        if (result.isConfirmed) {
           let response = await UserService.deleteUser(userId);
           // alert(userId);
           console.log(response);
