@@ -57,6 +57,8 @@ public class NormalNoticeController {
 //                        .findByTitleContaining(title, pageable);
 //            }
             response.put("notices", notices.getContent());
+            log.debug("asdfasdf"+notices.getContent());
+            log.debug("페이지와 사이즈"+page+size);
             response.put("currentPage", notices.getNumber());
             response.put("totalItems", notices.getTotalElements());
             response.put("totalPages", notices.getTotalPages());

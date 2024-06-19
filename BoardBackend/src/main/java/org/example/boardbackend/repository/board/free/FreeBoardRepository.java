@@ -45,7 +45,9 @@ public interface FreeBoardRepository extends JpaRepository<FreeBoard, Long> {
             , countQuery = "SELECT count(*)FROM LOTTO_FREE_BOARD\n" +
             "WHERE TITLE LIKE '%'|| :title ||'%'"
             , nativeQuery = true)
-    Page<FreeBoardDto> findAllByTitleContaining(@Param("title") String title, Pageable pageable);
+    Page<FreeBoardDto> findByTitleContaining(@Param("title") String title, Pageable pageable);
+
+
 
 //    // content를 제외한 필드들만 조회하는 쿼리
 //    @Query("SELECT new org.example.boardbackend.model.dto.board.free.FreeBoardSummary(freeBoard.freeBoardId, freeBoard.writer, freeBoard.likes, freeBoard.title) FROM FreeBoard freeBoard")

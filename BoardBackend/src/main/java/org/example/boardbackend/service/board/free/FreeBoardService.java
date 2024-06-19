@@ -56,7 +56,7 @@ public class FreeBoardService {
             Pageable pageable
     ) {
         Page<FreeBoardDto> page
-                = freeBoardRepository.findAllByTitleContaining(
+                = freeBoardRepository.findByTitleContaining(
                 title,
                 pageable
         );
