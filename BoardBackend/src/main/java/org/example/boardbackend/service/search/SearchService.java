@@ -53,11 +53,11 @@ public class SearchService {
         response.put("notices", notices.getContent());
         response.put("noticesTotalItems", notices.getTotalElements());
 
-        Page<FreeBoardDto> freeBoards = freeBoardRepository.findAllByTitleContaining(title, pageable);
+        Page<FreeBoardDto> freeBoards = freeBoardRepository.findByTitleContaining(title, pageable);
         response.put("freeBoards", freeBoards.getContent());
         response.put("freeBoardsTotalItems", freeBoards.getTotalElements());
 
-        Page<ClubBoardDto> clubBoards = clubBoardRepository.findAllByTitleContaining(title, pageable);
+        Page<ClubBoardDto> clubBoards = clubBoardRepository.findClubBoardByUserIdContaining(title, pageable);
         response.put("clubBoards", clubBoards.getContent());
         response.put("clubBoardsTotalItems", clubBoards.getTotalElements());
 

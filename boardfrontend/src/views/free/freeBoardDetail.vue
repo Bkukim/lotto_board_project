@@ -7,7 +7,7 @@
   />
 
   <!-- 전체 박스 -->
-  <div class="fbd_all" style="height: auto;">
+  <div class="fbd_all" style="height: auto">
     <!-- 해당 게시판 이름 부분 -->
     <div class="container text-center mb-5">
       <h3 style="text-align: left" id="fbd_h3">자유 게시판 글 상세보기</h3>
@@ -69,9 +69,12 @@
           word-break: break-all;
         "
       ></div> -->
-       
-        <div style="max-width: 320px; display: block; "  v-html="freeBoard.content"></div>
-        <div
+
+      <div
+        style="max-width: 320px; display: block"
+        v-html="freeBoard.content"
+      ></div>
+      <div
         style="
           text-align: left;
           padding: 20px 0 20px 30px;
@@ -118,7 +121,6 @@
         <button
           type="button"
           class="btn btn-light"
-      
           style="margin-left: 3vh; height: 8vh; width: 10vw; padding: 1vw"
           data-bs-toggle="modal"
           data-bs-target="#reportModal"
@@ -172,7 +174,7 @@
                       v-model="reportContent"
                     ></textarea>
                   </div>
-                  <button class="btn btn-primary" @click="report" >제출</button>
+                  <button class="btn btn-primary" @click="report">제출</button>
                 </form>
               </div>
             </div>
@@ -182,7 +184,7 @@
         <!-- 목록으로 버튼 -->
         <div class="col mb-5">
           <router-link
-            :to="'/free/free-board' "
+            :to="'/free/free-board'"
             class="fbd_d container text-center"
             style="
               width: 150px;
@@ -204,7 +206,12 @@
             >
               <div
                 class="router-text"
-                style=" margin-top: 10px; color: #fff; text-align: center;  font-weight: 300;"
+                style="
+                  margin-top: 10px;
+                  color: #fff;
+                  text-align: center;
+                  font-weight: 300;
+                "
               >
                 목록으로
               </div>
@@ -224,7 +231,6 @@
       </div> -->
     </div>
     <!--  첫번째 게시판 큰 박스 끝-->
-
 
     <!-- TODO: 좋아요버튼 -->
     <!-- <div class="d-flex justify-content-center mt-3">
@@ -263,10 +269,7 @@
             >
               <div
                 class="router-text"
-                style="
-                  color: #ffffff;
-                  text-align: center;
-                "
+                style="color: #ffffff; text-align: center"
               >
                 삭제
               </div>
@@ -296,10 +299,7 @@
                 justify-content: center;
               "
             >
-              <div
-                class="router-text"
-                style=" margin-top: 10px; color: #ffffff"
-              >
+              <div class="router-text" style="margin-top: 10px; color: #ffffff">
                 수정
               </div>
             </div>
@@ -462,15 +462,32 @@
           "
         >
           {{ data.content }}
+
           <br />
-          <button
-            style="border: none; margin-top: 15px"
-            @click="toggleReplyForm(data.freeBoardCommentId)"
-          >
-            {{
-              replyToCommentId === data.freeBoardCommentId ? "답글접기" : "답글"
-            }}
-          </button>
+          <div v-if="data.freeBoardRecomments?.length">
+            <button
+              style="border: none; margin-top: 15px"
+              @click="toggleReplyForm(data.freeBoardCommentId)"
+            >
+              {{
+                replyToCommentId === data.freeBoardCommentId
+                  ? "답글접기"
+                  : "답글" + "(" + data.freeBoardRecomments?.length + ")"
+              }}
+            </button>
+          </div>
+          <div v-else>
+            <button
+              style="border: none; margin-top: 15px"
+              @click="toggleReplyForm(data.freeBoardCommentId)"
+            >
+              {{
+                replyToCommentId === data.freeBoardCommentId
+                  ? "답글접기"
+                  : "답글" 
+              }}
+            </button>
+          </div>
 
           <!-- 답변(대댓글)들 -->
           <div v-if="replyToCommentId === data.freeBoardCommentId">
@@ -664,7 +681,6 @@ import FreeBoardService from "@/services/board/free/FreeBoardService";
 export default {
   data() {
     return {
-      // replyVisible: false, // 답글 입력 폼의 표시 여부를 관리하는 변수
       replyToCommentId: null, // 어떤 댓글에 대한 답글인지 식별하기 위한 변수
 
       // 새로 작성할 답글
@@ -690,6 +706,8 @@ export default {
 
       // 기존 대댓글 목록
       freeBoardRecomments: [],
+      // 대댓글 갯수
+      recommentCount: 0,
 
       // 새로 작성할 댓글
       newComment: {
@@ -697,7 +715,7 @@ export default {
         content: "",
       },
 
-      reportContent:"", // 신고내용
+      reportContent: "", // 신고내용
 
       // 페이징
       page: 1, // 현재페이지번호
@@ -718,19 +736,18 @@ export default {
     },
   },
   methods: {
-    async report(){
+    async report() {
       try {
-        let data={
-          userId : this.$store.state.user.userId,
-          freeBoardId : this.freeBoard.freeBoardId,
-          content:this.reportContent
-        }
-       await FreeBoardService.reportFreeBoard(data);
-       
+        let data = {
+          userId: this.$store.state.user.userId,
+          freeBoardId: this.freeBoard.freeBoardId,
+          content: this.reportContent,
+        };
+        await FreeBoardService.reportFreeBoard(data);
       } catch (error) {
         console.log(error);
       }
-      this.$router.push("/free/free-boardDetail/" + this.freeBoard.freeBoardId)
+      this.$router.push("/free/free-boardDetail/" + this.freeBoard.freeBoardId);
     },
     toggleReplyForm(commentId) {
       // 클릭된 답글 버튼이 이미 열려있는 상태이면 폼을 닫고, 그렇지 않으면 엽니다.
@@ -866,15 +883,14 @@ export default {
         console.log(data);
         console.log("게시판아이디" + this.freeBoard.freeBoardId);
 
-
         console.log(response.data);
       } catch (e) {
         console.log("오류" + e);
       }
     },
     async deleteLike() {
-      console.log("liketable"+this.freeBoardLike.likeId);
-      
+      console.log("liketable" + this.freeBoardLike.likeId);
+
       try {
         let response = await FreeBoardService.deleteLike(
           this.freeBoardLike.likeId
@@ -908,10 +924,9 @@ export default {
           freeBoardId
         );
         this.freeBoardRecomments = response.data; // 부서배열(벡엔드 전송)
-
         console.log("댓글들", this.freeBoardComments);
         console.log("대댓글들", this.freeBoardRecomments);
-        
+
         // 댓글 배열에 대댓글 속성을 추가하는 함수
         this.freeBoardComments.forEach((comment) => {
           comment.freeBoardRecomments = this.freeBoardRecomments.filter(
@@ -922,6 +937,10 @@ export default {
       } catch (e) {
         console.log(e);
       }
+    },
+    // 대댓글 갯수 조회
+    getInnerArrayLength(array) {
+      return array.length;
     },
     // 대댓글(답글) 등록
     async submitReply(commentId) {
@@ -951,7 +970,7 @@ export default {
     },
   },
   async mounted() {
-    this.retrieveGetFreeBoard(this.$route.params.freeBoardId);
+    await this.retrieveGetFreeBoard(this.$route.params.freeBoardId);
     this.retrieveFreeBoardComment(this.$route.params.freeBoardId);
     // this.retrieveFreeBoardRecomment(this.$route.params.freeBoardId);
     window.scrollTo(0, 0);

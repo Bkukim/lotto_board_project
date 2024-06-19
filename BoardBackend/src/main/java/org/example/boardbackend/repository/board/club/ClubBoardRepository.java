@@ -47,10 +47,5 @@ public interface ClubBoardRepository extends JpaRepository<ClubBoard, Long> {
             , nativeQuery = true)
     Page<ClubBoardDto> findClubBoardByUserIdContaining(@Param("userId") String userId, Pageable pageable);
 
-    @Query(value = "SELECT CLUB_BOARD_ID AS clubBoardId, USER_ID AS userId, TITLE AS title, INSERT_TIME AS insertTime, LIKES AS likes FROM LOTTO_CLUB_BOARD\n" +
-            "WHERE TITLE LIKE '%'|| :title ||'%'"
-            , countQuery = "SELECT count(*)FROM LOTTO_DEPARTMENT_BOARD\n" +
-            "WHERE TITLE LIKE '%'|| :title ||'%'"
-            , nativeQuery = true)
-    Page<ClubBoardDto> findAllByTitleContaining(@Param("title") String title, Pageable pageable);
+
 }

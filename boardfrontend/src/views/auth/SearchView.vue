@@ -45,11 +45,11 @@
               data-bs-toggle="dropdown"
               aria-expanded="false"
               id="search_ck"
-              style="background-color: #162b59; border: none;"
+              style="background-color: #162b59; border: none"
             >
               -- 통합검색 선택 ---
             </button>
-            <ul class="dropdown-menu" style="text-align: center;">
+            <ul class="dropdown-menu" style="text-align: center">
               <li><a class="dropdown-item" href="#">공지사항</a></li>
               <li><a class="dropdown-item" href="#">자유게시판</a></li>
               <li><a class="dropdown-item" href="#">동아리게시판</a></li>
@@ -65,6 +65,7 @@
                 aria-label="Sizing example input"
                 aria-describedby="inputGroup-sizing-default"
                 placeholder="검색어를 입력하세요."
+                v-model="searchTitle"
               />
             </div>
           </div>
@@ -76,7 +77,7 @@
               type="button"
               id="button-search"
               @click="AllsearchBoard"
-              style="background-color: #162b59; color: #fff; border: none;"
+              style="background-color: #162b59; color: #fff; border: none"
             >
               검색
             </button>
@@ -100,7 +101,7 @@
     <!-- 검색박스 끝 -->
 
     <h4 class="mt-5 mb-5" style="color: #333; letter-spacing: -1.5px">
-      검색어 " {{}}  " 에 관해 전체 '  {{}} '건이 검색되었습니다.
+      검색어 " {{searchTitle}}  " 에 관해 전체 '  {{noticesTotalItems+freeBoardsTotalItems+clubBoardsTotalItems+complaintBoardsTotalItems}} '건이 검색되었습니다.
     </h4>
 
     <!-- 공지사항 테이블 -->
@@ -113,7 +114,7 @@
         letter-spacing: -1.5px;
       "
     >
-      공지사항 ( {{}} )
+      공지사항 ( {{noticesTotalItems}} )
     </h5>
     <table class="table mt-5">
       <thead class="text-center">
@@ -173,7 +174,7 @@
         letter-spacing: -1.5px;
       "
     >
-      자유게시판 ( {{}} )
+      자유게시판 ( {{freeBoardsTotalItems}} )
     </h5>
     <table class="table mt-5">
       <thead class="text-center">
@@ -187,7 +188,7 @@
       </thead>
       <tbody>
         <!-- 반복문 시작할 행 -->
-        <tr v-for="(data, index) in notices" :key="index">
+        <tr v-for="(data, index) in freeBoards" :key="index">
           <td class="text-center">
             {{ index + 1 }}
           </td>
@@ -231,7 +232,7 @@
         letter-spacing: -1.5px;
       "
     >
-      동아리게시판 ( {{}} )
+      동아리게시판 ( {{clubBoardsTotalItems}} )
     </h5>
     <table class="table mt-5">
       <thead class="text-center">
@@ -245,7 +246,7 @@
       </thead>
       <tbody>
         <!-- 반복문 시작할 행 -->
-        <tr v-for="(data, index) in notices" :key="index">
+        <tr v-for="(data, index) in clubBoards" :key="index">
           <td class="text-center">
             {{ index + 1 }}
           </td>
@@ -289,7 +290,7 @@
         letter-spacing: -1.5px;
       "
     >
-      건의게시판 ( {{}} )
+      건의게시판 ( {{complaintBoardsTotalItems}} )
     </h5>
     <table class="table mt-5">
       <thead class="text-center">
@@ -303,7 +304,7 @@
       </thead>
       <tbody>
         <!-- 반복문 시작할 행 -->
-        <tr v-for="(data, index) in notices" :key="index">
+        <tr v-for="(data, index) in complaintBoards" :key="index">
           <td class="text-center">
             {{ index + 1 }}
           </td>
@@ -345,9 +346,23 @@
   <br />
 </template>
 <script>
+import SearchService from "@/services/search/SearchService";
+
 export default {
   data() {
-    return {};
+    return {
+      notices: [],
+      noticesTotalItems: 0,
+      freeBoards: [],
+      freeBoardsTotalItems: 0,
+      clubBoards: [],
+      clubBoardsTotalItems: 0,
+      complaintBoards: [],
+      complaintBoardsTotalItems: 0,
+      searchTitle: "",
+      page: 1, // 현재페이지번호
+      pageSize: 10, // 1페이지당개수(select태그)
+    };
   },
   methods: {
     // 검색 함수
@@ -359,6 +374,33 @@ export default {
     resetSearch() {
       this.searchTitle = "";
       this.retrieveSearchBoard();
+    },
+    async retrieveSearchBoard() {
+      let response = await SearchService.searchAll(
+        this.searchTitle,
+        this.page-1,
+        this.pageSize
+      );
+      const {
+        notices,
+        noticesTotalItems,
+        freeBoards,
+        freeBoardsTotalItems,
+        clubBoards,
+        clubBoardsTotalItems,
+        complaintBoards,
+        complaintBoardsTotalItems,
+      } = response.data; 
+
+      // TODO: 3) 바인딩변수(속성)에 저장
+      this.notices = notices; 
+      this.noticesTotalItems = noticesTotalItems; 
+      this.freeBoards = freeBoards; 
+      this.freeBoardsTotalItems = freeBoardsTotalItems; 
+      this.clubBoards = clubBoards; 
+      this.clubBoardsTotalItems = clubBoardsTotalItems; 
+      this.complaintBoards = complaintBoards; 
+      this.complaintBoardsTotalItems = complaintBoardsTotalItems; 
     },
   },
 };

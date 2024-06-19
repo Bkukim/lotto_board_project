@@ -214,9 +214,7 @@ public class FreeBoardController {
 
             if (freeBoardRecomments.isEmpty() == false) {
                 // 공통 페이징 객체 생성 : 자료구조 맵 사용
-//                Map<String, Object> response = new HashMap<>();
 
-//                response.put("freeBoardRecomments", recomments);
 
                 return new ResponseEntity<>(freeBoardRecomments, HttpStatus.OK);
             } else {
