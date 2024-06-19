@@ -8,10 +8,12 @@
 
   <!-- 전체 박스 -->
   <div class="fbd_all" style="height: auto">
+    <br>
+    <br>
     <!-- 해당 게시판 이름 부분 -->
-    <div class="container text-center mb-5">
-      <h3 style="text-align: left" id="fbd_h3">자유 게시판 글 상세보기</h3>
-    </div>
+    <!-- <div class="container text-center mb-5"> -->
+      <!-- <h3 style="text-align: left" id="fbd_h3">자유 게시판 글 상세보기</h3> -->
+    <!-- </div> -->
     <!-- 해당 게시판 이름 부분  끝-->
 
     <!--  첫번째 게시판 큰 박스-->
@@ -36,7 +38,7 @@
           background-color: #f2f2f2;
         "
       >
-        {{ freeBoard.title }}
+        {{ freeBoard.title}} 
       </div>
 
       <div

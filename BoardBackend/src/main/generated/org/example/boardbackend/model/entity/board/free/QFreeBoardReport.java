@@ -28,6 +28,8 @@ public class QFreeBoardReport extends EntityPathBase<FreeBoardReport> {
     //inherited
     public final StringPath insertTime = _super.insertTime;
 
+    public final StringPath isProcessed = createString("isProcessed");
+
     public final NumberPath<Long> reportId = createNumber("reportId", Long.class);
 
     //inherited

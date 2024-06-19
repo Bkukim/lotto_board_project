@@ -72,12 +72,10 @@ public class FreeBoardService {
     }
 
 
-
     // TODO 댓글 저장 기능
     // 1. boardId로 게시글 주인의 객체 가져오기,  1. 댓글을 저장, 2 알림 보내기
-    public void saveComment(FreeBoardComment freeBoardComment){
+    public void saveComment(FreeBoardComment freeBoardComment) {
         FreeBoard freeBoard = freeBoardRepository.findById(freeBoardComment.getFreeBoardId()).get();
-
 
 
         String boardWriter = freeBoard.getUserId();
@@ -95,12 +93,12 @@ public class FreeBoardService {
 
         String notifyUrl = "free/free-boardDetail/" + freeBoardComment.getFreeBoardId();
 
-        notifyService.send(boardWriter,Notify.NotificationType.COMMENT,notifyContent,notifyUrl);
+        notifyService.send(boardWriter, Notify.NotificationType.COMMENT, notifyContent, notifyUrl);
     }
 
     // TODO 대댓글 저장 기능
     // 1. boardId로 게시글 주인의 객체 가져오기,  1. 댓글을 저장, 2 알림 보내기
-    public void saveRecomment(FreeBoardRecomment freeBoardRecomment){
+    public void saveRecomment(FreeBoardRecomment freeBoardRecomment) {
         FreeBoardComment freeBoardComment = freeBoardCommentRepository.findById(freeBoardRecomment.getFreeBoardCommentId()).get();
 
         String commentWriter = freeBoardComment.getUserId();
@@ -110,15 +108,14 @@ public class FreeBoardService {
         freeBoardRecommentRepository.save(freeBoardRecomment);
         log.debug("여기는 대댓글2");
 
-  
-    // 2. 알림 보내기
 
-    String notifyContent = "회원님의 댓글에 또 다른 댓글이 달렸습니다.    "  + "\"" + freeBoardRecomment.getContent() + "\"";
-    String notifyUrl = "free/free-boardDetail/" + freeBoardComment.getFreeBoardId();
-    notifyService.send(commentWriter,Notify.NotificationType.COMMENT,notifyContent,notifyUrl);
+        // 2. 알림 보내기
 
-}
+        String notifyContent = "회원님의 댓글에 또 다른 댓글이 달렸습니다.    " + "\"" + freeBoardRecomment.getContent() + "\"";
+        String notifyUrl = "free/free-boardDetail/" + freeBoardComment.getFreeBoardId();
+        notifyService.send(commentWriter, Notify.NotificationType.COMMENT, notifyContent, notifyUrl);
 
+    }
 
 
     //   todo:  저장 함수
@@ -128,7 +125,7 @@ public class FreeBoardService {
         return freeBoard1;
     }
 
-    // todo: 삭제
+    // todo: 삭제 : 게시글 삭제 & 관리자 신고관리에서 삭제누를 시 실행 : soft delete
     public boolean removeById(long freeBoardId) {
 //        JPA 삭제함수 : deleteById(기본키)
 //        1) 먼저 기본키가 테이블에 있으면 삭제, true 리턴
@@ -161,24 +158,46 @@ public class FreeBoardService {
     }
 
     //    todo : userId가 작성한 글 전체조회
-    public Page<FreeBoardDto> findFreeBoardByUserIdContaining(String userId, Pageable pageable)
-    {
+    public Page<FreeBoardDto> findFreeBoardByUserIdContaining(String userId, Pageable pageable) {
         Page<FreeBoardDto> page
                 = freeBoardRepository.findFreeBoardByUserIdContaining(userId, pageable);
         return page;
     }
-  
+
     // todo : 신고 저장함수
     @Transactional
-    public void saveReport(FreeBoardReport freeBoardReport){
+    public void saveReport(FreeBoardReport freeBoardReport) {
         freeBoardReportRepository.save(freeBoardReport);
     }
-  
+
     //   todo : 관리자 : 신고 게시판 조회
-    public Page<FreeBoardReport> findFreeBoardReportsByUserIdContaining(String userId, Pageable pageable){
+    public Page<FreeBoardReport> findFreeBoardReportsByUserIdContaining(String userId, Pageable pageable) {
 
         Page<FreeBoardReport> reports = freeBoardReportRepository.findFreeBoardReportsByUserIdContaining(userId, pageable);
 
         return reports;
     }
+
+//    todo 신고게시글 삭제버튼 누를시 실행될 함수 : 자유게시판은 삭제
+    public void deleteByFreeBoardId(long freeBoardId) {
+        log.debug("tkdyd?");
+//        freeBoardReportRepository.updateByFreeBoardId(freeBoardId);
+        freeBoardRepository.deleteById(freeBoardId);
+    }
+
+    //    todo 신고게시글 삭제버튼 누를시 실행될 함수 : 신고테이블에서는 Y로 변경
+    public void updateByReportId(long freeBoardId) {
+        log.debug("tkdyd?");
+        freeBoardReportRepository.updateByFreeBoardId(freeBoardId);
+//        freeBoardRepository.deleteById(reportId);
+    }
+
+    //   todo : 관리자 : 신고 게시판 처리완료 조회
+    public Page<FreeBoardReport> findFreeBoardReportsByUserIdAndIsProcessed(String userId, Pageable pageable) {
+
+        Page<FreeBoardReport> reports = freeBoardReportRepository.findFreeBoardReportsByUserIdAndIsProcessed(userId, pageable);
+
+        return reports;
+    }
+
 }
