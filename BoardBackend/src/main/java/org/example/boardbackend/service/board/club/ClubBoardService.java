@@ -14,6 +14,7 @@ import org.example.boardbackend.model.entity.board.club.FieldPic;
 import org.example.boardbackend.repository.board.club.ClubBoardLikeRepository;
 import org.example.boardbackend.repository.board.club.ClubBoardRepository;
 import org.example.boardbackend.repository.board.club.FieldPicRepository;
+import org.example.boardbackend.repository.board.club.ParticipantsRepository;
 import org.example.boardbackend.repository.user.UserRepository;
 import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
@@ -54,6 +55,7 @@ public class ClubBoardService {
     ModelMapper modelMapper = new ModelMapper();
     private final ClubBoardRepository clubBoardRepository;
     private final FieldPicRepository fieldPicRepository;
+    private final ParticipantsRepository participantsRepository;
     private final ClubBoardLikeRepository clubBoardLikeRepository;
 
     // TODO: 전체 조회 함수
@@ -164,7 +166,7 @@ public class ClubBoardService {
                     // 2. 다운로드 URL 생성
                     String downloadUrl = ServletUriComponentsBuilder
                             .fromCurrentContextPath()
-                            .path("/api/user/board/club/img/")
+                            .path("/api/normal/board/club/img/")
                             .path(uuid)
                             .toUriString();
 
@@ -228,7 +230,7 @@ public class ClubBoardService {
                     // 2. 다운로드 URL 생성
                     String downloadUrl = ServletUriComponentsBuilder
                             .fromCurrentContextPath()
-                            .path("/api/user/board/club/img/")
+                            .path("/api/normal/board/club/img/")
                             .path(uuid)
                             .toUriString();
 
@@ -255,8 +257,11 @@ public class ClubBoardService {
     //  TODO: 삭제 함수
     @Transactional
     public void deleteByClubBoardId(Long clubBoardId) {
+        participantsRepository.deleteByClubBoardId(clubBoardId);
         fieldPicRepository.deleteByClubBoard_ClubBoardId(clubBoardId);
+        clubBoardLikeRepository.deleteByClubBoardId(clubBoardId);
         clubBoardRepository.deleteById(clubBoardId);
+
     }
 
     //  TODO: 이미지 조회 함수

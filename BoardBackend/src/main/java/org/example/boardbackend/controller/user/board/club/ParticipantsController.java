@@ -28,7 +28,7 @@ import java.util.Map;
 @Slf4j
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/api/user/club-board")
+@RequestMapping("/api/normal/club-board")
 public class ParticipantsController {
     private final ParticipantsService participantsService;
 
