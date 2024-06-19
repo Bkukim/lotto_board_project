@@ -9,6 +9,7 @@ import org.example.boardbackend.model.entity.board.complaint.ComplaintBoardComme
 import org.example.boardbackend.model.entity.board.free.FreeBoard;
 import org.example.boardbackend.model.entity.board.free.FreeBoardComment;
 import org.example.boardbackend.service.board.complaint.ComplaintBoardService;
+import org.example.boardbackend.service.board.complaint.ComplaintCommentService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -40,6 +41,7 @@ import java.util.Optional;
 public class ComplaintBoardController {
 
     private final ComplaintBoardService complaintBoardService;
+    private final ComplaintCommentService complaintCommentService;
 
     //    todo 전체 조회 + 제목 검색 + 페이징
     @GetMapping("/complaint")
@@ -158,7 +160,7 @@ public class ComplaintBoardController {
 
 
             // 해당 freeBoardId에 대한 댓글을 가져오도록 서비스 메서드를 호출
-            Page<ComplaintBoardComment> comments = complaintBoardService.getCommentByComplaintBoardId(complaintBoardId, pageable);
+            Page<ComplaintBoardComment> comments = complaintCommentService.getCommentByComplaintBoardId(complaintBoardId, pageable);
 
             if (comments.isEmpty() == false) {
                 // 공통 페이징 객체 생성 : 자료구조 맵 사용
@@ -174,19 +176,6 @@ public class ComplaintBoardController {
                 return new ResponseEntity<>(HttpStatus.NO_CONTENT);
             }
         } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-    }
-
-    // TODO 댓글 저장 함수
-    @PostMapping("/complaint/save/comment")
-    public ResponseEntity<Object> saveComplaintComment(@RequestBody ComplaintBoardComment complaintBoardComment) {
-        try {
-            //            DB 서비스 저장 함수 실행
-            complaintBoardService.saveComment(complaintBoardComment);
-            return new ResponseEntity<>(HttpStatus.OK);
-        } catch (Exception e) {
-            log.debug("asdfasdf"+e.getMessage());
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
