@@ -24,6 +24,12 @@ import static jakarta.persistence.FetchType.LAZY;
  */
 @Entity
 @Table(name = "LOTTO_FREE_BOARD_LIKE")
+@SequenceGenerator(
+        name = "SQ_LOTTO_FREE_BOARD_LIKE_GENERATOR",
+        sequenceName = "SQ_LOTTO_FREE_BOARD_LIKE",
+        initialValue = 1,
+        allocationSize = 1
+)
 @Getter
 @Setter
 @ToString
@@ -33,38 +39,31 @@ import static jakarta.persistence.FetchType.LAZY;
 @DynamicInsert
 @DynamicUpdate
 public class FreeBoardLike {
-//    joinColumn =
+    //    joinColumn =
 //    엔티티 간의 관계를 매핑할 때 사용됩니다.
 //    주로 관계형 데이터베이스에서 테이블 간의 관계를 정의하는 데 사용됩니다.
     @Id
-    @Column(name="LIKE_ID")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE,
+            generator = "SQ_LOTTO_FREE_BOARD_LIKE_GENERATOR")
+    @Column(name = "LIKE_ID")
     private long likeId;
 
-    @ManyToOne(fetch = LAZY)
-    @JoinColumn(name = "USER_ID")
-    private User user;
-
-    @ManyToOne(fetch = LAZY)
-    @JoinColumn(name = "FREE_BOARD_ID")
-    private FreeBoard freeBoard;
+    @Column(name = "USER_ID", nullable = false)
+    private String userId;
+    // nullable = false 널값들어오지 못하게
+    @Column(name = "FREE_BOARD_ID", nullable = false)
+    private long freeBoardId;
 
 
-//    @JoinColumn(name = "USER_ID")
-//    private String userId;
-//
-//    @JoinColumn(name = "FREE_BOARD_ID")
-//    private long freeBoardId;
+    public long getLikeId() {return likeId;}
 
-    @Builder
-    public FreeBoardLike(User user, FreeBoard freeBoard) {
-        this.user = user;
-        this.freeBoard = freeBoard;
+    // 사용자 아이디
+    public String getUserId() {return userId;}
+    public void setUserId(String userId) {this.userId = userId;}
+
+    // 게시판 아이디
+    public long getFreeBoardId() {return freeBoardId;}
+    public void setFreeBoardId(long freeBoardId) {
+        this.freeBoardId = freeBoardId;
     }
-
-//@AllArgsConstructor이거 있으면 아래처럼 직접설정해줄 필요가 없음ㄷ
-//    public FreeBoardLike(long likeId, String userId, long freeBoardId) {
-//        this.likeId = likeId;
-//        this.userId = userId;
-//        this.freeBoardId = freeBoardId;
-//    }
 }

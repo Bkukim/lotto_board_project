@@ -14,6 +14,7 @@ import org.example.boardbackend.model.dto.board.club.CreateClubArticleDto;
 import org.example.boardbackend.model.dto.board.club.FieldPicDto;
 import org.example.boardbackend.model.dto.board.free.FreeBoardDto;
 import org.example.boardbackend.model.entity.board.club.ClubBoard;
+import org.example.boardbackend.model.entity.board.club.ClubBoardLike;
 import org.example.boardbackend.model.entity.board.club.FieldPic;
 import org.example.boardbackend.model.entity.board.free.FreeBoard;
 import org.example.boardbackend.repository.board.club.FieldPicRepository;
@@ -147,15 +148,6 @@ public class ClubBoardController {
         clubBoardService.deleteByClubBoardId(clubBoardId);
         return ResponseEntity.noContent().build();
     }
-
-
-    // todo 게시글 신고함수
-
-//    @PostMapping("/report")
-//    public ResponseEntity<Object> saveReport(@RequestBody FreeBoard freeBoard,
-//                                             @RequestParam String reporterUserId){
-//
-//    }
 
     //  TODO: 이미지 조회 함수
     @GetMapping("/club/img/{uuid}")

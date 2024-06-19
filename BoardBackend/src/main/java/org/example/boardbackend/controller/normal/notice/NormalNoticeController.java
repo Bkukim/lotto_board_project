@@ -57,6 +57,8 @@ public class NormalNoticeController {
 //                        .findByTitleContaining(title, pageable);
 //            }
             response.put("notices", notices.getContent());
+            log.debug("asdfasdf"+notices.getContent());
+            log.debug("페이지와 사이즈"+page+size);
             response.put("currentPage", notices.getNumber());
             response.put("totalItems", notices.getTotalElements());
             response.put("totalPages", notices.getTotalPages());
@@ -71,10 +73,10 @@ public class NormalNoticeController {
 
     @GetMapping("/{noticeId}")
     public ResponseEntity<Object> getNoticeByNoticeId(@PathVariable long noticeId,
-                                                      @RequestParam String eventYn) {
+                                                      @RequestParam String eventYN) {
         try {
             Optional<Notice> notice;
-            if (eventYn.equals("Y")) {
+            if (eventYN.equals("Y")) {
                 notice = noticeRedisService.redisFindById(noticeId);
             } else {
                 notice = noticeRedisService.findById(noticeId);

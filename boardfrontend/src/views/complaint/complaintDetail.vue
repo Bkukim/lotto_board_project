@@ -445,7 +445,7 @@
             v-model="page"
             :total-rows="count"
             :per-page="pageSize"
-            @click="retrievecomplaintBoardComment(this.$route.params.complaintBoardId)"
+            @click="retrieveComplaintBoardComment(this.$route.params.complaintBoardId)"
           ></b-pagination>
         </div>
       </div>
@@ -465,6 +465,7 @@
   <br />
   <!-- 전체 박스 끝 -->
 </template>
+
 <script>
 import ComplaintBoardService from "@/services/board/complaint/ComplaintBoardService";
 // import { ref } from "vue";
@@ -594,7 +595,7 @@ export default {
         };
         await ComplaintBoardService.createComplaintBoardComment(data);
       } catch (e) {
-        // alert("댓글 등록 중 에러가 발생했습니다.");
+        alert("관리자만 답변할 수 있습니다.");
         console.log(e);
       }
       this.newComment.content = "";

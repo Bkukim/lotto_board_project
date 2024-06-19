@@ -2,9 +2,11 @@ package org.example.boardbackend.service.search;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.example.boardbackend.model.dto.board.club.ClubBoardDto;
 import org.example.boardbackend.model.dto.board.complaint.ComplaintBoardDto;
 import org.example.boardbackend.model.dto.board.free.FreeBoardDto;
 import org.example.boardbackend.model.dto.notice.INoticeDto;
+import org.example.boardbackend.model.entity.board.club.QClubBoard;
 import org.example.boardbackend.repository.board.club.ClubBoardRepository;
 import org.example.boardbackend.repository.board.complaint.ComplaintBoardRepository;
 import org.example.boardbackend.repository.board.free.FreeBoardRepository;
@@ -51,13 +53,13 @@ public class SearchService {
         response.put("notices", notices.getContent());
         response.put("noticesTotalItems", notices.getTotalElements());
 
-        Page<FreeBoardDto> freeBoards = freeBoardRepository.findAllByTitleContaining(title, pageable);
+        Page<FreeBoardDto> freeBoards = freeBoardRepository.findByTitleContaining(title, pageable);
         response.put("freeBoards", freeBoards.getContent());
         response.put("freeBoardsTotalItems", freeBoards.getTotalElements());
 
-//        Page<FreeBoardDto> freeBoards = clubBoardRepository.findAllByTitleContaining(title, pageable);
-//        response.put("freeBoards", freeBoards.getContent());
-//        response.put("freeBoardsTotalItems", freeBoards.getTotalElements());
+        Page<ClubBoardDto> clubBoards = clubBoardRepository.findClubBoardByUserIdContaining(title, pageable);
+        response.put("clubBoards", clubBoards.getContent());
+        response.put("clubBoardsTotalItems", clubBoards.getTotalElements());
 
         Page<ComplaintBoardDto> complaintBoards = complaintBoardRepository.findComplaintBoardByTitleContaining(title, pageable);
         response.put("complaintBoards", complaintBoards.getContent());

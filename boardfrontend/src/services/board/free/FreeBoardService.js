@@ -39,16 +39,6 @@ class FreeBoardService {
     });
   }
 
-  // TODO: 수정함수 : updateLike 공감해요 버튼에 적용될것
-  updateLike(freeBoardId, data) {
-    return http.put(
-      `/user/board-like/insert-like/{userId}`,
-      data
-      //    {
-      //   headers: AuthHeader(),
-      // }
-    );
-  }
 
   // TODO: 댓글 조회 : freeBoardId
   getFreeBoardComment(freeBoardId, page, size) {
@@ -86,6 +76,7 @@ class FreeBoardService {
       }
     );
   }
+
   reportFreeBoard(data) {
     return http.post("user/board/free/report/save", data, {
       headers: AuthHeader(),
@@ -123,9 +114,11 @@ class FreeBoardService {
   updateFreeBoardReport(freeBoardId) {
     console.log(freeBoardId);
     return http.put(`/admin/report/free/update/${freeBoardId}`, {
+
       headers: AuthHeader(),
     });
   }
+
 
   // // TODO: 신고 게시글 삭제 : isProcessed Y로 수정함수
   // updateFreeBoardReport(reportId) {
@@ -134,6 +127,7 @@ class FreeBoardService {
   //     headers: AuthHeader(),
   //   });
   // }
+
 }
 
 export default new FreeBoardService();

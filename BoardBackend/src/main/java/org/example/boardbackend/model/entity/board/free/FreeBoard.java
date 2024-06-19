@@ -51,7 +51,10 @@ public class FreeBoard extends BaseTimeEntity3{
     )
     private long freeBoardId;
     private String userId;
+
+    @Column(name = "likes")
     private long likes;
+
     @Column(nullable = false)
     @Lob
     private String content;
