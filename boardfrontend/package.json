@@ -16,9 +16,11 @@
     "chart.js": "^4.4.3",
     "codemirror": "^6.0.1",
     "core-js": "^3.8.3",
+    "sweetalert2": "^11.12.0",
     "vue": "^3.4.27",
     "vue-cal": "^4.8.1",
     "vue-router": "^4.0.3",
+    "vue-sweetalert2": "^5.0.11",
     "vue3-kakao-maps": "^2.3.9",
     "vuex": "^4.1.0"
   },

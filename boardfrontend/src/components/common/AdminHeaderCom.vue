@@ -9,7 +9,7 @@
     "
   >
     <router-link
-      to="/"
+      to="#"
       class="d-flex align-items-center mb-3 mb-md-0 me-md-auto link-dark text-decoration-none"
       style="padding: 50px 0"
     >
@@ -50,8 +50,8 @@
             >홈페이지 바로가기</router-link
           >
         </li>
-        <li><a class="dropdown-item" href="#">설정</a></li>
-        <li><a class="dropdown-item" href="#">프로필?</a></li>
+        <!-- <li><a class="dropdown-item" href="#">설정</a></li>
+        <li><a class="dropdown-item" href="#">프로필?</a></li> -->
         <li><hr class="dropdown-divider" /></li>
         <li>
           <a class="dropdown-item" href="#" @click="handleLogout">로그아웃</a>

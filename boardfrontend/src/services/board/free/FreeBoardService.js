@@ -101,10 +101,10 @@ class FreeBoardService {
       console.log("서비스입니다"+freeBoardId)
       return http.put(
         `/user/free/board-like/update-like/${freeBoardId}`,
-        data2
+        data2)
         //    {
         //   headers: AuthHeader(),
-        // }
+        }
   reportFreeBoard(data){
     return http.post("user/board/free/report/save",data, {
       headers: AuthHeader(),

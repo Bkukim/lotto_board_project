@@ -629,31 +629,7 @@ export default {
         views: 0,
         eventYN:"N"
       },
-      // replyVisible: false, // 답글 입력 폼의 표시 여부를 관리하는 변수
-      replyToCommentId: null, // 어떤 댓글에 대한 답글인지 식별하기 위한 변수
-
-      // 새로 작성할 답글
-      newReply: {
-        userId: this.$store.state.user?.userId,
-        content: "",
-      },
-
-      // 답글 글자 수
-      charCountReply: 0,
-
-  
-
-      // 기존 댓글 목록
-      noticeBoardComments: [],
-
-      // 기존 대댓글 목록
-      noticeBoardRecomments: [],
-
-      // 새로 작성할 댓글
-      newComment: {
-        userId: this.$store.state.user?.userId, // 로그인된 사용자 ID
-        content: "",
-      },
+      
       // replyVisible: false, // 답글 입력 폼의 표시 여부를 관리하는 변수
       replyToCommentId: null, // 어떤 댓글에 대한 답글인지 식별하기 위한 변수
 
@@ -755,30 +731,6 @@ export default {
       }
     },
 
-    // 댓글 등록 함수
-    async submitComment() {
-      if (!this.newComment.content.trim()) {
-        alert("댓글을 입력해주세요.");
-        return;
-      }
-      try {
-        let data = {
-          userId: this.newComment.userId,
-
-          noticeId: this.notice.noticeId,
-          content: this.newComment.content,
-          secretCommentYn: "N",
-        };
-        await NoticeService.createNoticeComment(data);
-      } catch (e) {
-        // alert("댓글 등록 중 에러가 발생했습니다.");
-        console.log(e);
-      }
-      this.newComment.content = "";
-      this.charCount = 0;
-
-      this.retrieveNoticeComment(this.$route.params.noticeId);
-    },
 
     // 댓글 등록 함수
     async submitComment() {

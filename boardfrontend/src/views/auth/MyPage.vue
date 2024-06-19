@@ -77,7 +77,7 @@
                 >
                   My Profile
                 </h5>
-         
+
                 <p
                   style="
                     background-color: #f2f2f2;
@@ -99,9 +99,10 @@
                     border-radius: 20px;
                   "
                 >
-                  이름: <span style="font-weight: bold">{{ user.userName }}</span>
+                  이름:
+                  <span style="font-weight: bold">{{ user.userName }}</span>
                 </p>
-             
+
                 <p
                   style="
                     background-color: #f2f2f2;
@@ -111,21 +112,28 @@
                     border-radius: 20px;
                   "
                 >
-                  전화번호: <span style="font-weight: bold">{{ user.phoneNum }}</span>
+                  전화번호:
+                  <span style="font-weight: bold">{{ user.phoneNum }}</span>
                 </p>
 
-          
-                <h5 style="text-align: right; font-size: 15px; padding-top: 10px;">@LOTTO COMPANY </h5>
-
+                <h5
+                  style="text-align: right; font-size: 15px; padding-top: 10px"
+                >
+                  @LOTTO COMPANY
+                </h5>
               </div>
             </div>
           </template>
 
           <!-- 2. 작성한 글 -->
           <template v-else-if="displayedContent === 'writtenPosts'">
-            <h3 class="mt-5" style="letter-spacing: -1.5px">내가 작성한 글</h3>
-            <div class="container" style="height: auto; width: 1000px">
-              <div class="row mt-5 border justify-content-center">
+            <div class="container">
+              <h3 class="mt-5" style="letter-spacing: -1.5px; color: #333">
+                내가 작성한 글
+              </h3>
+
+              <!-- 자유게시판 -->
+              <div class="row mt-5 border justify-content-center  shadow">
                 <h3
                   class="align-items-center"
                   style="
@@ -138,19 +146,22 @@
                 >
                   자유게시판
                 </h3>
-                <div class="col-11">
-                  <table class="table mt-5 text-center">
-                    <thead>
+                <div class="col-12">
+                  <table class="table mt-5 text-center table-custom">
+                    <thead class="thead-dark">
                       <tr>
-                        <th scope="col">제목</th>
-                        <th scope="col">등록일</th>
-                        <th scope="col">수정</th>
-                        <th scope="col">삭제</th>
+                        <td style="text-align: center" scope="col">제목</td>
+                        <td style="text-align: center" scope="col">등록일</td>
+                        <td scope="col">수정</td>
+                        <td scope="col">삭제</td>
                       </tr>
                     </thead>
                     <tbody>
                       <tr v-for="(data, index) in freeBoardList" :key="index">
-                        <td class="col-8">
+                        <td
+                          class="col-4"
+                          style="text-align: center; font-weight: bold"
+                        >
                           <router-link
                             :to="'/free/free-boardDetail/' + data.freeBoardId"
                             style="text-decoration: none; color: #333"
@@ -158,11 +169,16 @@
                             >{{ data.title }}</router-link
                           >
                         </td>
-                        <td>{{ data.insertTime }}</td>
+                        <td
+                          class="col-4"
+                          style="text-align: center; color: #333"
+                        >
+                          {{ data.insertTime }}
+                        </td>
                         <td>
                           <button
                             type="button"
-                            class="btn btn-success"
+                            class="btn btn-success btn-custom"
                             @click="goUpdateFreeBoard(data.freeBoardId)"
                           >
                             수정
@@ -171,7 +187,7 @@
                         <td>
                           <button
                             type="button"
-                            class="btn btn-success"
+                            class="btn btn-danger btn-custom"
                             @click="deleteFreeBoard(data.freeBoardId)"
                           >
                             삭제
@@ -193,12 +209,13 @@
                 </div>
               </div>
 
-              <div class="row mt-3 border justify-content-center">
+              <!-- 부서게시판 -->
+              <div class="row mt-5 border justify-content-center shadow">
                 <h3
+                  class="align-items-center"
                   style="
                     text-align: left;
                     font-size: 20px;
-                    letter-spacing: -1.2px;
                     letter-spacing: -1.2px;
                     background-color: #f2f2f2;
                     padding-bottom: 20px;
@@ -206,19 +223,22 @@
                 >
                   부서게시판
                 </h3>
-                <div class="col-11">
-                  <table class="table mt-5 text-center">
-                    <thead>
+                <div class="col-12">
+                  <table class="table mt-5 text-center table-custom">
+                    <thead class="thead-dark">
                       <tr>
-                        <th scope="col">제목</th>
-                        <th scope="col">등록일</th>
-                        <th scope="col">수정</th>
-                        <th scope="col">삭제</th>
+                        <td style="text-align: center" scope="col">제목</td>
+                        <td style="text-align: center" scope="col">등록일</td>
+                        <td scope="col">수정</td>
+                        <td scope="col">삭제</td>
                       </tr>
                     </thead>
                     <tbody>
                       <tr v-for="(data, index) in deptBoardList" :key="index">
-                        <td class="col-8">
+                        <td
+                          class="col-4"
+                          style="text-align: center; font-weight: bold"
+                        >
                           <router-link
                             :to="'/dept/board/detail/' + data.deptBoardId"
                             style="text-decoration: none; color: #333"
@@ -226,11 +246,16 @@
                             >{{ data.title }}</router-link
                           >
                         </td>
-                        <td>{{ data.insertTime }}</td>
+                        <td
+                          class="col-4"
+                          style="text-align: center; color: #333"
+                        >
+                          {{ data.insertTime }}
+                        </td>
                         <td>
                           <button
                             type="button"
-                            class="btn btn-success"
+                            class="btn btn-success btn-custom"
                             @click="goUpdatedeptBoard(data.deptBoardId)"
                           >
                             수정
@@ -239,7 +264,7 @@
                         <td>
                           <button
                             type="button"
-                            class="btn btn-success"
+                            class="btn btn-danger btn-custom"
                             @click="deleteDeptBoard(data.deptBoardId)"
                           >
                             삭제
@@ -262,12 +287,12 @@
               </div>
 
               <!-- 건의게시판 공지사항 -->
-              <div class="row mt-3 border justify-content-center">
+              <div class="row mt-5 border justify-content-center shadow">
                 <h3
+                  class="align-items-center"
                   style="
                     text-align: left;
                     font-size: 20px;
-                    letter-spacing: -1.2px;
                     letter-spacing: -1.2px;
                     background-color: #f2f2f2;
                     padding-bottom: 20px;
@@ -275,24 +300,25 @@
                 >
                   건의게시판
                 </h3>
-                <!-- 테이블시작, 작게 왼쪽 -->
-                <div class="col-11">
-                  <table class="table mt-5 text-center">
-                    <thead>
+                <div class="col-12">
+                  <table class="table mt-5 text-center table-custom">
+                    <thead class="thead-dark">
                       <tr>
-                        <th scope="col">제목</th>
-                        <th scope="col">등록일</th>
-                        <th scope="col">수정</th>
-                        <th scope="col">삭제</th>
+                        <td style="text-align: center" scope="col">제목</td>
+                        <td style="text-align: center" scope="col">등록일</td>
+                        <td scope="col">수정</td>
+                        <td scope="col">삭제</td>
                       </tr>
                     </thead>
                     <tbody>
-                      <!-- 반복문 시작할 행 -->
                       <tr
                         v-for="(data, index) in complaintBoardList"
                         :key="index"
                       >
-                        <td class="col-8">
+                        <td
+                          class="col-4"
+                          style="text-align: center; font-weight: bold"
+                        >
                           <router-link
                             :to="
                               '/complaint/complaint-boardDetail/' +
@@ -303,11 +329,16 @@
                             >{{ data.title }}</router-link
                           >
                         </td>
-                        <td>{{ data.insertTime }}</td>
+                        <td
+                          class="col-4"
+                          style="text-align: center; color: #333"
+                        >
+                          {{ data.insertTime }}
+                        </td>
                         <td>
                           <button
                             type="button"
-                            class="btn btn-success"
+                            class="btn btn-success btn-custom"
                             @click="
                               goUpdateComplaintBoard(data.complaintBoardId)
                             "
@@ -318,69 +349,75 @@
                         <td>
                           <button
                             type="button"
-                            class="btn btn-success"
+                            class="btn btn-danger btn-custom"
                             @click="deleteComplaintBoard(data.complaintBoardId)"
                           >
                             삭제
                           </button>
                         </td>
                       </tr>
-                      <!-- {/* paging 시작 */} -->
-                      <!-- TODO: 1페이지당 화면에 보일 개수 조정(select태그) -->
-                      <div class="row justify-content-center mt-4">
-                        <div class="col-auto">
-                          <b-pagination
-                            class="col-12 mb-3 custom-pagination"
-                            v-model="complaintBoardPage"
-                            :total-rows="complaintBoardCount"
-                            :per-page="complaintBoardPageSize"
-                          ></b-pagination>
-                        </div>
-                      </div>
                     </tbody>
                   </table>
+                  <div class="row justify-content-center mt-4">
+                    <div class="col-auto">
+                      <b-pagination
+                        class="col-12 mb-3 custom-pagination"
+                        v-model="complaintBoardPage"
+                        :total-rows="complaintBoardCount"
+                        :per-page="complaintBoardPageSize"
+                      ></b-pagination>
+                    </div>
+                  </div>
                 </div>
               </div>
-              <div class="row mt-3 border justify-content-center">
+
+              <!-- 동호회게시판 -->
+              <div class="row mt-5 border justify-content-center shadow">
                 <h3
+                  class="align-items-center"
                   style="
                     text-align: left;
                     font-size: 20px;
-                    letter-spacing: -1.2px;
                     letter-spacing: -1.2px;
                     background-color: #f2f2f2;
                     padding-bottom: 20px;
                   "
                 >
-                  동호회 게시판
+                  동호회게시판
                 </h3>
-                <div class="col-11">
-                  <table class="table mt-5 text-center">
-                    <thead>
+                <div class="col-12">
+                  <table class="table mt-5 text-center table-custom">
+                    <thead class="thead-dark">
                       <tr>
-                        <th scope="col">제목</th>
-                        <th scope="col">등록일</th>
-                        <th scope="col">수정</th>
-                        <th scope="col">삭제</th>
+                        <td style="text-align: center" scope="col">제목</td>
+                        <td style="text-align: center" scope="col">등록일</td>
+                        <td scope="col">수정</td>
+                        <td scope="col">삭제</td>
                       </tr>
                     </thead>
                     <tbody>
                       <tr v-for="(data, index) in clubBoardList" :key="index">
-                        <td class="col-8">
+                        <td
+                          class="col-4"
+                          style="text-align: center; font-weight: bold"
+                        >
                           <router-link
-
-                            :to="`/club/club-boardRecruitment/${data.clubBoardId}`"
-                            style="text-decoration: none"
-
+                            :to="'/free/free-boardDetail/' + data.freeBoardId"
+                            style="text-decoration: none; color: #333"
                             class="alltext router-link-exact-active custom-pagination"
                             >{{ data.title }}</router-link
                           >
                         </td>
-                        <td>{{ data.insertTime }}</td>
+                        <td
+                          class="col-4"
+                          style="text-align: center; color: #333"
+                        >
+                          {{ data.insertTime }}
+                        </td>
                         <td>
                           <button
                             type="button"
-                            class="btn btn-success"
+                            class="btn btn-success btn-custom"
                             @click="goUpdateClubBoard(data.clubBoardId)"
                           >
                             수정
@@ -389,17 +426,13 @@
                         <td>
                           <button
                             type="button"
-                            class="btn btn-success"
-
+                            class="btn btn-danger btn-custom"
                             @click="deleteClubBoard(data.clubBoardId)"
-
                           >
                             삭제
                           </button>
                         </td>
                       </tr>
-                      <!-- {/* paging 시작 */} -->
-                      <!-- TODO: 1페이지당 화면에 보일 개수 조정(select태그) -->
                     </tbody>
                   </table>
                   <div class="row justify-content-center mt-4">
@@ -415,6 +448,17 @@
                 </div>
               </div>
             </div>
+            <br />
+            <br />
+
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
           </template>
 
           <!-- 3. 비밀번호 변경하기 -->
@@ -424,13 +468,11 @@
               <br />
               <br />
 
-
               <h2 class="text-center mb-5" style="letter-spacing: -3px">
                 새로운 비밀번호 설정
               </h2>
 
               <div class="container shadow" style="background-color: #f2f2f2">
-
                 <div class="row justify-content-md-center" v-if="result">
                   <div class="col-8">
                     <div
@@ -894,10 +936,10 @@ export default {
 
     async updatePw() {
       try {
-                      if (this.newPw == "") {
-        alert("비밀번호를 입력해주세요");
-        return;
-      }
+        if (this.newPw == "") {
+          alert("비밀번호를 입력해주세요");
+          return;
+        }
         let data = {
           userId: this.userId,
           newPw: this.newPw,
@@ -998,5 +1040,28 @@ export default {
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   max-width: 600px;
   width: 100%;
+}
+/* 페이징 번호 디자인 */
+.custom-pagination .page-item.active .page-link {
+  background-color: #162b59;
+  border-color: #ffffff;
+  color: white;
+}
+
+.custom-pagination .page-link {
+  color: #162b59;
+}
+
+.custom-pagination .page-link:hover {
+  background-color: #ffffff;
+  border-color: 1px solid#8f8f8f;
+  color: #162b59;
+  /* border: none; */
+}
+
+.custom-pagination .page-link:focus {
+  outline: none;
+  box-shadow: 0 0 0 0.2rem #162b59;
+  border-color: #162b59;
 }
 </style>
