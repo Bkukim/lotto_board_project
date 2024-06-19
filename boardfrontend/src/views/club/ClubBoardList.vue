@@ -107,15 +107,15 @@ export default {
     this.fetchClubs();
   },
   computed: {
+    // 선택한 날짜만 나오도록 필터링
     filteredClubs() {
-      // 필터링 로직을 추가하여 선택한 날짜의 경기만 필터링합니다.
       const selectedDate = this.dateRange[this.selectedDateIndex].date;
       return this.clubs.filter((club) =>
         club.startTime.startsWith(selectedDate)
       );
     },
+    // 매칭 게시글 시간순 정렬
     sortedClubs() {
-      // 필터링된 클럽들을 시간순으로 정렬합니다.
       return [...this.filteredClubs].sort(
         (a, b) => new Date(a.startTime) - new Date(b.startTime)
       );
