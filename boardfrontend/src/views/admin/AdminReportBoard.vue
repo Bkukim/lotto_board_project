@@ -528,10 +528,6 @@ export default {
       this.searchUserId = "";
       this.retrieveFreeBoard();
     },
-    // // 글 쓰러가기 함수
-    // writeFreeBoard() {
-    //   this.$router.push("/free/free-boardAdd");
-    // },
 
     // 자유 취소 함수
     async updateFreeBoardReport(freeBoardId) {
