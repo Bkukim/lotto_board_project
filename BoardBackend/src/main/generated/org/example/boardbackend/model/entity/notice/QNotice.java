@@ -25,7 +25,7 @@ public class QNotice extends EntityPathBase<Notice> {
 
     public final NumberPath<Long> eventWinnerQuota = createNumber("eventWinnerQuota", Long.class);
 
-    public final StringPath eventYn = createString("eventYn");
+    public final StringPath eventYN = createString("eventYN");
 
     //inherited
     public final StringPath insertTime = _super.insertTime;

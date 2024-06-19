@@ -39,7 +39,7 @@
                   aria-label="Sizing example input"
                   aria-describedby="inputGroup-sizing-default"
                   placeholder="아이디를 입력하세요."
-                  v-model="searchTitle"
+                  v-model="searchUserId"
                 />
               </div>
             </div>
@@ -362,7 +362,7 @@
                       <td>{{ data.userId }}</td>
                       <td>{{ data.insertTime }}</td>
                       <!-- <td>{{ data.likes }}</td> -->
-          <td>처리 완료</td>
+                      <td>처리 완료</td>
                     </tr>
                   </tbody>
                 </table>
@@ -421,7 +421,7 @@ export default {
       deptBoardReportsListProcessed: [],
       freeBoardReportsListProcessed: [],
 
-      searchTitle: "",
+      searchUserId: "",
 
       page: 1, // 현재페이지번호
       count: 0, // 전체데이터개수
@@ -430,12 +430,12 @@ export default {
     };
   },
   methods: {
-    // 자유 : 신고 전체조회 함수
+    // 자유 :  전체조회
     async retrieveFreeBoardReport() {
       try {
         // TODO: 1) 공통 전체조회 함수 실행
         let response = await FreeBoardService.getAllFreeBoardReport(
-          this.searchTitle, // 검색어
+          this.searchUserId, // 검색어
           this.page - 1, // 현재페이지번호-1
           this.pageSize // 1페이지당개수(size)
         );
@@ -445,18 +445,18 @@ export default {
         this.freeBoardReportsList = freeBoardReportsList; // 부서배열(벡엔드 전송)
         this.count = totalItems; // 전체페이지수(벡엔드 전송)
         // TODO: 4) 프론트 로깅 : console.log
-        console.log("sdfgsdfgs",this.freeBoardReportsList);
+        console.log("자유게시판 신고목록", this.freeBoardReportsList);
       } catch (e) {
         console.log(e);
       }
     },
 
-    // 자유 : 신고 처리완료 전체조회 함수
+    // 자유 :  처리완료 전체조회
     async retrieveFreeBoardReportProcessed() {
       try {
         // TODO: 1) 공통 전체조회 함수 실행
         let response = await FreeBoardService.getAllFreeBoardReportProcessed(
-          this.searchTitle, // 검색어
+          this.searchUserId, // 검색어
           this.page - 1, // 현재페이지번호-1
           this.pageSize // 1페이지당개수(size)
         );
@@ -466,19 +466,22 @@ export default {
         this.freeBoardReportsListProcessed = freeBoardReportsListProcessed; // 부서배열(벡엔드 전송)
         this.count = totalItems; // 전체페이지수(벡엔드 전송)
         // TODO: 4) 프론트 로깅 : console.log
-        console.log("asdfasdF",this.freeBoardReportsListProcessed);
+        console.log(
+          "자유게시판 신고처리 목록",
+          this.freeBoardReportsListProcessed
+        );
       } catch (e) {
         console.log(e);
       }
     },
 
-    // 부서 : 신고 전체조회 함수
+    // 부서 :  전체조회 
     async retrieveDeptBoardReport() {
       try {
         // alert("부서게시판 신고");
         // TODO: 1) 공통 전체조회 함수 실행
         let response = await DeptBoardService.getAllDeptBoardReport(
-          this.searchTitle, // 검색어
+          this.searchUserId, // 검색어
           this.page - 1, // 현재페이지번호-1
           this.pageSize // 1페이지당개수(size)
         );
@@ -488,28 +491,28 @@ export default {
         this.deptBoardReportsList = deptBoardReportsList; // 부서배열(벡엔드 전송)
         this.count = totalItems; // 전체페이지수(벡엔드 전송)
         // TODO: 4) 프론트 로깅 : console.log
-        console.log(response.data);
+        console.log("부서게시판 신고목록", deptBoardReportsList);
       } catch (e) {
         console.log(e);
       }
     },
 
-    // 자유 : 신고 처리완료 전체조회 함수
+    // 부서 :  처리완료 전체조회 
     async retrieveDeptBoardReportProcessed() {
       try {
         // TODO: 1) 공통 전체조회 함수 실행
         let response = await DeptBoardService.getAllDeptBoardReportProcessed(
-          this.searchTitle, // 검색어
+          this.searchUserId, // 검색어
           this.page - 1, // 현재페이지번호-1
           this.pageSize // 1페이지당개수(size)
         );
         // TODO: 복습 : 2) 객체분할 할당
-        const { freeBoardReportsListProcessed, totalItems } = response.data; // 부서배열(벡엔드 전송)
+        const { deptBoardReportsListProcessed, totalItems } = response.data; // 부서배열(벡엔드 전송)
         // TODO: 3) 바인딩변수(속성)에 저장
-        this.freeBoardReportsListProcessed = freeBoardReportsListProcessed; // 부서배열(벡엔드 전송)
+        this.deptBoardReportsListProcessed = deptBoardReportsListProcessed; // 부서배열(벡엔드 전송)
         this.count = totalItems; // 전체페이지수(벡엔드 전송)
         // TODO: 4) 프론트 로깅 : console.log
-        console.log(response.data);
+        console.log("부서게시판 신고처리 목록", this.deptBoardReportsListProcessed);
       } catch (e) {
         console.log(e);
       }
@@ -522,7 +525,7 @@ export default {
     },
     // 초기화 함수
     resetSearch() {
-      this.searchTitle = "";
+      this.searchUserId = "";
       this.retrieveFreeBoard();
     },
     // // 글 쓰러가기 함수
@@ -550,7 +553,7 @@ export default {
       }
     },
 
-       // 부서 취소 함수
+    // 부서 취소 함수
     async updateDeptBoardReport(deptBoardId) {
       try {
         if (confirm("취소하시겠습니까?")) {
