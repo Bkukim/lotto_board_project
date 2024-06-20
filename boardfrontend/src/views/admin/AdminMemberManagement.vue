@@ -24,7 +24,7 @@
               class="btn btn-primary"
               type="button"
               @click="searchUserName"
-              style="margin-left: -600px;"
+              style="margin-left: -600px"
             >
               검색
             </button>
@@ -34,11 +34,12 @@
       <!-- 검색박스 끝 -->
 
       <!-- 테이블 -->
-      <table class="table  table-hover mt-5">
+      <table class="table table-hover mt-5">
         <thead>
           <tr>
             <th scope="col">번호</th>
             <th scope="col">아이디</th>
+            <th scope="col">권한</th>
             <th scope="col">이름</th>
             <th scope="col">생년월일</th>
             <th scope="col">이메일</th>
@@ -53,6 +54,7 @@
           <tr v-for="(data, index) in userList" :key="index">
             <td>{{ (page - 1) * pageSize + index + 1 }}</td>
             <td>{{ data.userId }}</td>
+            <td>{{ data.role }}</td>
             <td>{{ data.userName }}</td>
             <td>{{ data.birthday }}</td>
             <td>{{ data.email }}</td>
@@ -95,6 +97,14 @@
                             type="text"
                             class="form-control"
                             v-model="user.userId"
+                          />
+                        </div>
+                        <div class="mb-3">
+                          <label class="form-label">권한</label>
+                          <input
+                            type="text"
+                            class="form-control"
+                            v-model="user.role"
                           />
                         </div>
                         <div class="mb-3">
@@ -147,10 +157,7 @@
                         </div>
                         <div class="mb-3">
                           <label class="form-label">부서</label>
-                          <select
-                            class="form-select"
-                            v-model="user.deptId"
-                          >
+                          <select class="form-select" v-model="user.deptId">
                             <option value="A0001">회계부</option>
                             <option value="B0002">재정부</option>
                             <option value="C0003">기획부</option>
@@ -206,20 +213,20 @@
     </div>
   </div>
 
-  <br>
-  <br>
-  <br>
-  <br>
-  <br>
-  <br>
-  <br>
+  <br />
+  <br />
+  <br />
+  <br />
+  <br />
+  <br />
+  <br />
 </template>
 
 <script>
 import UserService from "@/services/user/UserService";
 import AdminHeaderCom from "@/components/common/AdminHeaderCom.vue";
 import AuthService from "@/services/auth/AuthService";
-import Swal from 'sweetalert2'; // SweetAlert2 가져오기
+import Swal from "sweetalert2"; // SweetAlert2 가져오기
 
 export default {
   components: {
@@ -237,6 +244,7 @@ export default {
         normalAddress: "",
         detailAddress: "",
         deptId: "",
+        role: "",
       },
       searchName: "",
 
@@ -268,6 +276,7 @@ export default {
         normalAddress: this.user.normalAddress,
         detailAddress: this.user.detailAddress,
         deptId: this.user.deptId,
+        role: this.user.role,
       };
       try {
         console.log("부서명", data);
@@ -282,7 +291,7 @@ export default {
           title: "수정 실패",
           text: "회원 정보 수정에 실패하였습니다.",
           icon: "error",
-          confirmButtonText: "확인"
+          confirmButtonText: "확인",
         });
         console.log(e); // 에러 출력
       }
@@ -300,7 +309,7 @@ export default {
           icon: "warning",
           showCancelButton: true,
           confirmButtonText: "삭제",
-          cancelButtonText: "취소"
+          cancelButtonText: "취소",
         });
         if (result.isConfirmed) {
           let response = await UserService.deleteUser(userId);
@@ -312,10 +321,10 @@ export default {
             title: "삭제 완료",
             text: "회원 삭제가 완료되었습니다.",
             icon: "success",
-            confirmButtonText: "확인"
-        }).then(() => {
-          this.retrieveUser(); // 사용자 정보 다시 불러오기
-        });
+            confirmButtonText: "확인",
+          }).then(() => {
+            this.retrieveUser(); // 사용자 정보 다시 불러오기
+          });
         } else {
           return;
         }
