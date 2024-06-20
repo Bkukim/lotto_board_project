@@ -4,6 +4,7 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.example.boardbackend.config.WebConfig;
+import org.example.boardbackend.model.dto.redis.MessageDto;
 import org.example.boardbackend.model.entity.board.complaint.ComplaintBoard;
 import org.example.boardbackend.model.entity.board.complaint.ComplaintBoardComment;
 import org.example.boardbackend.model.entity.notify.Notify;
@@ -37,26 +38,19 @@ public class ComplaintCommentService {
     private final NotifyService notifyService;
 
     // TODO: 댓글 저장
-    public void saveComment(ComplaintBoardComment complaintBoardComment) {
-        // 1. 게시글 주인의 객체 가져오기
-        ComplaintBoard complaintBoard = complaintBoardRepository.findById(complaintBoardComment.getComplaintBoardId())
-                .orElseThrow(() -> new RuntimeException("ComplaintBoard not found"));
-
-        String boardWriter = complaintBoard.getUserId();
-        log.debug("여기는 서비스1");
-
-        // 2. 댓글 저장
+    public void saveComment(ComplaintBoardComment complaintBoardComment){
         complaintBoardCommentRepository.save(complaintBoardComment);
-        log.debug("여기는 서비스2");
+    }
 
-        // 3. 게시글 상태를 "답변완료"로 업데이트
-        complaintBoard.setStatus("답변완료");
-        complaintBoardRepository.save(complaintBoard);
-
-        // 4. 알림 보내기
-        String notifyContent = "회원님의 건의 사항에 답변이 달렸습니다.";
-        String notifyUrl = webConfig.getFrontDomain() + "/complaint/complaint-board/" + complaintBoard.getComplaintBoardId();
-        notifyService.send(boardWriter, Notify.NotificationType.COMMENT, notifyContent, notifyUrl);
+    // todo 댓글 알림 저장 기능
+    public void sendCommentNotification(ComplaintBoardComment complaintBoardComment) {
+        ComplaintBoard complaintBoard = complaintBoardRepository.findById(complaintBoardComment.getComplaintBoardId())
+                .orElseThrow(() -> new RuntimeException("freeBoard not found"));
+        String boardWriter = complaintBoard.getUserId();
+        String notifyContent = "회원님의 게시물에 댓글이 달렸습니다.     " + "\"" + complaintBoardComment.getContent() + "\"";
+        String notifyUrl = "/complaint/complaint-board/"+ complaintBoard.getComplaintBoardId();
+        MessageDto messageDto = new MessageDto(Notify.NotificationType.COMMENT,notifyContent,boardWriter,notifyUrl);
+        notifyService.publishNotificationToRedis(messageDto);
     }
 
     // TODO: 댓글 조회 함수
