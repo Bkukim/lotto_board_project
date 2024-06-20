@@ -1,32 +1,24 @@
 <template>
-    <div>
-        
-    </div>
+  <div>
+    <h1>Login Success</h1>
+    <p>Redirecting...</p>
+  </div>
 </template>
+
 <script>
-import AuthService from '@/services/auth/AuthService';
 export default {
-  data() {
-    return {
-      user: {},
-    };
-  },
-  methods: {
-      async NaverLogin(code) {
-      let response = await AuthService.naverLogin(code);
-      let user = response.data;
-      localStorage.setItem("user", JSON.stringify(user));
-      this.$store.commit("loginSuccess", user);
-      this.$router.push("/");
-    },
-  },
   mounted() {
-    let code = this.$route.query.code;
-    console.log(code);
-    this.NaverLogin(code);
-  },
-};
-</script>
-<style lang="">
+    const urlParams = new URLSearchParams(window.location.search);
+    const token = urlParams.get('token');
     
-</style>
+    if (token) {
+      localStorage.setItem('jwtToken', token);
+      this.$router.push('/');
+    } else {
+      // 토큰이 없을 경우 에러 처리
+      console.error('No token found in URL');
+      this.$router.push('/member/login');
+    }
+  }
+}
+</script>
