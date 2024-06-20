@@ -291,6 +291,7 @@
           font-weight: 600;
           color: #595959;
         "
+        
       >
         댓글
       </div>
@@ -298,6 +299,7 @@
       <!-- 댓글 입력하기 -->
       <div
         class="lotto_new row row-cols-lg-4 gap-5 justify-content-left mb-3 mt-5"
+        v-if="this.$store.state.user.admin"
       >
         <div class="col" style="color: #595959; font-weight: bold">
           <span style="color: #999999; font-weight: bold">등록자 |</span>
@@ -310,7 +312,7 @@
       </div>
 
       <!-- 댓글 글쓰기 칸 -->
-      <div class="mb-5 comment-box" style="border: #595959 1.5px solid">
+      <div class="mb-5 comment-box" style="border: #595959 1.5px solid" v-if="this.$store.state.user.admin">
         <div class="comment-input">
           <textarea
             class="form-control"
@@ -543,7 +545,7 @@ export default {
     // 로그인한 계정이 관리자인지 확인하기
     isAdmin() {
       const user = this.$store.state.user;
-      return user && user.roles && user.roles.includes("ROLE_ADMIN");
+      return user && user.role && user.role.includes("ROLE_ADMIN");
     },
   },
   watch: {

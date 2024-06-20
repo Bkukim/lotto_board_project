@@ -93,7 +93,6 @@
                     style="border: none"
                     id="s_all"
                     to="/member/search"
-     
                   >
                     <img
                       src="@/assets/img/serch_icon.png"
@@ -209,21 +208,42 @@
 
             <!-- 로그인 상태일 시 -->
             <div class="hd_r" style="text-align: center" v-else>
-              <!-- 마이페이지 아이콘 -->
-              <router-link
-                style="margin-top: -5px; margin-right: 3px"
-                to="/member/mypage"
-                class="d-inline-block align-text-top"
-                v-if="!isAdminLoggedIn"
-              >
-                <img
-                  src="@/assets/img/mypage_icon.png"
-                  alt="Loo"
-                  width="40"
-                  height="40"
-                  class="d-inline-block align-text-top"
-                />
-              </router-link>
+              <div>
+                <div v-if="this.$store.state.user.role=='ROLE_USER'">
+                  <!-- 마이페이지 아이콘 -->
+                  <router-link
+                    style="margin-top: -5px; margin-right: 3px"
+                    to="/member/mypage"
+                    class="d-inline-block align-text-top"
+                    v-if="!isAdminLoggedIn"
+                  >
+                    <img
+                      src="@/assets/img/mypage_icon.png"
+                      alt="Loo"
+                      width="40"
+                      height="40"
+                      class="d-inline-block align-text-top"
+                    />
+                  </router-link>
+                </div>
+                <div v-else-if="this.$store.state.user.role=='ROLE_ADMIN'">
+                   <!-- 마이페이지 아이콘 -->
+                  <router-link
+                    style="margin-top: -5px; margin-right: 3px"
+                    to="/admin/home"
+                    class="d-inline-block align-text-top"
+                    v-if="!isAdminLoggedIn"
+                  >
+                    <img
+                      src="@/assets/img/mypage_icon.png"
+                      alt="Loo"
+                      width="40"
+                      height="40"
+                      class="d-inline-block align-text-top"
+                    />
+                  </router-link>
+                </div>
+              </div>
 
               <!-- 로그아웃 아이콘 -->
               <router-link
@@ -241,14 +261,14 @@
               </router-link>
             </div>
 
-            <!-- 관리자 페이지 버튼 -->
+            <!-- 관리자 페이지 버튼
             <router-link
-              v-if="isAdminLoggedIn"
+              v-if="this.$store.state.user.role.admin"
               to="/admin/home"
               class="btn btn-primary admin-page-btn"
             >
               관리자 페이지
-            </router-link>
+            </router-link> -->
           </div>
         </div>
       </nav>
@@ -322,9 +342,9 @@ export default {
 
     computed: {
       isAdminLoggedIn() {
-      // 관리자 로그인 여부 계산
-      return this.$store.state.user.role === 'admin';
-    },
+        // 관리자 로그인 여부 계산
+        return this.$store.state.user.role === "admin";
+      },
     },
   },
   mounted() {
