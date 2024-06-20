@@ -5,6 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.example.boardbackend.config.WebConfig;
 import org.example.boardbackend.model.dto.board.complaint.ComplaintBoardDto;
 import org.example.boardbackend.model.dto.board.free.FreeBoardDto;
+import org.example.boardbackend.model.dto.redis.MessageDto;
 import org.example.boardbackend.model.entity.board.complaint.ComplaintBoard;
 import org.example.boardbackend.model.entity.board.complaint.ComplaintBoardComment;
 import org.example.boardbackend.model.entity.board.free.FreeBoard;
@@ -66,22 +67,19 @@ public class ComplaintBoardService {
     // TODO 댓글 저장 기능
     // 1. boardId로 게시글 주인의 객체 가져오기,  1. 댓글을 저장, 2 알림 보내기
     public void saveComment(ComplaintBoardComment complaintBoardComment){
-        ComplaintBoard complaintBoard = complaintBoardRepository.findById(complaintBoardComment.getComplaintBoardId()).get();
+        complaintBoardCommentRepository.save(complaintBoardComment);
+    }
 
+    // todo 댓글 알림 저장 기능
+    public void sendCommentNotification(ComplaintBoardComment complaintBoardComment) {
+        ComplaintBoard complaintBoard = complaintBoardRepository.findById(complaintBoardComment.getComplaintBoardId())
+                .orElseThrow(() -> new RuntimeException("freeBoard not found"));
 
         String boardWriter = complaintBoard.getUserId();
-        log.debug("여기는 서비스1");
-
-//        FreeBoardComment freeBoardComment = new FreeBoardComment(freeBoardComment.getUserId(),freeBoard.getFreeBoardId(),freeBoardComment.getContent(),freeBoardComment.getSecretCommentYn());
-
-        // 1. 댓글 저장
-        complaintBoardCommentRepository.save(complaintBoardComment);
-        log.debug("여기는 서비스2");
-
-        // 2. 알림 보내기
-        String notifyContent = "게시물에 댓글이 달렸습니다.";
-        String notifyUrl = webConfig.getFrontDomain() + "/complaint/complaint-board/" + complaintBoard.getComplaintBoardId();
-        notifyService.send(boardWriter, Notify.NotificationType.COMMENT,notifyContent,notifyUrl);
+        String notifyContent = "회원님의 게시물에 댓글이 달렸습니다.     " + "\"" + complaintBoardComment.getContent() + "\"";
+        String notifyUrl = "/complaint/complaint-board/"+ complaintBoard.getComplaintBoardId();
+        MessageDto messageDto = new MessageDto(Notify.NotificationType.COMMENT,notifyContent,boardWriter,notifyUrl);
+        notifyService.publishNotificationToRedis(messageDto);
     }
 
     //   todo:  저장 함수

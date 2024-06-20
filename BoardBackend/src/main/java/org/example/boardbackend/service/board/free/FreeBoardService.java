@@ -5,6 +5,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.example.boardbackend.model.dto.board.free.FreeBoardDto;
 import org.example.boardbackend.model.dto.board.free.IFreeBoardRecommentDto;
 import org.example.boardbackend.model.dto.notice.INoticeDto;
+import org.example.boardbackend.model.dto.redis.MessageDto;
+import org.example.boardbackend.model.entity.board.club.ClubBoard;
 import org.example.boardbackend.model.entity.board.free.FreeBoard;
 import org.example.boardbackend.model.entity.board.free.FreeBoardComment;
 import org.example.boardbackend.model.entity.board.free.FreeBoardRecomment;
@@ -17,6 +19,8 @@ import org.example.boardbackend.repository.board.free.FreeBoardReportRepository;
 import org.example.boardbackend.repository.board.free.FreeBoardRepository;
 import org.example.boardbackend.repository.user.UserRepository;
 import org.example.boardbackend.service.notify.NotifyService;
+import org.example.boardbackend.service.redis.RedisMessageService;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -49,6 +53,9 @@ public class FreeBoardService {
     private final NotifyService notifyService;
     private final FreeBoardCommentRepository freeBoardCommentRepository;
     private final FreeBoardRecommentRepository freeBoardRecommentRepository;
+    private final RedisMessageService redisMessageService;
+    @Value("${adminId}")
+    private String adminId;
 
     //    todo 전체 조회
     public Page<FreeBoardDto> selectByTitleContaining(
@@ -75,46 +82,37 @@ public class FreeBoardService {
     // TODO 댓글 저장 기능
     // 1. boardId로 게시글 주인의 객체 가져오기,  1. 댓글을 저장, 2 알림 보내기
     public void saveComment(FreeBoardComment freeBoardComment) {
-        FreeBoard freeBoard = freeBoardRepository.findById(freeBoardComment.getFreeBoardId()).get();
+        freeBoardCommentRepository.save(freeBoardComment);
+    }
 
+    // todo 댓글 알림 저장 기능
+    public void sendCommentNotification(FreeBoardComment freeBoardComment) {
+        FreeBoard freeBoard = freeBoardRepository.findById(freeBoardComment.getFreeBoardId())
+                .orElseThrow(() -> new RuntimeException("freeBoard not found"));
 
         String boardWriter = freeBoard.getUserId();
-        log.debug("여기는 서비스1");
-
-
-//        FreeBoardComment freeBoardComment = new FreeBoardComment(freeBoardComment.getUserId(),freeBoard.getFreeBoardId(),freeBoardComment.getContent(),freeBoardComment.getSecretCommentYn());
-
-        // 1. 댓글 저장
-        freeBoardCommentRepository.save(freeBoardComment);
-        log.debug("여기는 서비스2");
-
-        // 2. 알림 보내기
-        String notifyContent = "회원님의 게시물에 댓글이 달렸습니다.  " + "\"" + freeBoardComment.getContent() + "\"";
-
-        String notifyUrl = "free/free-boardDetail/" + freeBoardComment.getFreeBoardId();
-
-        notifyService.send(boardWriter, Notify.NotificationType.COMMENT, notifyContent, notifyUrl);
+        String notifyContent = "회원님의 게시물에 댓글이 달렸습니다.     " + "\"" + freeBoardComment.getContent() + "\"";
+        String notifyUrl = "free/free-boardDetail/" + freeBoard.getFreeBoardId();
+        MessageDto messageDto = new MessageDto(Notify.NotificationType.COMMENT,notifyContent,boardWriter,notifyUrl);
+        notifyService.publishNotificationToRedis(messageDto);
     }
 
     // TODO 대댓글 저장 기능
     // 1. boardId로 게시글 주인의 객체 가져오기,  1. 댓글을 저장, 2 알림 보내기
     public void saveRecomment(FreeBoardRecomment freeBoardRecomment) {
-        FreeBoardComment freeBoardComment = freeBoardCommentRepository.findById(freeBoardRecomment.getFreeBoardCommentId()).get();
+        freeBoardRecommentRepository.save(freeBoardRecomment);
+    }
+
+    // todo 대댓글 알림 저장 기능
+    public void sendRecommentNotification(FreeBoardRecomment freeBoardRecomment) {
+        FreeBoardComment freeBoardComment = freeBoardCommentRepository.findById(freeBoardRecomment.getFreeBoardCommentId())
+                .orElseThrow(() -> new RuntimeException("FreeBoardComment not found"));
 
         String commentWriter = freeBoardComment.getUserId();
-        log.debug("여기는 대댓글1");
-
-        // 1. 댓글 저장
-        freeBoardRecommentRepository.save(freeBoardRecomment);
-        log.debug("여기는 대댓글2");
-
-
-        // 2. 알림 보내기
-
         String notifyContent = "회원님의 댓글에 또 다른 댓글이 달렸습니다.    " + "\"" + freeBoardRecomment.getContent() + "\"";
         String notifyUrl = "free/free-boardDetail/" + freeBoardComment.getFreeBoardId();
-        notifyService.send(commentWriter, Notify.NotificationType.COMMENT, notifyContent, notifyUrl);
-
+        MessageDto messageDto = new MessageDto(Notify.NotificationType.COMMENT,notifyContent,commentWriter,notifyUrl);
+        notifyService.publishNotificationToRedis(messageDto);
     }
 
 
@@ -176,6 +174,17 @@ public class FreeBoardService {
         Page<FreeBoardReport> reports = freeBoardReportRepository.findFreeBoardReportsByUserIdContaining(userId, pageable);
 
         return reports;
+    }
+
+    // todo 신고 알림 저장 기능
+    public void sendReportNotification(FreeBoardReport freeBoardReport) {
+        FreeBoard freeBoard = freeBoardRepository.findById(freeBoardReport.getFreeBoardId())
+                .orElseThrow(() -> new RuntimeException("FreeBoard not found"));
+        // 2. 알림 보내기
+        String notifyContent = "게시물 신고가 접수되었습니다.   "  + "\"" + freeBoard.getTitle() + "\"";
+        String notifyUrl = "free/free-boardDetail/" + freeBoard.getFreeBoardId(); // todo 주소 바꾸기
+        MessageDto messageDto = new MessageDto(Notify.NotificationType.REPORT,notifyContent,adminId,notifyUrl);
+        notifyService.publishNotificationToRedis(messageDto);
     }
 
 //    todo 신고게시글 삭제버튼 누를시 실행될 함수 : 자유게시판은 삭제

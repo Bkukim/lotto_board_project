@@ -4,15 +4,22 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.example.boardbackend.model.dto.board.dept.DeptBoardDto;
 import org.example.boardbackend.model.dto.board.dept.DeptRecommentDto;
+import org.example.boardbackend.model.dto.redis.MessageDto;
 import org.example.boardbackend.model.entity.board.dept.DeptBoard;
 import org.example.boardbackend.model.entity.board.dept.DeptBoardReport;
 import org.example.boardbackend.model.entity.board.dept.DeptComment;
 import org.example.boardbackend.model.entity.board.dept.DeptRecomment;
+import org.example.boardbackend.model.entity.board.free.FreeBoard;
+import org.example.boardbackend.model.entity.board.free.FreeBoardComment;
+import org.example.boardbackend.model.entity.board.free.FreeBoardRecomment;
 import org.example.boardbackend.model.entity.board.free.FreeBoardReport;
+import org.example.boardbackend.model.entity.notify.Notify;
 import org.example.boardbackend.repository.board.dept.DeptBoardRepository;
 import org.example.boardbackend.repository.board.dept.DeptCommentRepository;
 import org.example.boardbackend.repository.board.dept.DeptRecommentRepository;
 import org.example.boardbackend.repository.board.dept.DeptBoardReportRepository;
+import org.example.boardbackend.service.notify.NotifyService;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -44,6 +51,9 @@ public class DeptBoardService {
     private final DeptCommentRepository deptCommentRepository;
     private final DeptRecommentRepository deptRecommentRepository;
     private final DeptBoardReportRepository deptBoardReportRepository;
+    private final NotifyService notifyService;
+    @Value("${adminId}")
+    private String adminId;
 
     //    todo 전체 조회
     public Page<DeptBoardDto> selectByTitleContaining(
@@ -84,27 +94,41 @@ public class DeptBoardService {
             return false;
         }
     }
+
     // TODO 댓글 저장 기능
     // 1. boardId로 게시글 주인의 객체 가져오기,  1. 댓글을 저장, 2 알림 보내기
-    @Transactional
     public void saveComment(DeptComment deptComment) {
-        DeptBoard deptBoard = deptBoardRepository.findById(deptComment.getDeptBoardId()).get();
-
-        // 1. 댓글 저장
         deptCommentRepository.save(deptComment);
+    }
 
+    // todo 댓글 알림 저장 기능
+    public void sendCommentNotification(DeptComment deptComment) {
+        DeptBoard deptBoard = deptBoardRepository.findById(deptComment.getDeptBoardId())
+                .orElseThrow(() -> new RuntimeException("deptBoard not found"));
 
+        String boardWriter = deptBoard.getUserId();
+        String notifyContent = "회원님의 게시물에 댓글이 달렸습니다.     " + "\"" + deptComment.getContent() + "\"";
+        String notifyUrl = "free/free-boardDetail/" + deptComment.getDeptBoardId();
+        MessageDto messageDto = new MessageDto(Notify.NotificationType.COMMENT,notifyContent,boardWriter,notifyUrl);
+        notifyService.publishNotificationToRedis(messageDto);
     }
 
     // TODO 대댓글 저장 기능
     // 1. boardId로 게시글 주인의 객체 가져오기,  1. 댓글을 저장, 2 알림 보내기
-    @Transactional
-    public void saveRecomment(DeptRecomment deptRecomment){
-
-        // 1. 댓글 저장
+    public void saveRecomment(DeptRecomment deptRecomment) {
         deptRecommentRepository.save(deptRecomment);
+    }
 
+    // todo 대댓글 알림 저장 기능
+    public void sendRecommentNotification(DeptRecomment deptRecomment) {
+        DeptComment deptComment = deptCommentRepository.findById(deptRecomment.getDeptBoardCommentId())
+                .orElseThrow(() -> new RuntimeException("deptComment not found"));
 
+        String commentWriter = deptComment.getUserId();
+        String notifyContent = "회원님의 댓글에 또 다른 댓글이 달렸습니다.    " + "\"" + deptRecomment.getContent() + "\"";
+        String notifyUrl = "free/free-boardDetail/" + deptComment.getDeptBoardId();
+        MessageDto messageDto = new MessageDto(Notify.NotificationType.COMMENT,notifyContent,commentWriter,notifyUrl);
+        notifyService.publishNotificationToRedis(messageDto);
     }
     //    todo: boardId 로 댓글 조회 함수
     public Page<DeptComment> getCommentByDeptBoardId(long deptBoardId, Pageable pageable) throws IOException{
@@ -143,6 +167,18 @@ public class DeptBoardService {
 
         return reports;
     }
+
+    // todo 신고 알림 저장 기능
+    public void sendReportNotification(DeptBoardReport deptBoardReport) {
+        DeptBoard deptBoard = deptBoardRepository.findById(deptBoardReport.getDeptBoardId())
+                .orElseThrow(() -> new RuntimeException("deptBoard not found"));
+        // 2. 알림 보내기
+        String notifyContent = "게시물 신고가 접수되었습니다.   "  + "\"" + deptBoard.getTitle() + "\"";
+        String notifyUrl = "free/free-boardDetail/" + deptBoard.getDeptBoardId(); // todo 주소 바꾸기
+        MessageDto messageDto = new MessageDto(Notify.NotificationType.REPORT,notifyContent,adminId,notifyUrl);
+        notifyService.publishNotificationToRedis(messageDto);
+    }
+
 
     //    todo 신고게시글 삭제버튼 누를시 실행될 함수 : 부서게시판은 삭제
     public void deleteByDeptBoardId(long deptBoardId) {

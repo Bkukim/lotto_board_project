@@ -184,6 +184,7 @@ public class ComplaintBoardController {
         try {
             //            DB 서비스 저장 함수 실행
             complaintBoardService.saveComment(complaintBoardComment);
+            complaintBoardService.sendCommentNotification(complaintBoardComment);
             return new ResponseEntity<>(HttpStatus.OK);
         } catch (Exception e) {
             log.debug("asdfasdf"+e.getMessage());
