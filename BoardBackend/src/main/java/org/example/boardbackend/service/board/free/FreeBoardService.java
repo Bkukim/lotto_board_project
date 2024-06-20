@@ -89,7 +89,6 @@ public class FreeBoardService {
     public void sendCommentNotification(FreeBoardComment freeBoardComment) {
         FreeBoard freeBoard = freeBoardRepository.findById(freeBoardComment.getFreeBoardId())
                 .orElseThrow(() -> new RuntimeException("freeBoard not found"));
-
         String boardWriter = freeBoard.getUserId();
         String notifyContent = "회원님의 게시물에 댓글이 달렸습니다.     " + "\"" + freeBoardComment.getContent() + "\"";
         String notifyUrl = "free/free-boardDetail/" + freeBoard.getFreeBoardId();
@@ -107,7 +106,6 @@ public class FreeBoardService {
     public void sendRecommentNotification(FreeBoardRecomment freeBoardRecomment) {
         FreeBoardComment freeBoardComment = freeBoardCommentRepository.findById(freeBoardRecomment.getFreeBoardCommentId())
                 .orElseThrow(() -> new RuntimeException("FreeBoardComment not found"));
-
         String commentWriter = freeBoardComment.getUserId();
         String notifyContent = "회원님의 댓글에 또 다른 댓글이 달렸습니다.    " + "\"" + freeBoardRecomment.getContent() + "\"";
         String notifyUrl = "free/free-boardDetail/" + freeBoardComment.getFreeBoardId();

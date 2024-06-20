@@ -38,6 +38,7 @@ public class ComplaintCommentController {
         try {
             // DB 서비스 저장 함수 실행
             complaintCommentService.saveComment(complaintBoardComment);
+            complaintCommentService.sendCommentNotification(complaintBoardComment);
             return new ResponseEntity<>(HttpStatus.OK);
         } catch (Exception e) {
             log.debug("Error: " + e.getMessage());
