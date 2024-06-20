@@ -5,6 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.example.boardbackend.config.WebConfig;
 import org.example.boardbackend.model.dto.board.complaint.ComplaintBoardDto;
 import org.example.boardbackend.model.dto.board.free.FreeBoardDto;
+import org.example.boardbackend.model.dto.redis.MessageDto;
 import org.example.boardbackend.model.entity.board.complaint.ComplaintBoard;
 import org.example.boardbackend.model.entity.board.complaint.ComplaintBoardComment;
 import org.example.boardbackend.model.entity.board.free.FreeBoard;
@@ -63,8 +64,22 @@ public class ComplaintBoardService {
         return complaintBoardOptional;
     }
 
+    // TODO 댓글 저장 기능
+    // 1. boardId로 게시글 주인의 객체 가져오기,  1. 댓글을 저장, 2 알림 보내기
+    public void saveComment(ComplaintBoardComment complaintBoardComment){
+        complaintBoardCommentRepository.save(complaintBoardComment);
+    }
 
-
+    // todo 댓글 알림 저장 기능
+    public void sendCommentNotification(ComplaintBoardComment complaintBoardComment) {
+        ComplaintBoard complaintBoard = complaintBoardRepository.findById(complaintBoardComment.getComplaintBoardId())
+                .orElseThrow(() -> new RuntimeException("freeBoard not found"));
+        String boardWriter = complaintBoard.getUserId();
+        String notifyContent = "회원님의 게시물에 댓글이 달렸습니다.     " + "\"" + complaintBoardComment.getContent() + "\"";
+        String notifyUrl = "/complaint/complaint-board/"+ complaintBoard.getComplaintBoardId();
+        MessageDto messageDto = new MessageDto(Notify.NotificationType.COMMENT,notifyContent,boardWriter,notifyUrl);
+        notifyService.publishNotificationToRedis(messageDto);
+    }
     //   todo:  저장 함수
     public ComplaintBoard save(ComplaintBoard complaintBoard) {
 //        JPA 저장 함수 실행 : return 값 : 저장된 객체

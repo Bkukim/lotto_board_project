@@ -46,10 +46,7 @@ export default {
         //     let message = event.data;
         //     alert(message);
         // })
-        this.eventSource.addEventListener("UNSENT_MESSAGE", function (event) {
-          let message = event.data;
-          alert(message);
-        });
+        
         this.eventSource.addEventListener("COMMENT", function (event) {
           let message = event.data;
           alert(message);
