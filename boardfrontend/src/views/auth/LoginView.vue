@@ -91,9 +91,12 @@
             <img src="@/assets/img/N.png" /> &nbsp;&nbsp; 네이버 로그인 /
             회원가입
           </button> -->
-          
-          <img src="@/assets/img/btnG_완성형.png" style="width:300px; height:auto;" @click="goToNaverLogin"/>
 
+          <img
+            src="@/assets/img/btnG_완성형.png"
+            style="width: 300px; height: auto"
+            @click="goToNaverLogin"
+          />
         </div>
       </div>
       <br />
@@ -154,21 +157,24 @@ export default {
       window.location.href = kakaoAuthUrl; // 이 페이지는 카카오에서 제공하는 페이지라 따로 페이지 만들 필요 없음
     },
     // 네이버 로그인
-  goToNaverLogin() {
-    const clientId = 'Ipydix8nXe2V9m6KRDom';  // 네이버 개발자 센터에서 발급받은 Client ID
-    const redirectUri = "http://localhost:8080/login/ouath2/code/naver";  // 네이버 개발자 센터에 등록한 Redirect URI
-    const state = this.generateRandomState();  // CSRF 공격 방지를 위한 랜덤 상태 값
-    const naverAuthUrl = `https://nid.naver.com/oauth2.0/authorize?response_type=code&client_id=${clientId}&redirect_uri=${encodeURIComponent(redirectUri)}&state=${state}`;
-    window.location.href = naverAuthUrl;
-  },
-  generateRandomState() {
-    const characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-    let state = "";
-    for (let i = 0; i < 16; i++) {
-      const randomIndex = Math.floor(Math.random() * characters.length);
-      state += characters.charAt(randomIndex);
-    }
-    return state;
+    goToNaverLogin() {
+      const clientId = "Ipydix8nXe2V9m6KRDom"; // 네이버 개발자 센터에서 발급받은 Client ID
+      const redirectUri = "http://localhost:8080/login/ouath2/code/naver"; // 네이버 개발자 센터에 등록한 Redirect URI
+      const state = this.generateRandomState(); // CSRF 공격 방지를 위한 랜덤 상태 값
+      const naverAuthUrl = `https://nid.naver.com/oauth2.0/authorize?response_type=code&client_id=${clientId}&redirect_uri=${encodeURIComponent(
+        redirectUri
+      )}&state=${state}`;
+      window.location.href = naverAuthUrl;
+    },
+    generateRandomState() {
+      const characters =
+        "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+      let state = "";
+      for (let i = 0; i < 16; i++) {
+        const randomIndex = Math.floor(Math.random() * characters.length);
+        state += characters.charAt(randomIndex);
+      }
+      return state;
     },
     // 아이디 찾기
     goFindId() {
@@ -189,44 +195,43 @@ export default {
       if (jwt != null) {
         try {
           let token = jwt;
-        this.eventSource = new EventSource(subscribeUrl + "?token=" + token);
-        this.eventSource.onopen = () => {
-          console.log("SSE 연결이 열렸습니다.");
-          this.isConnected = true;
-        };
-        // this.eventSource.addEventListener("connect", function(event) {
-        //     let message = event.data;
-        //     alert(message);
-        // })
-        this.eventSource.addEventListener("UNSENT_MESSAGE", function(event) {
+          this.eventSource = new EventSource(subscribeUrl + "?token=" + token);
+          this.eventSource.onopen = () => {
+            console.log("SSE 연결이 열렸습니다.");
+            this.isConnected = true;
+          };
+          // this.eventSource.addEventListener("connect", function(event) {
+          //     let message = event.data;
+          //     alert(message);
+          // })
+          this.eventSource.addEventListener("UNSENT_MESSAGE", function (event) {
             let message = event.data;
             alert(message);
-        })
-        this.eventSource.addEventListener("COMMENT", function(event) {
+          });
+          this.eventSource.addEventListener("COMMENT", function (event) {
             // let response = NotifyService.countNotify(this.$store.state.user.userId);
             // console.log(response);
             // this.$store.state.notifyCount = response;
             let message = event.data;
             alert(message);
-        })
-        this.eventSource.onmessage = (event) => {
-          console.log("새 알림:", event.data);
-          this.messages.push(event.data);
-        };
-        this.eventSource.onerror = (event) => {
-          console.error("SSE 연결 오류:", event);
-          if (event.readyState == EventSource.CLOSED) {
-            console.log("SSE 연결이 닫혔습니다.");
-            this.isConnected = false;
-          } else {
-            console.log("SSE 연결 오류 발생, 재연결 시도 중...");
-            setTimeout(() => this.connectSSE(), 5000); // 5초 후 재연결 시도
-          }
-        };
+          });
+          this.eventSource.onmessage = (event) => {
+            console.log("새 알림:", event.data);
+            this.messages.push(event.data);
+          };
+          this.eventSource.onerror = (event) => {
+            console.error("SSE 연결 오류:", event);
+            if (event.readyState == EventSource.CLOSED) {
+              console.log("SSE 연결이 닫혔습니다.");
+              this.isConnected = false;
+            } else {
+              console.log("SSE 연결 오류 발생, 재연결 시도 중...");
+              setTimeout(() => this.connectSSE(), 5000); // 5초 후 재연결 시도
+            }
+          };
         } catch (error) {
           console.log(error);
         }
-       
       } else {
         console.error("JWT 토큰이 없습니다.");
       }
@@ -275,11 +280,15 @@ export default {
         this.connectSse(response.data.accessToken);
         if (this.$store.state.user.role == "ROLE_USER") {
           alert("로그인에 성공하였습니다.");
-          this.$store.state.notifyCount = await NotifyService.countNotify(this.$store.state.user.userId);
+          this.$store.state.notifyCount = await NotifyService.countNotify(
+            this.$store.state.user.userId
+          );
           this.$router.push("/");
         } else if (this.$store.state.user.role == "ROLE_ADMIN") {
           alert("관리자 로그인에 성공하였습니다.");
           this.$router.push("/admin/home");
+        } else {
+          alert("회원가입 승인이 완료되지 않았습니다.");
         }
       } catch (e) {
         // 로그인 실패시 에러가 뜨므로 로그인 실패 공유함수를 실행

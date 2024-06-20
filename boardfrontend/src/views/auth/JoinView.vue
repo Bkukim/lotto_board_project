@@ -14,24 +14,24 @@
             </tr>
           </thead>
           <tbody>
-            <tr>
-              <td scope="row">회원 유형</td>
-              <td>
+            <!-- <tr> -->
+              <!-- <td scope="row">회원 유형</td> -->
+              <!-- <td>
                 <div class="form-check">
                   <input
                     class="form-check-input"
                     type="radio"
                     name="flexRadioDefault"
                     id="flexRadioDefault1"
-                    value="ROLE_USER"
+                    value="권한없음"
                     v-model="user.role"
                   />
                   <label class="form-check-label" for="flexRadioDefault1">
                     회원
                   </label>
                 </div>
-              </td>
-              <td>
+              </td> -->
+              <!-- <td>
                 <div class="form-check">
                   <input
                     class="form-check-input"
@@ -45,8 +45,8 @@
                     관리자
                   </label>
                 </div>
-              </td>
-            </tr>
+              </td> -->
+            <!-- </tr> -->
           </tbody>
         </table>
         <!-- 회원 유형 테이블 끝 -->
@@ -519,7 +519,7 @@ export default {
         userName: "",
         birthday: "",
         email: "",
-        role: "",
+        role: "권한없음",
         department: "",
         detailAddress: "",
         pwQuestion: "",
