@@ -45,8 +45,7 @@ public class FreeBoardController {
 
     private final FreeBoardService freeBoardService;
     private final NotifyService notifyService;
-    @Value("${adminId}")
-    private String adminId;
+
     //    todo 전체 조회 + 제목 검색 + 페이징
     @GetMapping("/free")
     public ResponseEntity<Object> findAll(
@@ -232,6 +231,7 @@ public class FreeBoardController {
         try {
             //            DB 서비스 저장 함수 실행
             freeBoardService.saveComment(freeBoardComment);
+            freeBoardService.sendCommentNotification(freeBoardComment);
             return new ResponseEntity<>(HttpStatus.OK);
         } catch (Exception e) {
             log.debug("asdfasdf"+e.getMessage());
@@ -247,6 +247,7 @@ public class FreeBoardController {
         try {
             //            DB 서비스 저장 함수 실행
             freeBoardService.saveRecomment(freeBoardRecomment);
+            freeBoardService.sendRecommentNotification(freeBoardRecomment);
             return new ResponseEntity<>(HttpStatus.OK);
         } catch (Exception e) {
             log.debug("디버그 :: "+e.getMessage());
@@ -294,11 +295,7 @@ public class FreeBoardController {
         try {
             // 신고 저장
             freeBoardService.saveReport(freeBoardReport);
-            // 2. 알림 보내기
-            FreeBoard freeBoard = freeBoardService.findById(freeBoardReport.getFreeBoardId()).get();
-            String notifyContent = "게시물 신고가 접수되었습니다.   "  + "\"" + freeBoard.getTitle() + "\"";
-            String notifyUrl = "free/free-boardDetail/" + freeBoard.getFreeBoardId(); // todo 주소 바꾸기
-            notifyService.send(adminId, Notify.NotificationType.REPORT,notifyContent,notifyUrl);
+            freeBoardService.sendReportNotification(freeBoardReport);
             return new ResponseEntity<>(HttpStatus.OK);
         } catch (Exception e) {
             log.debug("디버그 :: "+e.getMessage());

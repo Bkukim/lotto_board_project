@@ -180,6 +180,19 @@ public class ComplaintBoardController {
         }
     }
 
+    // TODO 댓글 저장 함수
+    @PostMapping("/complaint/save/comment")
+    public ResponseEntity<Object> saveComplaintComment(@RequestBody ComplaintBoardComment complaintBoardComment) {
+        try {
+            //            DB 서비스 저장 함수 실행
+            complaintBoardService.saveComment(complaintBoardComment);
+            complaintBoardService.sendCommentNotification(complaintBoardComment);
+            return new ResponseEntity<>(HttpStatus.OK);
+        } catch (Exception e) {
+            log.debug("asdfasdf"+e.getMessage());
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
     //    todo: UserId 가 작성한 글 전체조회
     @GetMapping("/complaint/userId/complaintBoard")
     public ResponseEntity<Object> findUserId(

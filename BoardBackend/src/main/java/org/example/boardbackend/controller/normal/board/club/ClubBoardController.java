@@ -1,4 +1,4 @@
-package org.example.boardbackend.controller.user.board.club;
+package org.example.boardbackend.controller.normal.board.club;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;

@@ -299,8 +299,18 @@ export default {
       communityList: [1, 2, 3, 4, 5],
     };
   },
+  methods: {
+    goToLogin(){
+      if (this.$store.state.user==null) {
+        this.$router.push("/member/login");
+      } else {
+        return;
+      }
+    }
+  },
   mounted() {
     console.log(this.$store.state.notifyCount);
+    this.goToLogin();
   },
 
 };

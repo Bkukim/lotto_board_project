@@ -75,7 +75,7 @@ public class AdminUserManagementController {
     public ResponseEntity<Object> updateUser(@PathVariable String userId,
                                              @RequestBody User user){
         try {
-            userService.updateUserById(user.getUserName(), user.getBirthday(),user.getPhoneNum(), user.getEmail(), user.getDeptId(), user.getNormalAddress(), user.getDetailAddress(), user.getUserId());
+            userService.updateUserById(user.getRole(), user.getUserName(), user.getBirthday(),user.getPhoneNum(), user.getEmail(), user.getDeptId(), user.getNormalAddress(), user.getDetailAddress(), user.getUserId());
             return new ResponseEntity<>(user, HttpStatus.OK);
         }catch (Exception e){
             log.debug(e.getMessage());

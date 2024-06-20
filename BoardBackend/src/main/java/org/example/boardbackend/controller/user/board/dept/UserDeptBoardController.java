@@ -214,16 +214,11 @@ public class UserDeptBoardController {
 
     // TODO 댓글 저장 함수
     @PostMapping("/comment/save")
-    public ResponseEntity<Object> saveFreeComment(@RequestBody DeptComment deptComment) {
+    public ResponseEntity<Object> saveDeptComment(@RequestBody DeptComment deptComment) {
         try {
-            log.debug(deptComment.toString());
-            // 댓글 저장
+
             deptBoardService.saveComment(deptComment);
-            // 알림 생성
-            String notifyContent = "회원님의 게시물에 댓글이 달렸습니다." + /*\n" + "\"" +*/ deptComment.getContent() /*+ "\""*/;
-            String notifyUrl = "dept/board/detail/" + deptComment.getDeptBoardId();
-            // 알림 전송 및 저장
-            notifyService.send(deptComment.getUserId(), Notify.NotificationType.COMMENT, notifyContent, notifyUrl);
+            deptBoardService.sendCommentNotification(deptComment);
             return new ResponseEntity<>(HttpStatus.OK);
         } catch (Exception e) {
             log.debug("디버그"+e.getMessage());
@@ -233,18 +228,13 @@ public class UserDeptBoardController {
 
     // TODO 대댓글 저장 함수
     @PostMapping("/recomment/save")
-    public ResponseEntity<Object> saveFreeRecomment(@RequestBody DeptRecomment deptRecomment) {
+    public ResponseEntity<Object> saveDeptRecomment(@RequestBody DeptRecomment deptRecomment) {
         log.debug("대댓글"+deptRecomment);
 
         try {
             // 대댓글 저장
             deptBoardService.saveRecomment(deptRecomment);
-            // 2. 알림 보내기
-            DeptComment deptComment = deptBoardService.findByCommentId(deptRecomment.getDeptBoardCommentId());
-            String commentWriter = deptComment.getUserId();
-            String notifyContent = "회원님의 댓글에 또 다른 댓글이 달렸습니다.    "  + "\"" + deptRecomment.getContent() + "\"";
-            String notifyUrl = "dept/board/detail/" + deptComment.getDeptBoardId();
-            notifyService.send(commentWriter,Notify.NotificationType.COMMENT,notifyContent,notifyUrl);
+            deptBoardService.sendRecommentNotification(deptRecomment);
             return new ResponseEntity<>(HttpStatus.OK);
         } catch (Exception e) {
             log.debug("디버그 :: "+e.getMessage());
@@ -280,13 +270,8 @@ public class UserDeptBoardController {
     @PostMapping("/report/save")
     public ResponseEntity<Object> reportDeptBoard(@RequestBody DeptBoardReport deptBoardReport) {
         try {
-            // 신고 저장
             deptBoardService.saveReport(deptBoardReport);
-            // 2. 알림 보내기
-            DeptBoard deptBoard = deptBoardService.findById(deptBoardReport.getDeptBoardId()).get();
-            String notifyContent = "게시물 신고가 접수되었습니다.   "  + "\"" + deptBoard.getTitle() + "\"";
-            String notifyUrl = "dept/board/detail/" + deptBoard.getDeptBoardId(); // todo 주소 바꾸기
-            notifyService.send(adminId,Notify.NotificationType.REPORT,notifyContent,notifyUrl);
+            deptBoardService.sendReportNotification(deptBoardReport);
             return new ResponseEntity<>(HttpStatus.OK);
         } catch (Exception e) {
             log.debug("디버그 :: "+e.getMessage());

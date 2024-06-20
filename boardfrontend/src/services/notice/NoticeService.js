@@ -8,13 +8,19 @@ class NoticeService {
   // TODO: 노말서비스
   getAll(title, page, size) {
     return http.get(
-      `/normal/notice/all?title=${title}&page=${page}&size=${size}`
+      `/normal/notice/all?title=${title}&page=${page}&size=${size}`,
+      {
+        headers: AuthHeader()
+      }
     );
   }
 
   // todo: 상세조회
   getNotice(noticeId, eventYN) {
-    return http.get(`/normal/notice/${noticeId}?eventYN=${eventYN}`);
+    return http.get(`/normal/notice/${noticeId}?eventYN=${eventYN}`,
+      {
+        headers: AuthHeader()
+      });
   }
 
 
@@ -33,7 +39,10 @@ class NoticeService {
 
   //TODO: 관리자 서비스
   getAdminNotice(noticeId) {
-    return http.get(`/admin/notice/${noticeId}`);
+    return http.get(`/admin/notice/${noticeId}`,
+      {
+        headers: AuthHeader()
+      });
   }
 
   //TODO: [전체]만 조회
@@ -93,11 +102,17 @@ class NoticeService {
 
   // TODO: 삭제함수 : noticeId
   delete(noticeId) {
-    return http.delete(`/admin/notice/notice-deletion/${noticeId}`);
+    return http.delete(`/admin/notice/notice-deletion/${noticeId}`,
+      {
+        headers: AuthHeader()
+      });
   }
   // 전체 삭제함수 : notice
   deleteAll() {
-    return http.delete(`/admin/notice/delete-all`);
+    return http.delete(`/admin/notice/delete-all`,
+      {
+        headers: AuthHeader()
+      });
   }
 }
 

@@ -3,32 +3,45 @@ package org.example.boardbackend.service.notify;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.example.boardbackend.model.entity.auth.User;
+import org.example.boardbackend.model.dto.redis.MessageDto;
 import org.example.boardbackend.model.entity.notify.Notify;
 import org.example.boardbackend.repository.notify.EmitterRepository;
 import org.example.boardbackend.repository.notify.NotifyRepository;
+import org.example.boardbackend.service.redis.RedisMessageService;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.Map;
 
 @Service
 @Slf4j
-@RequiredArgsConstructor
 public class NotifyService {
     private static final Long DEFAULT_TIMEOUT = 60L * 1000 * 60; // 연결 지속 시간
 
     private final EmitterRepository emitterRepository;
     private final NotifyRepository notifyRepository;
+    private final RedisMessageService redisMessageService;
+
+    public NotifyService(EmitterRepository emitterRepository, NotifyRepository notifyRepository,@Lazy RedisMessageService redisMessageService) {
+        this.emitterRepository = emitterRepository;
+        this.notifyRepository = notifyRepository;
+        this.redisMessageService = redisMessageService;
+    }
 
     // 구독함수
     public SseEmitter subscribe(String userId) {
         SseEmitter sseEmitter = new SseEmitter(DEFAULT_TIMEOUT); // emitter 생성
         SseEmitter emitter1 = emitterRepository.save(userId, sseEmitter);
+        redisMessageService.subscribe(userId);
+
         // 오류 발생시 삭제
         sseEmitter.onCompletion(() -> emitterRepository.deleteById(userId));
+        sseEmitter.onCompletion(() -> {
+            emitterRepository.deleteById(userId);
+            redisMessageService.removeSubscribe(userId); // 구독한 채널 삭제
+        });
         sseEmitter.onTimeout(() -> emitterRepository.deleteById(userId));
 
         try {
@@ -36,43 +49,21 @@ public class NotifyService {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-//        if (emitterRepository.findAllEventCacheStartWithByUserId(userId) != null) { // 전송되지 않은 신호가 있다면 보내주기
-//            List<Map<String,SseEmitter>> list = emitterRepository.findAllEventCacheStartWithByUserId(userId);
-//            log.debug(list.toString());
-//            for (int i = 0; i < list.size(); i++) {
-//                try {
-//                    SseEmitter sseEmitter1 = new SseEmitter(DEFAULT_TIMEOUT); // emitter 생성
-//                    sseEmitter1.send(SseEmitter.event().name("UNSENT_MESSAGE").data("확인하지 않은 알림이 있습니다."));
-//                } catch (IOException e) {
-//                    throw new RuntimeException(e);
-//                }
-//            }
-//            emitters.forEach(
-//                    (key, emitter) -> {
-//                        try {
-//                            emitter.send(SseEmitter.event().name("UNSENT_MESSAGE").data("확인하지 않은 알람이 있습니다."));
-//                        } catch (IOException e) {
-//                            throw new RuntimeException(e);
-//                        }
-//                    }
-//            );
-//            emitterRepository.deleteAllEventCacheStartWithId(userId);
-//        }else{
-//            try {
-//                sseEmitter.send(SseEmitter.event().name("connect").data("로그인 성공"));
-//            } catch (IOException e) {
-//                throw new RuntimeException(e);
-//            }
-//        }
+
         return sseEmitter;
+    }
+    public void publishNotificationToRedis(MessageDto messageDto){
+        Notify notify = createNotification(messageDto.getReceiver(), messageDto.getNotificationType(),messageDto.getContent(),messageDto.getUrl());
+        saveNotification(notify);
+        redisMessageService.publish(messageDto);
     }
 
     // 알림 보내기 함수
-    public void send(String receiver, Notify.NotificationType notificationType, String notifyContent, String url) {
-        Notify notification = notifyRepository.save(createNotification(receiver, notificationType, notifyContent, url)); // 알림 객체 생성 및 저장
+    public void send(MessageDto messageDto) {
+//        Notify notification = notifyRepository.save(createNotification(messageDto.getReceiver(), messageDto.getNotificationType(), messageDto.getContent(), messageDto.getUrl())); // 알림 객체 생성 및 저장
         log.debug("send 함수 들옴");
-        log.debug(receiver);
-        SseEmitter sseEmitter = emitterRepository.findByUserId(receiver);
+        log.debug(messageDto.getReceiver());
+        SseEmitter sseEmitter = emitterRepository.findByUserId(messageDto.getReceiver());
 
         if (sseEmitter == null) {
             log.debug("sseEmitter is null, user is not connected.");
@@ -80,27 +71,26 @@ public class NotifyService {
         }
 
         log.debug("보낼 알림 " + sseEmitter.toString());
-        sendNotification(receiver, sseEmitter, notificationType, notifyContent);
+        sendNotification(messageDto,sseEmitter);
     }
 
-    private void sendNotification(String userId, SseEmitter emitter, Notify.NotificationType notificationType, String notifyContent) {
+    private void sendNotification(MessageDto messageDto, SseEmitter emitter) {
 
         try {
             log.debug(emitter.toString());
-            log.debug(notificationType.toString());
-            log.debug(notifyContent);
+            log.debug(messageDto.getNotificationType().toString());
+            log.debug(messageDto.getContent());
             emitter.send(SseEmitter.event()
-                    .name(notificationType.toString())
-                    .data(notifyContent)
+                    .name(messageDto.getNotificationType().toString())
+                    .data(messageDto.getContent())
             );
         } catch (IOException e) {
             log.debug(e.getMessage());
-            log.debug("회원이 로그아웃 상태입니다.");
         }
     }
 
 
-    private Notify createNotification(String userId, Notify.NotificationType notificationType, String content, String url) {
+    public Notify createNotification(String userId, Notify.NotificationType notificationType, String content, String url) {
         return Notify.builder()
                 .userId(userId)
                 .notificationType(notificationType)
@@ -125,5 +115,9 @@ public class NotifyService {
     public long countUnread(String userId) throws IOException {
         long count = notifyRepository.countByUserIdAndIsRead(userId, "N");
         return count;
+    }
+    // todo 알림 저장 함수
+    public void saveNotification(Notify notify){
+        notifyRepository.save(notify);
     }
 }
