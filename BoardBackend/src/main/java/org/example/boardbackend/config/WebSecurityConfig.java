@@ -1,7 +1,6 @@
 package org.example.boardbackend.config;
 
 import jakarta.servlet.DispatcherType;
-import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
@@ -79,7 +78,8 @@ public class WebSecurityConfig {
         return (web) -> web.ignoring().requestMatchers(
                 "/img/**",
                 "/css/**",
-                "/js/**"
+                "/js/**",
+                "/api/normal/board/club/img/*"
         );
     }
 
@@ -94,18 +94,17 @@ public class WebSecurityConfig {
         http.formLogin(req -> req.disable()); // form 태그 action 을 이용한 로그인 사용않함 -> axios 통신함
 
         http.authorizeHttpRequests(req -> req // todo 여기서 부터 controller의 url을 제한함으로 db와의 접근을 제한한다.
-//                .dispatcherTypeMatchers(DispatcherType.FORWARD).permitAll()
-//                .requestMatchers("/api/auth/**").permitAll()       // 로그인 및 회원가입 함수
-//                .requestMatchers("/api/user/**").hasRole("USER")       // user관련 모든 함수
-//                .requestMatchers("/api/admin/**").hasRole("ADMIN")       // 관리자의 모든 함수
-//                .requestMatchers("/api/v1/notify/").hasRole("USER")
-//                .requestMatchers("/api/v1/notify/").hasRole("ADMIN")
-//                .requestMatchers("/api/normal/**").permitAll()       // 관리자의 모든 함수
+                .dispatcherTypeMatchers(DispatcherType.FORWARD).permitAll()
+                .requestMatchers("/api/auth/**").permitAll()       // 로그인 및 회원가입 함수
+                .requestMatchers("/api/user/**").hasRole("USER")       // user관련 모든 함수
+                .requestMatchers("/api/admin/**").hasRole("ADMIN")       // 관리자의 모든 함수
+                .requestMatchers("/api/v1/notify/**").permitAll()
+                .requestMatchers("/api/normal/**").hasAnyRole("USER", "ADMIN")
+
 
                 .anyRequest()
-//                .authenticated());
-                .permitAll());
-
+                .authenticated());
+//                .permitAll());
 
 ////        TODO: 6) 카카오 소셜 로그인 설정 부분
 //        http.oauth2Login(req -> req
@@ -125,7 +124,7 @@ public class WebSecurityConfig {
     // todo chainfilter에서 막힐경울 처리해주는 클래스
     class FailedAuthenticationEntrypoint implements AuthenticationEntryPoint {
         @Override
-        public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException authException) throws IOException, ServletException {
+        public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException authException) throws IOException {
             response.setContentType("application/json"); // 반환할 타입
             response.setStatus(HttpServletResponse.SC_FORBIDDEN); // 권한없음 신호 보내기
             // {"code":"NP","message": "No Permission"}

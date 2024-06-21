@@ -905,7 +905,8 @@ export default {
       try {
         if (confirm("정말로 삭제하시겠습니까?")) {
           let response = await FreeBoardService.deleteFreeBoard(
-            this.freeBoard.freeBoardId
+            this.freeBoard.freeBoardId,
+            this.$store.state.user.userId
           );
           // 로깅
           console.log(response.data);

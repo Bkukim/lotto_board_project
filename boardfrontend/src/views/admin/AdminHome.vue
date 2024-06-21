@@ -20,7 +20,7 @@
             <div class="card">
               <div class="card-body">
                 <h5 class="card-title">총 사용자</h5>
-                <p class="card-text">2,245명</p>
+                <p class="card-text">9명</p>
               </div>
             </div>
           </div>
@@ -35,8 +35,8 @@
           <div class="col-lg-3 col-md-6 mb-4">
             <div class="card">
               <div class="card-body">
-                <h5 class="card-title">월간 매출</h5>
-                <p class="card-text">$59,690</p>
+                <h5 class="card-title">게시판 수</h5>
+                <p class="card-text">59,690개</p>
               </div>
             </div>
           </div>
@@ -55,7 +55,7 @@
           <div class="col-lg-6">
             <div class="card">
               <div class="card-body">
-                <h5 class="card-title">매출 그래프</h5>
+                <h5 class="card-title">게시판 수</h5>
                 <canvas id="salesChart"></canvas>
               </div>
             </div>
@@ -63,7 +63,7 @@
           <div class="col-lg-6">
             <div class="card">
               <div class="card-body">
-                <h5 class="card-title">주문 현황</h5>
+                <h5 class="card-title">평균 방문자</h5>
                 <canvas id="ordersChart"></canvas>
               </div>
             </div>

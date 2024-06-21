@@ -9,9 +9,11 @@
       <div class="d-flex justify-content-between align-items-center mb-4">
         <h3 class="section-title mt-5 mb-5" style="letter-spacing: -3px; font-size: 25px;">신고 목록</h3>
 
+
       </div>
          <!-- 게시판 탭 시작 -->
          <div class="tab-container">
+
           <ul class="nav nav-tabs">
             <li class="nav-item" @click="activeTab = 'free'">
               <a class="nav-link" :class="{ active: activeTab === 'free' }"

@@ -208,12 +208,16 @@
             </div>
 
             <!-- 로그인 상태일 시 -->
+
             <div class="icons-container" v-else>
+
               <div>
                 <div v-if="this.$store.state.user.role=='ROLE_USER'">
                   <!-- 마이페이지 아이콘 -->
                   <router-link
+
                     style="margin-top: -5px; margin-right: 23px"
+
                     to="/member/mypage"
                     class="d-inline-block align-text-top"
                     v-if="!isAdminLoggedIn"
@@ -227,17 +231,21 @@
                     />
                   </router-link>
                 </div>
+
                 <!-- 관리자 로그인시 : 관리자페이지 이동 -->
                 <div v-else-if="this.$store.state.user.role=='ROLE_ADMIN'">
                    <!-- 마이페이지 아이콘 -->
                   <router-link
                     style="margin-top: -5px; margin-right: 30px; margin-left: 10px; color: #444; text-decoration: none; font-size: 15px; text-align: center;"
+
                     to="/admin/home"
                     class="d-inline-block align-text-top"
                     v-if="!isAdminLoggedIn"
                   >
+
                   Admin <br>
                   Page
+
                   </router-link>
                 </div>
               </div>
@@ -258,6 +266,7 @@
                 />
               </router-link>
             </div>
+
           </div>
         </div>
       </nav>

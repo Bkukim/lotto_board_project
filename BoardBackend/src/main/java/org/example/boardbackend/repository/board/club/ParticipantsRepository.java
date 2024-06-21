@@ -25,4 +25,6 @@ public interface ParticipantsRepository extends JpaRepository<Participants, Long
     Optional<Participants> findByClubBoardIdAndUserId(long clubBoardId, String userId);
 
     List<Participants> findAllByClubBoardId(long clubBoardId);
+
+    void deleteByClubBoardId(Long clubBoardId);
 }

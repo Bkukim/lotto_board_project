@@ -46,11 +46,28 @@ export default {
         //     let message = event.data;
         //     alert(message);
         // })
-        this.eventSource.addEventListener("UNSENT_MESSAGE", function (event) {
+        
+        this.eventSource.addEventListener("COMMENT", function (event) {
           let message = event.data;
           alert(message);
         });
-        this.eventSource.addEventListener("COMMENT", function (event) {
+        this.eventSource.addEventListener("REPORT", function (event) {
+          let message = event.data;
+          alert(message);
+        });
+        this.eventSource.addEventListener("CLUB_APPLICATION", function (event) {
+          let message = event.data;
+          alert(message);
+        });
+        this.eventSource.addEventListener("CLUB_APPROVAL", function (event) {
+          let message = event.data;
+          alert(message);
+        });
+        this.eventSource.addEventListener("COMPLAINT", function (event) {
+          let message = event.data;
+          alert(message);
+        });
+        this.eventSource.addEventListener("COMPLAINT_STATUS", function (event) {
           let message = event.data;
           alert(message);
         });

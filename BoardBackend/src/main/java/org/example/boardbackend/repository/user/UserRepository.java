@@ -68,7 +68,8 @@ public interface UserRepository extends JpaRepository<User, String> {
     @Transactional
     @Modifying // 업데이트문을 쿼리문으로 작성할때는 두개의 어노테이션을 추가해줘야한다.
     @Query(value = "UPDATE LOTTO_USER \n" +
-            "SET USER_NAME = :userName\n" +
+            "SET ROLE = :role" +
+            ",USER_NAME = :userName\n" +
             ",BIRTHDAY = :birthday\n" +
             ",PHONE_NUM = :phoneNum\n" +
             ",EMAIL = :email\n" +
@@ -78,7 +79,8 @@ public interface UserRepository extends JpaRepository<User, String> {
             "WHERE USER_ID = :userId "
             ,nativeQuery = true)
     public void updateUserById(
-            @Param("userName") String userName
+            @Param("role") String role
+            , @Param("userName") String userName
             , @Param("birthday") long birthday
             , @Param("phoneNum") String phoneNum
             , @Param("email") String email

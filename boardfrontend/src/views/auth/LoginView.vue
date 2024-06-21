@@ -100,6 +100,7 @@
             />
           </div>
         </div>
+
         <div class="row text-center">
           <div>
             <img
@@ -108,6 +109,7 @@
               @click="goToKakaoAuth"
             />
           </div>
+
         </div>
       </div>
       <div class="login-image">
@@ -161,6 +163,7 @@ export default {
     },
     // 네이버 로그인
     goToNaverLogin() {
+
       const clientId = "Ipydix8nXe2V9m6KRDom"; // 네이버 개발자 센터에서 발급받은 Client ID
       const redirectUri = "http://localhost:8080/login/ouath2/code/naver"; // 네이버 개발자 센터에 등록한 Redirect URI
       const state = this.generateRandomState(); // CSRF 공격 방지를 위한 랜덤 상태 값
@@ -178,6 +181,7 @@ export default {
         state += characters.charAt(randomIndex);
       }
       return state;
+
     },
     // 아이디 찾기
     goFindId() {
@@ -196,45 +200,54 @@ export default {
       let subscribeUrl = "http://localhost:8000/api/v1/notify/subscribe";
 
       if (jwt != null) {
-        try {
-          let token = jwt;
-          this.eventSource = new EventSource(subscribeUrl + "?token=" + token);
-          this.eventSource.onopen = () => {
-            console.log("SSE 연결이 열렸습니다.");
-            this.isConnected = true;
-          };
-          // this.eventSource.addEventListener("connect", function(event) {
-          //     let message = event.data;
-          //     alert(message);
-          // })
-          this.eventSource.addEventListener("UNSENT_MESSAGE", function (event) {
-            let message = event.data;
-            alert(message);
-          });
-          this.eventSource.addEventListener("COMMENT", function (event) {
-            // let response = NotifyService.countNotify(this.$store.state.user.userId);
-            // console.log(response);
-            // this.$store.state.notifyCount = response;
-            let message = event.data;
-            alert(message);
-          });
-          this.eventSource.onmessage = (event) => {
-            console.log("새 알림:", event.data);
-            this.messages.push(event.data);
-          };
-          this.eventSource.onerror = (event) => {
-            console.error("SSE 연결 오류:", event);
-            if (event.readyState == EventSource.CLOSED) {
-              console.log("SSE 연결이 닫혔습니다.");
-              this.isConnected = false;
-            } else {
-              console.log("SSE 연결 오류 발생, 재연결 시도 중...");
-              setTimeout(() => this.connectSSE(), 5000); // 5초 후 재연결 시도
-            }
-          };
-        } catch (error) {
-          console.log(error);
-        }
+
+
+        let token = jwt;
+        this.eventSource = new EventSource(subscribeUrl + "?token=" + token);
+        this.eventSource.onopen = () => {
+          console.log("SSE 연결이 열렸습니다.");
+          this.isConnected = true;
+        };
+        this.eventSource.addEventListener("COMMENT", function (event) {
+          let message = event.data;
+          alert(message);
+        });
+        this.eventSource.addEventListener("REPORT", function (event) {
+          let message = event.data;
+          alert(message);
+        });
+        this.eventSource.addEventListener("CLUB_APPLICATION", function (event) {
+          let message = event.data;
+          alert(message);
+        });
+        this.eventSource.addEventListener("CLUB_APPROVAL", function (event) {
+          let message = event.data;
+          alert(message);
+        });
+        this.eventSource.addEventListener("COMPLAINT", function (event) {
+          let message = event.data;
+          alert(message);
+        });
+        this.eventSource.addEventListener("COMPLAINT_STATUS", function (event) {
+          let message = event.data;
+          alert(message);
+        });
+        this.eventSource.onmessage = (event) => {
+          console.log("새 알림:", event.data);
+          this.messages.push(event.data);
+        };
+        this.eventSource.onerror = (event) => {
+          console.error("SSE 연결 오류:", event);
+          if (event.readyState == EventSource.CLOSED) {
+            console.log("SSE 연결이 닫혔습니다.");
+            this.isConnected = false;
+          } else {
+            console.log("SSE 연결 오류 발생, 재연결 시도 중...");
+            setTimeout(() => this.connectSSE(), 5000); // 5초 후 재연결 시도
+          }
+        };
+
+
       } else {
         console.error("JWT 토큰이 없습니다.");
       }
@@ -290,6 +303,8 @@ export default {
         } else if (this.$store.state.user.role == "ROLE_ADMIN") {
           alert("관리자 로그인에 성공하였습니다.");
           this.$router.push("/admin/home");
+        } else {
+          alert("회원가입 승인이 완료되지 않았습니다.");
         }
       } catch (e) {
         // 로그인 실패시 에러가 뜨므로 로그인 실패 공유함수를 실행

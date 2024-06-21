@@ -86,7 +86,7 @@ public class UserService {
     }
 
     //    todo 회원정보 수정 함수
-    public void updateUserById(String userName
+    public void updateUserById(String role, String userName
             , long birthday
             , String phoneNum
             , String email
@@ -94,7 +94,7 @@ public class UserService {
             , String normalAddress
             , String detailAddress
             , String userId) {
-        userRepository.updateUserById(userName
+        userRepository.updateUserById(role, userName
                 , birthday
                 , phoneNum
                 , email

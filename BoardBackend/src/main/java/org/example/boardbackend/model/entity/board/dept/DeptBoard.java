@@ -41,7 +41,7 @@ import org.hibernate.annotations.Where;
 @DynamicUpdate
 // soft delete jpa 어노테이션
 @Where(clause = "DELETE_YN = 'N'")
-@SQLDelete(sql ="UPDATE LOTTO_DEPT_BOARD SET DELETE_YN = 'Y' WHERE DEPT_BOARD_ID = ?")
+@SQLDelete(sql ="UPDATE LOTTO_DEPARTMENT_BOARD SET DELETE_YN = 'Y' WHERE DEPT_BOARD_ID = ?")
 public class DeptBoard extends BaseTimeEntity3 {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE

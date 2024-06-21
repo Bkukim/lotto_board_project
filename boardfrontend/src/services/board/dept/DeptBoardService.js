@@ -104,24 +104,24 @@ class DeptBoardService {
     );
   }
 
-    // TODO: 신고 게시글 처리완료 전체 조회
-    getAllDeptBoardReportProcessed(userId, page, size) {
-      return http.get(
-        `/admin/report/dept/processed?userId=${userId}&page=${page}&size=${size}`,
-        {
-          headers: AuthHeader(),
-        }
-      );
-    }
-
-    // TODO: 신고 게시글 삭제 : 자유게시판 삭제, 신고테이블 상태변경
-    deleteDeptBoardReport(deptBoardId) {
-      return http.delete(`/admin/report/dept/deletion/${deptBoardId}`, {
+  // TODO: 신고 게시글 처리완료 전체 조회
+  getAllDeptBoardReportProcessed(userId, page, size) {
+    return http.get(
+      `/admin/report/dept/processed?userId=${userId}&page=${page}&size=${size}`,
+      {
         headers: AuthHeader(),
-      });
-    }
+      }
+    );
+  }
 
-      // TODO: 신고 게시글 취소 : 신고테이블 상태변경
+  // TODO: 신고 게시글 삭제 : 자유게시판 삭제, 신고테이블 상태변경
+  deleteDeptBoardReport(deptBoardId) {
+    return http.delete(`/admin/report/dept/deletion/${deptBoardId}`, {
+      headers: AuthHeader(),
+    });
+  }
+
+  // TODO: 신고 게시글 취소 : 신고테이블 상태변경
   updateDeptBoardReport(deptBoardId) {
     console.log(deptBoardId);
     return http.put(`/admin/report/dept/update/${deptBoardId}`, {
