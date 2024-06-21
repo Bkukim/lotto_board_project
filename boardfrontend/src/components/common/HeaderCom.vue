@@ -1,7 +1,7 @@
 <template>
-  <div v-if="!hideHeader">
-    <div style="border-bottom: 1px solid #cccccc">
-      <nav class="navbar navbar-expand-lg bg-dark-light">
+  <div v-if="!hideHeader" >
+    <div style="border-bottom: 1px solid #cccccc" >
+      <nav class="navbar navbar-expand-lg bg-dark-light" >
         <router-link class="navbar-brand" to="/">
           <img
             src="@/assets/img/LOTTO_LOGO.png"
@@ -11,7 +11,7 @@
             class="d-inline-block align-text-top"
           />
         </router-link>
-        <div class="container">
+        <div class="container" >
           <button
             class="navbar-toggler"
             type="button"
@@ -23,10 +23,10 @@
           >
             <span class="navbar-toggler-icon"></span>
           </button>
-          <div class="collapse navbar-collapse" id="navbarNavDropdown">
+          <div class="collapse navbar-collapse" id="navbarNavDropdown" >
             <ul
               class="navbar-nav ms-auto"
-              style="gap: 10px; display: block; display: flex"
+              style="gap: 10px; display: block; display: flex;"
             >
               <li class="nav-item">
                 <router-link class="nav-link" to="/notice/notice-board"
@@ -80,7 +80,7 @@
                 class="container-fluid"
                 style="background-color: rgb(255, 255, 255); height: 92px"
               >
-                <form class="d-flex">
+                <form class="d-flex" style="width: 150px;">
                   <input
                     class="form-control me-2"
                     type="search"
@@ -107,6 +107,7 @@
               </div>
             </nav>
 
+            
             <!-- 알림 아이콘 -->
             <div
               class="nav-item dropdown notification-dropdown"
@@ -194,7 +195,7 @@
             </div>
 
             <!-- 로그인 아이콘 -->
-            <div class="hd_r" v-if="!this.$store.state.loggedIn">
+            <div class="icons-container" v-if="!this.$store.state.loggedIn">
               <router-link to="/member/login">
                 <img
                   src="@/assets/img/login_icon.png"
@@ -207,12 +208,16 @@
             </div>
 
             <!-- 로그인 상태일 시 -->
-            <div class="hd_r" style="text-align: center" v-else>
+
+            <div class="icons-container" v-else>
+
               <div>
                 <div v-if="this.$store.state.user.role=='ROLE_USER'">
                   <!-- 마이페이지 아이콘 -->
                   <router-link
-                    style="margin-top: -5px; margin-right: 3px"
+
+                    style="margin-top: -5px; margin-right: 23px"
+
                     to="/member/mypage"
                     class="d-inline-block align-text-top"
                     v-if="!isAdminLoggedIn"
@@ -226,21 +231,21 @@
                     />
                   </router-link>
                 </div>
+
+                <!-- 관리자 로그인시 : 관리자페이지 이동 -->
                 <div v-else-if="this.$store.state.user.role=='ROLE_ADMIN'">
                    <!-- 마이페이지 아이콘 -->
                   <router-link
-                    style="margin-top: -5px; margin-right: 3px"
+                    style="margin-top: -5px; margin-right: 30px; margin-left: 10px; color: #444; text-decoration: none; font-size: 15px; text-align: center;"
+
                     to="/admin/home"
                     class="d-inline-block align-text-top"
                     v-if="!isAdminLoggedIn"
                   >
-                    <img
-                      src="@/assets/img/mypage_icon.png"
-                      alt="Loo"
-                      width="40"
-                      height="40"
-                      class="d-inline-block align-text-top"
-                    />
+
+                  Admin <br>
+                  Page
+
                   </router-link>
                 </div>
               </div>
@@ -257,18 +262,11 @@
                   width="30"
                   height="30"
                   class="d-inline-block align-text-top"
+                  style="margin-left: -30px;"
                 />
               </router-link>
             </div>
 
-            <!-- 관리자 페이지 버튼
-            <router-link
-              v-if="this.$store.state.user.role.admin"
-              to="/admin/home"
-              class="btn btn-primary admin-page-btn"
-            >
-              관리자 페이지
-            </router-link> -->
           </div>
         </div>
       </nav>
@@ -397,7 +395,7 @@ export default {
 
 /* 메뉴 */
 .nav-item {
-  margin-right: 1.5vw;
+  margin-right: 10px;
 }
 
 .nav-link {
@@ -536,5 +534,11 @@ export default {
   margin-left: 10px;
   background-color: #2d61d0;
   color: white;
+}
+
+.icons-container {
+  display: flex;
+  align-items: center;
+  gap: 15px;
 }
 </style>

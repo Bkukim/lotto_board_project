@@ -1,78 +1,19 @@
 // 관리자 신고 게시글
 <template>
-  <div class="main-container d-flex" style="height: auto">
-    <AdminHeaderCom />
-    <div class="main-content">
-      <div class="container text-center" id="fb_all">
-        <h3 class="mb-5 mt-5">관리자 신고 게시글 관리</h3>
-        <!-- <p class="mb-5">
-      자유게시판은 자유로운 의견을 남기는 공간으로 건의관련 답변은 드리지
-      않습니다. <br />
-      건의관련 및 문의사항은 건의게시판을 이용해주시길 바랍니다.
-    </p> -->
+  <HeaderCom :hideHeader="true" />
+  <!-- 관리자 페이지에서는 헤더를 숨김 -->
+  <div class="main-container d-flex" style="height: 900px;">
+    <AdminHeaderCom class="sidebar" :hideHeader="true" />
+    <div class="content-wrapper" style="flex: 1; padding: 20px; height: auto;">
+      <h2 class="text-center my-5 font-weight-bold" style="letter-spacing: -1.5px;"> 관리자 신고 게시글</h2>
+      <div class="d-flex justify-content-between align-items-center mb-4">
+        <h3 class="section-title mt-5 mb-5" style="letter-spacing: -3px; font-size: 25px;">신고 목록</h3>
 
-        <!-- 검색 박스 -->
-        <!-- <div class="container text-center" style="gap: 5px" id="search_box"> -->
-          <!-- <div class="row"> -->
-            <!-- <div class="col"> -->
-              <!-- <button
-            class="btn btn-primary dropdown-toggle"
-            type="button"
-            data-bs-toggle="dropdown"
-            aria-expanded="false"
-            id="search_ck"
-          >
-            
-          </button> -->
-              <!-- <ul class="dropdown-menu">
-            <li><a class="dropdown-item" href="#">Action</a></li>
-            <li><a class="dropdown-item" href="#">Another action</a></li>
-            <li><a class="dropdown-item" href="#">Something else here</a></li>
-          </ul> -->
-            <!-- </div> -->
-            <!-- <div class="col"> -->
-              <!-- 검색어를 입력하세요 -->
-              <!-- <div class="input-group mb-3">
-                <input
-                  type="text"
-                  class="form-control"
-                  aria-label="Sizing example input"
-                  aria-describedby="inputGroup-sizing-default"
-                  placeholder="아이디를 입력하세요."
-                  v-model="searchUserId"
-                />
-              </div> -->
-            <!-- </div> -->
-            <!-- 검색 버튼 -->
-            <!-- <div class="col-auto"> -->
-              <!-- col-auto로 변경하여 너비를 자동 조정 -->
-              <!-- <button
-                class="btn btn-outline-secondary"
-                type="button"
-                id="button-search"
-                @click="searchFreeBoardReport"
-              >
-                검색
-              </button> -->
-            <!-- </div> -->
-            <!--  초기화 버튼 -->
-            <!-- <div class="col-auto"> -->
-              <!-- col-auto로 변경하여 너비를 자동 조정 -->
-              <!-- <button
-                class="btn btn-outline-secondary"
-                type="button"
-                id="button-reset"
-                @click="resetSearch"
-              >
-                초기화
-              </button> -->
-            <!-- </div> -->
-          <!-- </div> -->
-        <!-- </div> -->
-        <!-- 검색박스 끝 -->
 
-        <!-- 게시판 탭 시작 -->
-        <div class="tab-container">
+      </div>
+         <!-- 게시판 탭 시작 -->
+         <div class="tab-container">
+
           <ul class="nav nav-tabs">
             <li class="nav-item" @click="activeTab = 'free'">
               <a class="nav-link" :class="{ active: activeTab === 'free' }"
@@ -371,38 +312,8 @@
           </div>
         </div>
 
-        <!-- 글쓰기 버튼-->
-        <!-- <div class="mt-5">
-          <router-link to="">
-            <button
-              class="btn btn-outline-secondary"
-              type="button"
-              id="button-Writing"
-              style="margin-left: 1220px"
-              @click="writeFreeBoard"
-            >
-              글쓰기
-            </button>
-          </router-link>
-        </div> -->
-
-        <!-- 페이징 -->
-        <!-- {/* paging 시작 */} -->
-        <!-- <div class="row justify-content-center mt-5">
-          <div class="col-auto" style="margin-top: 50px">
-            <b-pagination
-              class="custom-pagination col-12 mb-3"
-              v-model="page"
-              :total-rows="count"
-              :per-page="pageSize"
-              @click="retrieveFreeBoardReport"
-            ></b-pagination>
-          </div>
-        </div> -->
-      </div>
     </div>
   </div>
-  <!-- 자유게시판 중앙정렬 전체박스 끝 -->
 </template>
 
 <script>
@@ -633,7 +544,7 @@ p {
   background-color: #162b59;
   border-color: #ffffff;
   color: white;
-}
+} 
 
 .custom-pagination .page-link {
   color: #162b59;
@@ -643,18 +554,17 @@ p {
   background-color: #ffffff;
   border-color: 1px solid#8f8f8f;
   color: #162b59;
-  /* border: none; */
 }
 
 .custom-pagination .page-link:focus {
   outline: none;
   box-shadow: 0 0 0 0.2rem #162b59;
   border-color: #162b59;
-}
+} 
 
 /* 검색버튼 */
 .btn {
-  margin: 0 2px; /* 버튼 간 간격을 줄이기 위해 여백을 조정 */
+  margin: 0 2px; 
 }
 
 /* 검색 전체 배경 */
@@ -673,7 +583,7 @@ p {
   background-color: #162b59;
   color: #ffffff;
   border: none;
-}
+} 
 
 #button-reset {
   background-color: #162b59;
@@ -682,5 +592,5 @@ p {
 }
 #router_hv:hover {
   text-decoration: underline 1px solid;
-}
+} 
 </style>

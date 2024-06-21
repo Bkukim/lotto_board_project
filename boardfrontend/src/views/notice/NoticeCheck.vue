@@ -64,6 +64,38 @@
         v-html="notice.content"
       ></div>
 
+      <!-- 신청하기 버튼 -->
+      <div class="col">
+        <button
+          class="fbd_d container text-center"
+          style="
+            width: 150px;
+            text-decoration: none;
+            background-color: #ffcc00;
+            font-size: 15px;
+            text-align: center;
+            height: 40px;
+            border-radius: 50px;
+            margin-top: 50px;
+            border: none;
+            font-weight: 100;
+          "
+          @click="applyNotice"
+        >
+          <div
+            style="display: flex; align-items: center; justify-content: center"
+          >
+            <div
+              class="router-text"
+              style="color: #ffffff; text-align: center; font-weight: 100"
+            >
+              신청하기
+            </div>
+          </div>
+        </button>
+      </div>
+
+   
       <!-- 목록으로 버튼 -->
       <div class="col mb-5 justify-content-right">
         <router-link
@@ -193,9 +225,7 @@ export default {
         views: 0,
 
         eventYN: "N",
-
       },
-
 
       // 페이징
       page: 1, // 현재페이지번호
@@ -208,17 +238,14 @@ export default {
     };
   },
 
- 
   methods: {
-    async get(noticeId,eventYN) {
-
+    async get(noticeId, eventYN) {
       // todo: 공통 상세조회 함수: get()
       try {
         let response = await NoticeService.getNotice(noticeId, eventYN);
         this.notice = response.data;
         // 로깅
         console.log(response.data.views);
-
       } catch (e) {
         console.log(e);
       }
@@ -238,13 +265,10 @@ export default {
       }
     },
 
-
     goUpdate() {
       this.$router.push(`/admin/notice-update/${this.notice.noticeId}`);
-
     },
     async viewsUp() {
-
       try {
         // +하고 이동
         let views = (this.notice.views = this.notice.views + 1);
@@ -266,11 +290,10 @@ export default {
         console.log(e);
       }
     },
-
-    },
+  },
 
   async mounted() {
-    await this.get(this.$route.params.noticeId,this.$route.params.eventYN);
+    await this.get(this.$route.params.noticeId, this.$route.params.eventYN);
     this.viewsUp();
     window.scrollTo(0, 0);
   },

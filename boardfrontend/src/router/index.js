@@ -14,16 +14,12 @@ const routes = [
 
     meta: { showHeader: false }, // 관리자 페이지에서는 헤더를 숨김
   },
-  {
-    path: "/about",
-    component: () => import("../views/AboutView.vue"),
-    meta: { showHeader: true }, // 기본적으로 헤더를 보이게 설정
-  },
+
   // 로그인
   {
     path: "/member/login",
     component: () => import("../views/auth/LoginView.vue"),
-    meta: { showHeader: true }, // 기본적으로 헤더를 보이게 설정
+    meta: { showHeader: false }, // 관리자 페이지에서는 헤더를 숨김
   },
   // 마이페이지
   {
@@ -105,6 +101,7 @@ const routes = [
  {
   path: "/notice/notice-check/:noticeId/:eventYN",
   component: () => import("../views/notice/NoticeCheck.vue"),
+  meta: { showHeader: true }, // 기본적으로 헤더를 보이게 설정
 },
 
   // 공지사항 -> 글쓰기
