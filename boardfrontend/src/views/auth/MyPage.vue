@@ -133,7 +133,7 @@
               </h3>
 
               <!-- 자유게시판 -->
-              <div class="row mt-5 border justify-content-center  shadow">
+              <div class="row mt-5 border justify-content-center shadow">
                 <h3
                   class="align-items-center"
                   style="
@@ -474,17 +474,54 @@
 
               <div class="container shadow" style="background-color: #f2f2f2">
                 <div class="row justify-content-md-center" v-if="result">
-                  <div class="col-8">
+                  <div class="container text-center mt-5 pt-5">
+                    <img
+                      src="@/assets/img/join_ok.png"
+                      class="mb-4 join-ok-icon"
+                      style="width: 100px"
+                    />
+                    <h2 class="text-primary fw-bold mb-4">
+                      비밀번호 변경 완료!
+                    </h2>
+                    <p class="lead">비밀번호가 성공적으로 변경되었습니다.</p>
+                    <button
+                      class="btn btn-primary mt-4 px-5 py-2"
+                      @click="goLogin"
+                    >
+                      로그인 하러 가기
+                    </button>
+                    <!-- <router-link
+                      to="/member/login"
+                      style="
+                        background-color: #00479d;
+                        border: none;
+                        font-size: 1rem;
+                        color: #fff;
+                        text-decoration: none;
+                        width: 200px;
+                        height: 40px;
+                        border-radius: 20px;
+                      "
+                      >로그인하러가기</router-link
+                    > -->
+
+                    <br />
+                    <br />
+                    <br />
+                    <br />
+                  </div>
+                  <!-- <div class="col-8">
                     <div
                       class="mt-5 text-center"
                       id="box"
                       style="height: 300px"
                     >
                       <div style="margin-top: 70px">
+                        
                         <h3>비밀번호가 성공적으로 변경되었습니다.</h3>
                       </div>
                     </div>
-                  </div>
+                  </div> -->
                 </div>
                 <div class="row justify-content-md-center" v-else>
                   <div class="col-8">
@@ -533,7 +570,7 @@
             <br />
             <div class="container text-center" v-if="result">
               <div class="row justify-content-md-center">
-                <div class="col-md-auto">
+                <!-- <div class="col-md-auto">
                   <button
                     class="text-light findPwdBtn btn-sm mt-4"
                     id=""
@@ -542,7 +579,7 @@
                   >
                     로그인 하러 가기
                   </button>
-                </div>
+                </div> -->
               </div>
             </div>
             <div class="container text-center" v-else>
@@ -722,6 +759,7 @@ export default {
   },
 
   methods: {
+    
     // // 회원 탈퇴 소프트 삭제 함수
     // async withdraw(userId) {
     //   if (this.user.password !== this.confirmPassword) {
