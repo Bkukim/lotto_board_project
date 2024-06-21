@@ -190,45 +190,52 @@ export default {
       let subscribeUrl = "http://localhost:8000/api/v1/notify/subscribe";
 
       if (jwt != null) {
-        try {
-          let token = jwt;
-          this.eventSource = new EventSource(subscribeUrl + "?token=" + token);
-          this.eventSource.onopen = () => {
-            console.log("SSE 연결이 열렸습니다.");
-            this.isConnected = true;
-          };
-          // this.eventSource.addEventListener("connect", function(event) {
-          //     let message = event.data;
-          //     alert(message);
-          // })
-          // this.eventSource.addEventListener("UNSENT_MESSAGE", function (event) {
-          //   let message = event.data;
-          //   alert(message);
-          // });
-          this.eventSource.addEventListener("COMMENT", function (event) {
-            // let response = NotifyService.countNotify(this.$store.state.user.userId);
-            // console.log(response);
-            // this.$store.state.notifyCount = response;
-            let message = event.data;
-            alert(message);
-          });
-          this.eventSource.onmessage = (event) => {
-            console.log("새 알림:", event.data);
-            this.messages.push(event.data);
-          };
-          this.eventSource.onerror = (event) => {
-            console.error("SSE 연결 오류:", event);
-            if (event.readyState == EventSource.CLOSED) {
-              console.log("SSE 연결이 닫혔습니다.");
-              this.isConnected = false;
-            } else {
-              console.log("SSE 연결 오류 발생, 재연결 시도 중...");
-              setTimeout(() => this.connectSSE(), 5000); // 5초 후 재연결 시도
-            }
-          };
-        } catch (error) {
-          console.log(error);
-        }
+
+        let token = jwt;
+        this.eventSource = new EventSource(subscribeUrl + "?token=" + token);
+        this.eventSource.onopen = () => {
+          console.log("SSE 연결이 열렸습니다.");
+          this.isConnected = true;
+        };
+        this.eventSource.addEventListener("COMMENT", function (event) {
+          let message = event.data;
+          alert(message);
+        });
+        this.eventSource.addEventListener("REPORT", function (event) {
+          let message = event.data;
+          alert(message);
+        });
+        this.eventSource.addEventListener("CLUB_APPLICATION", function (event) {
+          let message = event.data;
+          alert(message);
+        });
+        this.eventSource.addEventListener("CLUB_APPROVAL", function (event) {
+          let message = event.data;
+          alert(message);
+        });
+        this.eventSource.addEventListener("COMPLAINT", function (event) {
+          let message = event.data;
+          alert(message);
+        });
+        this.eventSource.addEventListener("COMPLAINT_STATUS", function (event) {
+          let message = event.data;
+          alert(message);
+        });
+        this.eventSource.onmessage = (event) => {
+          console.log("새 알림:", event.data);
+          this.messages.push(event.data);
+        };
+        this.eventSource.onerror = (event) => {
+          console.error("SSE 연결 오류:", event);
+          if (event.readyState == EventSource.CLOSED) {
+            console.log("SSE 연결이 닫혔습니다.");
+            this.isConnected = false;
+          } else {
+            console.log("SSE 연결 오류 발생, 재연결 시도 중...");
+            setTimeout(() => this.connectSSE(), 5000); // 5초 후 재연결 시도
+          }
+        };
+
       } else {
         console.error("JWT 토큰이 없습니다.");
       }
