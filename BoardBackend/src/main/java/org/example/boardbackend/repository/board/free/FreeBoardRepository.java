@@ -70,6 +70,7 @@ public interface FreeBoardRepository extends JpaRepository<FreeBoard, Long> {
     Page<FreeBoardDto> findFreeBoardByUserIdContaining(@Param("userId") String userId,
                                                Pageable pageable);
 
+
 //    todo: 메인에서 좋아요순으로 가져오기
 @Query(value = "SELECT FREE_BOARD_ID, TITLE, LIKES\n" +
         "FROM (\n" +
@@ -83,6 +84,7 @@ public interface FreeBoardRepository extends JpaRepository<FreeBoard, Long> {
         "FROM LOTTO_FREE_BOARD\n"
         ,nativeQuery = true)
 List<FreeBoardDto> findFreeBoardByLikes(FreeBoardDto freeBoardDto);
+
 
 }
 

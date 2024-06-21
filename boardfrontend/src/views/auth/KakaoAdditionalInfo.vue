@@ -301,7 +301,9 @@ export default {
     // },
     // sse 연결 함수
     connectSse(jwt) {
-      let subscribeUrl = "http://localhost:8000/api/v1/notify/subscribe";
+      // let subscribeUrl = "http://localhost:8000/api/v1/notify/subscribe";
+      // let subscribeUrl = "http://13.209.24.76:8000/api/v1/notify/subscribe";
+      let subscribeUrl = "http://" + this.$store.state.backendIp + "/api/v1/notify/subscribe";
 
       if (jwt != null) {
         let token = jwt;

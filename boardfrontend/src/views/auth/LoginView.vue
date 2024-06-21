@@ -164,14 +164,16 @@ export default {
     // 카카오 로그인
     goToKakaoAuth() {
       const client_id = "6a9b8daaeef2609b3db2849d027f6080"; // Rest API 키
-      const redirect_uri = "http://localhost:8080/auth-redirect"; // Redirect URI
+      const redirect_uri = "http://" + this.$store.state.frontendIp + "/auth-redirect"; // Redirect URI
+      // const redirect_uri = "http://13.209.24.76:8000/auth-redirect"; // Redirect URI
       const kakaoAuthUrl = `https://kauth.kakao.com/oauth/authorize?client_id=${client_id}&redirect_uri=${redirect_uri}&response_type=code`; // response_type=code는 고정
       window.location.href = kakaoAuthUrl; // 이 페이지는 카카오에서 제공하는 페이지라 따로 페이지 만들 필요 없음
     },
     // 네이버 로그인
     goToNaverLogin() {
       const clientId = "Ipydix8nXe2V9m6KRDom"; // 네이버 개발자 센터에서 발급받은 Client ID
-      const redirectUri = "http://localhost:8080/login/ouath2/code/naver"; // 네이버 개발자 센터에 등록한 Redirect URI
+      const redirectUri = "http://" + this.$store.state.frontendIp + "/login/ouath2/code/naver"; // 네이버 개발자 센터에 등록한 Redirect URI
+      // const redirectUri = "http://13.209.24.76:8000/login/ouath2/code/naver"; // 네이버 개발자 센터에 등록한 Redirect URI
       const state = this.generateRandomState(); // CSRF 공격 방지를 위한 랜덤 상태 값
       const naverAuthUrl = `https://nid.naver.com/oauth2.0/authorize?response_type=code&client_id=${clientId}&redirect_uri=${encodeURIComponent(
         redirectUri
@@ -202,7 +204,8 @@ export default {
     },
     // sse 연결 함수
     connectSse(jwt) {
-      let subscribeUrl = "http://localhost:8000/api/v1/notify/subscribe";
+      // let subscribeUrl = "http://localhost:8000/api/v1/notify/subscribe";
+        let subscribeUrl = "http://" + this.$store.state.backendIp + "/api/v1/notify/subscribe";
 
       if (jwt != null) {
         let token = jwt;

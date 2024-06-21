@@ -205,6 +205,7 @@ public class FreeBoardService {
     }
 
 
+
     //    todo : main 페이지 좋아요순 조회
     public List<FreeBoardDto> selectByTitleContainingMain(
             FreeBoardDto freeBoardDto
@@ -215,4 +216,5 @@ public class FreeBoardService {
         );
         return list;
     }
+
 }
