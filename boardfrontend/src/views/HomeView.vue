@@ -9,9 +9,9 @@
       </div>
     </div>
 
-    <!-- HOT & 커뮤니티 보이는 부분 -->
-    <div class="container text-center mt-5" >
-      <div class="row" style="margin-top: 100px;">
+    <!-- HOT & 공지사항 보이는 부분 -->
+    <div class="container text-center mt-5">
+      <div class="row" style="margin-top: 100px">
         <!-- 이달의 HOT -->
         <div class="col">
           <router-link
@@ -49,7 +49,7 @@
             <table class="table mt-5">
               <thead>
                 <tr>
-                  <th scope="col" style="font-size: 14px">작성자</th>
+                  <th scope="col" style="font-size: 14px">번호</th>
                   <th scope="col" style="font-size: 14px">제목</th>
                 </tr>
               </thead>
@@ -66,10 +66,10 @@
           </div>
         </div>
 
-        <!-- 커뮤니티 -->
+        <!-- 공지사항 -->
         <div class="col">
           <router-link
-            to="/"
+            to="/notice/notice-board"
             class="hot_cm container text-center"
             style="width: 500px; text-decoration: none"
           >
@@ -92,7 +92,7 @@
             </div>
           </router-link>
 
-          <!-- 커뮤니티 테이블 -->
+          <!-- 공지사항 테이블 -->
           <div
             class="row mt-3 container text-center"
             style="width: 500px; margin-left: 50px"
@@ -101,7 +101,7 @@
             <table class="table mt-5">
               <thead>
                 <tr>
-                  <th scope="col" style="font-size: 14px">작성자</th>
+                  <th scope="col" style="font-size: 14px">번호</th>
                   <th scope="col" style="font-size: 14px">제목</th>
                 </tr>
               </thead>
@@ -123,7 +123,7 @@
         <!--자유게시판 -->
         <div class="col mt-5">
           <router-link
-            to="/hot/hotBoard"
+            to="/free/free-board"
             class="hot_cm container text-center"
             style="width: 500px; text-decoration: none"
           >
@@ -148,7 +148,7 @@
             </div>
           </router-link>
 
-          <!-- 이달의 hot2 테이블 -->
+          <!-- 자유게시판 테이블 -->
           <div
             class="row mt-3 container text-center"
             style="width: 500px; margin-left: 50px"
@@ -157,13 +157,13 @@
             <table class="table mt-5">
               <thead>
                 <tr>
-                  <th scope="col" style="font-size: 14px">작성자</th>
+                  <th scope="col" style="font-size: 14px">번호</th>
                   <th scope="col" style="font-size: 14px">제목</th>
                 </tr>
               </thead>
               <tbody>
                 <!-- 반복문 시작할 행 -->
-                <tr v-for="(data, index) in hotList" :key="index">
+                <tr v-for="(data, index) in freeBoardList" :key="index">
                   <td style="font-size: 15px">
                     {{ index + 1 }}
                   </td>
@@ -177,7 +177,7 @@
         <!-- 건의게시판 -->
         <div class="col mt-5">
           <router-link
-            to="/"
+            to="/complaint/complaint-board"
             class="hot_cm container text-center"
             style="width: 500px; text-decoration: none"
           >
@@ -188,7 +188,9 @@
                 justify-content: center;
               "
             >
-              <div class="router-text" style="margin-right: 50px">건의게시판</div>
+              <div class="router-text" style="margin-right: 50px">
+                건의게시판
+              </div>
               <img
                 src="@/assets/img/main_cp.png"
                 alt="Loo"
@@ -200,7 +202,7 @@
             </div>
           </router-link>
 
-          <!-- 커뮤니티 테이블 -->
+          <!-- 건의게시판 테이블 -->
           <div
             class="row mt-3 container text-center"
             style="width: 500px; margin-left: 50px"
@@ -209,13 +211,13 @@
             <table class="table mt-5">
               <thead>
                 <tr>
-                  <th scope="col" style="font-size: 14px">작성자</th>
+                  <th scope="col" style="font-size: 14px">번호</th>
                   <th scope="col" style="font-size: 14px">제목</th>
                 </tr>
               </thead>
               <tbody>
                 <!-- 반복문 시작할 행 -->
-                <tr v-for="(data, index) in communityList" :key="index">
+                <tr v-for="(data, index) in complaintBoardList" :key="index">
                   <td style="font-size: 15px">
                     {{ index + 1 }}
                   </td>
@@ -261,35 +263,34 @@
             news 3
           </div>
         </div> -->
-        <!-- 루또의 새로운 소식 끝 -->
-      <!-- </div> -->
-      <!-- 루또의 새로운 소식 (중앙정렬) 끝 -->
+    <!-- 루또의 새로운 소식 끝 -->
     <!-- </div> -->
-
+    <!-- 루또의 새로운 소식 (중앙정렬) 끝 -->
+    <!-- </div> -->
 
     <div class="main_img container text-center"></div>
   </div>
 
-  <br>
-  <br>
-  <br>
-  <br>
-  <br>
-  <br>
-  <br>
-  <br>
-  <br>
-  <br>
-  <br>
-  <br>
-  <br>
+  <br />
+  <br />
+  <br />
+  <br />
+  <br />
+  <br />
+  <br />
+  <br />
+  <br />
+  <br />
+  <br />
+  <br />
+  <br />
 </template>
 
 <script>
-import CalendarWidget from './CalendarWidget.vue';
+import CalendarWidget from "./CalendarWidget.vue";
 // import MemoWidget from './MemoWidget.vue';
 export default {
-  components:{
+  components: {
     CalendarWidget,
     // MemoWidget
   },
@@ -297,22 +298,63 @@ export default {
     return {
       hotList: [1, 2, 3, 4, 5],
       communityList: [1, 2, 3, 4, 5],
+      freeBoardList: [1, 2, 3, 4, 5],
+      complaintBoardList: [1, 2, 3, 4, 5],
     };
   },
   methods: {
-    goToLogin(){
-      if (this.$store.state.user==null) {
+    // 자유게시판 5개 조회
+    // async getFreeBoardList() {
+    //   try {
+    //     // TODO: 1) 공통 전체조회 함수 실행
+    //     let response = await FreeBoardService.getAllFreeBoardReport(
+    //       this.searchUserId, // 검색어
+    //       this.page - 1, // 현재페이지번호-1
+    //       this.pageSize // 1페이지당개수(size)
+    //     );
+    //     // TODO: 복습 : 2) 객체분할 할당
+    //     const { freeBoardReportsList, totalItems } = response.data; // 부서배열(벡엔드 전송)
+    //     // TODO: 3) 바인딩변수(속성)에 저장
+    //     this.freeBoardReportsList = freeBoardReportsList; // 부서배열(벡엔드 전송)
+    //     this.count = totalItems; // 전체페이지수(벡엔드 전송)
+    //     // TODO: 4) 프론트 로깅 : console.log
+    //     console.log("자유게시판 신고목록", this.freeBoardReportsList);
+    //   } catch (e) {
+    //     console.log(e);
+    //   }
+    // },
+    // 건의게시판 5개 조회
+    //     async getComplaintBoardList() {
+    //   try {
+    //     // TODO: 1) 공통 전체조회 함수 실행
+    //     let response = await FreeBoardService.getAllFreeBoardReport(
+    //       this.searchUserId, // 검색어
+    //       this.page - 1, // 현재페이지번호-1
+    //       this.pageSize // 1페이지당개수(size)
+    //     );
+    //     // TODO: 복습 : 2) 객체분할 할당
+    //     const { freeBoardReportsList, totalItems } = response.data; // 부서배열(벡엔드 전송)
+    //     // TODO: 3) 바인딩변수(속성)에 저장
+    //     this.freeBoardReportsList = freeBoardReportsList; // 부서배열(벡엔드 전송)
+    //     this.count = totalItems; // 전체페이지수(벡엔드 전송)
+    //     // TODO: 4) 프론트 로깅 : console.log
+    //     console.log("자유게시판 신고목록", this.freeBoardReportsList);
+    //   } catch (e) {
+    //     console.log(e);
+    //   }
+    // },
+    goToLogin() {
+      if (this.$store.state.user == null) {
         this.$router.push("/member/login");
       } else {
         return;
       }
-    }
+    },
   },
   mounted() {
     console.log(this.$store.state.notifyCount);
     this.goToLogin();
   },
-
 };
 </script>
 
@@ -328,7 +370,7 @@ export default {
   background-image: url("@/assets/img/MAIN_BN4.jpg"); /* 배경 이미지 설정 */
   background-repeat: no-repeat;
   background-size: cover; /* 요소에 맞게 이미지 확대 */
-  background-position: center; 
+  background-position: center;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -377,31 +419,27 @@ export default {
   align-items: center;
   justify-content: center;
   position: relative;
-
 }
-.hot_cm::before{
+.hot_cm::before {
   /* border-top: 5px solid  #162b59; */
-  content: '';
-    position: absolute;
-    left: 150px;
-    top: -2px; 
-    width: 200px; 
-    height: 5px; /* 선의 높이 조절 */
-    background-color: #4480fe; /* 선의 색상 설정 */
-    opacity: 0; /* 호버 시 선이 나타나도록 설정 */
-    transition: opacity 0.2s ease; /* 부드러운 애니메이션 효과를 위한 트랜지션 */
+  content: "";
+  position: absolute;
+  left: 150px;
+  top: -2px;
+  width: 200px;
+  height: 5px; /* 선의 높이 조절 */
+  background-color: #4480fe; /* 선의 색상 설정 */
+  opacity: 0; /* 호버 시 선이 나타나도록 설정 */
+  transition: opacity 0.2s ease; /* 부드러운 애니메이션 효과를 위한 트랜지션 */
 }
-.hot_cm:hover::before{
+.hot_cm:hover::before {
   opacity: 1; /* 호버 시 선이 나타나도록 설정 */
-
 }
 .router-text {
   color: #4b4b4b;
   font-weight: bold;
   text-decoration: none;
-  
 }
-
 
 .router-link {
   text-decoration: none;
@@ -415,5 +453,4 @@ export default {
   justify-content: space-between;
   margin-top: 50px;
 }
-
 </style>
