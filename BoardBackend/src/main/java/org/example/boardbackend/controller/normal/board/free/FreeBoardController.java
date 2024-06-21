@@ -104,7 +104,6 @@ public class FreeBoardController {
     }
 
 
-
 //    // TODO 댓글 저장 함수
 
 //    @PostMapping("/free/comment")
@@ -222,7 +221,7 @@ public class FreeBoardController {
                 return new ResponseEntity<>(HttpStatus.NO_CONTENT);
             }
         } catch (Exception e) {
-            log.debug("대댓글 디버그 :: "+e.getMessage());
+            log.debug("대댓글 디버그 :: " + e.getMessage());
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
@@ -236,7 +235,7 @@ public class FreeBoardController {
             freeBoardService.sendCommentNotification(freeBoardComment);
             return new ResponseEntity<>(HttpStatus.OK);
         } catch (Exception e) {
-            log.debug("asdfasdf"+e.getMessage());
+            log.debug("asdfasdf" + e.getMessage());
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
@@ -244,7 +243,7 @@ public class FreeBoardController {
     // TODO 대댓글 저장 함수
     @PostMapping("/free/save/recomment")
     public ResponseEntity<Object> saveFreeRecomment(@RequestBody FreeBoardRecomment freeBoardRecomment) {
-        log.debug("대댓글"+freeBoardRecomment);
+        log.debug("대댓글" + freeBoardRecomment);
 
         try {
             //            DB 서비스 저장 함수 실행
@@ -252,7 +251,7 @@ public class FreeBoardController {
             freeBoardService.sendRecommentNotification(freeBoardRecomment);
             return new ResponseEntity<>(HttpStatus.OK);
         } catch (Exception e) {
-            log.debug("디버그 :: "+e.getMessage());
+            log.debug("디버그 :: " + e.getMessage());
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
@@ -300,7 +299,7 @@ public class FreeBoardController {
             freeBoardService.sendReportNotification(freeBoardReport);
             return new ResponseEntity<>(HttpStatus.OK);
         } catch (Exception e) {
-            log.debug("디버그 :: "+e.getMessage());
+            log.debug("디버그 :: " + e.getMessage());
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
@@ -328,11 +327,6 @@ public ResponseEntity<Object> findFree(FreeBoardDto freeBoardDto) {
         return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
     }
 }
-    // TODO : 메인 홈에 5개 띄우기
-//@GetMapping("/free/main")
-//public ResponseEntity<List<ClubBoard>> getAllClubs() {
-//    List<ClubBoard> clubBoards = clubBoardService.getAllClub();
-//    return ResponseEntity.ok(clubBoards);
-//}
+
 
 }
