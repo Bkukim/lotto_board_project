@@ -15,6 +15,7 @@ package org.example.boardbackend.model.dto.notice;
  * 2024-05-24         KimDJ          최초 생성
  */
 public interface NoticeAllDto {
-    long getNoticeId();
+    Long getNoticeId();
     String getTitle();
+    String getInsertTime();
 }

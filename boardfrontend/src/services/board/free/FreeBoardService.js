@@ -2,6 +2,18 @@ import http from "@/utils/http-common"; // spring 통신 정의 파일
 import AuthHeader from "@/services/auth/AuthHeader";
 
 class FreeBoardService {
+  // TODO: 메인에서 좋아요순대로 조회
+  getFreeboardLike() {
+    console.log("여기는 서비스")
+    return http.get(
+      `/normal/board/main-get/free`,
+      {
+        headers: AuthHeader(),
+      }
+    );
+  }
+
+
   // TODO: 전체 조회
   getAllBoard(title, page, size) {
     return http.get(

@@ -225,18 +225,5 @@ public class AdminNoticeController {
         }
     }
 
-    //    todo: 전체 함수
-    @DeleteMapping("/delete-all")
-    public ResponseEntity<Object> deleteAll() {
-        try {
-            boolean success = noticeService.removeAll();
-            if (success) {
-                return new ResponseEntity<>(HttpStatus.OK);
-            } else {
-                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-            }
-        } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-    }
+
 }
