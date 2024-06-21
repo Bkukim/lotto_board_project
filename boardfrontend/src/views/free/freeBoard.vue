@@ -58,7 +58,7 @@
               class="form-control"
               aria-label="Sizing example input"
               aria-describedby="inputGroup-sizing-default"
-              placeholder="검색어를 입력하세요."
+              placeholder="제목을 입력하세요."
               v-model="searchTitle"
             />
           </div>

@@ -9,7 +9,6 @@
       </div>
     </div>
 
-
     <!-- HOT & 공지사항 보이는 부분 -->
     <div class="container text-center mt-5">
       <div class="row" style="margin-top: 100px">
@@ -304,8 +303,7 @@ export default {
       communityList: [1, 2, 3, 4, 5],
       freeBoard: [], //자유게시판
       count: 0, // 전체데이터개수
-      notice:[], //공지사항 가져오기
-
+      notice: [], //공지사항 가져오기
     };
   },
   methods: {
@@ -313,9 +311,7 @@ export default {
     async retrieveFreeBoard() {
       try {
         // TODO: 1) 공통 전체조회 함수 실행
-        let response = await FreeBoardService.getFreeboardLike(
-         
-        );
+        let response = await FreeBoardService.getFreeboardLike();
         // TODO: 복습 : 2) 객체분할 할당
         const { freeBoard, totalItems } = response.data; // 부서배열(벡엔드 전송)
         // TODO: 3) 바인딩변수(속성)에 저장
@@ -326,27 +322,24 @@ export default {
       } catch (e) {
         console.log(e);
       }
-    },  
-    
+    },
+
     // todo: 공지사항 메인 조회
     async retrieveNotice() {
       try {
         // TODO: 1) 공통 전체조회 함수 실행
-        let response = await NoticeService.getAllMain( );
+        let response = await NoticeService.getAllMain();
         // TODO: 복습 : 2) 객체분할 할당
-        const { notice} = response.data; // 부서배열(벡엔드 전송)
+        const { notice } = response.data; // 부서배열(벡엔드 전송)
         // TODO: 3) 바인딩변수(속성)에 저장
         this.notice = notice; // 부서배열(벡엔드 전송)
         // TODO: 4) 프론트 로깅 : console.log
-      console.log("notice 조회", this.notice);
-
+        console.log("notice 조회", this.notice);
         console.log(response.data);
-
       } catch (e) {
         console.log(e);
       }
     },
-
 
     goToLogin() {
       if (this.$store.state.user == null) {
