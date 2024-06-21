@@ -98,7 +98,7 @@ public class WebSecurityConfig {
                 .requestMatchers("/api/auth/**").permitAll()       // 로그인 및 회원가입 함수
                 .requestMatchers("/api/user/**").hasRole("USER")       // user관련 모든 함수
                 .requestMatchers("/api/admin/**").hasRole("ADMIN")       // 관리자의 모든 함수
-                .requestMatchers("/api/v1/notify/**").hasAnyRole("USER", "ADMIN")
+                .requestMatchers("/api/v1/notify/**").permitAll()
                 .requestMatchers("/api/normal/**").hasAnyRole("USER", "ADMIN")
 //                .requestMatchers("/api/normal/**").permitAll()
 

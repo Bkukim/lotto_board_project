@@ -68,7 +68,7 @@ public class EventService {
             this.eventCount.decrease();
         }
     }
-
+//
 //    @Scheduled(fixedDelay = 1000)
 //    public void scheduler(Event event, long noticeId){
 //        if(validEnd()){

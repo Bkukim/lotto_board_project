@@ -10,6 +10,7 @@ import org.example.boardbackend.model.entity.board.dept.DeptBoard;
 import org.example.boardbackend.model.entity.board.dept.DeptBoardReport;
 import org.example.boardbackend.model.entity.board.dept.DeptComment;
 import org.example.boardbackend.model.entity.board.dept.DeptRecomment;
+import org.example.boardbackend.model.entity.board.free.FreeBoardReport;
 import org.example.boardbackend.model.entity.dept.Department;
 import org.example.boardbackend.model.entity.notify.Notify;
 import org.example.boardbackend.service.board.dept.DeptBoardService;
@@ -312,4 +313,17 @@ public class UserDeptBoardController {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+//    // todo 부서 신고 알림 함수
+//    @PostMapping("/free/report/save")
+//    public ResponseEntity<Object> reportDeptBoard(@RequestBody FreeBoardReport freeBoardReport) {
+//        try {
+//            // 신고 저장
+//            freeBoardService.saveReport(freeBoardReport);
+//            freeBoardService.sendReportNotification(freeBoardReport);
+//            return new ResponseEntity<>(HttpStatus.OK);
+//        } catch (Exception e) {
+//            log.debug("디버그 :: "+e.getMessage());
+//            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+//        }
+//    }
 }
