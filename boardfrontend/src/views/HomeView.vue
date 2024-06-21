@@ -310,16 +310,16 @@ export default {
   },
   methods: {
     // todo: 자유게시판 메인 조회
-    async retrieveFreeBoard() {
+    async retrieveHotList() {
       try {
         // TODO: 1) 공통 전체조회 함수 실행
         let response = await FreeBoardService.getFreeboardLike(
          
         );
         // TODO: 복습 : 2) 객체분할 할당
-        const { freeBoard, totalItems } = response.data; // 부서배열(벡엔드 전송)
+        const { hotList, totalItems } = response.data; // 부서배열(벡엔드 전송)
         // TODO: 3) 바인딩변수(속성)에 저장
-        this.freeBoard = freeBoard; // 부서배열(벡엔드 전송)
+        this.hotList = hotList; // 부서배열(벡엔드 전송)
         this.count = totalItems; // 전체페이지수(벡엔드 전송)
         // TODO: 4) 프론트 로깅 : console.log
         console.log(response.data);
@@ -359,7 +359,7 @@ export default {
   mounted() {
     console.log(this.$store.state.notifyCount);
     this.goToLogin();
-    this.retrieveFreeBoard();
+    this.retrieveHotList();
     this.retrieveNotice();
   },
 };

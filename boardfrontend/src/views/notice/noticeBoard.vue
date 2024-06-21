@@ -32,22 +32,7 @@
         id="search_box"
       >
         <div class="row">
-          <div class="col">
-            <button
-              class="btn btn-primary dropdown-toggle"
-              type="button"
-              data-bs-toggle="dropdown"
-              aria-expanded="false"
-              id="search_ck"
-            >
-              -- 검색 선택 ---
-            </button>
-            <ul class="dropdown-menu">
-              <li><a class="dropdown-item" href="#">이벤트</a></li>
-              <li><a class="dropdown-item" href="#">공지사항</a></li>
-              <li><a class="dropdown-item" href="#">Something else here</a></li>
-            </ul>
-          </div>
+       
           <div class="col">
             <!-- 검색어를 입력하세요 -->
             <div class="input-group mb-3">
@@ -57,6 +42,7 @@
                 aria-label="Sizing example input"
                 aria-describedby="inputGroup-sizing-default"
                 placeholder="검색어를 입력하세요."
+                v-model="title"
               />
             </div>
           </div>
@@ -67,6 +53,7 @@
               class="btn btn-outline-secondary"
               type="button"
               id="button-search"
+              @click="title"
             >
               검색
             </button>
@@ -185,6 +172,11 @@ export default {
 
     goNoticeAdd() {
       this.$router.push("/admin/notice-add");
+    },
+// 검색함수
+    async searchNotice() {
+      console.log("검색 함수 호출");
+      await this.retrieveNotice();
     },
   },
   mounted() {
