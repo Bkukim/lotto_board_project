@@ -311,13 +311,13 @@ public class FreeBoardController {
 public ResponseEntity<Object> findFree(FreeBoardDto freeBoardDto) {
     try {
         // 전체 조회 서비스 실행
-        List<FreeBoardDto> freeBoard = freeBoardService.selectByTitleContainingMain(freeBoardDto);
+        List<FreeBoardDto> hotList = freeBoardService.selectByTitleContainingMain(freeBoardDto);
 
         Map<String, Object> response = new HashMap<>();
-        response.put("freeBoard", freeBoard);
+        response.put("hotList", hotList);
 //        response.put("freeBoardDto1", freeBoardDto1.size()); // 총건수(개수)
 
-        if (!freeBoard.isEmpty()) {
+        if (!hotList.isEmpty()) {
             // 조회 성공
             return new ResponseEntity<>(response, HttpStatus.OK);
         } else {

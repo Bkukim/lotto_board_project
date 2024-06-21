@@ -56,7 +56,7 @@
               </thead>
               <tbody>
                 <!-- 반복문 시작할 행 -->
-                <tr v-for="(data, index) in freeBoard" :key="index">
+                <tr v-for="(data, index) in hotList" :key="index">
                   <td style="font-size: 15px">
                     {{ index + 1 }}
                   </td>
@@ -300,7 +300,7 @@ export default {
   },
   data() {
     return {
-      hotList: [1, 2, 3, 4, 5],
+      hotList: [],
       communityList: [1, 2, 3, 4, 5],
       freeBoard: [], //자유게시판
       count: 0, // 전체데이터개수
