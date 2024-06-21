@@ -9,7 +9,8 @@
       </div>
     </div>
 
-    <!-- HOT & 커뮤니티 보이는 부분 -->
+
+    <!-- HOT & 공지사항 보이는 부분 -->
     <div class="container text-center mt-5">
       <div class="row" style="margin-top: 100px">
         <!-- 이달의 HOT -->
@@ -66,10 +67,10 @@
           </div>
         </div>
 
-        <!-- 커뮤니티 -->
+        <!-- 공지사항 -->
         <div class="col">
           <router-link
-            to="/"
+            to="/notice/notice-board"
             class="hot_cm container text-center"
             style="width: 500px; text-decoration: none"
           >
@@ -92,7 +93,7 @@
             </div>
           </router-link>
 
-          <!-- 커뮤니티 테이블 -->
+          <!-- 공지사항 테이블 -->
           <div
             class="row mt-3 container text-center"
             style="width: 500px; margin-left: 50px"
@@ -123,7 +124,7 @@
         <!--자유게시판 -->
         <div class="col mt-5">
           <router-link
-            to="/hot/hotBoard"
+            to="/free/free-board"
             class="hot_cm container text-center"
             style="width: 500px; text-decoration: none"
           >
@@ -148,7 +149,7 @@
             </div>
           </router-link>
 
-          <!-- 이달의 hot2 테이블 -->
+          <!-- 자유게시판 테이블 -->
           <div
             class="row mt-3 container text-center"
             style="width: 500px; margin-left: 50px"
@@ -157,13 +158,13 @@
             <table class="table mt-5">
               <thead>
                 <tr>
-                  <th scope="col" style="font-size: 14px">작성자</th>
+                  <th scope="col" style="font-size: 14px">번호</th>
                   <th scope="col" style="font-size: 14px">제목</th>
                 </tr>
               </thead>
               <tbody>
                 <!-- 반복문 시작할 행 -->
-                <tr v-for="(data, index) in hotList" :key="index">
+                <tr v-for="(data, index) in freeBoardList" :key="index">
                   <td style="font-size: 15px">
                     {{ index + 1 }}
                   </td>
@@ -177,7 +178,7 @@
         <!-- 건의게시판 -->
         <div class="col mt-5">
           <router-link
-            to="/"
+            to="/complaint/complaint-board"
             class="hot_cm container text-center"
             style="width: 500px; text-decoration: none"
           >
@@ -202,7 +203,7 @@
             </div>
           </router-link>
 
-          <!-- 커뮤니티 테이블 -->
+          <!-- 건의게시판 테이블 -->
           <div
             class="row mt-3 container text-center"
             style="width: 500px; margin-left: 50px"
@@ -211,13 +212,13 @@
             <table class="table mt-5">
               <thead>
                 <tr>
-                  <th scope="col" style="font-size: 14px">작성자</th>
+                  <th scope="col" style="font-size: 14px">번호</th>
                   <th scope="col" style="font-size: 14px">제목</th>
                 </tr>
               </thead>
               <tbody>
                 <!-- 반복문 시작할 행 -->
-                <tr v-for="(data, index) in communityList" :key="index">
+                <tr v-for="(data, index) in complaintBoardList" :key="index">
                   <td style="font-size: 15px">
                     {{ index + 1 }}
                   </td>
@@ -345,6 +346,7 @@ export default {
         console.log(e);
       }
     },
+
 
     goToLogin() {
       if (this.$store.state.user == null) {
