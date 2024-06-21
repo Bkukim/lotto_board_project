@@ -94,6 +94,7 @@
                           type="button"
                           id="button-search"
                           @click="updateFreeBoardReport(data.freeBoardId)"
+                          style="background-color: #fff; border: 1px solid #162B59; color: #162B59; text-align: center;"
                         >
                           취소
                         </button>
@@ -104,6 +105,7 @@
                           type="button"
                           id="button-search"
                           @click="deleteFreeBoardReport(data.freeBoardId)"
+                          style="background-color: red;"
                         >
                           삭제
                         </button>
@@ -169,6 +171,8 @@
                           type="button"
                           id="button-search"
                           @click="updateDeptBoardReport(data.deptBoardId)"
+                          style="background-color: #fff; border: 1px solid #162B59; color: #162B59; text-align: center;"
+
                         >
                           취소
                         </button>
@@ -179,6 +183,8 @@
                           type="button"
                           id="button-search"
                           @click="deleteDeptBoardReport(data.deptBoardId)"
+                          style="background-color: red;"
+
                         >
                           삭제
                         </button>

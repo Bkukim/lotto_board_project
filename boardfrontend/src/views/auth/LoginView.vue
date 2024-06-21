@@ -1,8 +1,8 @@
 <template>
-  <div class="container mt-3">
+  <div class="container mt-3" style="height: auto;">
     <div class="login-container">
       <div class="login-form">
-        <h3 class="mb-4 mt-5" style="letter-spacing: -2px">Welcome</h3>
+        <!-- <h3 class="mb-4 mt-5" style="letter-spacing: -2px">Welcome</h3> -->
         <div class="row" style="text-align: center">
           <div class="col log col-divider">
             <h5 class="mb-4 mt-4 log-form" style="color: #333">
@@ -43,8 +43,29 @@
                 로그인
               </button>
             </div>
+
+            <!-- 아이디/비밀번호 찾기 -->
+            <div style="margin-left: 140px">
+              <button
+                class="btn btn-sm"
+                type="button"
+                @click="goFindId"
+                style="font-size: 12px"
+              >
+                아이디 찾기
+              </button>
+              <button
+                class="btn btn-sm"
+                type="button"
+                @click="goFindPwd"
+                style="font-size: 12px"
+              >
+                비밀번호 찾기
+              </button>
+            </div>
+
             <!-- 회원가입 -->
-            <div class="mb-3  text-center" style="text-align: center;">
+            <div class="mb-3 text-center" style="text-align: center">
               <button
                 class="colbtn btn-sm mt-4 text-center"
                 id="login-bt22"
@@ -59,69 +80,55 @@
                   letter-spacing: -1px;
                 "
               >
-              아직 회원이 아니신가요?   <span style="font-weight: bold; color: #162b59; font-size: 18px;margin-left: 7px;">Sign Up </span> 
+                아직 회원이 아니신가요?
+                <span
+                  style="
+                    font-weight: bold;
+                    color: #162b59;
+                    font-size: 18px;
+                    margin-left: 7px;
+                  "
+                  >Sign Up
+                </span>
               </button>
             </div>
 
+            
           </div>
 
-          <div class="col join text-center" style="text-align: center;">
-            <!-- <h5 class="mb-1 mt-4 join-form"><strong>회원가입</strong></h5> -->
-         
-            <div class="mb-4">
-              <h5 class="mt-4"><strong>ID/PW 찾기</strong></h5>
-            </div>
-            <div class="join-form">
-              <button
-                class="btn btn-sm mb-3"
-                id="find-idpw"
-                type="button"
-                @click="goFindId"
-              >
-                아이디 찾기
-              </button>
-              <button
-                class="btn btn-sm mt-4 mb-3"
-                id="find-idpw"
-                type="button"
-                @click="goFindPwd"
-              >
-                비밀번호 찾기
-              </button>
-            </div>
-          </div>
         </div>
-        <div class="row text-center mt-5">
-          <div>
+        <!-- api 로그인 -->
+        <div class="api-login row container text-center mt-5">
+          <div class="api-login-icons col text-center">
             <img
-              src="@/assets/img/btnG_완성형.png"
-              style="width: 300px; height: auto"
+              src="@/assets/img/btnG_축약형.png"
+              class="login-icon"
               @click="goToNaverLogin"
+              style="width: 110px; margin-right: 7px;"
             />
-          </div>
-        </div>
-
-        <div class="row text-center">
-          <div>
             <img
-              src="@/assets/img/kakao_login_medium_wide.png"
-              style="width: 300px; height: auto"
+              src="@/assets/img/kakao_login_medium.png"
+              class="login-icon"
               @click="goToKakaoAuth"
+              style="width: 90px;"
             />
           </div>
-
         </div>
       </div>
+
+      <!-- -------------------------오른쪽 이미지 -->
       <div class="login-image">
-        <img src="@/assets/img/LOTTO_LOGO.png" alt="Login Image" />
+        <img src="@/assets/img/ROUTTO.png" alt="Login Image" />
       </div>
     </div>
   </div>
-  <br>
-  <br>
-  <br>
-  <br>
-  <br>
+  <br />
+  <br />
+  <br />
+  <br />
+  <br />
+  <br />
+
 </template>
 
 <script>
@@ -163,7 +170,6 @@ export default {
     },
     // 네이버 로그인
     goToNaverLogin() {
-
       const clientId = "Ipydix8nXe2V9m6KRDom"; // 네이버 개발자 센터에서 발급받은 Client ID
       const redirectUri = "http://localhost:8080/login/ouath2/code/naver"; // 네이버 개발자 센터에 등록한 Redirect URI
       const state = this.generateRandomState(); // CSRF 공격 방지를 위한 랜덤 상태 값
@@ -181,7 +187,6 @@ export default {
         state += characters.charAt(randomIndex);
       }
       return state;
-
     },
     // 아이디 찾기
     goFindId() {
@@ -200,8 +205,6 @@ export default {
       let subscribeUrl = "http://localhost:8000/api/v1/notify/subscribe";
 
       if (jwt != null) {
-
-
         let token = jwt;
         this.eventSource = new EventSource(subscribeUrl + "?token=" + token);
         this.eventSource.onopen = () => {
@@ -246,8 +249,6 @@ export default {
             setTimeout(() => this.connectSSE(), 5000); // 5초 후 재연결 시도
           }
         };
-
-
       } else {
         console.error("JWT 토큰이 없습니다.");
       }
@@ -350,7 +351,7 @@ export default {
 }
 
 .login-image img {
-  max-width: 100%;
+  max-width: 75%;
   height: auto;
 }
 
@@ -433,7 +434,7 @@ export default {
   display: block;
   margin: 0 auto;
 }
-span:hover{
-text-decoration: underline;
+span:hover {
+  text-decoration: underline;
 }
 </style>
