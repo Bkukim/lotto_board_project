@@ -2,6 +2,7 @@ package org.example.boardbackend.service.notice;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.example.boardbackend.model.dto.board.free.FreeBoardDto;
 import org.example.boardbackend.model.dto.notice.INoticeDto;
 import org.example.boardbackend.model.dto.notice.NoticeAllDto;
 import org.example.boardbackend.model.entity.notice.Notice;
@@ -100,16 +101,16 @@ public class NoticeService {
         }
         return false;
     }
-    // todo  삭제 함수
-    public boolean removeAll() {
-        try {
-            noticeRepository.deleteAll();
-            return true;
-        } catch (Exception e) {
-            // 예외 발생 시 로깅 추가 (선택 사항)
-            System.err.println("Error occurred while deleting all notices: " + e.getMessage());
-            return false;
-        }
+
+// todo: main 조회함수
+    public List<NoticeAllDto> selectByMainNotice(
+            NoticeAllDto noticeAllDto
+    ) {
+        List<NoticeAllDto> list
+                = noticeRepository.findByNoticeTimeMain(
+                noticeAllDto
+        );
+        return list;
     }
 
 }

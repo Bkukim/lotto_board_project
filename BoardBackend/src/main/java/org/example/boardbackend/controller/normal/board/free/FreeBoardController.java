@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.example.boardbackend.model.dto.board.free.FreeBoardDto;
 import org.example.boardbackend.model.dto.board.free.IFreeBoardRecommentDto;
+import org.example.boardbackend.model.dto.notice.INoticeDto;
 import org.example.boardbackend.model.entity.board.club.ClubBoard;
 import org.example.boardbackend.model.entity.board.free.FreeBoard;
 import org.example.boardbackend.model.entity.board.free.FreeBoardComment;
@@ -304,6 +305,29 @@ public class FreeBoardController {
         }
     }
 
+
+//    todo: 메인에서 조회
+@GetMapping("/main-get/free")
+public ResponseEntity<Object> findFree(FreeBoardDto freeBoardDto) {
+    try {
+        // 전체 조회 서비스 실행
+        List<FreeBoardDto> freeBoard = freeBoardService.selectByTitleContainingMain(freeBoardDto);
+
+        Map<String, Object> response = new HashMap<>();
+        response.put("freeBoard", freeBoard);
+//        response.put("freeBoardDto1", freeBoardDto1.size()); // 총건수(개수)
+
+        if (!freeBoard.isEmpty()) {
+            // 조회 성공
+            return new ResponseEntity<>(response, HttpStatus.OK);
+        } else {
+            // 데이터 없음
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+    } catch (Exception e) {
+        return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+}
     // TODO : 메인 홈에 5개 띄우기
 //@GetMapping("/free/main")
 //public ResponseEntity<List<ClubBoard>> getAllClubs() {

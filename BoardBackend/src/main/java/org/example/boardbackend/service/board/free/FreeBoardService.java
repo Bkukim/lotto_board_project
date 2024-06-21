@@ -7,10 +7,7 @@ import org.example.boardbackend.model.dto.board.free.IFreeBoardRecommentDto;
 import org.example.boardbackend.model.dto.notice.INoticeDto;
 import org.example.boardbackend.model.dto.redis.MessageDto;
 import org.example.boardbackend.model.entity.board.club.ClubBoard;
-import org.example.boardbackend.model.entity.board.free.FreeBoard;
-import org.example.boardbackend.model.entity.board.free.FreeBoardComment;
-import org.example.boardbackend.model.entity.board.free.FreeBoardRecomment;
-import org.example.boardbackend.model.entity.board.free.FreeBoardReport;
+import org.example.boardbackend.model.entity.board.free.*;
 import org.example.boardbackend.model.entity.notify.Notify;
 import org.example.boardbackend.model.entity.board.free.FreeBoardReport;
 import org.example.boardbackend.repository.board.free.FreeBoardCommentRepository;
@@ -207,4 +204,15 @@ public class FreeBoardService {
         return reports;
     }
 
+
+    //    todo : main 페이지 좋아요순 조회
+    public List<FreeBoardDto> selectByTitleContainingMain(
+            FreeBoardDto freeBoardDto
+    ) {
+        List<FreeBoardDto> list
+                = freeBoardRepository.findFreeBoardByLikes(
+                freeBoardDto
+        );
+        return list;
+    }
 }
