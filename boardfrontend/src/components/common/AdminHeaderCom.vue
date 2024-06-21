@@ -8,11 +8,10 @@
       background: linear-gradient(to right, #ffffff 0%, #99ccff 170%);
     "
   >
-    <router-link
-      to="#"
-      class="d-flex align-items-center mb-3 mb-md-0 me-md-auto link-dark text-decoration-none"
-      style="padding: 50px 0"
-    >
+    <div class="d-flex align-items-center mb-3 mb-md-0 me-md-auto link-dark text-decoration-none"
+    style="padding: 50px 0">
+      
+    
       <svg class="bi me-2" width="40" height="32">
         <use xlink:href="#bootstrap" />
       </svg>
@@ -22,7 +21,7 @@
       >
         LOTTO ADMIN
       </h2>
-    </router-link>
+    </div>
 
     <div class="dropdown d-flex align-items-center" style="margin-left: 60px">
       <a
@@ -114,7 +113,7 @@
           신고게시글 관리
         </router-link>
       </li>
-      <li>
+      <!-- <li>
         <router-link
           to="/admin/other"
           class="nav-link"
@@ -125,7 +124,7 @@
           </svg>
           모하징
         </router-link>
-      </li>
+      </li> -->
     </ul>
     <hr />
   </div>

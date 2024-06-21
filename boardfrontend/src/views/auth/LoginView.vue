@@ -1,121 +1,127 @@
 <template>
   <div class="container mt-3">
-    <div>
-      <h3 class="mb-4 mt-5">로그인</h3>
-      <hr />
-      <!-- 로그인 회원가입 라인 -->
-      <div class="row">
-        <!-- 로그인 시작 -->
-        <div class="col log col-divider">
-          <h5 class="mb-4 mt-4 log-form"><strong>회원 로그인</strong></h5>
+    <div class="login-container">
+      <div class="login-form">
+        <h3 class="mb-4 mt-5" style="letter-spacing: -2px">Welcome</h3>
+        <div class="row" style="text-align: center">
+          <div class="col log col-divider">
+            <h5 class="mb-4 mt-4 log-form" style="color: #333">
+              <strong>회원 로그인</strong>
+            </h5>
+            <div class="mb-3 container text-center">
+              <!-- <label class="insert-id log-form mb-2" for="id">아이디</label> -->
+              <input
+                class="form-control log-form"
+                type="text"
+                placeholder="ID"
+                name="id"
+                id="id"
+                v-model="user.userId"
+                style="width: 300px; height: 30px"
+              />
+            </div>
+            <div class="mb-3">
+              <!-- <label class="form-label log-form" for="pwd">비밀번호</label> -->
+              <input
+                class="form-control log-form"
+                type="password"
+                placeholder="PASSWORD"
+                name="pwd"
+                id="pwd"
+                v-model="user.password"
+                style="width: 300px; height: 30px"
+              />
+            </div>
+            <div class="mb-3">
+              <button
+                class="btn text-light btn-sm mt-4 log-form"
+                id="login-bt"
+                type="submit"
+                @click="handleLogin"
+                style="width: 300px; height: 30px"
+              >
+                로그인
+              </button>
+            </div>
+            <!-- 회원가입 -->
+            <div class="mb-3  text-center" style="text-align: center;">
+              <button
+                class="colbtn btn-sm mt-4 text-center"
+                id="login-bt22"
+                type="submit"
+                @click="goJoin"
+                style="
+                  color: #333;
+                  border: none;
+                  background-color: #fff;
+                  height: auto;
+                  font-size: 13px;
+                  letter-spacing: -1px;
+                "
+              >
+              아직 회원이 아니신가요?   <span style="font-weight: bold; color: #162b59; font-size: 18px;margin-left: 7px;">Sign Up </span> 
+              </button>
+            </div>
 
-          <div class="mb-3">
-            <label class="insert-id log-form mb-2" for="id">아이디</label>
-            <input
-              class="form-control log-form"
-              type="text"
-              placeholder="ID"
-              name="id"
-              id="id"
-              v-model="user.userId"
-            />
-          </div>
-          <div class="mb-3">
-            <label class="form-label log-form" for="pwd">비밀번호</label>
-            <input
-              class="form-control log-form"
-              type="password"
-              placeholder="PASSWORD"
-              name="pwd"
-              id="pwd"
-              v-model="user.password"
-            />
           </div>
 
-          <div class="mb-3">
-            <button
-              class="btn text-light btn-sm mt-4 log-form"
-              id="login-bt"
-              type="submit"
-              @click="handleLogin"
-            >
-              로그인
-            </button>
-          </div>
-        </div>
-        <!-- 회원가입 시작 -->
-        <div class="col join">
-          <h5 class="mb-1 mt-4 join-form"><strong>회원가입</strong></h5>
-
-          <div class="mb-3 join-form">
-            <button
-              class="btn text-light btn-sm mt-4"
-              id="login-bt"
-              type="submit"
-              @click="goJoin"
-            >
-              회원가입
-            </button>
+          <div class="col join text-center" style="text-align: center;">
+            <!-- <h5 class="mb-1 mt-4 join-form"><strong>회원가입</strong></h5> -->
+         
             <div class="mb-4">
               <h5 class="mt-4"><strong>ID/PW 찾기</strong></h5>
             </div>
+            <div class="join-form">
+              <button
+                class="btn btn-sm mb-3"
+                id="find-idpw"
+                type="button"
+                @click="goFindId"
+              >
+                아이디 찾기
+              </button>
+              <button
+                class="btn btn-sm mt-4 mb-3"
+                id="find-idpw"
+                type="button"
+                @click="goFindPwd"
+              >
+                비밀번호 찾기
+              </button>
+            </div>
           </div>
-          <div class="join-form">
-            <button
-              class="btn btn-sm mb-3"
-              id="find-idpw"
-              type="button"
-              @click="goFindId"
-            >
-              아이디 찾기
-            </button>
-            <button
-              class="btn btn-sm mt-4 mb-3"
-              id="find-idpw"
-              type="button"
-              @click="goFindPwd"
-            >
-              비밀번호 찾기
-            </button>
+        </div>
+        <div class="row text-center mt-5">
+          <div>
+            <img
+              src="@/assets/img/btnG_완성형.png"
+              style="width: 300px; height: auto"
+              @click="goToNaverLogin"
+            />
+          </div>
+        </div>
+        <div class="row text-center">
+          <div>
+            <img
+              src="@/assets/img/kakao_login_medium_wide.png"
+              style="width: 300px; height: auto"
+              @click="goToKakaoAuth"
+            />
           </div>
         </div>
       </div>
-      <!-- 소셜 로그인 : 네이버 -->
-      <div class="row text-center mt-5">
-        <div>
-          <!-- <button
-            class="btn btn-custom naver mt-4 mb-3"
-            id="naver-login-btn"
-            type="submit"
-          >
-            <img src="@/assets/img/N.png" /> &nbsp;&nbsp; 네이버 로그인 /
-            회원가입
-          </button> -->
-          
-          <img src="@/assets/img/btnG_완성형.png" style="width:300px; height:auto;" @click="goToNaverLogin"/>
-
-        </div>
-      </div>
-      <br />
-      <!-- 소셜 로그인 : 카카오 -->
-      <div class="row text-center">
-        <div>
-          <img
-            src="@/assets/img/kakao_login_medium_wide.png"
-            style="width: 300px; height: auto"
-            @click="goToKakaoAuth"
-          />
-          <!-- <div v-if="user">
-            <h2>{{user.kakao_account.profile.nickname}}님 환영합니다!</h2>
-            </div> -->
-        </div>
-        <br />
-        <br />
-        <br />
+      <div class="login-image">
+        <img src="@/assets/img/LOTTO_LOGO.png" alt="Login Image" />
       </div>
     </div>
   </div>
+  <br>
+  <br>
+  <br>
+  <br>
+  <br>
 </template>
+
 <script>
 // TODO: 1) spring 보내준 user 객체(웹토큰있음)를 로컬스토리지에 저장
 // TODO:   사용법 :  localStorage.setItem(키, 값);
@@ -154,21 +160,24 @@ export default {
       window.location.href = kakaoAuthUrl; // 이 페이지는 카카오에서 제공하는 페이지라 따로 페이지 만들 필요 없음
     },
     // 네이버 로그인
-  goToNaverLogin() {
-    const clientId = 'Ipydix8nXe2V9m6KRDom';  // 네이버 개발자 센터에서 발급받은 Client ID
-    const redirectUri = "http://localhost:8080/login/ouath2/code/naver";  // 네이버 개발자 센터에 등록한 Redirect URI
-    const state = this.generateRandomState();  // CSRF 공격 방지를 위한 랜덤 상태 값
-    const naverAuthUrl = `https://nid.naver.com/oauth2.0/authorize?response_type=code&client_id=${clientId}&redirect_uri=${encodeURIComponent(redirectUri)}&state=${state}`;
-    window.location.href = naverAuthUrl;
-  },
-  generateRandomState() {
-    const characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-    let state = "";
-    for (let i = 0; i < 16; i++) {
-      const randomIndex = Math.floor(Math.random() * characters.length);
-      state += characters.charAt(randomIndex);
-    }
-    return state;
+    goToNaverLogin() {
+      const clientId = "Ipydix8nXe2V9m6KRDom"; // 네이버 개발자 센터에서 발급받은 Client ID
+      const redirectUri = "http://localhost:8080/login/ouath2/code/naver"; // 네이버 개발자 센터에 등록한 Redirect URI
+      const state = this.generateRandomState(); // CSRF 공격 방지를 위한 랜덤 상태 값
+      const naverAuthUrl = `https://nid.naver.com/oauth2.0/authorize?response_type=code&client_id=${clientId}&redirect_uri=${encodeURIComponent(
+        redirectUri
+      )}&state=${state}`;
+      window.location.href = naverAuthUrl;
+    },
+    generateRandomState() {
+      const characters =
+        "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+      let state = "";
+      for (let i = 0; i < 16; i++) {
+        const randomIndex = Math.floor(Math.random() * characters.length);
+        state += characters.charAt(randomIndex);
+      }
+      return state;
     },
     // 아이디 찾기
     goFindId() {
@@ -189,44 +198,43 @@ export default {
       if (jwt != null) {
         try {
           let token = jwt;
-        this.eventSource = new EventSource(subscribeUrl + "?token=" + token);
-        this.eventSource.onopen = () => {
-          console.log("SSE 연결이 열렸습니다.");
-          this.isConnected = true;
-        };
-        // this.eventSource.addEventListener("connect", function(event) {
-        //     let message = event.data;
-        //     alert(message);
-        // })
-        this.eventSource.addEventListener("UNSENT_MESSAGE", function(event) {
+          this.eventSource = new EventSource(subscribeUrl + "?token=" + token);
+          this.eventSource.onopen = () => {
+            console.log("SSE 연결이 열렸습니다.");
+            this.isConnected = true;
+          };
+          // this.eventSource.addEventListener("connect", function(event) {
+          //     let message = event.data;
+          //     alert(message);
+          // })
+          this.eventSource.addEventListener("UNSENT_MESSAGE", function (event) {
             let message = event.data;
             alert(message);
-        })
-        this.eventSource.addEventListener("COMMENT", function(event) {
+          });
+          this.eventSource.addEventListener("COMMENT", function (event) {
             // let response = NotifyService.countNotify(this.$store.state.user.userId);
             // console.log(response);
             // this.$store.state.notifyCount = response;
             let message = event.data;
             alert(message);
-        })
-        this.eventSource.onmessage = (event) => {
-          console.log("새 알림:", event.data);
-          this.messages.push(event.data);
-        };
-        this.eventSource.onerror = (event) => {
-          console.error("SSE 연결 오류:", event);
-          if (event.readyState == EventSource.CLOSED) {
-            console.log("SSE 연결이 닫혔습니다.");
-            this.isConnected = false;
-          } else {
-            console.log("SSE 연결 오류 발생, 재연결 시도 중...");
-            setTimeout(() => this.connectSSE(), 5000); // 5초 후 재연결 시도
-          }
-        };
+          });
+          this.eventSource.onmessage = (event) => {
+            console.log("새 알림:", event.data);
+            this.messages.push(event.data);
+          };
+          this.eventSource.onerror = (event) => {
+            console.error("SSE 연결 오류:", event);
+            if (event.readyState == EventSource.CLOSED) {
+              console.log("SSE 연결이 닫혔습니다.");
+              this.isConnected = false;
+            } else {
+              console.log("SSE 연결 오류 발생, 재연결 시도 중...");
+              setTimeout(() => this.connectSSE(), 5000); // 5초 후 재연결 시도
+            }
+          };
         } catch (error) {
           console.log(error);
         }
-       
       } else {
         console.error("JWT 토큰이 없습니다.");
       }
@@ -275,7 +283,9 @@ export default {
         this.connectSse(response.data.accessToken);
         if (this.$store.state.user.role == "ROLE_USER") {
           alert("로그인에 성공하였습니다.");
-          this.$store.state.notifyCount = await NotifyService.countNotify(this.$store.state.user.userId);
+          this.$store.state.notifyCount = await NotifyService.countNotify(
+            this.$store.state.user.userId
+          );
           this.$router.push("/");
         } else if (this.$store.state.user.role == "ROLE_ADMIN") {
           alert("관리자 로그인에 성공하였습니다.");
@@ -305,6 +315,31 @@ export default {
 };
 </script>
 <style>
+.login-container {
+  display: flex;
+  height: auto;
+  align-items: center;
+  justify-content: center;
+}
+
+.login-form {
+  flex: 1;
+  padding: 20px;
+}
+
+.login-image {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.login-image img {
+  max-width: 100%;
+  height: auto;
+}
+
+/* 스타일 기존 유지 */
 #login-role {
   width: 483px;
 }
@@ -321,6 +356,10 @@ export default {
   height: 65px;
   background-color: #162b59;
 }
+#login-bt22 {
+  color: #333;
+}
+
 #find-idpw {
   width: 483px;
   height: 65px;
@@ -340,9 +379,6 @@ export default {
   border-color: black;
   color: black;
 }
-/* #naver-login-btn:hover{
-    background-color: #4cbb18;
-} */
 #kakao-login-btn {
   width: 483px;
   height: 65px;
@@ -352,8 +388,8 @@ export default {
   margin-bottom: 7vw;
 }
 .col-divider {
-  border-right: 1px solid #ccc; /* 수직선 스타일 설정 */
-  padding-right: 0.7813vw; /* 선택적으로 간격을 추가할 수 있습니다. */
+  border-right: 1px solid #ccc;
+  padding-right: 0.7813vw;
 }
 .log {
   margin-top: 3.6458vw;
@@ -372,7 +408,17 @@ export default {
   font-size: 20px;
 }
 .naver img {
-  width: 25px !important; /* 이미지의 너비를 원하는 크기로 조절합니다. */
+  width: 25px !important;
   height: 30px !important;
+}
+.text-center {
+  text-align: center;
+}
+.log-form {
+  display: block;
+  margin: 0 auto;
+}
+span:hover{
+text-decoration: underline;
 }
 </style>

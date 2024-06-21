@@ -7,15 +7,15 @@
     <br />
     <h2 class="text-center">아이디 찾기</h2>
     <div class="container">
-      <div class="row justify-content-md-center">
+      <div class="row justify-content-md-center " >
         <div class="col-8">
-          <div class="mt-5" id="comment">
+          <div class="mt-5" id="comment ">
             <p>
               ＊휴대폰 번호를 입력하여 아이디 찾기가 가능합니다.<br />
               ＊회원 유형과 이름, 휴대폰 번호를 입력해주세요.
             </p>
           </div>
-          <div class="mt-5" id="box">
+          <div class="mt-5 shadow " id="box">
             <div class="col-11">
               <p>회원 유형</p>
 
@@ -113,6 +113,10 @@
   <br />
   <br />
   <br />
+  <br />
+    <br />
+    <br />
+    <br />
 </template>
 <script>
 import AuthService from '@/services/auth/AuthService';
@@ -169,6 +173,7 @@ export default {
 #box {
   border: 1px solid #cccccc;
   padding: 60px 100px 60px 80px;
+  /* box-shadow: ; */
 }
 .FindIdBtn {
   background-color: #162b59;

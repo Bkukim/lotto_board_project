@@ -1,78 +1,17 @@
 // 관리자 신고 게시글
 <template>
-  <div class="main-container d-flex" style="height: auto">
-    <AdminHeaderCom />
-    <div class="main-content">
-      <div class="container text-center" id="fb_all">
-        <h3 class="mb-5 mt-5">관리자 신고 게시글 관리</h3>
-        <!-- <p class="mb-5">
-      자유게시판은 자유로운 의견을 남기는 공간으로 건의관련 답변은 드리지
-      않습니다. <br />
-      건의관련 및 문의사항은 건의게시판을 이용해주시길 바랍니다.
-    </p> -->
+  <HeaderCom :hideHeader="true" />
+  <!-- 관리자 페이지에서는 헤더를 숨김 -->
+  <div class="main-container d-flex" style="height: 900px;">
+    <AdminHeaderCom class="sidebar" :hideHeader="true" />
+    <div class="content-wrapper" style="flex: 1; padding: 20px; height: auto;">
+      <h2 class="text-center my-5 font-weight-bold" style="letter-spacing: -1.5px;"> 관리자 신고 게시글</h2>
+      <div class="d-flex justify-content-between align-items-center mb-4">
+        <h3 class="section-title mt-5 mb-5" style="letter-spacing: -3px; font-size: 25px;">신고 목록</h3>
 
-        <!-- 검색 박스 -->
-        <div class="container text-center" style="gap: 5px" id="search_box">
-          <div class="row">
-            <div class="col">
-              <!-- <button
-            class="btn btn-primary dropdown-toggle"
-            type="button"
-            data-bs-toggle="dropdown"
-            aria-expanded="false"
-            id="search_ck"
-          >
-            
-          </button> -->
-              <!-- <ul class="dropdown-menu">
-            <li><a class="dropdown-item" href="#">Action</a></li>
-            <li><a class="dropdown-item" href="#">Another action</a></li>
-            <li><a class="dropdown-item" href="#">Something else here</a></li>
-          </ul> -->
-            </div>
-            <div class="col">
-              <!-- 검색어를 입력하세요 -->
-              <div class="input-group mb-3">
-                <input
-                  type="text"
-                  class="form-control"
-                  aria-label="Sizing example input"
-                  aria-describedby="inputGroup-sizing-default"
-                  placeholder="아이디를 입력하세요."
-                  v-model="searchTitle"
-                />
-              </div>
-            </div>
-            <!-- 검색 버튼 -->
-            <div class="col-auto">
-              <!-- col-auto로 변경하여 너비를 자동 조정 -->
-              <button
-                class="btn btn-outline-secondary"
-                type="button"
-                id="button-search"
-                @click="searchFreeBoardReport"
-              >
-                검색
-              </button>
-            </div>
-            <!--  초기화 버튼 -->
-            <div class="col-auto">
-              <!-- col-auto로 변경하여 너비를 자동 조정 -->
-              <button
-                class="btn btn-outline-secondary"
-                type="button"
-                id="button-reset"
-                @click="resetSearch"
-              >
-                초기화
-              </button>
-            </div>
-          </div>
-        </div>
-        <!-- 검색박스 끝 -->
-
-        <!-- 게시판 탭 시작 -->
-        <div class="tab-container">
+      </div>
+         <!-- 게시판 탭 시작 -->
+         <div class="tab-container">
           <ul class="nav nav-tabs">
             <li class="nav-item" @click="activeTab = 'free'">
               <a class="nav-link" :class="{ active: activeTab === 'free' }"
@@ -362,7 +301,7 @@
                       <td>{{ data.userId }}</td>
                       <td>{{ data.insertTime }}</td>
                       <!-- <td>{{ data.likes }}</td> -->
-          <td>처리 완료</td>
+                      <td>처리 완료</td>
                     </tr>
                   </tbody>
                 </table>
@@ -371,38 +310,8 @@
           </div>
         </div>
 
-        <!-- 글쓰기 버튼-->
-        <!-- <div class="mt-5">
-          <router-link to="">
-            <button
-              class="btn btn-outline-secondary"
-              type="button"
-              id="button-Writing"
-              style="margin-left: 1220px"
-              @click="writeFreeBoard"
-            >
-              글쓰기
-            </button>
-          </router-link>
-        </div> -->
-
-        <!-- 페이징 -->
-        <!-- {/* paging 시작 */} -->
-        <!-- <div class="row justify-content-center mt-5">
-          <div class="col-auto" style="margin-top: 50px">
-            <b-pagination
-              class="custom-pagination col-12 mb-3"
-              v-model="page"
-              :total-rows="count"
-              :per-page="pageSize"
-              @click="retrieveFreeBoardReport"
-            ></b-pagination>
-          </div>
-        </div> -->
-      </div>
     </div>
   </div>
-  <!-- 자유게시판 중앙정렬 전체박스 끝 -->
 </template>
 
 <script>
@@ -421,7 +330,7 @@ export default {
       deptBoardReportsListProcessed: [],
       freeBoardReportsListProcessed: [],
 
-      searchTitle: "",
+      searchUserId: "",
 
       page: 1, // 현재페이지번호
       count: 0, // 전체데이터개수
@@ -430,12 +339,12 @@ export default {
     };
   },
   methods: {
-    // 자유 : 신고 전체조회 함수
+    // 자유 :  전체조회
     async retrieveFreeBoardReport() {
       try {
         // TODO: 1) 공통 전체조회 함수 실행
         let response = await FreeBoardService.getAllFreeBoardReport(
-          this.searchTitle, // 검색어
+          this.searchUserId, // 검색어
           this.page - 1, // 현재페이지번호-1
           this.pageSize // 1페이지당개수(size)
         );
@@ -445,18 +354,18 @@ export default {
         this.freeBoardReportsList = freeBoardReportsList; // 부서배열(벡엔드 전송)
         this.count = totalItems; // 전체페이지수(벡엔드 전송)
         // TODO: 4) 프론트 로깅 : console.log
-        console.log("sdfgsdfgs",this.freeBoardReportsList);
+        console.log("자유게시판 신고목록", this.freeBoardReportsList);
       } catch (e) {
         console.log(e);
       }
     },
 
-    // 자유 : 신고 처리완료 전체조회 함수
+    // 자유 :  처리완료 전체조회
     async retrieveFreeBoardReportProcessed() {
       try {
         // TODO: 1) 공통 전체조회 함수 실행
         let response = await FreeBoardService.getAllFreeBoardReportProcessed(
-          this.searchTitle, // 검색어
+          this.searchUserId, // 검색어
           this.page - 1, // 현재페이지번호-1
           this.pageSize // 1페이지당개수(size)
         );
@@ -466,19 +375,22 @@ export default {
         this.freeBoardReportsListProcessed = freeBoardReportsListProcessed; // 부서배열(벡엔드 전송)
         this.count = totalItems; // 전체페이지수(벡엔드 전송)
         // TODO: 4) 프론트 로깅 : console.log
-        console.log("asdfasdF",this.freeBoardReportsListProcessed);
+        console.log(
+          "자유게시판 신고처리 목록",
+          this.freeBoardReportsListProcessed
+        );
       } catch (e) {
         console.log(e);
       }
     },
 
-    // 부서 : 신고 전체조회 함수
+    // 부서 :  전체조회 
     async retrieveDeptBoardReport() {
       try {
         // alert("부서게시판 신고");
         // TODO: 1) 공통 전체조회 함수 실행
         let response = await DeptBoardService.getAllDeptBoardReport(
-          this.searchTitle, // 검색어
+          this.searchUserId, // 검색어
           this.page - 1, // 현재페이지번호-1
           this.pageSize // 1페이지당개수(size)
         );
@@ -488,28 +400,28 @@ export default {
         this.deptBoardReportsList = deptBoardReportsList; // 부서배열(벡엔드 전송)
         this.count = totalItems; // 전체페이지수(벡엔드 전송)
         // TODO: 4) 프론트 로깅 : console.log
-        console.log(response.data);
+        console.log("부서게시판 신고목록", deptBoardReportsList);
       } catch (e) {
         console.log(e);
       }
     },
 
-    // 자유 : 신고 처리완료 전체조회 함수
+    // 부서 :  처리완료 전체조회 
     async retrieveDeptBoardReportProcessed() {
       try {
         // TODO: 1) 공통 전체조회 함수 실행
         let response = await DeptBoardService.getAllDeptBoardReportProcessed(
-          this.searchTitle, // 검색어
+          this.searchUserId, // 검색어
           this.page - 1, // 현재페이지번호-1
           this.pageSize // 1페이지당개수(size)
         );
         // TODO: 복습 : 2) 객체분할 할당
-        const { freeBoardReportsListProcessed, totalItems } = response.data; // 부서배열(벡엔드 전송)
+        const { deptBoardReportsListProcessed, totalItems } = response.data; // 부서배열(벡엔드 전송)
         // TODO: 3) 바인딩변수(속성)에 저장
-        this.freeBoardReportsListProcessed = freeBoardReportsListProcessed; // 부서배열(벡엔드 전송)
+        this.deptBoardReportsListProcessed = deptBoardReportsListProcessed; // 부서배열(벡엔드 전송)
         this.count = totalItems; // 전체페이지수(벡엔드 전송)
         // TODO: 4) 프론트 로깅 : console.log
-        console.log(response.data);
+        console.log("부서게시판 신고처리 목록", this.deptBoardReportsListProcessed);
       } catch (e) {
         console.log(e);
       }
@@ -522,13 +434,9 @@ export default {
     },
     // 초기화 함수
     resetSearch() {
-      this.searchTitle = "";
+      this.searchUserId = "";
       this.retrieveFreeBoard();
     },
-    // // 글 쓰러가기 함수
-    // writeFreeBoard() {
-    //   this.$router.push("/free/free-boardAdd");
-    // },
 
     // 자유 취소 함수
     async updateFreeBoardReport(freeBoardId) {
@@ -550,7 +458,7 @@ export default {
       }
     },
 
-       // 부서 취소 함수
+    // 부서 취소 함수
     async updateDeptBoardReport(deptBoardId) {
       try {
         if (confirm("취소하시겠습니까?")) {
@@ -634,7 +542,7 @@ p {
   background-color: #162b59;
   border-color: #ffffff;
   color: white;
-}
+} 
 
 .custom-pagination .page-link {
   color: #162b59;
@@ -644,18 +552,17 @@ p {
   background-color: #ffffff;
   border-color: 1px solid#8f8f8f;
   color: #162b59;
-  /* border: none; */
 }
 
 .custom-pagination .page-link:focus {
   outline: none;
   box-shadow: 0 0 0 0.2rem #162b59;
   border-color: #162b59;
-}
+} 
 
 /* 검색버튼 */
 .btn {
-  margin: 0 2px; /* 버튼 간 간격을 줄이기 위해 여백을 조정 */
+  margin: 0 2px; 
 }
 
 /* 검색 전체 배경 */
@@ -674,7 +581,7 @@ p {
   background-color: #162b59;
   color: #ffffff;
   border: none;
-}
+} 
 
 #button-reset {
   background-color: #162b59;
@@ -683,5 +590,5 @@ p {
 }
 #router_hv:hover {
   text-decoration: underline 1px solid;
-}
+} 
 </style>
