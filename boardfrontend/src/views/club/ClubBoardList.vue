@@ -196,7 +196,7 @@ export default {
     },
     async fetchWeatherForecast() {
       const apiKey = '5114682ae35f4a5abaf62021241406'; // API 키
-      const city = 'Busan';
+      const city = 'Busan, South Korea';
       const url = `http://api.weatherapi.com/v1/forecast.json?key=${apiKey}&q=${city}&days=7`;
 
       try {

@@ -158,23 +158,20 @@ export default {
     },
     // 네이버 로그인
     goToNaverLogin() {
-      const clientId = "Ipydix8nXe2V9m6KRDom"; // 네이버 개발자 센터에서 발급받은 Client ID
-      const redirectUri = "http://localhost:8080/login/ouath2/code/naver"; // 네이버 개발자 센터에 등록한 Redirect URI
-      const state = this.generateRandomState(); // CSRF 공격 방지를 위한 랜덤 상태 값
-      const naverAuthUrl = `https://nid.naver.com/oauth2.0/authorize?response_type=code&client_id=${clientId}&redirect_uri=${encodeURIComponent(
-        redirectUri
-      )}&state=${state}`;
-      window.location.href = naverAuthUrl;
+        const clientId = 'Ipydix8nXe2V9m6KRDom';  // 네이버 개발자 센터에서 발급받은 Client ID
+        const redirectUri = "http://localhost:8080/login/oauth2/code/naver";  // 네이버 개발자 센터에 등록한 Redirect URI
+        const state = this.generateRandomState();  // CSRF 공격 방지를 위한 랜덤 상태 값
+        const naverAuthUrl = `https://nid.naver.com/oauth2.0/authorize?response_type=code&client_id=${clientId}&redirect_uri=${encodeURIComponent(redirectUri)}&state=${state}`;
+        window.location.href = naverAuthUrl;
     },
     generateRandomState() {
-      const characters =
-        "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-      let state = "";
-      for (let i = 0; i < 16; i++) {
-        const randomIndex = Math.floor(Math.random() * characters.length);
-        state += characters.charAt(randomIndex);
-      }
-      return state;
+        const characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+        let state = "";
+        for (let i = 0; i < 16; i++) {
+            const randomIndex = Math.floor(Math.random() * characters.length);
+            state += characters.charAt(randomIndex);
+        }
+        return state;
     },
     // 아이디 찾기
     goFindId() {
@@ -193,17 +190,13 @@ export default {
       let subscribeUrl = "http://localhost:8000/api/v1/notify/subscribe";
 
       if (jwt != null) {
+
         let token = jwt;
         this.eventSource = new EventSource(subscribeUrl + "?token=" + token);
         this.eventSource.onopen = () => {
           console.log("SSE 연결이 열렸습니다.");
           this.isConnected = true;
         };
-        // this.eventSource.addEventListener("connect", function(event) {
-        //     let message = event.data;
-        //     alert(message);
-        // })
-        
         this.eventSource.addEventListener("COMMENT", function (event) {
           let message = event.data;
           alert(message);
@@ -242,6 +235,7 @@ export default {
             setTimeout(() => this.connectSSE(), 5000); // 5초 후 재연결 시도
           }
         };
+
       } else {
         console.error("JWT 토큰이 없습니다.");
       }
