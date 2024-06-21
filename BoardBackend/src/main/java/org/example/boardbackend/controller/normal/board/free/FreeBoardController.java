@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.example.boardbackend.model.dto.board.free.FreeBoardDto;
 import org.example.boardbackend.model.dto.board.free.IFreeBoardRecommentDto;
+import org.example.boardbackend.model.entity.board.club.ClubBoard;
 import org.example.boardbackend.model.entity.board.free.FreeBoard;
 import org.example.boardbackend.model.entity.board.free.FreeBoardComment;
 import org.example.boardbackend.model.entity.board.free.FreeBoardRecomment;
@@ -302,5 +303,12 @@ public class FreeBoardController {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
+    // TODO : 메인 홈에 5개 띄우기
+//@GetMapping("/free/main")
+//public ResponseEntity<List<ClubBoard>> getAllClubs() {
+//    List<ClubBoard> clubBoards = clubBoardService.getAllClub();
+//    return ResponseEntity.ok(clubBoards);
+//}
 
 }
