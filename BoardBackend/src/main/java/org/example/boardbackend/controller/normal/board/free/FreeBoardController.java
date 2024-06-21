@@ -328,5 +328,27 @@ public ResponseEntity<Object> findFree(FreeBoardDto freeBoardDto) {
     }
 }
 
+//      todo : 메인에서 최신순으로 조회
+    @GetMapping("/main/free/recent")
+    public ResponseEntity<Object> findLatestFree(FreeBoardDto freeBoardDto) {
+        try {
+            // 전체 조회 서비스 실행
+            List<FreeBoardDto> freeBoard = freeBoardService.getLatestFreeBoards(freeBoardDto);
+
+            Map<String, Object> response = new HashMap<>();
+            response.put("LatestFreeBoard", freeBoard);
+
+            if (!freeBoard.isEmpty()) {
+                // 조회 성공
+                return new ResponseEntity<>(response, HttpStatus.OK);
+            } else {
+                // 데이터 없음
+                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+            }
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
 
 }

@@ -163,7 +163,7 @@
               </thead>
               <tbody>
                 <!-- 반복문 시작할 행 -->
-                <tr v-for="(data, index) in freeBoardList" :key="index">
+                <tr v-for="(data, index) in LatestFreeBoard" :key="index">
                   <td style="font-size: 15px">
                     {{ index + 1 }}
                   </td>
@@ -217,7 +217,7 @@
               </thead>
               <tbody>
                 <!-- 반복문 시작할 행 -->
-                <tr v-for="(data, index) in complaintBoardList" :key="index">
+                <tr v-for="(data, index) in complaintBoard" :key="index">
                   <td style="font-size: 15px">
                     {{ index + 1 }}
                   </td>
@@ -299,9 +299,12 @@ export default {
   },
   data() {
     return {
-      hotList: [],
-      communityList: [1, 2, 3, 4, 5],
+
+      hotList: [1, 2, 3, 4, 5],
+      complaintBoard:[1,2,3,4,5],
+
       freeBoard: [], //자유게시판
+      LatestFreeBoard:[],
       count: 0, // 전체데이터개수
       notice: [], //공지사항 가져오기
     };
@@ -335,6 +338,22 @@ export default {
         this.notice = notice; // 부서배열(벡엔드 전송)
         // TODO: 4) 프론트 로깅 : console.log
         console.log("notice 조회", this.notice);
+        console.log(response.data);
+      } catch (e) {
+        console.log(e);
+      }
+    },
+
+        // todo: 자유게시판 메인 조회
+    async retrieveRecentFreeBoard() {
+      try {
+        // TODO: 1) 공통 전체조회 함수 실행
+        let response = await FreeBoardService.getRecentFreeboard();
+        // TODO: 복습 : 2) 객체분할 할당
+        const { LatestFreeBoard } = response.data; // 부서배열(벡엔드 전송)
+        // TODO: 3) 바인딩변수(속성)에 저장
+        this.LatestFreeBoard = LatestFreeBoard; // 부서배열(벡엔드 전송)
+        // TODO: 4) 프론트 로깅 : console.log
         console.log(response.data);
       } catch (e) {
         console.log(e);

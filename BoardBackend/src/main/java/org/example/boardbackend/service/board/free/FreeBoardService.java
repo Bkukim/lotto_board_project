@@ -217,4 +217,13 @@ public class FreeBoardService {
         return list;
     }
 
+    //    todo : main 페이지 최신순 조회
+    public List<FreeBoardDto> getLatestFreeBoards(
+            FreeBoardDto freeBoardDto
+    ) {
+        List<FreeBoardDto> list
+                = freeBoardRepository.getLatestFreeBoards(freeBoardDto);
+        return list;
+    }
+
 }

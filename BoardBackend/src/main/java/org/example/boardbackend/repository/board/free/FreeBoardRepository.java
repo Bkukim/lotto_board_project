@@ -85,6 +85,18 @@ public interface FreeBoardRepository extends JpaRepository<FreeBoard, Long> {
         ,nativeQuery = true)
 List<FreeBoardDto> findFreeBoardByLikes(FreeBoardDto freeBoardDto);
 
+    //    todo: 메인에서 최신순으로 가져오기
+    @Query(value = "SELECT FREE_BOARD_ID, TITLE\n" +
+            "FROM (\n" +
+            "    SELECT FREE_BOARD_ID, TITLE\n" +
+            "    FROM LOTTO_FREE_BOARD\n" +
+            "    ORDER BY INSERT_TIME DESC\n" +
+            ")\n" +
+            "WHERE ROWNUM <= 5"
+            ,countQuery = "SELECT count(*)\n" +
+            "FROM LOTTO_FREE_BOARD\n"
+            ,nativeQuery = true)
+    List<FreeBoardDto> getLatestFreeBoards(FreeBoardDto freeBoardDto);
 
 }
 
