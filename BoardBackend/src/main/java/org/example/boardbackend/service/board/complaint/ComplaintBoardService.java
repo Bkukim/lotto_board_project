@@ -18,6 +18,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -108,5 +109,14 @@ public class ComplaintBoardService {
         Page<ComplaintBoardDto> page
                 = complaintBoardRepository.findComplaintBoardByUserIdContaining(userId, pageable);
         return page;
+    }
+
+    //    todo : main 페이지 최신순 조회
+    public List<ComplaintBoardDto> getLatestComplaintBoards(
+            ComplaintBoardDto complaintBoardDto
+    ) {
+        List<ComplaintBoardDto> list
+                = complaintBoardRepository.getLatestComplaintBoards(complaintBoardDto);
+        return list;
     }
 }

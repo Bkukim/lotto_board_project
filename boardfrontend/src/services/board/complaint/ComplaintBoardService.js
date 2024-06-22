@@ -2,6 +2,15 @@ import http from "@/utils/http-common"; // spring 통신 정의 파일
 import AuthHeader from "@/services/auth/AuthHeader";
 
 class ComplaintService {
+  // todo : 메인에서 최신순 조회
+  getRecentComplaintboard() {
+    return http.get(`/normal/board/main/complaint/recent`,
+      {
+        headers: AuthHeader(),
+      }
+    );
+  }
+
   // TODO: 전체 조회
   getAllComplaintBoard(title, page, size) {
     return http.get(

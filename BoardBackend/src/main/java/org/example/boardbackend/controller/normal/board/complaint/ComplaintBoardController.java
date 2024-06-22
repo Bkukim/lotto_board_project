@@ -18,6 +18,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -220,6 +221,28 @@ public class ComplaintBoardController {
                 return new ResponseEntity<>(response, HttpStatus.OK);
             } else {
 //                데이터 없음
+                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+            }
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    //      todo : 메인에서 최신순으로 조회
+    @GetMapping("/main/complaint/recent")
+    public ResponseEntity<Object> findLatestComplaint(ComplaintBoardDto complaintBoardDto) {
+        try {
+            // 전체 조회 서비스 실행
+            List<ComplaintBoardDto> complaintBoard = complaintBoardService.getLatestComplaintBoards(complaintBoardDto);
+
+            Map<String, Object> response = new HashMap<>();
+            response.put("LatestComplaintBoard", complaintBoard);
+
+            if (!complaintBoard.isEmpty()) {
+                // 조회 성공
+                return new ResponseEntity<>(response, HttpStatus.OK);
+            } else {
+                // 데이터 없음
                 return new ResponseEntity<>(HttpStatus.NO_CONTENT);
             }
         } catch (Exception e) {
