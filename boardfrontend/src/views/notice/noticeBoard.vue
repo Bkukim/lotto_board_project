@@ -2,13 +2,15 @@
   <div class="container" id="fb_all">
     <div
       class="notice_bn mb-5 text-start"
-      style="height: 200px; background-color: #162b59; color: #fff; padding-left: 30px;" 
+      style="
+        height: 200px;
+        background-color: #162b59;
+        color: #fff;
+        padding-left: 30px;
+      "
     >
-
-      <h3 class="mb-5 mt-5" style="font-weight: bold;">공지사항</h3>
-      <p class="mb-5">
-        로또 사내게시판에서 알리는 새소식을 안내해 드립니다.
-      </p>
+      <h3 class="mb-5 mt-5" style="font-weight: bold">공지사항</h3>
+      <p class="mb-5">로또 사내게시판에서 알리는 새소식을 안내해 드립니다.</p>
     </div>
 
     <nav style="--bs-breadcrumb-divider: '>'" aria-label="breadcrumb">
@@ -16,63 +18,52 @@
         <li class="breadcrumb-item">
           <a href="/" style="color: blue; text-decoration: none">Home</a>
         </li>
-        <li
-          class="breadcrumb-item active"
-          aria-current="page"
-        >
-          공지사항
-        </li>
+        <li class="breadcrumb-item active" aria-current="page">공지사항</li>
       </ol>
     </nav>
     <!-- 검색 박스 -->
-    <div class="container text-center" style="background-color: #e2e2e28c">
-      <div
-        class="container text-center"
-        style="gap: 5px; width: 650px;"
-        id="search_box"
-      >
-        <div class="row">
-       
-          <div class="col">
-            <!-- 검색어를 입력하세요 -->
-            <div class="input-group mb-3">
-              <input
-                type="text"
-                class="form-control"
-                aria-label="Sizing example input"
-                aria-describedby="inputGroup-sizing-default"
-                placeholder="검색어를 입력하세요."
-                v-model="title"
-              />
-            </div>
+    <div class="container text-center" style="gap: 5px" id="search_box">
+      <div class="row">
+        <div class="col"></div>
+        <div class="col">
+          <!-- 검색어를 입력하세요 -->
+          <div class="input-group mb-3">
+            <input
+              type="text"
+              class="form-control"
+              aria-label="Sizing example input"
+              aria-describedby="inputGroup-sizing-default"
+              placeholder="검색어를 입력하세요."
+              v-model="title"
+            />
           </div>
-          <!-- 검색 버튼 -->
-          <div class="col-auto">
-            <!-- col-auto로 변경하여 너비를 자동 조정 -->
-            <button
-              class="btn btn-outline-secondary"
-              type="button"
-              id="button-search"
-              @click="title"
-            >
-              검색
-            </button>
-          </div>
-          <!--  초기화 버튼 -->
-          <div class="col-auto">
-            <!-- col-auto로 변경하여 너비를 자동 조정 -->
-            <button
-              class="btn btn-outline-secondary"
-              type="button"
-              id="button-reset"
-            >
-              초기화
-            </button>
-          </div>
+        </div>
+        <!-- 검색 버튼 -->
+        <div class="col-auto">
+          <!-- col-auto로 변경하여 너비를 자동 조정 -->
+          <button
+            class="btn btn-outline-secondary"
+            type="button"
+            id="button-search"
+            @click="searchNotice"
+          >
+            검색
+          </button>
+        </div>
+        <!--  초기화 버튼 -->
+        <div class="col-auto">
+          <!-- col-auto로 변경하여 너비를 자동 조정 -->
+          <button
+            class="btn btn-outline-secondary"
+            type="button"
+            id="button-reset"
+            @click="resetComplaintSearch"
+          >
+            초기화
+          </button>
         </div>
       </div>
     </div>
-
     <!-- 검색박스 끝 -->
 
     <!-- 테이블 -->
@@ -93,19 +84,17 @@
             {{ count - ((page - 1) * pageSize + index) }}
             <!-- {{ index + 1 }} -->
           </td>
-          <td
-            @click="viewsUp"
-            class="col-5"
-            
-          >
-            <router-link :to="`/notice/notice-check/` + data.noticeId+'/'+data.eventYN"
-            style="
-              color: #444444;
-              font-weight: bold;
-              text-decoration: none;
-              text-align: left;
-              padding-left: 5vw;
-            ">
+          <td @click="viewsUp" class="col-5">
+            <router-link
+              :to="`/notice/notice-check/` + data.noticeId + '/' + data.eventYN"
+              style="
+                color: #444444;
+                font-weight: bold;
+                text-decoration: none;
+                text-align: left;
+                padding-left: 5vw;
+              "
+            >
               [{{ data.noticeType }}] {{ data.title }}
             </router-link>
           </td>
@@ -146,7 +135,6 @@ export default {
       page: 1, // 현재페이지번호
       count: 0, // 전체데이터개수
       pageSize: 10, // 1페이지당개수(select태그)
-      
     };
   },
   methods: {
@@ -173,10 +161,14 @@ export default {
     goNoticeAdd() {
       this.$router.push("/admin/notice-add");
     },
-// 검색함수
+    // 검색함수
     async searchNotice() {
       console.log("검색 함수 호출");
       await this.retrieveNotice();
+    },
+    resetSearch() {
+      this.title = "";
+      this.retrieveFreeBoard();
     },
   },
   mounted() {
@@ -259,7 +251,6 @@ p {
   background-image: url("@/assets/img/notice_icon.png");
   background-repeat: no-repeat;
   background-position: calc(100% - 50px) center; /* 오른쪽에서 20px 왼쪽으로 이동 */
-  background-size: 170px 170px; 
+  background-size: 170px 170px;
 }
-
 </style>

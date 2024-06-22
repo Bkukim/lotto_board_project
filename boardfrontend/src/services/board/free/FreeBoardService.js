@@ -23,6 +23,13 @@ class FreeBoardService {
       }
     );
   }
+     //TODO: hot 게시판 조회
+     getHotBoard() {
+      return http.get(`/normal/board/hot-board`, {
+        headers: AuthHeader(),
+      });
+    }
+
 
 
   // TODO: 전체 조회
@@ -144,6 +151,13 @@ class FreeBoardService {
     });
   }
 
+  // TODO: 공지사항 조회
+    //TODO: 자유만 조회
+    getFreeNotice(size) {
+      return http.get(`/normal/notice/notice-free?size=${size}`, {
+        headers: AuthHeader(),
+      });
+    }
 
   // // TODO: 신고 게시글 삭제 : isProcessed Y로 수정함수
   // updateFreeBoardReport(reportId) {

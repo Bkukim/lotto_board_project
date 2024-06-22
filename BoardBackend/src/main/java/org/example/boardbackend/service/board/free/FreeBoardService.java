@@ -226,4 +226,12 @@ public class FreeBoardService {
         return list;
     }
 
+//    todo: hot 게시판 30개 까지 좋아요 조회
+public List<FreeBoardDto> getHotBoard(
+        FreeBoardDto freeBoardDto
+) {
+    List<FreeBoardDto> list
+            = freeBoardRepository.findHotBoard(freeBoardDto);
+    return list;
+}
 }

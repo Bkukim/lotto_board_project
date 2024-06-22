@@ -21,25 +21,10 @@
         </li>
       </ol>
     </nav>
-    <!-- 검색 박스 -->
+    <!-- 검색박스 -->
     <div class="container text-center" style="gap: 5px" id="search_box">
       <div class="row">
-        <div class="col">
-          <button
-            class="btn btn-primary dropdown-toggle"
-            type="button"
-            data-bs-toggle="dropdown"
-            aria-expanded="false"
-            id="search_ck"
-          >
-            -- 검색 선택 ---
-          </button>
-          <ul class="dropdown-menu">
-            <li><a class="dropdown-item" href="#">Action</a></li>
-            <li><a class="dropdown-item" href="#">Another action</a></li>
-            <li><a class="dropdown-item" href="#">Something else here</a></li>
-          </ul>
-        </div>
+        <div class="col"></div>
         <div class="col">
           <!-- 검색어를 입력하세요 -->
           <div class="input-group mb-3">
@@ -79,7 +64,6 @@
         </div>
       </div>
     </div>
-    <!-- 검색박스 끝 -->
 
     <!-- 테이블 -->
     <table class="table mt-5">
@@ -87,7 +71,6 @@
         <tr>
           <th scope="col">번호</th>
           <th scope="col">제목</th>
-          <th scope="col">내용</th>
           <th scope="col">작성자</th>
           <th scope="col">등록일</th>
           <th scope="col">좋아요</th>
@@ -96,15 +79,20 @@
       </thead>
       <tbody>
         <!-- 반복문 시작할 행 -->
-        <tr v-for="(data, index) in freeBoardList" :key="index">
+        <tr v-for="(data, index) in hotList" :key="index">
           <td>{{ (page - 1) * pageSize + index + 1 }}</td>
-          <td>{{ data.title }}</td>
           <td>
             <router-link
               :to="'/free/free-boardDetail/' + data.freeBoardId"
               class="router-link-exact-active alltext"
+              style="
+                color: #444444;
+                text-decoration: none;
+                text-align: left !important;
+                padding-left: 5vw;
+              "
             >
-              {{ data.content }}
+              {{ data.title }}
             </router-link>
           </td>
           <td>{{ data.userId }}</td>
@@ -144,14 +132,14 @@
   </div>
   <!-- 자유게시판 중앙정렬 전체박스 끝 -->
 </template>
-  
-  <script>
+
+<script>
 import FreeBoardService from "@/services/board/free/FreeBoardService";
 
 export default {
   data() {
     return {
-      freeBoardList: [],
+      hotList: [],
       searchTitle: "",
       page: 1, // 현재페이지번호
       count: 0, // 전체데이터개수
@@ -160,21 +148,17 @@ export default {
   },
   methods: {
     // 전체조회 함수
-    async retrieveFreeBoard() {
+    async retrieveHotBoard() {
       try {
         // TODO: 1) 공통 전체조회 함수 실행
-        let response = await FreeBoardService.getAllBoard(
-          this.searchTitle, // 검색어
-          this.page - 1, // 현재페이지번호-1
-          this.pageSize // 1페이지당개수(size)
-        );
+        let response = await FreeBoardService.getHotBoard();
         // TODO: 복습 : 2) 객체분할 할당
-        const { freeBoardList, totalItems } = response.data; // 부서배열(벡엔드 전송)
+        const { hotList, totalItems } = response.data; // 부서배열(벡엔드 전송)
         // TODO: 3) 바인딩변수(속성)에 저장
-        this.freeBoardList = freeBoardList; // 부서배열(벡엔드 전송)
+        this.hotList = hotList; // 부서배열(벡엔드 전송)
         this.count = totalItems; // 전체페이지수(벡엔드 전송)
         // TODO: 4) 프론트 로깅 : console.log
-        console.log(response.data);
+        console.log("데[이터확인]",response.data);
       } catch (e) {
         console.log(e);
       }
@@ -182,22 +166,22 @@ export default {
     // 검색 함수
     async searchFreeBoard() {
       console.log("검색 함수 호출");
-      await this.retrieveFreeBoard();
+      await this.retrieveHotBoard();
     },
     // 초기화 함수
     resetSearch() {
       this.searchTitle = "";
-      this.retrieveFreeBoard();
+      this.retrieveHotBoard();
     },
   },
   mounted() {
-    this.retrieveFreeBoard();
+    this.retrieveHotBoard();
     window.scrollTo(0, 0);
   },
 };
 </script>
-  
-  <style>
+
+<style>
 /* 페이지 전체 높이 */
 #fb_all {
   height: 100vw;
@@ -260,4 +244,3 @@ p {
   border: none;
 }
 </style>
-  

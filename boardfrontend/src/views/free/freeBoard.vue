@@ -22,12 +22,7 @@
         <li class="breadcrumb-item">
           <a href="/" style="color: blue; text-decoration: none">Home</a>
         </li>
-        <li
-          class="breadcrumb-item active"
-          aria-current="page"
-        >
-          자유게시판
-        </li>
+        <li class="breadcrumb-item active" aria-current="page">자유게시판</li>
       </ol>
     </nav>
 
@@ -104,6 +99,17 @@
           <th scope="col">좋아요</th>
           <!-- <th scope="col">조회수</th> -->
         </tr>
+        <!-- todo: 공지사항 -->
+        <tr v-for="(data, index) in noticeFree" :key="index" style="background-color: gray;">
+          <th scope="col"></th>
+          <th scope="col" style="text-align: left; padding-left: 100px">
+            <router-link :to="'notice/notice-check/'+data.noticeId" style="color: red; text-decoration: none;">[공지] {{ data.title }}</router-link>
+          </th>
+          <th scope="col">ADMIN</th>
+          <th scope="col">{{ data.insertTime }}</th>
+          <th scope="col">{{ data.views }}</th>
+          <!-- <th scope="col">조회수</th> -->
+        </tr>
       </thead>
       <tbody>
         <!-- 반복문 시작할 행 -->
@@ -115,7 +121,7 @@
               :to="'/free/free-boardDetail/' + data.freeBoardId"
               class="router-link-exact-active alltext"
             >
-              {{ data.title}}
+              {{ data.title }}
             </router-link>
           </td>
           <td>{{ data.userId }}</td>
@@ -165,6 +171,8 @@ export default {
       page: 1, // 현재페이지번호
       count: 0, // 전체데이터개수
       pageSize: 10, // 1페이지당개수(select태그)
+
+      noticeFree: [], // 공지사항 가져오기
     };
   },
   methods: {
@@ -181,6 +189,23 @@ export default {
         const { freeBoardList, totalItems } = response.data; // 부서배열(벡엔드 전송)
         // TODO: 3) 바인딩변수(속성)에 저장
         this.freeBoardList = freeBoardList; // 부서배열(벡엔드 전송)
+        this.count = totalItems; // 전체페이지수(벡엔드 전송)
+        // TODO: 4) 프론트 로깅 : console.log
+        console.log(response.data);
+      } catch (e) {
+        console.log(e);
+      }
+    },
+    async retrieveFreeNotice() {
+      try {
+        // TODO: 1) 공통 전체조회 함수 실행
+        let response = await FreeBoardService.getFreeNotice(
+          this.pageSize // 1페이지당개수(size)
+        );
+        // TODO: 복습 : 2) 객체분할 할당
+        const { noticeFree, totalItems } = response.data; // 부서배열(벡엔드 전송)
+        // TODO: 3) 바인딩변수(속성)에 저장
+        this.noticeFree = noticeFree; // 부서배열(벡엔드 전송)
         this.count = totalItems; // 전체페이지수(벡엔드 전송)
         // TODO: 4) 프론트 로깅 : console.log
         console.log(response.data);
@@ -205,6 +230,7 @@ export default {
   },
   mounted() {
     this.retrieveFreeBoard();
+    this.retrieveFreeNotice();
     window.scrollTo(0, 0);
   },
 };

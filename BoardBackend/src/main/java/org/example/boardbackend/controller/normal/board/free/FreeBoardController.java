@@ -350,5 +350,26 @@ public ResponseEntity<Object> findFree(FreeBoardDto freeBoardDto) {
         }
     }
 
+    @GetMapping("/hot-board")
+    public ResponseEntity<Object> getHotBoard(FreeBoardDto freeBoardDto) {
+        try {
+            // 전체 조회 서비스 실행
+            List<FreeBoardDto> hotList = freeBoardService.getHotBoard(freeBoardDto);
+
+            Map<String, Object> response = new HashMap<>();
+            response.put("hotList", hotList);
+//        response.put("freeBoardDto1", freeBoardDto1.size()); // 총건수(개수)
+
+            if (!hotList.isEmpty()) {
+                // 조회 성공
+                return new ResponseEntity<>(response, HttpStatus.OK);
+            } else {
+                // 데이터 없음
+                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+            }
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
 
 }

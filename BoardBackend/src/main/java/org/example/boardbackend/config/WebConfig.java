@@ -30,7 +30,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @Configuration
 @Getter
 public class WebConfig implements WebMvcConfigurer {
-    @Value("${frontendIp}")     // AWS : application.properties 또는 환경변수에서 값 주입(설정파일에 정의된 값 쉽게 주입 가능해짐)
+//    @Value("${frontendIp}")     // AWS : application.properties 또는 환경변수에서 값 주입(설정파일에 정의된 값 쉽게 주입 가능해짐)
 //    private String frontDomain;  // AWS ip 주소
     private final String frontDomain = "http://localhost:8080";
 //    함수 재정의 : alt + insert

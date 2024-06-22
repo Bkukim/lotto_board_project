@@ -76,6 +76,13 @@ class ComplaintService {
       headers: AuthHeader(),
     });
   }
+
+   //TODO: 공지사항 건의만 조회
+   getComplaintNotice(size) {
+    return http.get(`/normal/notice/notice-complaint?size=${size}`, {
+      headers: AuthHeader(),
+    });
+  }
 }
 
 export default new ComplaintService();

@@ -71,12 +71,13 @@ public interface FreeBoardRepository extends JpaRepository<FreeBoard, Long> {
                                                Pageable pageable);
 
 
-//    todo: 메인에서 좋아요순으로 가져오기
+//    todo: 메인에서 이번달만 좋아요순으로 가져오기
 @Query(value = "SELECT FREE_BOARD_ID, TITLE, LIKES\n" +
         "FROM (\n" +
         "    SELECT FREE_BOARD_ID, TITLE, LIKES\n" +
         "    FROM LOTTO_FREE_BOARD\n" +
-        "    WHERE LIKES > 0\n" +
+        "    WHERE EXTRACT(MONTH FROM TO_DATE(insert_Time, 'YYYY-MM-DD HH24:MI:SS')) = EXTRACT(MONTH FROM SYSDATE)\n" +
+        "    AND EXTRACT(YEAR FROM TO_DATE(insert_Time, 'YYYY-MM-DD HH24:MI:SS')) = EXTRACT(YEAR FROM SYSDATE)\n" +
         "    ORDER BY LIKES DESC\n" +
         ")\n" +
         "WHERE ROWNUM <= 5"
@@ -84,6 +85,23 @@ public interface FreeBoardRepository extends JpaRepository<FreeBoard, Long> {
         "FROM LOTTO_FREE_BOARD\n"
         ,nativeQuery = true)
 List<FreeBoardDto> findFreeBoardByLikes(FreeBoardDto freeBoardDto);
+
+// todo: 핫게시판 좋아요순
+@Query(value = "SELECT FREE_BOARD_ID AS FREE_BOARD_ID" +
+        ", TITLE AS TITLE" +
+        ", LIKES AS LIKES" +
+        ", USER_ID AS USER_ID" +
+        ", INSERT_TIME AS INSERT_TIME\n" +
+        "FROM (\n" +
+        "    SELECT FREE_BOARD_ID, TITLE, LIKES, USER_ID, INSERT_TIME\n" +
+        "    FROM LOTTO_FREE_BOARD\n" +
+        "    ORDER BY LIKES DESC\n" +
+        ")\n" +
+        "WHERE ROWNUM <= 30"
+        ,countQuery = "SELECT count(*)\n" +
+        "FROM LOTTO_FREE_BOARD\n"
+        ,nativeQuery = true)
+List<FreeBoardDto> findHotBoard(FreeBoardDto freeBoardDto);
 
     //    todo: 메인에서 최신순으로 가져오기
     @Query(value = "SELECT FREE_BOARD_ID AS freeBoardId, TITLE AS title\n" +
