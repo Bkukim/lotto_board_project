@@ -1,28 +1,28 @@
 <template>
   <div class="container text-center" id="fb_all">
-   
     <div
       class="complaint_bn mb-5 text-start"
-      style="height: 200px; background-color: #162b59; color: #fff; padding-left: 30px;" 
+      style="
+        height: 200px;
+        background-color: #162b59;
+        color: #fff;
+        padding-left: 30px;
+      "
     >
-
-      <h3 class="mb-5 mt-5" style="font-weight: bold;">건의 / 문의 게시판</h3>
+      <h3 class="mb-5 mt-5" style="font-weight: bold">건의 / 문의 게시판</h3>
       <p class="mb-5">
-        건의 게시판은 전달하고 싶은 다양한 의견이나 아이디어를 익명으로 전달하는 게시판입니다. 
+        건의 게시판은 전달하고 싶은 다양한 의견이나 아이디어를 익명으로 전달하는
+        게시판입니다.
       </p>
     </div>
 
-    
     <nav style="--bs-breadcrumb-divider: '>'" aria-label="breadcrumb">
       <ol class="breadcrumb">
         <li class="breadcrumb-item">
           <a href="/" style="color: blue; text-decoration: none">Home</a>
         </li>
-        <li
-          class="breadcrumb-item active"
-          aria-current="page"
-        >
-        건의 / 문의 게시판
+        <li class="breadcrumb-item active" aria-current="page">
+          건의 / 문의 게시판
         </li>
       </ol>
     </nav>
@@ -97,13 +97,33 @@
           <th scope="col">좋아요</th>
           <th scope="col">상태</th>
         </tr>
+        <!-- todo: 공지사항 -->
+        <tr
+          v-for="(data, index) in noticeComplaint"
+          :key="index"
+          style="background-color: gray"
+        >
+          <th scope="col"></th>
+          <th scope="col" style="text-align: left; padding-left: 100px">
+            <router-link
+              :to="'notice/notice-check/' + data.noticeId"
+              style="color: red; text-decoration: none"
+              >[공지] {{ data.title }}</router-link
+            >
+          </th>
+          <th scope="col">ADMIN</th>
+          <th scope="col">{{ data.insertTime }}</th>
+          <th scope="col"></th>
+          <th scope="col"></th>
+        </tr>
       </thead>
       <tbody>
         <!-- 반복문 시작할 행 -->
         <tr v-for="(data, index) in complaintBoardList" :key="index">
           <td>{{ (page - 1) * pageSize + index + 1 }}</td>
-          <td id="router_hv" style="text-align: left; padding-left: 100px;">
-            <router-link style="color: #444444; font-weight: bold; text-decoration:none ;"
+          <td id="router_hv" style="text-align: left; padding-left: 100px">
+            <router-link
+              style="color: #444444; font-weight: bold; text-decoration: none"
               :to="'/complaint/complaint-boardDetail/' + data.complaintBoardId"
               class="router-link-exact-active alltext"
             >
@@ -133,17 +153,16 @@
       </router-link>
     </div> -->
 
-
     <!-- 글쓰기 버튼 -->
     <div class="text-end mt-5">
-        <button
-          class="btn btn-outline-secondary"
-          type="button"
-          id="button-Writing"
-          @click="writeComplaintBoard"
-        >
-          글쓰기
-        </button>
+      <button
+        class="btn btn-outline-secondary"
+        type="button"
+        id="button-Writing"
+        @click="writeComplaintBoard"
+      >
+        글쓰기
+      </button>
     </div>
 
     <!-- 페이징 -->
@@ -174,6 +193,7 @@ export default {
       page: 1, // 현재페이지번호
       count: 0, // 전체데이터개수
       pageSize: 10, // 1페이지당개수(select태그)
+      noticeComplaint:[],
     };
   },
   methods: {
@@ -196,13 +216,31 @@ export default {
       } catch (e) {
         console.log(e);
       }
+    },  
+    // 공지조회 함수
+    async retrieveComplaintNotice() {
+      try {
+        // TODO: 1) 공통 전체조회 함수 실행
+        let response = await ComplaintBoardService.getComplaintNotice(
+          this.pageSize // 1페이지당개수(size)
+        );
+        // TODO: 복습 : 2) 객체분할 할당
+        const { noticeComplaint, totalItems } = response.data; // 부서배열(벡엔드 전송)
+        // TODO: 3) 바인딩변수(속성)에 저장
+        this.noticeComplaint = noticeComplaint; // 부서배열(벡엔드 전송)
+        this.count = totalItems; // 전체페이지수(벡엔드 전송)
+        // TODO: 4) 프론트 로깅 : console.log
+        console.log(response.data);
+      } catch (e) {
+        console.log(e);
+      }
     },
-        // 검색 함수
+    // 검색 함수
     async searchComplaintBoard() {
       console.log("검색 함수 호출");
       await this.retrieveComplaintBoard();
     },
-        // 초기화 함수
+    // 초기화 함수
     resetComplaintSearch() {
       this.searchTitle = "";
       this.retrieveFreeBoard();
@@ -214,6 +252,7 @@ export default {
   },
   mounted() {
     this.retrieveComplaintBoard();
+    this.retrieveComplaintNotice();
     window.scrollTo(0, 0);
   },
 };
@@ -261,7 +300,7 @@ p {
 /* 검색 전체 배경 */
 #search_box {
   background-color: #e2e2e28c;
-  height: 75PX;
+  height: 75px;
   padding: 20px;
 }
 #search_ck {
