@@ -15,7 +15,7 @@ public interface NotifyRepository extends JpaRepository<Notify, Long> {
 
     @Modifying
     @Transactional
-    @Query("UPDATE Notify n SET n.isRead = 'N' WHERE n.userId = :userId")
+    @Query("UPDATE Notify n SET n.isRead = 'Y' WHERE n.userId = :userId")
     public void updateByUserId(@Param("userId") String userId);
 
     public long countByUserIdAndIsRead(String userId, String isRead);
