@@ -12,6 +12,7 @@ class FreeBoardService {
         }
       );
     }
+    
   // TODO: 메인에서 좋아요순대로 조회
   getFreeboardLike() {
     console.log("여기는 서비스")

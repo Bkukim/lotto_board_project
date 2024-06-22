@@ -86,7 +86,7 @@ public interface FreeBoardRepository extends JpaRepository<FreeBoard, Long> {
 List<FreeBoardDto> findFreeBoardByLikes(FreeBoardDto freeBoardDto);
 
     //    todo: 메인에서 최신순으로 가져오기
-    @Query(value = "SELECT FREE_BOARD_ID, TITLE\n" +
+    @Query(value = "SELECT FREE_BOARD_ID AS freeBoardId, TITLE AS title\n" +
             "FROM (\n" +
             "    SELECT FREE_BOARD_ID, TITLE\n" +
             "    FROM LOTTO_FREE_BOARD\n" +

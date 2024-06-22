@@ -167,7 +167,11 @@
                   <td style="font-size: 15px">
                     {{ index + 1 }}
                   </td>
-                  <td class="col-8"></td>
+                  <td class="col-8"><router-link
+                  style="color: #444444; text-decoration: none"
+                    :to="'/free/free-boardDetail/' + data.freeBoardId"
+                    class="router-link-exact-active alltext"
+                    >{{ data.title }}</router-link></td>
                 </tr>
               </tbody>
             </table>
@@ -217,11 +221,18 @@
               </thead>
               <tbody>
                 <!-- 반복문 시작할 행 -->
-                <tr v-for="(data, index) in complaintBoard" :key="index">
+                <tr v-for="(data, index) in LatestComplaintBoard" :key="index">
                   <td style="font-size: 15px">
                     {{ index + 1 }}
                   </td>
-                  <td class="col-8"></td>
+                  <td class="col-8">
+                  <router-link
+                  style="color: #444444; text-decoration: none"
+                    :to="'/complaint/complaint-boardDetail/' + data.complaintBoardId"
+                    class="router-link-exact-active alltext "
+                    >{{ data.title }}</router-link>
+                  <!-- {{data.complaintBoardId}} -->
+                  </td>
                 </tr>
               </tbody>
             </table>
@@ -290,6 +301,7 @@
 import CalendarWidget from "./CalendarWidget.vue";
 import FreeBoardService from "@/services/board/free/FreeBoardService";
 import NoticeService from "@/services/notice/NoticeService";
+import ComplaintBoardService from "@/services/board/complaint/ComplaintBoardService";
 
 // import MemoWidget from './MemoWidget.vue';
 export default {
@@ -299,12 +311,9 @@ export default {
   },
   data() {
     return {
-
-      hotList: [1, 2, 3, 4, 5],
-      complaintBoard:[1,2,3,4,5],
-
-      freeBoard: [], //자유게시판
-      LatestFreeBoard:[],
+      hotList: [],
+      LatestComplaintBoard: [],
+      LatestFreeBoard: [],
       count: 0, // 전체데이터개수
       notice: [], //공지사항 가져오기
     };
@@ -337,14 +346,14 @@ export default {
         // TODO: 3) 바인딩변수(속성)에 저장
         this.notice = notice; // 부서배열(벡엔드 전송)
         // TODO: 4) 프론트 로깅 : console.log
-        console.log("notice 조회", this.notice);
+        // console.log("notice 조회", this.notice);
         console.log(response.data);
       } catch (e) {
         console.log(e);
       }
     },
 
-        // todo: 자유게시판 메인 조회
+    // todo: 자유게시판 메인 조회
     async retrieveRecentFreeBoard() {
       try {
         // TODO: 1) 공통 전체조회 함수 실행
@@ -354,6 +363,24 @@ export default {
         // TODO: 3) 바인딩변수(속성)에 저장
         this.LatestFreeBoard = LatestFreeBoard; // 부서배열(벡엔드 전송)
         // TODO: 4) 프론트 로깅 : console.log
+        console.log("자유게시판 5개", this.LatestFreeBoard);
+        console.log(response.data);
+      } catch (e) {
+        console.log(e);
+      }
+    },
+
+    // todo: 건의게시판 메인 조회
+    async retrieveRecentComplaintBoard() {
+      try {
+        // TODO: 1) 공통 전체조회 함수 실행
+        let response = await ComplaintBoardService.getRecentComplaintboard();
+        // TODO: 복습 : 2) 객체분할 할당
+        const { LatestComplaintBoard } = response.data; // 부서배열(벡엔드 전송)
+        // TODO: 3) 바인딩변수(속성)에 저장
+        this.LatestComplaintBoard = LatestComplaintBoard; // 부서배열(벡엔드 전송)
+        // TODO: 4) 프론트 로깅 : console.log
+        console.log("건의게시판 5개", this.LatestComplaintBoard);
         console.log(response.data);
       } catch (e) {
         console.log(e);
@@ -373,6 +400,8 @@ export default {
     this.goToLogin();
     this.retrieveHotList();
     this.retrieveNotice();
+    this.retrieveRecentFreeBoard();
+    this.retrieveRecentComplaintBoard();
   },
 };
 </script>
