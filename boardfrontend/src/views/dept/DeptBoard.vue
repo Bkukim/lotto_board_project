@@ -165,9 +165,10 @@ export default {
     // 회원 부서 확인 함수
     async checkUserDeptId() {
       try {
-        console.log("접근")
+        if (this.$store.state.user.role == "ROLE_ADMIN") {
+          return;
+        }
         let response = await UserService.get(this.$store.state.user.userId);
-        console.log("유저asdf", response.data);
         if (response.data.deptId != this.deptId) {
           alert("해당 부서원이 아니므로 접근할 수 없습니다");
           this.$router.push("/");

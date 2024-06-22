@@ -58,6 +58,15 @@ class ClubBoardService {
       }
     );
   }
+   // TODO: location로 전체조회
+  getAllClubBoardByLocation(location, page, size) {
+    return http.get(
+      `/normal/board/club/location/clubBoard?location=${location}&page=${page}&size=${size}`,
+      {
+        headers: AuthHeader(),
+      }
+    );
+  }
 }
 
 export default new ClubBoardService();

@@ -36,4 +36,7 @@ public class Department extends BaseTimeEntity {
     @Id
     private String deptId;
     private String deptName;
+
+
 }
+

@@ -28,7 +28,8 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface DeptBoardRepository extends JpaRepository<DeptBoard,Long> {
     @Query(value = "SELECT DEPT_BOARD_ID AS deptBoardId, USER_ID AS userId, TITLE AS title, INSERT_TIME AS insertTime, LIKES AS likes FROM LOTTO_DEPARTMENT_BOARD\n" +
-            "WHERE TITLE LIKE '%'|| :title ||'%' AND DEPT_ID = :deptId "
+            "WHERE TITLE LIKE '%'|| :title ||'%' AND DEPT_ID = :deptId "+
+            "ORDER BY INSERT_TIME DESC"
             , countQuery = "SELECT count(*)FROM LOTTO_DEPARTMENT_BOARD\n" +
             "WHERE TITLE LIKE '%'|| :title ||'%' AND DEPT_ID = :deptId"
             , nativeQuery = true)

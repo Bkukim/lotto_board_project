@@ -56,13 +56,14 @@ public class NotifyController {
     public ResponseEntity<Object> findUnReadNotify(@PathVariable String userId){
         try {
             List<Notify> notifies = notifyService.findUnReadNotify(userId);
-            notifyService.updateIsRead(userId);
             return new ResponseEntity<>(notifies,HttpStatus.OK);
         }catch (Exception e){
             log.debug(e.getMessage());
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
+    // todo 읽음으로 표시 함수
 
     @GetMapping("/count-unread/{userId}")
     public ResponseEntity<Object> countUnread(@PathVariable String userId){

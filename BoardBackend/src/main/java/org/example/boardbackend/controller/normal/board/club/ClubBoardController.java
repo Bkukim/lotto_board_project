@@ -96,6 +96,40 @@ public class ClubBoardController {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+    //  TODO: UserId 가 작성한 글 전체조회
+    @GetMapping("/club/location/clubBoard")
+    public ResponseEntity<Object> findByLocation(
+            @RequestParam(defaultValue = "") String location,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "3") int size
+    ) {
+        try {
+            log.debug("::::::::::::::::::::::여기진입:::::::::::::::::::::::");
+//            페이징 객체 생성
+            Pageable pageable = PageRequest.of(page, size);
+
+//            전체 조회 서비스 실행
+            Page<ClubBoardDto> clubBoardDto
+                    = clubBoardService.findClubBoardByLocationContaining(location, pageable);
+
+//            공통 페이징 객체 생성 : 자료구조 맵 사용
+            Map<String, Object> response = new HashMap<>();
+            response.put("clubBoardList", clubBoardDto.getContent());       // faq 배열
+            response.put("currentPage", clubBoardDto.getNumber());       // 현재페이지번호
+            response.put("totalItems", clubBoardDto.getTotalElements()); // 총건수(개수)
+            response.put("totalPages", clubBoardDto.getTotalPages());    // 총페이지수
+
+            if (clubBoardDto.isEmpty() == false) {
+//                조회 성공
+                return new ResponseEntity<>(response, HttpStatus.OK);
+            } else {
+//                데이터 없음
+                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+            }
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
 
 
     //  TODO: 상세 조회 함수
