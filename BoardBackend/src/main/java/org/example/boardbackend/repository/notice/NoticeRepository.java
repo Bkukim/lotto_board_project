@@ -27,6 +27,17 @@ import java.util.List;
  */
 @Repository
 public interface NoticeRepository extends JpaRepository<Notice, Long> {
+
+//    todo: main 조회
+@Query(value = "SELECT NOTICE_ID AS NOTICE_ID, \n" +
+        "TITLE AS TITLE, \n" +
+        "INSERT_TIME AS INSERT_TIME\n" +
+        "FROM LOTTO_NOTICE\n" +
+        "WHERE ROWNUM <= 5\n" +
+        "order by insert_Time desc",
+        nativeQuery = true)
+List<NoticeAllDto> findByNoticeTimeMain(NoticeAllDto noticeAllDto);
+
     @Query(value = "SELECT NOTICE_ID AS noticeId\n" +
             ", TITLE AS title\n" +
             ", NOTICE_TYPE AS noticeType\n" +
@@ -106,4 +117,5 @@ List<INoticeDto> findByNoticeTypeComplaint(INoticeDto iNoticeDto);
 List<INoticeDto> findByNoticeTypeGroup(INoticeDto iNoticeDto);
 
 
+//    List<INoticeDto> selectByTitleContainingMain(INoticeDto iNoticeDto);
 }

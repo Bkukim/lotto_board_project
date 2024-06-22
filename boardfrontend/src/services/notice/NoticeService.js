@@ -4,45 +4,42 @@ import http from "@/utils/http-common"; // spring 통신 정의 파일
 import AuthHeader from "../auth/AuthHeader";
 
 class NoticeService {
-
   // TODO: 노말서비스
+  getAllMain() {
+    return http.get(`/normal/notice/main-get`, {
+      headers: AuthHeader(),
+    });
+  }
+
   getAll(title, page, size) {
     return http.get(
       `/normal/notice/all?title=${title}&page=${page}&size=${size}`,
       {
-        headers: AuthHeader()
+        headers: AuthHeader(),
       }
     );
   }
 
   // todo: 상세조회
   getNotice(noticeId, eventYN) {
-    return http.get(`/normal/notice/${noticeId}?eventYN=${eventYN}`,
-      {
-        headers: AuthHeader()
-      });
+    return http.get(`/normal/notice/${noticeId}?eventYN=${eventYN}`, {
+      headers: AuthHeader(),
+    });
   }
-
 
   // TODO: 조회수update
   updateVeiws(noticeId, data) {
     console.log("서비스", data);
-    return http.put(
-      `/normal/notice/notice-update-views/${noticeId}`,
-      data,
-      {
-        headers: AuthHeader()
-      }
-    );
+    return http.put(`/normal/notice/notice-update-views/${noticeId}`, data, {
+      headers: AuthHeader(),
+    });
   }
-
 
   //TODO: 관리자 서비스
   getAdminNotice(noticeId) {
-    return http.get(`/admin/notice/${noticeId}`,
-      {
-        headers: AuthHeader()
-      });
+    return http.get(`/admin/notice/${noticeId}`, {
+      headers: AuthHeader(),
+    });
   }
 
   //TODO: [전체]만 조회
@@ -51,7 +48,7 @@ class NoticeService {
       headers: AuthHeader(),
     });
   }
-  
+
   //TODO: 부서만 조회
   getDept(size) {
     return http.get(`/admin/notice/master-dept?size=${size}`, {
@@ -89,30 +86,22 @@ class NoticeService {
 
   // TODO: 수정함수
   update(noticeId, data) {
-    return http.put(
-      `/admin/notice/notice-update/${noticeId}`,
-      data,
-      {
-        headers: AuthHeader()
-      }
-    );
+    return http.put(`/admin/notice/notice-update/${noticeId}`, data, {
+      headers: AuthHeader(),
+    });
   }
-
-
 
   // TODO: 삭제함수 : noticeId
   delete(noticeId) {
-    return http.delete(`/admin/notice/notice-deletion/${noticeId}`,
-      {
-        headers: AuthHeader()
-      });
+    return http.delete(`/admin/notice/notice-deletion/${noticeId}`, {
+      headers: AuthHeader(),
+    });
   }
   // 전체 삭제함수 : notice
   deleteAll() {
-    return http.delete(`/admin/notice/delete-all`,
-      {
-        headers: AuthHeader()
-      });
+    return http.delete(`/admin/notice/delete-all`, {
+      headers: AuthHeader(),
+    });
   }
 }
 

@@ -2,6 +2,7 @@ package org.example.boardbackend.repository.board.free;
 
 import org.example.boardbackend.model.dto.board.free.FreeBoardDto;
 import org.example.boardbackend.model.entity.board.free.FreeBoard;
+import org.example.boardbackend.model.entity.board.free.FreeBoardLike;
 import org.example.boardbackend.model.entity.board.free.FreeBoardReport;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -9,6 +10,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
+
+import java.util.List;
 
 /**
  * packageName : org.example.boardbackend.repository.board.free
@@ -66,5 +69,52 @@ public interface FreeBoardRepository extends JpaRepository<FreeBoard, Long> {
             ,nativeQuery = true)
     Page<FreeBoardDto> findFreeBoardByUserIdContaining(@Param("userId") String userId,
                                                Pageable pageable);
+
+
+//    todo: 메인에서 이번달만 좋아요순으로 가져오기
+@Query(value = "SELECT FREE_BOARD_ID, TITLE, LIKES\n" +
+        "FROM (\n" +
+        "    SELECT FREE_BOARD_ID, TITLE, LIKES\n" +
+        "    FROM LOTTO_FREE_BOARD\n" +
+        "    WHERE EXTRACT(MONTH FROM TO_DATE(insert_Time, 'YYYY-MM-DD HH24:MI:SS')) = EXTRACT(MONTH FROM SYSDATE)\n" +
+        "    AND EXTRACT(YEAR FROM TO_DATE(insert_Time, 'YYYY-MM-DD HH24:MI:SS')) = EXTRACT(YEAR FROM SYSDATE)\n" +
+        "    ORDER BY LIKES DESC\n" +
+        ")\n" +
+        "WHERE ROWNUM <= 5"
+        ,countQuery = "SELECT count(*)\n" +
+        "FROM LOTTO_FREE_BOARD\n"
+        ,nativeQuery = true)
+List<FreeBoardDto> findFreeBoardByLikes(FreeBoardDto freeBoardDto);
+
+// todo: 핫게시판 좋아요순
+@Query(value = "SELECT FREE_BOARD_ID AS FREE_BOARD_ID" +
+        ", TITLE AS TITLE" +
+        ", LIKES AS LIKES" +
+        ", USER_ID AS USER_ID" +
+        ", INSERT_TIME AS INSERT_TIME\n" +
+        "FROM (\n" +
+        "    SELECT FREE_BOARD_ID, TITLE, LIKES, USER_ID, INSERT_TIME\n" +
+        "    FROM LOTTO_FREE_BOARD\n" +
+        "    ORDER BY LIKES DESC\n" +
+        ")\n" +
+        "WHERE ROWNUM <= 30"
+        ,countQuery = "SELECT count(*)\n" +
+        "FROM LOTTO_FREE_BOARD\n"
+        ,nativeQuery = true)
+List<FreeBoardDto> findHotBoard(FreeBoardDto freeBoardDto);
+
+    //    todo: 메인에서 최신순으로 가져오기
+    @Query(value = "SELECT FREE_BOARD_ID AS freeBoardId, TITLE AS title\n" +
+            "FROM (\n" +
+            "    SELECT FREE_BOARD_ID, TITLE\n" +
+            "    FROM LOTTO_FREE_BOARD\n" +
+            "    ORDER BY INSERT_TIME DESC\n" +
+            ")\n" +
+            "WHERE ROWNUM <= 5"
+            ,countQuery = "SELECT count(*)\n" +
+            "FROM LOTTO_FREE_BOARD\n"
+            ,nativeQuery = true)
+    List<FreeBoardDto> getLatestFreeBoards(FreeBoardDto freeBoardDto);
+
 }
 

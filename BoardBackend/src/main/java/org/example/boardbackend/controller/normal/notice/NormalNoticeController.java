@@ -3,7 +3,9 @@ package org.example.boardbackend.controller.normal.notice;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.example.boardbackend.model.dto.notice.INoticeDto;
+import org.example.boardbackend.model.dto.notice.NoticeAllDto;
 import org.example.boardbackend.model.entity.notice.Notice;
+import org.example.boardbackend.repository.notice.NoticeRepository;
 import org.example.boardbackend.service.notice.NoticeRedisService;
 import org.example.boardbackend.service.notice.NoticeService;
 import org.springframework.data.domain.Page;
@@ -15,6 +17,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -38,6 +41,7 @@ import java.util.Optional;
 public class NormalNoticeController {
 
     private final NoticeRedisService noticeRedisService;
+    private  final  NoticeService noticeService;
 
     //todo: 공지사항 clob이 string 변환 => entity에 컬럼추가해 주니 됨 @Column(name = "CONTENT")
     @GetMapping("/all")
@@ -122,15 +126,131 @@ public class NormalNoticeController {
             , @RequestBody Notice notice
     ) {
         try {
-            log.debug("컨트롤러" + notice.getViews());
-            log.debug("컨트롤러" + notice.getNoticeId());
-            log.debug("컨트롤러" + notice.getTitle());
-            log.debug("컨트롤러" + notice);
 //            notice.setViews(notice.getViews() + 1);
             noticeRedisService.save(notice);
             return new ResponseEntity<>(HttpStatus.OK);
         } catch (Exception e) {
             log.debug(e.getMessage());
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+// todo: main 조회
+    @GetMapping("/main-get")
+    public ResponseEntity<Object> findMainNotice(NoticeAllDto noticeAllDto) {
+        try {
+            // 전체 조회 서비스 실행
+log.debug("컨트롤성공");
+            List<NoticeAllDto> notice = noticeService.selectByMainNotice(noticeAllDto);
+
+            Map<String, Object> response = new HashMap<>();
+            response.put("notice", notice);
+//            response.put("totalItems", noticeGroup.size()); // 총건수(개수)
+
+            if (!notice.isEmpty()) {
+                // 조회 성공
+                return new ResponseEntity<>(response, HttpStatus.OK);
+            } else {
+                // 데이터 없음
+                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+            }
+        } catch (Exception e) {
+            log.debug("컨트롤실패");
+            
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+
+//  TODO: 각 게시판에서 조회하기
+
+    //    todo: 조회 4개 있음 master 사용 dept, free, group, complaint
+    @GetMapping("/notice-dept")
+    public ResponseEntity<Object> findDept(INoticeDto iNoticeDto) {
+        try {
+            // 전체 조회 서비스 실행
+            List<INoticeDto> noticeDept = noticeService.findByNoticeTypeDept(iNoticeDto);
+
+            Map<String, Object> response = new HashMap<>();
+            response.put("noticeDept", noticeDept);
+            response.put("totalItems", noticeDept.size()); // 총건수(개수)
+
+            if (!noticeDept.isEmpty()) {
+                // 조회 성공
+                return new ResponseEntity<>(response, HttpStatus.OK);
+            } else {
+                // 데이터 없음
+                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+            }
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    //  Todo: type
+//    @GetMapping("/notice-all")
+//    public ResponseEntity<Object> findAllType(INoticeDto iNoticeDto) {
+//        try {
+//            // 전체 조회 서비스 실행
+//            List<INoticeDto> noticeAll = noticeService.findByNoticeTypeAll(iNoticeDto);
+//
+//            Map<String, Object> response = new HashMap<>();
+////            todo: 맵 <키, 벨류> 둘중 하나가 틀렸는지 꼭 확인할 것
+//            response.put("noticeAll", noticeAll);
+//            response.put("totalItems", noticeAll.size()); // 총건수(개수)
+//
+//            if (!noticeAll.isEmpty()) {
+//                // 조회 성공
+//                return new ResponseEntity<>(response, HttpStatus.OK);
+//            } else {
+//                // 데이터 없음
+//                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+//            }
+//        } catch (Exception e) {
+//            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+//        }
+//    }
+
+    @GetMapping("/notice-free")
+    public ResponseEntity<Object> findFree(INoticeDto iNoticeDto) {
+        try {
+            // 전체 조회 서비스 실행
+            List<INoticeDto> noticeFree = noticeService.findByNoticeTypeFree(iNoticeDto);
+
+            Map<String, Object> response = new HashMap<>();
+            response.put("noticeFree", noticeFree);
+            response.put("totalItems", noticeFree.size()); // 총건수(개수)
+
+            if (!noticeFree.isEmpty()) {
+                // 조회 성공
+                return new ResponseEntity<>(response, HttpStatus.OK);
+            } else {
+                // 데이터 없음
+                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+            }
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    //  Todo: 건의
+    @GetMapping("/notice-complaint")
+    public ResponseEntity<Object> findComplaint(INoticeDto iNoticeDto) {
+        try {
+            // 전체 조회 서비스 실행
+            List<INoticeDto> noticeComplaint = noticeService.findByNoticeTypeComplaint(iNoticeDto);
+
+            Map<String, Object> response = new HashMap<>();
+            response.put("noticeComplaint", noticeComplaint);
+            response.put("totalItems", noticeComplaint.size()); // 총건수(개수)
+
+            if (!noticeComplaint.isEmpty()) {
+                // 조회 성공
+                return new ResponseEntity<>(response, HttpStatus.OK);
+            } else {
+                // 데이터 없음
+                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+            }
+        } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }

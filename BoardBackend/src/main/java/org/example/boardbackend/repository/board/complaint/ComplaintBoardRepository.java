@@ -11,6 +11,8 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 /**
  * packageName : org.example.boardbackend.repository.board.complaint
  * fileName : ComplaintBoardRepository
@@ -48,4 +50,17 @@ public interface ComplaintBoardRepository extends JpaRepository<ComplaintBoard, 
             ,nativeQuery = true)
     Page<ComplaintBoardDto> findComplaintBoardByUserIdContaining(@Param("userId") String userId,
                                                        Pageable pageable);
+
+    //    todo: 메인에서 최신순으로 가져오기
+    @Query(value = "SELECT COMPLAINT_BOARD_ID AS complaintBoardId, TITLE AS title\n" +
+            "FROM (\n" +
+            "    SELECT COMPLAINT_BOARD_ID, TITLE\n" +
+            "    FROM LOTTO_COMPLAINT_BOARD\n" +
+            "    ORDER BY INSERT_TIME DESC\n" +
+            ")\n" +
+            "WHERE ROWNUM <= 5"
+            ,countQuery = "SELECT count(*)\n" +
+            "FROM LOTTO_COMPLAINT_BOARD\n"
+            ,nativeQuery = true)
+    List<ComplaintBoardDto> getLatestComplaintBoards(ComplaintBoardDto complaintBoardDto);
 }
