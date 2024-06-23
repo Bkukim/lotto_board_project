@@ -486,9 +486,9 @@
                     <p class="lead">비밀번호가 성공적으로 변경되었습니다.</p>
                     <button
                       class="btn btn-primary mt-4 px-5 py-2"
-                      @click="goLogin"
+                      @click="goHome"
                     >
-                      로그인 하러 가기
+                      홈화면으로 가기
                     </button>
                     <!-- <router-link
                       to="/member/login"
@@ -1010,7 +1010,7 @@ export default {
         this.passwordMatchError = false;
       }
     },
-    goLogin() {
+    goHome() {
       this.$router.push("/member/login");
     },
   },
