@@ -19,16 +19,9 @@ public class QDeptBoardLike extends EntityPathBase<DeptBoardLike> {
 
     public static final QDeptBoardLike deptBoardLike = new QDeptBoardLike("deptBoardLike");
 
-    public final org.example.boardbackend.model.common.QBaseTimeEntity _super = new org.example.boardbackend.model.common.QBaseTimeEntity(this);
-
     public final NumberPath<Long> deptBoardId = createNumber("deptBoardId", Long.class);
 
-    public final StringPath insertTime = createString("insertTime");
-
     public final NumberPath<Long> likeId = createNumber("likeId", Long.class);
-
-    //inherited
-    public final StringPath updateTime = _super.updateTime;
 
     public final StringPath userId = createString("userId");
 

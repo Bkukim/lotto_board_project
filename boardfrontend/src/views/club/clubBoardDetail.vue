@@ -327,6 +327,10 @@ export default {
     },
     retrieveMap(address) {
       const kakao = window.kakao;
+          if (!kakao || !kakao.maps) {
+      console.error('Kakao Maps API를 사용할 수 없습니다.');
+      return;
+    }
       const container = this.$refs.map;
       if (!container) {
         console.error(
@@ -502,6 +506,10 @@ export default {
   async mounted() {
     window.scrollTo(0, 0);
     await this.fetchClubBoardDetails();
+      if (typeof window.kakao === 'undefined' || !window.kakao.maps) {
+    console.error('Kakao Maps API를 로드할 수 없습니다.');
+    return;
+  }
   },
 };
 </script>
