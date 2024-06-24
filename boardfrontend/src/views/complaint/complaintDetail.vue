@@ -68,22 +68,21 @@
         "
         v-html="complaintBoard.content"
       ></div>
-      <!-- TODO: 좋아요버튼 -->
       <div class="mt-5 text-center">
         <button
           type="button"
           class="btn btn-light"
-          @click="likeUp"
+          @click="upLike"
           style="
             border: none;
             text-align: center;
             height: 8vh;
-            width: 18vw;
+            width: 15vw;
             padding: 1vw;
           "
         >
           <img src="@/assets/img/like_icon.png" width="40" height="40" />
-          공감해요
+          좋아요
           {{ this.complaintBoard.likes }}
         </button>
 
@@ -147,7 +146,9 @@
             </div>
           </div>
         </div>
+
       </div>
+    
 
       <!-- 목록으로 버튼 -->
       <div class="col mb-5">
@@ -306,7 +307,7 @@
       <!-- 댓글 입력하기 -->
       <div
         class="lotto_new row row-cols-lg-4 gap-5 justify-content-left mb-3 mt-5"
-        v-if="this.$store.state.user.role == 'ROLE_ADMIN'"
+      v-if="isAdmin"
       >
         <div class="col" style="color: #595959; font-weight: bold">
           <span style="color: #999999; font-weight: bold">등록자 |</span>
@@ -319,11 +320,8 @@
       </div>
 
       <!-- 댓글 글쓰기 칸 -->
-      <div
-        class="mb-5 comment-box"
-        style="border: #595959 1.5px solid"
-        v-if="this.$store.state.user.role == 'ROLE_ADMIN'"
-      >
+
+      <div class="mb-5 comment-box" style="border: #595959 1.5px solid"       v-if="isAdmin">
         <div class="comment-input">
           <textarea
             class="form-control"
@@ -499,6 +497,7 @@
 
 <script>
 import ComplaintBoardService from "@/services/board/complaint/ComplaintBoardService";
+import ComplaintBoardLikeService from "@/services/board/complaint/ComplaintBoardLikeService";
 // import { ref } from "vue";
 
 // 댓글 글자 작성 수 올라가는 것 확인
@@ -588,6 +587,8 @@ export default {
           complaintBoardId
         );
         this.complaintBoard = response.data;
+        await this.checkLike();
+
         console.log(response.data);
       } catch (e) {
         alert("에러");
@@ -595,7 +596,7 @@ export default {
       }
     },
 
-    // freeBoardId로 댓글조회 : 화면뜰때 실행
+    // complaintBoardId 댓글조회 : 화면뜰때 실행
     async retrieveComplaintBoardComment(complaintBoardId) {
       try {
         let response = await ComplaintBoardService.getComplaintBoardComment(
@@ -681,19 +682,67 @@ export default {
       }
     },
 
-    // 수정 함수
-    async likeUp() {
-      this.complaintBoard.likes = +1;
+//TODO: 좋아요 버튼
+//  좋아요 함수
+async upLike() {
+      const complaintBoardId = this.complaintBoard.complaintBoardId;
+      const userId = this.$store.state.user.userId; // 로그인한 유저 ID 가져오기
 
+      if (this.isLiked) {
+        if (!this.likeId) {
+          console.error("Like ID is not defined");
+          return;
+        }
+        try {
+          await ComplaintBoardLikeService.deleteComplaintBoardLike(this.likeId);
+          this.isLiked = false;
+          this.likeId = null;
+          this.complaintBoard.likes -= 1;
+        } catch (error) {
+          console.error("Error deleting like:", error);
+        }
+      } else {
+        try {
+          const response = await ComplaintBoardLikeService.createComplaintBoardLike({
+            userId,
+            complaintBoardId,
+          });
+          this.isLiked = true;
+          this.likeId = response.data.likeId;
+          this.complaintBoard.likes += 1;
+        } catch (error) {
+          console.error("Error creating like:", error);
+          if (
+            error.response &&
+            error.response.data === "Already liked by this user"
+          ) {
+            // 이미 좋아요가 존재하는 경우 상태를 유지
+            this.isLiked = true;
+          }
+        }
+      }
+    },
+    // like조회
+    async checkLike() {
+      const complaintBoardId = this.$route.params.complaintBoardId;
+      const userId = this.$store.state.user.userId; // Vuex store에서 로그인한 유저 ID 가져오기
       try {
-        let response = await ComplaintBoardService.updateComplaintBoard(
-          this.complaintBoard.likes
+        const response = await ComplaintBoardLikeService.getLikeId(
+          userId,
+          complaintBoardId
         );
-        // 로깅
-        console.log(response.data);
-        this.$router.push("/complaint/complaint-board/:complaintBoardId");
-      } catch (e) {
-        console.log(e);
+        if (response.status === 204) {
+          // NO_CONTENT 상태 코드 처리
+          this.isLiked = false;
+          this.likeId = null;
+        } else {
+          this.isLiked = true;
+          this.likeId = response.data;
+        }
+      } catch (error) {
+        console.error("Error checking like:", error);
+        this.isLiked = false;
+        this.likeId = null; // 에러 발생 시 likeId 초기화
       }
     },
 

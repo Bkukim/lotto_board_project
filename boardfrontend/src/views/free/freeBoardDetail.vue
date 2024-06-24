@@ -105,21 +105,6 @@
           좋아요
           {{ this.freeBoard.likes }}
         </button>
-
-        <button
-          type="button"
-          class="btn btn-light"
-          @click="deleteLike"
-          style="
-            border: none;
-            text-align: center;
-            height: 8vh;
-            width: 15vw;
-            padding: 1vw;
-          "
-        >
-          공감삭제하기
-        </button>
         <button
           type="button"
           class="btn btn-light"
@@ -233,13 +218,6 @@
       </div> -->
     </div>
     <!--  첫번째 게시판 큰 박스 끝-->
-
-    <!-- TODO: 좋아요버튼 -->
-    <!-- <div class="d-flex justify-content-center mt-3">
-      <button type="button" class="btn btn-primary" @click="likeUp">
-        공감해요 {{ this.freeBoard.likes }}
-      </button>
-    </div> -->
 
     <!-- 삭제 -->
     <div class="container text-center mt-5">

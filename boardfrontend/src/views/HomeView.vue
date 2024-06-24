@@ -59,7 +59,9 @@
                   <td style="font-size: 15px; ">
                     {{ index + 1 }}
                   </td>
+
                   <td class="col-8" style="text-align: left;">{{ data.title }}</td>
+
                 </tr>
               </tbody>
             </table>
@@ -109,9 +111,12 @@
                 <!-- 반복문 시작할 행 -->
                 <tr v-for="(data, index) in notice" :key="index">
                   <td style="font-size: 15px">
+
                     {{ index + 1 }}
                   </td>
+
                   <td class="col-8" style="text-align: left;">{{ data.title }}</td>
+
                 </tr>
               </tbody>
             </table>
@@ -167,11 +172,13 @@
                   <td style="font-size: 15px">
                     {{ index + 1 }}
                   </td>
+
                   <td class="col-8" style="text-align: left;"><router-link
                   style="color: #444444; text-decoration: none"
                     :to="'/free/free-boardDetail/' + data.freeBoardId"
                     class="router-link-exact-active alltext"
                     >{{ data.title }}</router-link></td>
+
                 </tr>
               </tbody>
             </table>
@@ -225,6 +232,7 @@
                   <td style="font-size: 15px">
                     {{ index + 1 }}
                   </td>
+
                   <td class="col-8" style="text-align: left ;">
                   <router-link
                   style="color: #444444; text-decoration: none"
@@ -232,6 +240,7 @@
                     class="router-link-exact-active alltext "
                     >{{ data.title }}</router-link>
                   <!-- {{data.complaintBoardId}} -->
+
                   </td>
                 </tr>
               </tbody>
@@ -319,8 +328,9 @@ export default {
     };
   },
   methods: {
-    // todo: 자유게시판 메인 조회
+    // todo: 좋아요순 자유게시판 메인 조회
     async retrieveHotList() {
+      console.log("아이디가 안들어오니?",this.hotList.freeBoardId);
       try {
         // TODO: 1) 공통 전체조회 함수 실행
         let response = await FreeBoardService.getFreeboardLike();
@@ -394,7 +404,6 @@ export default {
         return;
       }
     },
-   
   },
   mounted() {
     console.log(this.$store.state.notifyCount);

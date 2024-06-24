@@ -84,7 +84,6 @@
           <td>
             <router-link
               :to="'/free/free-boardDetail/' + data.freeBoardId"
-              class="router-link-exact-active alltext"
               style="
                 color: #444444;
                 text-decoration: none;

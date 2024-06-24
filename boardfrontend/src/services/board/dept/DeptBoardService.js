@@ -135,6 +135,13 @@ class DeptBoardService {
       headers: AuthHeader(),
     });
   }
+
+  // TODO: 공지사항 부서만 조회
+  getDeptNotice(size) {
+    return http.get(`/normal/notice/notice-dept?size=${size}`, {
+      headers: AuthHeader(),
+    });
+  }
 }
 
 export default new DeptBoardService();

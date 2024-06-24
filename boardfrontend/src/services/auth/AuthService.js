@@ -23,8 +23,9 @@ class AuthService {
     return http.post(`/auth/kakao-register/${userId}`, data);
   }
 
+  // 네이버 로그인
   naverLogin(code) {
-    return http.post(`/auth/naver-login/${code}`);
+    return http.get(`/auth/naver-redirect?code=${code}`);
   }
 
   logout() {
