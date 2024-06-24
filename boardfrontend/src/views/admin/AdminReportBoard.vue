@@ -11,46 +11,98 @@
 
 
       </div>
-         <!-- 게시판 탭 시작 -->
-         <div class="tab-container">
 
-          <ul class="nav nav-tabs">
-            <li class="nav-item" @click="activeTab = 'free'">
-              <a class="nav-link" :class="{ active: activeTab === 'free' }"
-                >자유게시판</a
-              >
-            </li>
-            <li class="nav-item" @click="activeTab = 'dept'">
-              <a class="nav-link" :class="{ active: activeTab === 'dept' }"
-                >부서게시판</a
-              >
-            </li>
-            <li class="nav-item" @click="activeTab = 'freeprocessed'">
-              <a
-                class="nav-link"
-                :class="{ active: activeTab === 'freeprocessed' }"
-                >자유게시판 처리 완료</a
-              >
-            </li>
-            <li class="nav-item" @click="activeTab = 'deptprocessed'">
-              <a
-                class="nav-link"
-                :class="{ active: activeTab === 'deptprocessed' }"
-                >부서게시판 처리 완료</a
-              >
-            </li>
-          </ul>
-          <div class="tab-content">
-            <!-- 자유 신고테이블 -->
-            <div v-show="activeTab === 'free'">
-              <div class="table-responsive shadow">
-                <table class="table mt-5">
-                  <thead>
-                    <tr>
-                      <th scope="col">번호</th>
-                      <th
-                        scope="col"
-                        style="text-align: left; padding-left: 100px"
+      <!-- 게시판 탭 시작 -->
+      <div class="tab-container">
+        <ul class="nav nav-tabs">
+          <!-- <li class="nav-item" @click="retrieveFreeBoardReport"> -->
+          <li class="nav-item" @click="setActiveTab('free')">
+            <a class="nav-link" :class="{ active: activeTab === 'free' }"
+              >자유게시판</a
+            >
+          </li>
+          <!-- <li class="nav-item" @click="retrieveDeptBoardReport"> -->
+          <li class="nav-item" @click="setActiveTab('dept')">
+            <a class="nav-link" :class="{ active: activeTab === 'dept' }"
+              >부서게시판</a
+            >
+          </li>
+          <li class="nav-item" @click="setActiveTab('freeprocessed')">
+            <a
+              class="nav-link"
+              :class="{ active: activeTab === 'freeprocessed' }"
+              >자유게시판 처리 완료</a
+            >
+          </li>
+          <li class="nav-item" @click="setActiveTab('deptprocessed')">
+            <a
+              class="nav-link"
+              :class="{ active: activeTab === 'deptprocessed' }"
+              >부서게시판 처리 완료</a
+            >
+          </li>
+        </ul>
+        <div class="tab-content">
+          <!-- 자유 신고테이블 -->
+          <div v-show="activeTab === 'free'">
+            <div class="table-responsive shadow">
+              <table class="table mt-5">
+                <thead>
+                  <tr>
+                    <th scope="col">번호</th>
+                    <th
+                      scope="col"
+                      style="text-align: left; padding-left: 100px"
+                    >
+                      신고 사유
+                    </th>
+                    <th scope="col">작성자</th>
+                    <th scope="col">등록일</th>
+                    <!-- <th scope="col">좋아요</th> -->
+                    <th scope="col">취소</th>
+                    <th scope="col">삭제</th>
+                    <!-- <th scope="col">조회수</th> -->
+                  </tr>
+                </thead>
+                <tbody>
+                  <!-- 반복문 시작할 행 -->
+                  <tr
+                    v-for="(data, index) in freeBoardReportsList"
+                    :key="index"
+                  >
+                    <td>{{ (freeBoardPage - 1) * freeBoardPageSize + index + 1 }}</td>
+                    <td
+                      id="router_hv"
+                      style="text-align: left; padding-left: 100px"
+                    >
+                      <router-link
+                        style="
+                          color: #444444;
+                          font-weight: bold;
+                          text-decoration: none;
+                        "
+                        :to="'/free/free-boardDetail/' + data.freeBoardId"
+                        class="router-link-exact-active alltext"
+                      >
+                        {{ data.content }}
+                      </router-link>
+                    </td>
+                    <td>{{ data.userId }}</td>
+                    <td>{{ data.insertTime }}</td>
+                    <!-- <td>{{ data.likes }}</td> -->
+                    <td>
+                      <button
+                        class="btn btn-outline-secondary"
+                        type="button"
+                        id="button-search"
+                        @click="updateFreeBoardReport(data.reportId, data)"
+                        style="
+                          background-color: #fff;
+                          border: 1px solid #162b59;
+                          color: #162b59;
+                          text-align: center;
+                        "
+
                       >
                         신고 사유
                       </th>
@@ -114,6 +166,7 @@
                   </tbody>
                 </table>
               </div>
+            </div>
             </div>
 
             <!-- 부서 신고테이블 -->
@@ -318,7 +371,8 @@
           </div>
         </div>
 
-    </div>
+      </div>
+
   </div>
 </template>
 
@@ -408,9 +462,15 @@ export default {
         const { deptBoardReportsList, totalItems } = response.data; // 부서배열(벡엔드 전송)
         // TODO: 3) 바인딩변수(속성)에 저장
         this.deptBoardReportsList = deptBoardReportsList; // 부서배열(벡엔드 전송)
-        this.count = totalItems; // 전체페이지수(벡엔드 전송)
+
+        this.deptBoardCount = totalItems; // 전체페이지수(벡엔드 전송)
+        this.activeTab = "dept";
+
         // TODO: 4) 프론트 로깅 : console.log
-        console.log("부서게시판 신고목록", deptBoardReportsList);
+        // alert("부서게시판 신고목록" + deptBoardReportsList);
+        console.log("부서게시판 신고목록=", this.deptBoardReportsList);
+        console.log("부서게시판 목록=", this.deptBoardCount);
+
       } catch (e) {
         console.log(e);
       }
@@ -529,9 +589,9 @@ export default {
   },
   mounted() {
     this.retrieveFreeBoardReport();
-    this.retrieveFreeBoardReportProcessed();
-    this.retrieveDeptBoardReport();
-    this.retrieveDeptBoardReportProcessed();
+    // this.retrieveFreeBoardReportProcessed();
+    // this.retrieveDeptBoardReport();
+    // this.retrieveDeptBoardReportProcessed();
     window.scrollTo(0, 0);
   },
 };
