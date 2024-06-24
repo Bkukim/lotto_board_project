@@ -59,7 +59,18 @@
                   <td style="font-size: 15px">
                     {{ index + 1 }}
                   </td>
-                  <td class="col-8">{{ data.title }}</td>
+                  <td class="col-8">
+                    <router-link
+                      :to="'/free/free-boardDetail/' + data.freeBoardId"
+                      style="
+                        color: #444444;
+                        text-decoration: none;
+                        text-align: left !important;
+                      "
+                    >
+                      {{ data.title }}
+                    </router-link>
+                  </td>
                 </tr>
               </tbody>
             </table>
@@ -109,9 +120,20 @@
                 <!-- 반복문 시작할 행 -->
                 <tr v-for="(data, index) in notice" :key="index">
                   <td style="font-size: 15px">
+
                     {{ index + 1 }}
                   </td>
-                  <td class="col-8">{{ data.title }}</td>
+                  <td class="col-8">
+                    <router-link
+                      :to="`/notice/notice-check/` + data.noticeId + '/' + data.eventYN"
+                      style="
+                        color: #444444;
+                        text-decoration: none;
+                        text-align: left !important;
+                      "
+                    >
+                    {{ data.title }}</router-link>
+                  </td>
                 </tr>
               </tbody>
             </table>
@@ -167,11 +189,14 @@
                   <td style="font-size: 15px">
                     {{ index + 1 }}
                   </td>
-                  <td class="col-8"><router-link
-                  style="color: #444444; text-decoration: none"
-                    :to="'/free/free-boardDetail/' + data.freeBoardId"
-                    class="router-link-exact-active alltext"
-                    >{{ data.title }}</router-link></td>
+                  <td class="col-8">
+                    <router-link
+                      style="color: #444444; text-decoration: none"
+                      :to="'/free/free-boardDetail/' + data.freeBoardId"
+                      class="router-link-exact-active alltext"
+                      >{{ data.title }}</router-link
+                    >
+                  </td>
                 </tr>
               </tbody>
             </table>
@@ -226,12 +251,16 @@
                     {{ index + 1 }}
                   </td>
                   <td class="col-8">
-                  <router-link
-                  style="color: #444444; text-decoration: none"
-                    :to="'/complaint/complaint-boardDetail/' + data.complaintBoardId"
-                    class="router-link-exact-active alltext "
-                    >{{ data.title }}</router-link>
-                  <!-- {{data.complaintBoardId}} -->
+                    <router-link
+                      style="color: #444444; text-decoration: none"
+                      :to="
+                        '/complaint/complaint-boardDetail/' +
+                        data.complaintBoardId
+                      "
+                      class="router-link-exact-active alltext"
+                      >{{ data.title }}</router-link
+                    >
+                    <!-- {{data.complaintBoardId}} -->
                   </td>
                 </tr>
               </tbody>
@@ -319,8 +348,9 @@ export default {
     };
   },
   methods: {
-    // todo: 자유게시판 메인 조회
+    // todo: 좋아요순 자유게시판 메인 조회
     async retrieveHotList() {
+      console.log("아이디가 안들어오니?",this.hotList.freeBoardId);
       try {
         // TODO: 1) 공통 전체조회 함수 실행
         let response = await FreeBoardService.getFreeboardLike();
@@ -394,7 +424,6 @@ export default {
         return;
       }
     },
-   
   },
   mounted() {
     console.log(this.$store.state.notifyCount);
