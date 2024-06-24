@@ -11,7 +11,7 @@ import java.util.List;
 
 public interface NotifyRepository extends JpaRepository<Notify, Long> {
     // todo 읽지 않은 알림 확인
-    public List<Notify> findTop8ByUserIdOrderByInsertTimeDesc(String userId/*, String isRead*/);
+    public List<Notify> findTop50ByUserIdOrderByInsertTimeDesc(String userId/*, String isRead*/);
 
     @Modifying
     @Transactional
