@@ -355,14 +355,17 @@ export default {
         return;
       }
     },
-    connectSse(jwt) {
+    connectSse() {
+      if (this.$store.state.user == null) {
+        return;
+      } 
       // let subscribeUrl = "http://localhost:8000/api/v1/notify/subscribe";
       // let subscribeUrl = "http://13.209.24.76:8000/api/v1/notify/subscribe";
       const subscribeUrl =
         "http://" + this.$store.state.backendIp + "/api/v1/notify/subscribe";
 
-      if (jwt != null) {
-        let token = jwt;
+      if (this.$store.state.user.accessToken != null) {
+        let token = this.$store.state.user.accessToken;
         this.eventSource = new EventSource(subscribeUrl + "?token=" + token);
         this.eventSource.onopen = () => {
           console.log("SSE 연결이 열렸습니다.");
@@ -414,7 +417,11 @@ export default {
         console.error("JWT 토큰이 없습니다.");
       }
     },
-
+    checkLogin(){
+      if (this.$store.state.user == null) {
+        this.$router.push("/member/login")
+      }
+    },
     computed: {
       isAdminLoggedIn() {
         // 관리자 로그인 여부 계산
@@ -422,10 +429,11 @@ export default {
       },
     },
   },
-  mounted() {
+  async mounted() {
+    await this.checkLogin();
     this.getAllDepartment();
     this.countUnreadNotify();
-    setTimeout(() => this.connectSse(this.$store.state.user.accessToken), 1000);
+    setTimeout(() => this.connectSse(), 1000);
   },
 };
 </script>

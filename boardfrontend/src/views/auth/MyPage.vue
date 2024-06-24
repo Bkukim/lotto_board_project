@@ -784,11 +784,16 @@ export default {
     // },
 
     // 유저 상세조회 : 프로필
-    async findUserInfo(userId) {
+    async findUserInfo() {
       try {
-        let response = await UserService.get(userId);
+        if (this.$store.state.user == null) {
+          alert("로그인을 해주세요");
+          this.$router.push("/member/login")
+        } else {
+        let response = await UserService.get(this.$store.state.user.userId);
         this.user = response.data;
         console.log("유저", response.data);
+        }
       } catch (e) {
         alert("로그인을 해주세요");
         console.log(e);
@@ -1029,9 +1034,9 @@ export default {
       this.retrieveClubBoardListUserId();
     },
   },
-  mounted() {
+  async mounted() {
     window.scrollTo(0, 0);
-    this.findUserInfo(this.$store.state.user.userId);
+    await this.findUserInfo();
     this.retrieveFreeBoardListUserId();
     this.retrieveComplaintBoardListUserId();
     this.retrieveDeptBoardListUserId();
