@@ -55,6 +55,7 @@ public class ComplaintCommentService {
                 .orElseThrow(() -> new RuntimeException("complaintBoard not found"));
         String boardWriter = complaintBoard.getUserId();
         String notifyContent = "회원님의 건의사항에 답변이 등록되었습니다.     " + "\"" + complaintBoardComment.getContent() + "\"";
+
         String notifyUrl = "complaint/complaint-boardDetail/"+ complaintBoard.getComplaintBoardId();
         MessageDto messageDto = new MessageDto(Notify.NotificationType.COMMENT,notifyContent,boardWriter,notifyUrl);
         notifyService.publishNotificationToRedis(messageDto);
