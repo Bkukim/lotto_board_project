@@ -228,7 +228,7 @@
               border-radius: 20px;
               border: none;
             "
-            @click="deleteFreeBoard"
+            @click="deleteDeptBoard"
           >
             <div
               style="

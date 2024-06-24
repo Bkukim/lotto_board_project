@@ -134,19 +134,18 @@ class FreeBoardService {
   }
 
   // TODO: 신고 게시글 삭제 : 자유게시판 삭제, 신고테이블 상태변경
-  deleteFreeBoardReport(freeBoardId) {
-    return http.delete(`/admin/report/free/deletion/${freeBoardId}`, {
+  deleteFreeBoardReport(reportId,freeBoardId) {
+    return http.delete(`/admin/report/free/deletion/${reportId}?freeBoardId=${freeBoardId}`, {
       headers: AuthHeader(),
     });
   }
 
 
   // TODO: 신고 게시글 취소 : 신고테이블 상태변경
-  updateFreeBoardReport(freeBoardId) {
+  updateFreeBoardReport(freeBoardId,freeBoardReport) {
+  
     console.log(freeBoardId);
-    return http.put(`/admin/report/free/update/${freeBoardId}`, {
-
-
+    return http.put(`/admin/report/free/update/${freeBoardId}`, freeBoardReport, {
       headers: AuthHeader(),
     });
   }

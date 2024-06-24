@@ -85,7 +85,10 @@
                   v-for="(data, index) in notificationList"
                   :key="index"
                 >
-                  <li class="list-group-item" @click="goToUrl(data.notificationType,data.url)">
+                  <li
+                    class="list-group-item"
+                    @click="goToUrl(data.notificationType, data.url)"
+                  >
                     {{ data.content }}
                   </li>
                 </ul>
@@ -124,6 +127,7 @@ import {
   PointElement,
 } from "chart.js";
 import NotifyService from "@/services/notify/NotifyService";
+// import NoticeService from '@/services/notice/NoticeService';
 
 export default {
   components: {
@@ -135,6 +139,11 @@ export default {
     };
   },
   methods: {
+    // async getAllNotice() {
+    //   try {
+    //     let response = NoticeService.
+    //   } catch (error) {}
+    // },
     async getUnreadNotify() {
       try {
         let response = await NotifyService.getUnreadNotify(
@@ -205,7 +214,7 @@ export default {
         console.error("JWT 토큰이 없습니다.");
       }
     },
-    goToUrl(notificationType,url) {
+    goToUrl(notificationType, url) {
       if (notificationType == "REPORT") {
         this.$router.push("/admin/report");
       } else if (notificationType == "COMPLAINT") {
@@ -219,7 +228,7 @@ export default {
       default: true, // 기본값을 false로 설정
     },
   },
-   setup() {
+  setup() {
     onMounted(() => {
       // Chart.js에 필요한 컴포넌트 등록
       Chart.register(

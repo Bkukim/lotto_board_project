@@ -82,7 +82,7 @@ public class ComplaintBoardService {
                 .orElseThrow(() -> new RuntimeException("freeBoard not found"));
         String boardWriter = complaintBoard.getUserId();
         String notifyContent = "회원님의 게시물에 댓글이 달렸습니다.     " + "\"" + complaintBoardComment.getContent() + "\"";
-        String notifyUrl = "/complaint/complaint-board/"+ complaintBoard.getComplaintBoardId();
+        String notifyUrl = "complaint/complaint-board/"+ complaintBoard.getComplaintBoardId();
         MessageDto messageDto = new MessageDto(Notify.NotificationType.COMMENT,notifyContent,boardWriter,notifyUrl);
         notifyService.publishNotificationToRedis(messageDto);
     }
