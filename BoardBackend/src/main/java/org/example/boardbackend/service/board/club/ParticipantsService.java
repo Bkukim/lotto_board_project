@@ -37,8 +37,6 @@ public class ParticipantsService {
     private final ParticipantsRepository participantsRepository;
     private final ClubBoardRepository clubBoardRepository;
     private final NotifyService notifyService;
-    private final UserService userService;
-    private final RedisMessageService redisMessageService;
 
     //  TODO: 저장 함수
     @Transactional

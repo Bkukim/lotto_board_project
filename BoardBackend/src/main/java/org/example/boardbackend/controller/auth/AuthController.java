@@ -73,12 +73,12 @@ public class AuthController {
     }
 
     // 카카오 회원가입 함수
-    @PostMapping("/kakao-register/{userId}")
-    public ResponseEntity<Object> kakaoLogin(@PathVariable String userId,
+    @PostMapping("/kakao-register/{uuid}")
+    public ResponseEntity<Object> kakaoLogin(@PathVariable String uuid,
                                              @RequestBody SocialUserReq socialUserReq){
         try {
 
-                UserRes RegisteredUserRes = socialLoginService.socialRegister(userId, socialUserReq);
+                UserRes RegisteredUserRes = socialLoginService.socialRegister(uuid, socialUserReq);
               return new ResponseEntity<>(RegisteredUserRes, HttpStatus.OK);
 
         }catch (Exception e){

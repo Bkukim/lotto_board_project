@@ -26,5 +26,5 @@ public interface SocialLoginService {
 
     // todo 액세스 토큰으로 유저정보 가져오는 함수
     public UserRes getUserInfo(String accessToken);
-    public UserRes socialRegister(String userId, SocialUserReq socialUserReq) throws IOException;
+    public UserRes socialRegister(String userId, SocialUserReq socialUserReq) throws IOException, Exception;
 }

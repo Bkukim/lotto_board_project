@@ -42,7 +42,7 @@ const routes = [
   },
   // 카카오 로그인 시 추가 정보 기입
   {
-    path: "/member/login/additional-info/:userId",
+    path: "/member/login/additional-info/:uuid",
     component: () => import("../views/auth/KakaoAdditionalInfo.vue"),
     meta: { showHeader: true }, // 기본적으로 헤더를 보이게 설정
   },

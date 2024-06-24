@@ -18,7 +18,9 @@ import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 
 /**
  * packageName : org.example.routtoproject.service.member
@@ -67,6 +69,8 @@ public class KakaoUserService implements SocialLoginService {
     private JwtUtils jwtUtils;
     private UserRepository userRepository;
     private PasswordEncoder passwordEncoder;
+
+    private HashMap <String, User> userHashMap = new HashMap<>();
 
     //    todo 카카오 로그인
     @Override
@@ -120,7 +124,6 @@ public class KakaoUserService implements SocialLoginService {
             throw new RuntimeException("Failed to retrieve user info");
         }
 
-        // 사용자 정보를 바탕으로 JWT 토큰 생성
         String userId = ((Map<String, Object>) userInfo.get("kakao_account")).get("email").toString();
 
         if (userRepository.existsById(userId)) {
@@ -132,11 +135,13 @@ public class KakaoUserService implements SocialLoginService {
                     "ROLE_USER");
             return userRes;
         }else{
-            // 프론트로 userRes 객체 보내기
-            String jwt = jwtUtils.generateJwtTokenForKakao(userId);
+            String uuid = UUID.randomUUID().toString().replace("-", "");
+            User user = new User();
+            user.setUserId(userId);
+            userHashMap.put(uuid,user);
             UserRes userRes = new UserRes(
                     null,                // 웹토큰
-                    userId,
+                    uuid,
                     null);
             return userRes;
         }
@@ -144,7 +149,8 @@ public class KakaoUserService implements SocialLoginService {
 
     @Override
     @Transactional
-    public UserRes socialRegister(String userId, SocialUserReq socialUserReq) throws IOException {
+    public UserRes socialRegister(String uuid, SocialUserReq socialUserReq) throws Exception {
+        String userId = userHashMap.get(uuid).getUserId();
         User user = new User(userId,
                 passwordEncoder.encode("asdfasdgfsadgqawrg23463457"),
                 socialUserReq.getUserName(),
