@@ -724,30 +724,15 @@ export default {
       }
     },
 
-    async retrieveDeptBoard() {
-      try {
-        let response = await DeptBoardService.getAllDeptBoard(
-          this.searchTitle, // 검색어
-          this.deptId,
-          this.page - 1, // 현재페이지번호-1
-          this.pageSize // 1페이지당개수(size)
-        );
-        const { deptBoardList, totalItems } = response.data;
-        this.deptBoardList = deptBoardList; // 부서배열(벡엔드 전송)
-        this.count = totalItems; // 전체페이지수(벡엔드 전송)
-        console.log(response.data);
-      } catch (e) {
-        console.log(e);
-      }
-    },
+  
     // 신고함수
     async report() {
       try {
-        alert("asdfasdf")
+        alert("asdfasdf");
         let data = {
           userId: this.$store.state.user.userId,
           deptBoardId: this.deptBoard.deptBoardId,
-          deptId:this.deptBoard.deptId,
+          deptId: this.deptBoard.deptId,
           content: this.reportContent,
         };
         await DeptBoardService.reportDeptBoard(data);
@@ -781,6 +766,7 @@ export default {
       try {
         let response = await DeptBoardService.getDeptBoardId(deptBoardId);
         this.deptBoard = response.data;
+        await this.checkLike();
         console.log(response.data);
       } catch (e) {
         alert("에러");
@@ -872,8 +858,31 @@ export default {
         console.log(e);
       }
     },
+    // like조회
+    async checkLike() {
+      const deptBoardId = this.$route.params.deptBoardId;
+      const userId = this.$store.state.user.userId; // Vuex store에서 로그인한 유저 ID 가져오기
+      try {
+        const response = await DeptBoardLikeService.getLikeId(
+          userId,
+          deptBoardId
+        );
+        if (response.status === 204) {
+          // NO_CONTENT 상태 코드 처리
+          this.isLiked = false;
+          this.likeId = null;
+        } else {
+          this.isLiked = true;
+          this.likeId = response.data;
+        }
+      } catch (error) {
+        console.error("Error checking like:", error);
+        this.isLiked = false;
+        this.likeId = null; // 에러 발생 시 likeId 초기화
+      }
+    },
 
-    // 좋아요 함수
+    //  좋아요 함수
     async upLike() {
       const deptBoardId = this.deptBoard.deptBoardId;
       const userId = this.$store.state.user.userId; // 로그인한 유저 ID 가져오기

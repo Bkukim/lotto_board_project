@@ -39,8 +39,14 @@ public class NormalDeptBoardLikeController {
     // TODO: 좋아요 생성 함수
     @PostMapping("/create")
     public ResponseEntity<DeptBoardLike> createFreeBoardLike(@RequestBody DeptBoardLike deptBoardLike) {
-        DeptBoardLike deptBoardLike1 = deptBoardLikeService.createDeptBoardLike(deptBoardLike);
-        return ResponseEntity.ok(deptBoardLike1);
+        try {
+            DeptBoardLike deptBoardLike1 = deptBoardLikeService.createDeptBoardLike(deptBoardLike);
+            return ResponseEntity.ok(deptBoardLike1);
+        }catch (Exception e){
+            log.debug("ASDFasdfA"+e.getMessage());
+            return (ResponseEntity<DeptBoardLike>) ResponseEntity.internalServerError();
+        }
+
     }
 
     // TODO: 좋아요 상태 확인 함수

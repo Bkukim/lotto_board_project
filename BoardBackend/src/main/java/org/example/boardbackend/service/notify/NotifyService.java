@@ -102,13 +102,18 @@ public class NotifyService {
 
     // todo 읽지 않은 알림 조회
     public List<Notify> findUnReadNotify(String userId) throws IOException {
-        List<Notify> list = notifyRepository.findTop8ByUserIdOrderByIsReadAscInsertTimeDesc(userId/*,"N"*/);
+        List<Notify> list = notifyRepository.findTop8ByUserIdOrderByInsertTimeDesc(userId/*,"N"*/);
         return list;
     }
 
-    // todo 읽음 변경함수
+    // todo 회원 전체 알림 읽음 변경함수
     public void updateIsRead(String userId) throws IOException {
         notifyRepository.updateByUserId(userId);
+    }
+
+    // todo 회원 특정 알림 읽음으로 변경함수
+    public void updateIsReadByNotify(long notifyId) throws Exception{
+        notifyRepository.updateByNotifyId(notifyId);
     }
 
     // todo 읽지 않은 알림 갯수 구하기

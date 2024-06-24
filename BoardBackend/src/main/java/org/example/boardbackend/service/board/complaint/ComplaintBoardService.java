@@ -8,12 +8,15 @@ import org.example.boardbackend.model.dto.board.free.FreeBoardDto;
 import org.example.boardbackend.model.dto.redis.MessageDto;
 import org.example.boardbackend.model.entity.board.complaint.ComplaintBoard;
 import org.example.boardbackend.model.entity.board.complaint.ComplaintBoardComment;
+import org.example.boardbackend.model.entity.board.dept.DeptBoard;
+import org.example.boardbackend.model.entity.board.dept.DeptBoardReport;
 import org.example.boardbackend.model.entity.board.free.FreeBoard;
 import org.example.boardbackend.model.entity.board.free.FreeBoardComment;
 import org.example.boardbackend.model.entity.notify.Notify;
 import org.example.boardbackend.repository.board.complaint.ComplaintBoardCommentRepository;
 import org.example.boardbackend.repository.board.complaint.ComplaintBoardRepository;
 import org.example.boardbackend.service.notify.NotifyService;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -43,6 +46,8 @@ public class ComplaintBoardService {
     private final ComplaintBoardCommentRepository complaintBoardCommentRepository;
     private final NotifyService notifyService;
     private final WebConfig webConfig;
+    @Value("${adminId}")
+    private String adminId;
 
     //    todo 전체 조회
     public Page<ComplaintBoardDto> findComplaintBoardByTitleContaining(
@@ -87,7 +92,15 @@ public class ComplaintBoardService {
         ComplaintBoard complaintBoard1 = complaintBoardRepository.save(complaintBoard);
         return complaintBoard1;
     }
+    // todo 건의 알림 저장 기능
+    public void sendComplaintNotification(ComplaintBoard complaintBoard) {
 
+        // 2. 알림 보내기
+        String notifyContent = "건의사항 게시물이 등록되었습니다.   " + "\"" + complaintBoard.getTitle() + "\"";
+        String notifyUrl = "complaint/complaint-boardDetail/" + complaintBoard.getComplaintBoardId(); // todo 주소 바꾸기
+        MessageDto messageDto = new MessageDto(Notify.NotificationType.COMPLAINT, notifyContent, adminId, notifyUrl);
+        notifyService.publishNotificationToRedis(messageDto);
+    }
     // todo: 삭제
     public boolean removeById(long complaintBoardId) {
 //        JPA 삭제함수 : deleteById(기본키)

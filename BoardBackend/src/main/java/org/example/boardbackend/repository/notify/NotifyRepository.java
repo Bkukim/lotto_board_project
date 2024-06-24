@@ -11,12 +11,17 @@ import java.util.List;
 
 public interface NotifyRepository extends JpaRepository<Notify, Long> {
     // todo 읽지 않은 알림 확인
-    public List<Notify> findTop8ByUserIdOrderByIsReadAscInsertTimeDesc(String userId/*, String isRead*/);
+    public List<Notify> findTop8ByUserIdOrderByInsertTimeDesc(String userId/*, String isRead*/);
 
     @Modifying
     @Transactional
     @Query("UPDATE Notify n SET n.isRead = 'Y' WHERE n.userId = :userId")
     public void updateByUserId(@Param("userId") String userId);
+
+    @Modifying
+    @Transactional
+    @Query("UPDATE Notify n SET n.isRead = 'Y' WHERE n.notifyId = :notifyId")
+    public void updateByNotifyId(@Param("notifyId") long notifyId);
 
     public long countByUserIdAndIsRead(String userId, String isRead);
 }

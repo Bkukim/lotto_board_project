@@ -249,7 +249,7 @@ export default {
             this.isConnected = false;
           } else {
             console.log("SSE 연결 오류 발생, 재연결 시도 중...");
-            setTimeout(() => this.connectSSE(), 5000); // 5초 후 재연결 시도
+            setTimeout(() => this.connectSSE().bind(this), 5000); // 5초 후 재연결 시도
           }
         };
       } else {
@@ -304,6 +304,7 @@ export default {
             this.$store.state.user.userId
           );
           this.$router.push("/");
+          window.location.reload();
         } else if (this.$store.state.user.role == "ROLE_ADMIN") {
           alert("관리자 로그인에 성공하였습니다.");
           this.$router.push("/admin/home");

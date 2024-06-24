@@ -40,7 +40,6 @@ public class NotifyController {
 
     @GetMapping(value = "/subscribe",  produces = "text/event-stream") //  SSE 스트림을 생성한다는 것을 나타냄. 클라이언트 이 미디어 타입을 사용하여 서버로부터 지속적인 이벤트 스트림을 받는다.
     public ResponseEntity<SseEmitter> subscribe(@RequestParam String token
-//                                @RequestHeader(value = "Last-Event-ID", required = false, defaultValue = "") String lastEventId
     ) {
         try {
              SseEmitter sseEmitter = notifyService.subscribe(jwtUtils.getUserNameFromJwtToken(token));
@@ -63,10 +62,34 @@ public class NotifyController {
         }
     }
 
-    // todo 읽음으로 표시 함수
+    // todo 회원 알림 전체 읽음으로 표시 함수
+    @PutMapping("/mark/all/read/{userId}")
+    public ResponseEntity<Object> markAsRead(@PathVariable String userId){
+        try {
+             notifyService.updateIsRead(userId);
+            return new ResponseEntity<>(HttpStatus.OK);
+        }catch (Exception e){
+            log.debug(e.getMessage());
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    // todo 특정 알림 읽음으로 표시 함수
+    @PutMapping("/mark/read/{notifyId}")
+    public ResponseEntity<Object> markAsRead(@PathVariable long notifyId,
+                                             @RequestBody Notify notify){
+        try {
+             notifyService.updateIsReadByNotify(notifyId);
+            return new ResponseEntity<>(HttpStatus.OK);
+        }catch (Exception e){
+            log.debug("특정 알림 읽음으로 표시 함수"+e.getMessage());
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
 
     @GetMapping("/count-unread/{userId}")
-    public ResponseEntity<Object> countUnread(@PathVariable String userId){
+    public ResponseEntity<Object> countUnread(@PathVariable String userId
+                                             ){
         try {
             long count = notifyService.countUnread(userId);
             log.debug(String.valueOf(count));
