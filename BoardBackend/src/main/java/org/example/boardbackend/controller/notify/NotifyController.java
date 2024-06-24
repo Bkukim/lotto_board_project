@@ -45,7 +45,6 @@ public class NotifyController {
              SseEmitter sseEmitter = notifyService.subscribe(jwtUtils.getUserNameFromJwtToken(token));
             return new ResponseEntity<>(sseEmitter, HttpStatus.OK);
         }catch (Exception e){
-            log.debug("이유:::::::" + e.getMessage());
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
 

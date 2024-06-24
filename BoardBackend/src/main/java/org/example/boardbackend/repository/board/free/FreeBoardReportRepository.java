@@ -48,8 +48,8 @@ public interface FreeBoardReportRepository extends JpaRepository<FreeBoardReport
 //    Page<FreeBoardReport> findFreeBoardReportsByUserIdContaining(@Param("userId") String userId, Pageable pageable);
     @Transactional
     @Modifying
-    @Query("UPDATE FreeBoardReport e SET e.isProcessed = 'Y' WHERE e.freeBoardId = :freeBoardId")
-    void updateByFreeBoardId(@Param("freeBoardId") long freeBoardId);
+    @Query("UPDATE FreeBoardReport e SET e.isProcessed = 'Y' WHERE e.reportId = :reportId")
+    void updateByFreeBoardId(@Param("reportId") long reportId);
 
     //    todo : 신고 게시물 처리완료
     @Query(value = "SELECT * FROM LOTTO_FREE_BOARD_REPORT\n" +
