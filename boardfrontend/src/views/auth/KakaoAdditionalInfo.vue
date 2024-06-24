@@ -393,7 +393,7 @@ export default {
         detailAddress: this.user.detailAddress,
       };
       try {
-        let response = await AuthService.registerSocialUser(this.$route.params.userId, data);
+        let response = await AuthService.registerSocialUser(this.$route.params.uuid, data);
         let user = response.data;
         localStorage.setItem("user", JSON.stringify(user));
         this.$store.commit("loginSuccess", user);
@@ -403,6 +403,8 @@ export default {
         // 공유 저장소의 register 실행함수 실행
         this.$store.commit("registerFailure");
         this.message = "에러 :" + e;
+        alert("세션이 만료되었습니다. 다시 시도해주세요")
+        this.$router.push("/member/login");
         console.log(e); // 에러 출력
       }
     },
