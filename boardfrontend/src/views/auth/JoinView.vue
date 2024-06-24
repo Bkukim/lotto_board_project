@@ -1,14 +1,15 @@
 <template>
-  <div class="container mt-5">
-    <div class="row justify-content-center">
-      <div class="col-10">
+  
+  <div id="register-container" class="container mt-5 " style="margin-top: 100px;" >
+    <div class="row justify-content-center" >
+      <div class="col-10 ">
         <!-- 회원유형 테이블 시작 -->
-        <div class="section-header">
-          <h3>회원가입</h3>
+        <div class="section-header " >
+          <h3 >회원가입</h3>
         </div>
         
         <!-- 기본 정보 테이블 시작-->
-        <div class="section-header">
+        <div class="section-header ">
           <h3>기본 정보</h3>
         </div>
         <table class="table">
@@ -214,18 +215,15 @@
         </table>
         <!-- 기본 정보 테이블 끝 -->
         
-        <div class="text-center mt-4">
+        <div class="text-center">
           <button class="btn singUpBtn" type="button" @click="handleRegister">회원가입</button>
         </div>
       </div>
     </div>
   </div>
-  <br>
-  <br>
-  <br>
-  <br>
-  <br>
-  <br>
+
+
+
 </template>
 
 <script>
@@ -526,4 +524,10 @@ export default {
   .text-success {
     color: #28a745 !important;
   }
+  #login-container {
+    display: flex;
+    height: 800px;
+    align-items: center;
+    justify-content: center;
+}
 </style>

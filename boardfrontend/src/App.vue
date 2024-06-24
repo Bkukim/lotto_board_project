@@ -10,7 +10,8 @@
     </div>
 
     <!-- 꼬리말 -->
-    <FoterView/>
+    <!-- <FoterView v-if="$route.meta.showFoter" /> -->
+    <FoterView />
   </div>
 </template>
 <script>
