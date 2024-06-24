@@ -1,37 +1,38 @@
 <template>
-  <div>
-    <p>네이버 로그인 중...</p>
-  </div>
+  <div></div>
 </template>
 
 <script>
-import axios from 'axios';
+import AuthService from "@/services/auth/AuthService";
 
 export default {
-  async mounted() {
-    const urlParams = new URLSearchParams(window.location.search);
-    const code = urlParams.get('code');
-    const state = urlParams.get('state');
-
-    if (code) {
+  data() {
+    return {
+      user: {},
+    };
+  },
+  methods: {
+    async naverLogin(code) {
       try {
-        // 서버로 인증 코드를 보내어 액세스 토큰을 요청합니다.
-        const response = await axios.get(`http://localhost:8000/api/auth/naver/callback?code=${code}&state=${state}`);
-        const { token } = response.data;
+        let response = await AuthService.socialLogin(code);
 
-        // 토큰을 로컬 스토리지에 저장
-        localStorage.setItem('jwtToken', token);
-
-        // 홈 페이지로 리디렉션
-        this.$router.push('/');
-      } catch (error) {
-        console.error('네이버 로그인 실패:', error);
-        this.$router.push('/member/login');
+        if (response.data.accessToken == null) {
+          this.$router.push("/member/login/additional-info/" + response.data.userId);
+        } else {
+          let user = response.data;
+          localStorage.setItem("user", JSON.stringify(user));
+          this.$store.commit("loginSuccess", user);
+          this.$router.push("/");
+        }
+      } catch (e) {
+        console.log(e);
       }
-    } else {
-      console.error('인증 코드가 없습니다.');
-      this.$router.push('/member/login');
-    }
-  }
-}
+    },
+  },
+  mounted() {
+    let code = this.$route.query.code;
+    console.log(code);
+    this.naverLogin(code);
+  },
+};
 </script>

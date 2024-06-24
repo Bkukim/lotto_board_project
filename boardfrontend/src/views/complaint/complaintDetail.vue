@@ -299,7 +299,7 @@
       <!-- 댓글 입력하기 -->
       <div
         class="lotto_new row row-cols-lg-4 gap-5 justify-content-left mb-3 mt-5"
-        v-if="this.$store.state.user.role == 'ROLE_ADMIN'"
+      v-if="isAdmin"
       >
         <div class="col" style="color: #595959; font-weight: bold">
           <span style="color: #999999; font-weight: bold">등록자 |</span>
@@ -312,7 +312,7 @@
       </div>
 
       <!-- 댓글 글쓰기 칸 -->
-      <div class="mb-5 comment-box" style="border: #595959 1.5px solid" v-if="this.$store.state.user.role == 'ROLE_ADMIN'">
+      <div class="mb-5 comment-box" style="border: #595959 1.5px solid"       v-if="isAdmin">
         <div class="comment-input">
           <textarea
             class="form-control"
