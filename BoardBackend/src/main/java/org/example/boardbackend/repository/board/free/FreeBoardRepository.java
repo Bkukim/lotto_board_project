@@ -72,7 +72,7 @@ public interface FreeBoardRepository extends JpaRepository<FreeBoard, Long> {
 
 
 //    todo: 메인에서 이번달만 좋아요순으로 가져오기
-@Query(value = "SELECT FREE_BOARD_ID, TITLE, LIKES\n" +
+@Query(value = "SELECT FREE_BOARD_ID AS freeBoardId  , TITLE AS title, LIKES AS likes\n" +
         "FROM (\n" +
         "    SELECT FREE_BOARD_ID, TITLE, LIKES\n" +
         "    FROM LOTTO_FREE_BOARD\n" +
@@ -87,11 +87,11 @@ public interface FreeBoardRepository extends JpaRepository<FreeBoard, Long> {
 List<FreeBoardDto> findFreeBoardByLikes(FreeBoardDto freeBoardDto);
 
 // todo: 핫게시판 좋아요순
-@Query(value = "SELECT FREE_BOARD_ID AS FREE_BOARD_ID" +
-        ", TITLE AS TITLE" +
-        ", LIKES AS LIKES" +
-        ", USER_ID AS USER_ID" +
-        ", INSERT_TIME AS INSERT_TIME\n" +
+@Query(value = "SELECT FREE_BOARD_ID AS freeBoardId" +
+        ", TITLE AS title" +
+        ", LIKES AS likes" +
+        ", USER_ID AS userId" +
+        ", INSERT_TIME AS inserTime \n" +
         "FROM (\n" +
         "    SELECT FREE_BOARD_ID, TITLE, LIKES, USER_ID, INSERT_TIME\n" +
         "    FROM LOTTO_FREE_BOARD\n" +
