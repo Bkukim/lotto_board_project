@@ -106,7 +106,7 @@
           <th scope="col"></th>
           <th scope="col" style="text-align: left; padding-left: 100px">
             <router-link
-              :to="'notice/notice-check/' + data.noticeId"
+              :to="`/notice/notice-check/` + data.noticeId + '/' + data.eventYN"
               style="color: red; text-decoration: none"
               >[공지] {{ data.title }}</router-link
             >
