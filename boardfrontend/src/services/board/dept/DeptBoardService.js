@@ -122,16 +122,15 @@ class DeptBoardService {
   }
 
   // TODO: 신고 게시글 삭제 : 자유게시판 삭제, 신고테이블 상태변경
-  deleteDeptBoardReport(deptBoardId) {
-    return http.delete(`/admin/report/dept/deletion/${deptBoardId}`, {
+  deleteDeptBoardReport(reportId,deptBoardId) {
+    return http.delete(`/admin/report/dept/deletion/${reportId}?deptBoardId=${deptBoardId}`, {
       headers: AuthHeader(),
     });
   }
 
   // TODO: 신고 게시글 취소 : 신고테이블 상태변경
-  updateDeptBoardReport(deptBoardId) {
-    console.log(deptBoardId);
-    return http.put(`/admin/report/dept/update/${deptBoardId}`, {
+  updateDeptBoardReport(reportId,deptBoardReport) {
+    return http.put(`/admin/report/dept/update/${reportId}`,deptBoardReport, {
       headers: AuthHeader(),
     });
   }
