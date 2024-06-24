@@ -22,11 +22,13 @@
       <!-- 게시판 탭 시작 -->
       <div class="tab-container">
         <ul class="nav nav-tabs">
+          <!-- <li class="nav-item" @click="retrieveFreeBoardReport"> -->
           <li class="nav-item" @click="setActiveTab('free')">
             <a class="nav-link" :class="{ active: activeTab === 'free' }"
               >자유게시판</a
             >
           </li>
+          <!-- <li class="nav-item" @click="retrieveDeptBoardReport"> -->
           <li class="nav-item" @click="setActiveTab('dept')">
             <a class="nav-link" :class="{ active: activeTab === 'dept' }"
               >부서게시판</a
@@ -139,6 +141,7 @@
                   @click="retrieveFreeBoardReport()"
                 ></b-pagination>
               </div>
+            </div>
             </div>
 
             <!-- 부서 신고테이블 -->
@@ -388,7 +391,6 @@
           </div>
         </div>
       </div>
-    </div>
   </div>
 </template>
 
@@ -506,15 +508,17 @@ export default {
           this.deptBoardPage - 1, // 현재페이지번호-1
           this.deptBoardPageSize // 1페이지당개수(size)
         );
-        this.activeTab = "dept";
         // TODO: 복습 : 2) 객체분할 할당
         const { deptBoardReportsList, totalItems } = response.data; // 부서배열(벡엔드 전송)
         // TODO: 3) 바인딩변수(속성)에 저장
         this.deptBoardReportsList = deptBoardReportsList; // 부서배열(벡엔드 전송)
         this.deptBoardCount = totalItems; // 전체페이지수(벡엔드 전송)
+        this.activeTab = "dept";
+
         // TODO: 4) 프론트 로깅 : console.log
         // alert("부서게시판 신고목록" + deptBoardReportsList);
-        console.log("부서게시판 신고목록", deptBoardReportsList);
+        console.log("부서게시판 신고목록=", this.deptBoardReportsList);
+        console.log("부서게시판 목록=", this.deptBoardCount);
       } catch (e) {
         console.log(e);
       }
@@ -641,9 +645,9 @@ export default {
   },
   mounted() {
     this.retrieveFreeBoardReport();
-    this.retrieveFreeBoardReportProcessed();
-    this.retrieveDeptBoardReport();
-    this.retrieveDeptBoardReportProcessed();
+    // this.retrieveFreeBoardReportProcessed();
+    // this.retrieveDeptBoardReport();
+    // this.retrieveDeptBoardReportProcessed();
     window.scrollTo(0, 0);
   },
 };
