@@ -18,4 +18,5 @@ public interface NoticeAllDto {
     Long getNoticeId();
     String getTitle();
     String getInsertTime();
+    String getEventYN();
 }
