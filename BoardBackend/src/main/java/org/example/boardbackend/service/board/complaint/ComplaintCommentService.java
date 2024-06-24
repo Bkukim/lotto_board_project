@@ -63,7 +63,7 @@ public class ComplaintCommentService {
 
     // TODO: 댓글 조회 함수
     public Page<ComplaintBoardComment> getCommentByComplaintBoardId(long complaintBoardId, Pageable pageable) {
-        return complaintBoardCommentRepository.findComplaintBoardCommentsByComplaintBoardId(complaintBoardId, pageable);
+        return complaintBoardCommentRepository.findComplaintBoardCommentsByComplaintBoardIdOrderByInsertTimeDesc(complaintBoardId, pageable);
     }
 
     // TODO: 댓글 삭제 함수
