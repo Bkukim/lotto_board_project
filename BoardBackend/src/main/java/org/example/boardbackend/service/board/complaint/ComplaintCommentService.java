@@ -39,7 +39,14 @@ public class ComplaintCommentService {
 
     // TODO: 댓글 저장
     public void saveComment(ComplaintBoardComment complaintBoardComment){
+        // 1. 댓글 저장
         complaintBoardCommentRepository.save(complaintBoardComment);
+
+        // 2. 해당 게시글 상태를 "답변 완료"로 변경
+        ComplaintBoard complaintBoard = complaintBoardRepository.findById(complaintBoardComment.getComplaintBoardId())
+                .orElseThrow(() -> new RuntimeException("ComplaintBoard not found"));
+        complaintBoard.setStatus("답변 완료");
+        complaintBoardRepository.save(complaintBoard);
     }
 
     // todo 댓글 알림 저장 기능
