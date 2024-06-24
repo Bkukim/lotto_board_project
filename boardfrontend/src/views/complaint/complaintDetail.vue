@@ -8,11 +8,11 @@
 
   <!-- 전체 박스 -->
   <div class="fbd_all" style="height: auto">
-    <br>
-    <br>
+    <br />
+    <br />
     <!-- 해당 게시판 이름 부분 -->
     <!-- <div class="container text-center mb-5"> -->
-      <!-- <h3 style="text-align: left" id="fbd_h3">건의 게시판 글 상세보기</h3> -->
+    <!-- <h3 style="text-align: left" id="fbd_h3">건의 게시판 글 상세보기</h3> -->
     <!-- </div> -->
     <!-- 해당 게시판 이름 부분  끝-->
 
@@ -68,22 +68,21 @@
         "
         v-html="complaintBoard.content"
       ></div>
-      <!-- TODO: 좋아요버튼 -->
       <div class="mt-5 text-center">
         <button
           type="button"
           class="btn btn-light"
-          @click="likeUp"
+          @click="upLike"
           style="
             border: none;
             text-align: center;
             height: 8vh;
-            width: 18vw;
+            width: 15vw;
             padding: 1vw;
           "
         >
           <img src="@/assets/img/like_icon.png" width="40" height="40" />
-          공감해요
+          좋아요
           {{ this.complaintBoard.likes }}
         </button>
 
@@ -109,7 +108,11 @@
           <div class="modal-dialog">
             <div class="modal-content">
               <div class="modal-header">
-                <h5 class="modal-title" id="reportModalLabel" style="font-weight: bold;">
+                <h5
+                  class="modal-title"
+                  id="reportModalLabel"
+                  style="font-weight: bold"
+                >
                   <img
                     src="@/assets/img/report_icon.png"
                     width="20"
@@ -125,7 +128,7 @@
                 ></button>
               </div>
               <div class="modal-body">
-      <!-- 신고폼 -->
+                <!-- 신고폼 -->
                 <form>
                   <div class="mb-3">
                     <label for="reportReason" class="form-label"
@@ -143,40 +146,43 @@
             </div>
           </div>
         </div>
-      </div>
 
-          <!-- 목록으로 버튼 -->
-          <div class="col mb-5">
-          <router-link
-            :to="'/complaint/complaint-board' "
-            class="fbd_d container text-center"
-            style="
-              width: 150px;
-              text-decoration: none;
-              background-color: #3363cc;
-              font-size: 15px;
-              text-align: center;
-              height: 40px;
-              border-radius: 50px;
-              margin-top: 50px;
-            "
+      </div>
+    
+
+      <!-- 목록으로 버튼 -->
+      <div class="col mb-5">
+        <router-link
+          :to="'/complaint/complaint-board'"
+          class="fbd_d container text-center"
+          style="
+            width: 150px;
+            text-decoration: none;
+            background-color: #3363cc;
+            font-size: 15px;
+            text-align: center;
+            height: 40px;
+            border-radius: 50px;
+            margin-top: 50px;
+          "
+        >
+          <div
+            style="display: flex; align-items: center; justify-content: center"
           >
             <div
+              class="router-text"
               style="
-                display: flex;
-                align-items: center;
-                justify-content: center;
+                margin-top: 10px;
+                color: #fff;
+                text-align: center;
+                font-weight: 300;
               "
             >
-              <div
-                class="router-text"
-                style=" margin-top: 10px; color: #fff; text-align: center;  font-weight: 300;"
-              >
-                목록으로
-              </div>
+              목록으로
             </div>
-          </router-link>
-        </div>
+          </div>
+        </router-link>
+      </div>
 
       <!-- 파일첨부 -->
       <!-- <div class="mt-5" style="width: 500px">
@@ -210,11 +216,11 @@
             style="
               width: 300px;
               text-decoration: none;
-              background-color: #ffffff;
+              background-color: #cccccc;
               font-size: 20px;
-              text-align: center;
               height: 50px;
               border-radius: 20px;
+              border: none;
             "
             @click="deleteComplaintBoard"
           >
@@ -227,7 +233,7 @@
             >
               <div
                 class="router-text"
-                style="margin-right: 20px; margin-top: 10px"
+                style="color: #ffffff; text-align: center"
               >
                 삭제
               </div>
@@ -238,7 +244,10 @@
         <!-- 수정 -->
         <div class="col mb-5">
           <router-link
-            :to="'/complaint/complaint-board/Update/' + this.$route.params.complaintBoardId"
+            :to="
+              '/complaint/complaint-board/Update/' +
+              this.$route.params.complaintBoardId
+            "
             class="fbd_d container text-center"
             style="
               width: 300px;
@@ -291,7 +300,6 @@
           font-weight: 600;
           color: #595959;
         "
-        
       >
         관리자 댓글
       </div>
@@ -299,7 +307,7 @@
       <!-- 댓글 입력하기 -->
       <div
         class="lotto_new row row-cols-lg-4 gap-5 justify-content-left mb-3 mt-5"
-        v-if="this.$store.state.user.role == 'ROLE_ADMIN'"
+      v-if="isAdmin"
       >
         <div class="col" style="color: #595959; font-weight: bold">
           <span style="color: #999999; font-weight: bold">등록자 |</span>
@@ -312,7 +320,8 @@
       </div>
 
       <!-- 댓글 글쓰기 칸 -->
-      <div class="mb-5 comment-box" style="border: #595959 1.5px solid" v-if="this.$store.state.user.role == 'ROLE_ADMIN'">
+
+      <div class="mb-5 comment-box" style="border: #595959 1.5px solid"       v-if="isAdmin">
         <div class="comment-input">
           <textarea
             class="form-control"
@@ -379,85 +388,80 @@
       <br />
       <br />
       <br />
-      
-<!-- 댓글들 -->
-<div
-  class="container text-left"
-  v-for="(data, index) in complaintBoardComments"
-  :key="index"
->
-  <div class="lotto_new col row-cols-lg-4 gap-5 justify-content-left mb-3">
-    <!-- 아이디 -->
-    <div
-      class="row mt-5"
-      style="color: #333333; text-align: left; font-weight: bold"
-    >
-      <div
-        style="
-          background: #162b59;
-          height: 30px;
-          width: 30px;
-          border-radius: 50%;
-          margin-right: 5px;
-        "
-      ></div>
-      {{ data.userId }}
-    </div>
 
-    <!-- 시간 -->
-    <div
-      class="row"
-      style="color: #999999; text-align: left; margin-left: 22px"
-    >
-      {{ data.insertTime }}
-    </div>
-  </div>
-  <!-- 답변 -->
-  <div
-    style="
-      padding-bottom: 30px;
-      border-bottom: 1px solid #cccccc;
-      text-align: left;
-      word-wrap: break-word;
-      word-break: break-all;
-      margin-left: 22px;
-      position: relative;
-    "
-  >
-    {{ data.content }}
-    <br />
-    <button
-      v-if="isAdmin"
-      @click="deleteComment(data.complaintBoardCommentId)"
-      class="container text-center mt-3"
-      style="
-        width: 150px;
-        text-decoration: none;
-        background-color: #162b59;
-        font-size: 18px;
-        text-align: center;
-        height: 40px;
-        font-weight: 100;
-        position: absolute;
-        bottom: 10px;
-        right: 10px;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        border-radius: 5px;
-      "
-    >
+      <!-- 댓글들 -->
       <div
-        style="
-          color: #ffffff;
-          font-weight: 100;
-        "
+        class="container text-left"
+        v-for="(data, index) in complaintBoardComments"
+        :key="index"
       >
-        댓글 삭제하기
+        <div
+          class="lotto_new col row-cols-lg-4 gap-5 justify-content-left mb-3"
+        >
+          <!-- 아이디 -->
+          <div
+            class="row mt-5"
+            style="color: #333333; text-align: left; font-weight: bold"
+          >
+            <div
+              style="
+                background: #162b59;
+                height: 30px;
+                width: 30px;
+                border-radius: 50%;
+                margin-right: 5px;
+              "
+            ></div>
+            {{ data.userId }}
+          </div>
+
+          <!-- 시간 -->
+          <div
+            class="row"
+            style="color: #999999; text-align: left; margin-left: 22px"
+          >
+            {{ data.insertTime }}
+          </div>
+        </div>
+        <!-- 답변 -->
+        <div
+          style="
+            padding-bottom: 30px;
+            border-bottom: 1px solid #cccccc;
+            text-align: left;
+            word-wrap: break-word;
+            word-break: break-all;
+            margin-left: 22px;
+            position: relative;
+          "
+        >
+          {{ data.content }}
+          <br />
+          <button
+            v-if="isAdmin"
+            @click="deleteComment(data.complaintBoardCommentId)"
+            class="container text-center mt-3"
+            style="
+              width: 150px;
+              text-decoration: none;
+              background-color: #162b59;
+              font-size: 18px;
+              text-align: center;
+              height: 40px;
+              font-weight: 100;
+              position: absolute;
+              bottom: 10px;
+              right: 10px;
+              display: flex;
+              justify-content: center;
+              align-items: center;
+              border-radius: 5px;
+            "
+          >
+            <div style="color: #ffffff; font-weight: 100">댓글 삭제하기</div>
+          </button>
+        </div>
       </div>
-    </button>
-  </div>
-</div>
 
       <!-- 페이징 -->
       <!-- {/* paging 시작 */} -->
@@ -468,7 +472,9 @@
             v-model="page"
             :total-rows="count"
             :per-page="pageSize"
-            @click="retrieveComplaintBoardComment(this.$route.params.complaintBoardId)"
+            @click="
+              retrieveComplaintBoardComment(this.$route.params.complaintBoardId)
+            "
           ></b-pagination>
         </div>
       </div>
@@ -491,6 +497,7 @@
 
 <script>
 import ComplaintBoardService from "@/services/board/complaint/ComplaintBoardService";
+import ComplaintBoardLikeService from "@/services/board/complaint/ComplaintBoardLikeService";
 // import { ref } from "vue";
 
 // 댓글 글자 작성 수 올라가는 것 확인
@@ -523,7 +530,6 @@ export default {
 
       // 기존 대댓글 목록
       // complaintBoardReComments: [],
-      
 
       // 새로 작성할 댓글
       newComment: {
@@ -577,8 +583,12 @@ export default {
     // freeBoardId로 상세조회 : 화면뜰때 실행
     async retrieveGetComplaintBoard(complaintBoardId) {
       try {
-        let response = await ComplaintBoardService.getComplaintBoardId(complaintBoardId);
+        let response = await ComplaintBoardService.getComplaintBoardId(
+          complaintBoardId
+        );
         this.complaintBoard = response.data;
+        await this.checkLike();
+
         console.log(response.data);
       } catch (e) {
         alert("에러");
@@ -586,7 +596,7 @@ export default {
       }
     },
 
-    // freeBoardId로 댓글조회 : 화면뜰때 실행
+    // complaintBoardId 댓글조회 : 화면뜰때 실행
     async retrieveComplaintBoardComment(complaintBoardId) {
       try {
         let response = await ComplaintBoardService.getComplaintBoardComment(
@@ -654,35 +664,85 @@ export default {
     },
 
     // 댓글 삭제 함수
-  async deleteComment(commentId) {
-    console.log("Deleting comment with ID:", commentId); // Debugging line
-    if (!commentId) {
-      console.log("No commentId provided");
-      return;
-    }
-    try {
-      if (confirm("정말로 댓글을 삭제하시겠습니까?")) {
-        await ComplaintBoardService.deleteComplaintBoardComment(commentId);
-        this.retrieveComplaintBoardComment(this.$route.params.complaintBoardId);
+    async deleteComment(commentId) {
+      console.log("Deleting comment with ID:", commentId); // Debugging line
+      if (!commentId) {
+        console.log("No commentId provided");
+        return;
       }
-    } catch (e) {
-      console.log(e);
-    }
-  },
-
-    // 수정 함수
-    async likeUp() {
-      this.complaintBoard.likes = +1;
-
       try {
-        let response = await ComplaintBoardService.updateComplaintBoard(
-          this.complaintBoard.likes
-        );
-        // 로깅
-        console.log(response.data);
-        this.$router.push("/complaint/complaint-board/:complaintBoardId");
+        if (confirm("정말로 댓글을 삭제하시겠습니까?")) {
+          await ComplaintBoardService.deleteComplaintBoardComment(commentId);
+          this.retrieveComplaintBoardComment(
+            this.$route.params.complaintBoardId
+          );
+        }
       } catch (e) {
         console.log(e);
+      }
+    },
+
+//TODO: 좋아요 버튼
+//  좋아요 함수
+async upLike() {
+      const complaintBoardId = this.complaintBoard.complaintBoardId;
+      const userId = this.$store.state.user.userId; // 로그인한 유저 ID 가져오기
+
+      if (this.isLiked) {
+        if (!this.likeId) {
+          console.error("Like ID is not defined");
+          return;
+        }
+        try {
+          await ComplaintBoardLikeService.deleteComplaintBoardLike(this.likeId);
+          this.isLiked = false;
+          this.likeId = null;
+          this.complaintBoard.likes -= 1;
+        } catch (error) {
+          console.error("Error deleting like:", error);
+        }
+      } else {
+        try {
+          const response = await ComplaintBoardLikeService.createComplaintBoardLike({
+            userId,
+            complaintBoardId,
+          });
+          this.isLiked = true;
+          this.likeId = response.data.likeId;
+          this.complaintBoard.likes += 1;
+        } catch (error) {
+          console.error("Error creating like:", error);
+          if (
+            error.response &&
+            error.response.data === "Already liked by this user"
+          ) {
+            // 이미 좋아요가 존재하는 경우 상태를 유지
+            this.isLiked = true;
+          }
+        }
+      }
+    },
+    // like조회
+    async checkLike() {
+      const complaintBoardId = this.$route.params.complaintBoardId;
+      const userId = this.$store.state.user.userId; // Vuex store에서 로그인한 유저 ID 가져오기
+      try {
+        const response = await ComplaintBoardLikeService.getLikeId(
+          userId,
+          complaintBoardId
+        );
+        if (response.status === 204) {
+          // NO_CONTENT 상태 코드 처리
+          this.isLiked = false;
+          this.likeId = null;
+        } else {
+          this.isLiked = true;
+          this.likeId = response.data;
+        }
+      } catch (error) {
+        console.error("Error checking like:", error);
+        this.isLiked = false;
+        this.likeId = null; // 에러 발생 시 likeId 초기화
       }
     },
 
@@ -699,7 +759,6 @@ export default {
       }
       this.charCountReply = this.newReply.content.length;
     },
-
   },
   async mounted() {
     this.retrieveGetComplaintBoard(this.$route.params.complaintBoardId);

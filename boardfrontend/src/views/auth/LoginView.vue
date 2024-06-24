@@ -115,7 +115,6 @@
           </div>
         </div>
       </div>
-
       <!-- -------------------------오른쪽 이미지 -->
       <div class="login-image">
         <img src="@/assets/img/ROUTTO.png" alt="Login Image" />
@@ -169,7 +168,14 @@ export default {
       const kakaoAuthUrl = `https://kauth.kakao.com/oauth/authorize?client_id=${client_id}&redirect_uri=${redirect_uri}&response_type=code`; // response_type=code는 고정
       window.location.href = kakaoAuthUrl; // 이 페이지는 카카오에서 제공하는 페이지라 따로 페이지 만들 필요 없음
     },
-    // 네이버 로그인
+  // 네이버 로그인
+      handleNaverLogin() {
+      const CLIENT_ID = 'Ipydix8nXe2V9m6KRDom';
+      const REDIRECT_URI = 'http://localhost:8080/api/auth/naver-redirect';
+      const STATE_STRING = 'random_state'; // 보안을 위해 난수로 생성
+      const naverAuthUrl = `https://nid.naver.com/oauth2.0/authorize?response_type=code&client_id=${CLIENT_ID}&redirect_uri=${REDIRECT_URI}&state=${STATE_STRING}`;
+      window.location.href = naverAuthUrl;
+    },
     goToNaverLogin() {
       const clientId = "Ipydix8nXe2V9m6KRDom"; // 네이버 개발자 센터에서 발급받은 Client ID
       const redirectUri = "http://" + this.$store.state.frontendIp + "/login/ouath2/code/naver"; // 네이버 개발자 센터에 등록한 Redirect URI

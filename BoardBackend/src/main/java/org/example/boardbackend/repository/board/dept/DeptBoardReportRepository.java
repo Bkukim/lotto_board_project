@@ -39,8 +39,8 @@ public interface DeptBoardReportRepository extends JpaRepository<DeptBoardReport
     //    todo : 신고 게시물 삭제 버튼 누르면 실행되는 함수 : 상태 Y로 변경
     @Transactional
     @Modifying
-    @Query("UPDATE DeptBoardReport e SET e.isProcessed = 'Y' WHERE e.deptBoardId = :deptBoardId")
-    void updateByDeptBoardId(@Param("deptBoardId") long deptBoardId);
+    @Query("UPDATE DeptBoardReport e SET e.isProcessed = 'Y' WHERE e.reportId = :reportId")
+    void updateByDeptBoardId(@Param("reportId") long reportId);
 
     //    todo : 신고 게시물 처리완료
     @Query(value = "SELECT * FROM LOTTO_DEPT_BOARD_REPORT\n" +

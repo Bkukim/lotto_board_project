@@ -103,7 +103,7 @@
         <tr v-for="(data, index) in noticeFree" :key="index" style="background-color: gray;">
           <th scope="col"></th>
           <th scope="col" style="text-align: left; padding-left: 100px">
-            <router-link :to="'notice/notice-check/'+data.noticeId" style="color: red; text-decoration: none;">[공지] {{ data.title }}</router-link>
+            <router-link :to="`/notice/notice-check/` + data.noticeId + '/' + data.eventYN" style="color: red; text-decoration: none;">[공지] {{ data.title }}</router-link>
           </th>
           <th scope="col">ADMIN</th>
           <th scope="col">{{ data.insertTime }}</th>

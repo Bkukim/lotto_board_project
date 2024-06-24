@@ -80,6 +80,25 @@
           <th scope="col">좋아요</th>
           <!-- <th scope="col">조회수</th> -->
         </tr>
+        <!-- todo: 공지사항 -->
+        <tr
+          v-for="(data, index) in noticeDept"
+          :key="index"
+          style="background-color: gray"
+        >
+          <th scope="col"></th>
+          <th scope="col" style="text-align: left; padding-left: 100px">
+            <router-link
+              :to="`/notice/notice-check/` + data.noticeId + '/' + data.eventYN"
+              style="color: red; text-decoration: none"
+              >[공지] {{ data.title }}</router-link
+            >
+          </th>
+          <th scope="col">ADMIN</th>
+          <th scope="col">{{ data.insertTime }}</th>
+          <th scope="col"></th>
+          <th scope="col"></th>
+        </tr>
       </thead>
       <tbody>
         <!-- 반복문 시작할 행 -->
@@ -101,8 +120,6 @@
       </tbody>
     </table>
 
-
-
     <!-- 글쓰기 버튼 -->
     <div class="text-end mt-5">
       <button
@@ -114,7 +131,6 @@
         글쓰기
       </button>
     </div>
-
 
     <!-- 페이징 -->
     <!-- {/* paging 시작 */} -->
@@ -147,6 +163,8 @@ export default {
       count: 0, // 전체데이터개수
       pageSize: 10, // 1페이지당개수(select태그)
       deptId: this.$route.params.deptId,
+
+      noticeDept: [], //공지사항
     };
   },
   methods: {
@@ -195,6 +213,24 @@ export default {
         console.log(e);
       }
     },
+    // 공지함수
+    async retrieveDeptNotice() {
+      try {
+        // TODO: 1) 공통 전체조회 함수 실행
+        let response = await DeptBoardService.getDeptNotice(
+          this.pageSize // 1페이지당개수(size)
+        );
+        // TODO: 복습 : 2) 객체분할 할당
+        const { noticeDept, totalItems } = response.data; // 부서배열(벡엔드 전송)
+        // TODO: 3) 바인딩변수(속성)에 저장
+        this.noticeDept = noticeDept; // 부서배열(벡엔드 전송)
+        this.count = totalItems; // 전체페이지수(벡엔드 전송)
+        // TODO: 4) 프론트 로깅 : console.log
+        console.log(response.data);
+      } catch (e) {
+        console.log(e);
+      }
+    },
     // 검색 함수
     async searchDeptBoard() {
       console.log("검색 함수 호출");
@@ -215,6 +251,7 @@ export default {
     this.getDepartment();
     this.retrieveDeptBoard();
     window.scrollTo(0, 0);
+    this.retrieveDeptNotice();
   },
 };
 </script>

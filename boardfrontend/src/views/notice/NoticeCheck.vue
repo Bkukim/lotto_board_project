@@ -2,11 +2,13 @@
   <!-- 전체 박스 -->
   <div class="fbd_all" style="height: auto">
     <!-- 해당 게시판 이름 부분 -->
-    <div class="container text-center mb-5">
+    <!-- <div class="container text-center mb-5">
       <h3 style="text-align: left" id="fbd_h3">공지사항 글 상세보기</h3>
-    </div>
+    </div> -->
     <!-- 해당 게시판 이름 부분  끝-->
 
+    <br>
+    <br>
     <!--  첫번째 게시판 큰 박스-->
     <div
       class="container text-center mt-5"
@@ -64,36 +66,7 @@
         v-html="notice.content"
       ></div>
 
-      <!-- 신청하기 버튼 -->
-      <div class="col">
-        <button
-          class="fbd_d container text-center"
-          style="
-            width: 150px;
-            text-decoration: none;
-            background-color: #ffcc00;
-            font-size: 15px;
-            text-align: center;
-            height: 40px;
-            border-radius: 50px;
-            margin-top: 50px;
-            border: none;
-            font-weight: 100;
-          "
-          @click="applyNotice"
-        >
-          <div
-            style="display: flex; align-items: center; justify-content: center"
-          >
-            <div
-              class="router-text"
-              style="color: #ffffff; text-align: center; font-weight: 100"
-            >
-              신청하기
-            </div>
-          </div>
-        </button>
-      </div>
+    
 
    
       <!-- 목록으로 버튼 -->

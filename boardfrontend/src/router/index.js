@@ -28,6 +28,12 @@ const routes = [
     component: () => import("../views/auth/MyPage.vue"),
     meta: { showHeader: true , shoewFoter: true }, // 기본적으로 헤더를 보이게 설정
   },
+  // 알림 더 기
+  {
+    path: "/member/notification",
+    component: () => import("../views/auth/NotificationAdd.vue"),
+    meta: { showHeader: true , shoewFoter: true }, // 기본적으로 헤더를 보이게 설정
+  },
   // 카카오 로그인
   {
     path: "/auth-redirect",

@@ -199,9 +199,9 @@ public class DeptBoardService {
     }
 
     //    todo 신고게시글 삭제버튼 누를시 실행될 함수 : 신고테이블에서는 Y로 변경
-    public void updateByDeptReportId(long deptBoardId) {
+    public void updateByDeptReportId(long reportId) {
         log.debug("tkdyd?");
-        deptBoardReportRepository.updateByDeptBoardId(deptBoardId);
+        deptBoardReportRepository.updateByDeptBoardId(reportId);
 //        freeBoardRepository.deleteById(reportId);
     }
 

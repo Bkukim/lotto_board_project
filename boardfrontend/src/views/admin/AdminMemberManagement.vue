@@ -101,11 +101,14 @@
                         </div>
                         <div class="mb-3">
                           <label class="form-label">권한</label>
-                          <input
+                          <!-- <input
                             type="text"
                             class="form-control"
                             v-model="user.role"
-                          />
+                          /> -->
+                          <select class="form-select" v-model="user.role">
+                            <option value="ROLE_USER">ROLE_USER</option>
+                          </select>
                         </div>
                         <div class="mb-3">
                           <label class="form-label">이름</label>

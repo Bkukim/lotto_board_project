@@ -111,11 +111,12 @@ public class AdminReportController {
     }
 
     //    todo 관리자 자유 : 신고게시글 삭제버튼
-    @DeleteMapping("/free/deletion/{freeBoardId}")
-    public ResponseEntity<Void> deleteFreeBoard(@PathVariable Long freeBoardId) {
+    @DeleteMapping("/free/deletion/{reportId}")
+    public ResponseEntity<Void> deleteFreeBoard(@PathVariable Long reportId,
+                                                @RequestParam Long freeBoardId) {
         try {
             freeBoardService.deleteByFreeBoardId(freeBoardId);
-            freeBoardService.updateByReportId(freeBoardId);
+            freeBoardService.updateByReportId(reportId);
             return ResponseEntity.noContent().build();
         } catch (Exception e){
             log.debug(e.getMessage());
@@ -124,11 +125,12 @@ public class AdminReportController {
     }
 
     //    todo 관리자 부서 : 신고게시글 삭제버튼
-    @DeleteMapping("/dept/deletion/{deptBoardId}")
-    public ResponseEntity<Void> deleteDeptBoard(@PathVariable Long deptBoardId) {
+    @DeleteMapping("/dept/deletion/{reportId}")
+    public ResponseEntity<Void> deleteDeptBoard(@PathVariable Long reportId,
+                                                @RequestParam Long deptBoardId) {
         try {
             deptBoardService.deleteByDeptBoardId(deptBoardId);
-            deptBoardService.updateByDeptReportId(deptBoardId);
+            deptBoardService.updateByDeptReportId(reportId);
             return ResponseEntity.noContent().build();
         } catch (Exception e){
             log.debug(e.getMessage());
@@ -217,11 +219,12 @@ public class AdminReportController {
     }
 
     //    todo 관리자 자유 : 신고게시글 취소 버튼
-    @PutMapping("/free/update/{freeBoardId}")
-    public ResponseEntity<Void> updateFreeBoard(@PathVariable Long freeBoardId) {
+    @PutMapping("/free/update/{reportId}")
+    public ResponseEntity<Void> updateFreeBoard(@PathVariable Long reportId,
+                                                @RequestBody FreeBoardReport freeBoardReport) {
         try {
             log.debug("하유 정 ㅠ바보");
-            freeBoardService.updateByReportId(freeBoardId);
+            freeBoardService.updateByReportId(reportId);
             return ResponseEntity.noContent().build();
         } catch (Exception e){
             log.debug(e.getMessage());
@@ -230,11 +233,12 @@ public class AdminReportController {
     }
 
     //    todo 관리자 부서 : 신고게시글 취소 버튼
-    @PutMapping("/dept/update/{deptBoardId}")
-    public ResponseEntity<Void> updateDeptBoard(@PathVariable Long deptBoardId) {
+    @PutMapping("/dept/update/{reportId}")
+    public ResponseEntity<Void> updateDeptBoard(@PathVariable Long reportId,
+                                                @RequestBody DeptBoardReport deptBoardReport) {
         try {
             log.debug("응 니얼굴");
-            deptBoardService.updateByDeptReportId(deptBoardId);
+            deptBoardService.updateByDeptReportId(reportId);
             return ResponseEntity.noContent().build();
         } catch (Exception e){
             log.debug(e.getMessage());

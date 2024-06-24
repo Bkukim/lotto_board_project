@@ -190,9 +190,8 @@ public class FreeBoardService {
     }
 
     //    todo 신고게시글 삭제버튼 누를시 실행될 함수 : 신고테이블에서는 Y로 변경
-    public void updateByReportId(long freeBoardId) {
-        log.debug("tkdyd?");
-        freeBoardReportRepository.updateByFreeBoardId(freeBoardId);
+    public void updateByReportId(long reportId) {
+        freeBoardReportRepository.updateByFreeBoardId(reportId);
 //        freeBoardRepository.deleteById(reportId);
     }
 

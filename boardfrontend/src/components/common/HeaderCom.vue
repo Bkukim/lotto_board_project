@@ -141,7 +141,8 @@
 
               <ul
                 class="dropdown-menu dropdown-menu-end"
-                style="height: auto; width: 300px; text-align: left"
+                style="height: auto; width: 300px; text-align: left; max-height: 400px; overflow-y: auto;"
+                @scroll="handleScroll"
               >
                 <p style="text-align: center">알림</p>
 
@@ -197,7 +198,7 @@
                 <li><hr class="dropdown-divider" /></li>
 
                 <li>
-                  <router-link class="dropdown-item" to="#"
+                  <router-link class="dropdown-item" to="/member/notification"
                     >모든 알림 보기</router-link
                   >
                 </li>
@@ -439,6 +440,12 @@ export default {
 </script>
 
 <style>
+/* 알림 팝업창의 최대 높이 설정 및 스크롤 활성화 */
+.notification-dropdown .dropdown-menu {
+  max-height: 400px; /* 원하는 최대 높이 설정 */
+  overflow-y: auto; /* 내용이 넘칠 경우 수직 스크롤 활성화 */
+}
+
 /* 예시: 반응형 디자인 */
 @media (max-width: 992px) {
   .navbar {
@@ -618,7 +625,7 @@ export default {
 .admin-page-btn {
   margin-left: 10px;
   background-color: #2d61d0;
-  color: white;
+  /* color: white; */
 }
 
 .icons-container {
