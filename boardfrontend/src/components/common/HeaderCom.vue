@@ -1,7 +1,7 @@
 <template>
-  <div v-if="!hideHeader" >
-    <div style="border-bottom: 1px solid #cccccc" >
-      <nav class="navbar navbar-expand-lg bg-dark-light" >
+  <div v-if="!hideHeader">
+    <div style="border-bottom: 1px solid #cccccc">
+      <nav class="navbar navbar-expand-lg bg-dark-light">
         <router-link class="navbar-brand" to="/">
           <img
             src="@/assets/img/LOTTO_LOGO.png"
@@ -11,7 +11,7 @@
             class="d-inline-block align-text-top"
           />
         </router-link>
-        <div class="container" >
+        <div class="container">
           <button
             class="navbar-toggler"
             type="button"
@@ -23,10 +23,10 @@
           >
             <span class="navbar-toggler-icon"></span>
           </button>
-          <div class="collapse navbar-collapse" id="navbarNavDropdown" >
+          <div class="collapse navbar-collapse" id="navbarNavDropdown">
             <ul
               class="navbar-nav ms-auto"
-              style="gap: 10px; display: block; display: flex;"
+              style="gap: 10px; display: block; display: flex"
             >
               <li class="nav-item">
                 <router-link class="nav-link" to="/notice/notice-board"
@@ -80,7 +80,7 @@
                 class="container-fluid"
                 style="background-color: rgb(255, 255, 255); height: 92px"
               >
-                <form class="d-flex" style="width: 150px;">
+                <form class="d-flex" style="width: 150px">
                   <input
                     class="form-control me-2"
                     type="search"
@@ -107,7 +107,6 @@
               </div>
             </nav>
 
-            
             <!-- 알림 아이콘 -->
             <div
               class="nav-item dropdown notification-dropdown"
@@ -166,13 +165,24 @@
                           margin-left: 10px;
                         "
                       ></td>
-                      <td
+                      <!-- <td
                         class="col-12"
                         style="
                           word-wrap: break-word;
                           white-space: normal;
                           max-width: 250px;
                         "
+                        @click="markAsRead(data.notifyId)"
+                      >  -->
+                      <td
+                        class="col-12"
+                        :style="{
+                          wordWrap: 'break-word',
+                          whiteSpace: 'normal',
+                          maxWidth: '250px',
+                          backgroundColor: data.isRead == 'Y' ? 'white' : '#c1ffcc',
+                        }"
+                        @click="markAsRead(data.notifyId)"
                       >
                         <router-link
                           class="notification-link"
@@ -210,14 +220,11 @@
             <!-- 로그인 상태일 시 -->
 
             <div class="icons-container" v-else>
-
               <div>
-                <div v-if="this.$store.state.user.role=='ROLE_USER'">
+                <div v-if="this.$store.state.user.role == 'ROLE_USER'">
                   <!-- 마이페이지 아이콘 -->
                   <router-link
-
                     style="margin-top: -5px; margin-right: 23px"
-
                     to="/member/mypage"
                     class="d-inline-block align-text-top"
                     v-if="!isAdminLoggedIn"
@@ -233,19 +240,24 @@
                 </div>
 
                 <!-- 관리자 로그인시 : 관리자페이지 이동 -->
-                <div v-else-if="this.$store.state.user.role=='ROLE_ADMIN'">
-                   <!-- 마이페이지 아이콘 -->
+                <div v-else-if="this.$store.state.user.role == 'ROLE_ADMIN'">
+                  <!-- 마이페이지 아이콘 -->
                   <router-link
-                    style="margin-top: -5px; margin-right: 30px; margin-left: 10px; color: #444; text-decoration: none; font-size: 15px; text-align: center;"
-
+                    style="
+                      margin-top: -5px;
+                      margin-right: 30px;
+                      margin-left: 10px;
+                      color: #444;
+                      text-decoration: none;
+                      font-size: 15px;
+                      text-align: center;
+                    "
                     to="/admin/home"
                     class="d-inline-block align-text-top"
                     v-if="!isAdminLoggedIn"
                   >
-
-                  Admin <br>
-                  Page
-
+                    Admin <br />
+                    Page
                   </router-link>
                 </div>
               </div>
@@ -262,11 +274,10 @@
                   width="30"
                   height="30"
                   class="d-inline-block align-text-top"
-                  style="margin-left: -30px;"
+                  style="margin-left: -30px"
                 />
               </router-link>
             </div>
-
           </div>
         </div>
       </nav>
@@ -325,7 +336,14 @@ export default {
         console.log(error);
       }
     },
-
+    async markAsRead(notifyId) {
+      try {
+        await NotifyService.markAsRead(notifyId);
+        this.countUnreadNotify();
+      } catch (error) {
+        console.log(error);
+      }
+    },
     handleLogout() {
       let result = confirm("정말로 로그아웃 하시겠습니까?");
       if (result) {
@@ -335,6 +353,65 @@ export default {
         this.$router.push("/member/login");
       } else {
         return;
+      }
+    },
+    connectSse(jwt) {
+      // let subscribeUrl = "http://localhost:8000/api/v1/notify/subscribe";
+      // let subscribeUrl = "http://13.209.24.76:8000/api/v1/notify/subscribe";
+      const subscribeUrl =
+        "http://" + this.$store.state.backendIp + "/api/v1/notify/subscribe";
+
+      if (jwt != null) {
+        let token = jwt;
+        this.eventSource = new EventSource(subscribeUrl + "?token=" + token);
+        this.eventSource.onopen = () => {
+          console.log("SSE 연결이 열렸습니다.");
+          this.isConnected = true;
+        };
+        // this.eventSource.addEventListener("connect", function(event) {
+        //     let message = event.data;
+        //     alert(message);
+        // })
+
+        this.eventSource.addEventListener("COMMENT", function (event) {
+          let message = event.data;
+          alert(message);
+        });
+        this.eventSource.addEventListener("REPORT", function (event) {
+          let message = event.data;
+          alert(message);
+        });
+        this.eventSource.addEventListener("CLUB_APPLICATION", function (event) {
+          let message = event.data;
+          alert(message);
+        });
+        this.eventSource.addEventListener("CLUB_APPROVAL", function (event) {
+          let message = event.data;
+          alert(message);
+        });
+        this.eventSource.addEventListener("COMPLAINT", function (event) {
+          let message = event.data;
+          alert(message);
+        });
+        this.eventSource.addEventListener("COMPLAINT_STATUS", function (event) {
+          let message = event.data;
+          alert(message);
+        });
+        this.eventSource.onmessage = (event) => {
+          console.log("새 알림:", event.data);
+          this.messages.push(event.data);
+        };
+        this.eventSource.onerror = (event) => {
+          console.error("SSE 연결 오류:", event);
+          if (event.readyState == EventSource.CLOSED) {
+            console.log("SSE 연결이 닫혔습니다.");
+            this.isConnected = false;
+          } else {
+            console.log("SSE 연결 오류 발생, 재연결 시도 중...");
+          }
+        };
+      } else {
+        console.error("JWT 토큰이 없습니다.");
       }
     },
 
@@ -348,7 +425,7 @@ export default {
   mounted() {
     this.getAllDepartment();
     this.countUnreadNotify();
-    console.log("알림 갯수", this.notificationCount);
+    setTimeout(() => this.connectSse(this.$store.state.user.accessToken), 1000);
   },
 };
 </script>

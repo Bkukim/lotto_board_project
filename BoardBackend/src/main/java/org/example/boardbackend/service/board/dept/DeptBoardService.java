@@ -81,12 +81,12 @@ public class DeptBoardService {
     //   todo:  저장 함수
     @Transactional
     public void save(DeptBoard deptBoard) throws IOException {
-       deptBoardRepository.save(deptBoard);
+        deptBoardRepository.save(deptBoard);
     }
 
     // todo: 삭제
     @Transactional
-    public boolean removeById(long deptBoardId) throws IOException{
+    public boolean removeById(long deptBoardId) throws IOException {
         if (deptBoardRepository.existsById(deptBoardId)) {
             deptBoardRepository.deleteById(deptBoardId);
             return true;
@@ -103,14 +103,20 @@ public class DeptBoardService {
 
     // todo 댓글 알림 저장 기능
     public void sendCommentNotification(DeptComment deptComment) {
+
         DeptBoard deptBoard = deptBoardRepository.findById(deptComment.getDeptBoardId())
                 .orElseThrow(() -> new RuntimeException("deptBoard not found"));
 
         String boardWriter = deptBoard.getUserId();
-        String notifyContent = "회원님의 게시물에 댓글이 달렸습니다.     " + "\"" + deptComment.getContent() + "\"";
-        String notifyUrl = "free/free-boardDetail/" + deptComment.getDeptBoardId();
-        MessageDto messageDto = new MessageDto(Notify.NotificationType.COMMENT,notifyContent,boardWriter,notifyUrl);
-        notifyService.publishNotificationToRedis(messageDto);
+        if (deptComment.getUserId().equals(boardWriter)) {
+            return;
+        } else {
+            String notifyContent = "회원님의 게시물에 댓글이 달렸습니다.     " + "\"" + deptComment.getContent() + "\"";
+            String notifyUrl = "dept/board/detail/" + deptComment.getDeptBoardId();
+            MessageDto messageDto = new MessageDto(Notify.NotificationType.COMMENT, notifyContent, boardWriter, notifyUrl);
+            notifyService.publishNotificationToRedis(messageDto);
+        }
+
     }
 
     // TODO 대댓글 저장 기능
@@ -125,43 +131,48 @@ public class DeptBoardService {
                 .orElseThrow(() -> new RuntimeException("deptComment not found"));
 
         String commentWriter = deptComment.getUserId();
-        String notifyContent = "회원님의 댓글에 또 다른 댓글이 달렸습니다.    " + "\"" + deptRecomment.getContent() + "\"";
-        String notifyUrl = "free/free-boardDetail/" + deptComment.getDeptBoardId();
-        MessageDto messageDto = new MessageDto(Notify.NotificationType.COMMENT,notifyContent,commentWriter,notifyUrl);
-        notifyService.publishNotificationToRedis(messageDto);
+        if (deptRecomment.getUserId().equals(commentWriter)) {
+            return;
+        } else {
+            String notifyContent = "회원님의 댓글에 또 다른 댓글이 달렸습니다.    " + "\"" + deptRecomment.getContent() + "\"";
+            String notifyUrl = "dept/board/detail/" + deptComment.getDeptBoardId();
+            MessageDto messageDto = new MessageDto(Notify.NotificationType.COMMENT, notifyContent, commentWriter, notifyUrl);
+            notifyService.publishNotificationToRedis(messageDto);
+        }
     }
+
     //    todo: boardId 로 댓글 조회 함수
-    public Page<DeptComment> getCommentByDeptBoardId(long deptBoardId, Pageable pageable) throws IOException{
+    public Page<DeptComment> getCommentByDeptBoardId(long deptBoardId, Pageable pageable) throws IOException {
         Page<DeptComment> deptComments = deptCommentRepository.findDeptCommentsByDeptBoardIdOrderByInsertTimeDesc(deptBoardId, pageable);
         return deptComments;
     }
+
     //    todo: boardId 로 대댓글 조회 함수
-    public List<DeptRecommentDto> getRecommentByDeptBoardId(long deptBoardId) throws IOException{
+    public List<DeptRecommentDto> getRecommentByDeptBoardId(long deptBoardId) throws IOException {
         return deptRecommentRepository.findDeptBoardRecommentsByDeptBoardCommentIdOrderByInsertTimeDesc(deptBoardId);
     }
 
     // todo : 댓글id 로 댓글 상세조회
-    public DeptComment findByCommentId(long deptCommentId) throws IOException{
+    public DeptComment findByCommentId(long deptCommentId) throws IOException {
         DeptComment comment = deptCommentRepository.findById(deptCommentId).get();
         return comment;
     }
 
     // todo : 신고 저장함수
     @Transactional
-    public void saveReport(DeptBoardReport deptBoardReport){
+    public void saveReport(DeptBoardReport deptBoardReport) {
         deptBoardReportRepository.save(deptBoardReport);
     }
 
     //    todo : userId가 작성한 글 전체조회
-    public Page<DeptBoardDto> findDeptBoardByUserIdContaining(String userId, Pageable pageable)
-    {
+    public Page<DeptBoardDto> findDeptBoardByUserIdContaining(String userId, Pageable pageable) {
         Page<DeptBoardDto> page
                 = deptBoardRepository.findDeptBoardByUserIdContaining(userId, pageable);
         return page;
     }
 
     //   todo : 관리자 : 신고 게시판 조회
-    public Page<DeptBoardReport> findDeptBoardReportsByUserIdContaining(String userId, Pageable pageable){
+    public Page<DeptBoardReport> findDeptBoardReportsByUserIdContaining(String userId, Pageable pageable) {
 
         Page<DeptBoardReport> reports = deptBoardReportRepository.findDeptBoardReportsByUserIdContaining(userId, pageable);
 
@@ -173,9 +184,9 @@ public class DeptBoardService {
         DeptBoard deptBoard = deptBoardRepository.findById(deptBoardReport.getDeptBoardId())
                 .orElseThrow(() -> new RuntimeException("deptBoard not found"));
         // 2. 알림 보내기
-        String notifyContent = "게시물 신고가 접수되었습니다.   "  + "\"" + deptBoard.getTitle() + "\"";
-        String notifyUrl = "free/free-boardDetail/" + deptBoard.getDeptBoardId(); // todo 주소 바꾸기
-        MessageDto messageDto = new MessageDto(Notify.NotificationType.REPORT,notifyContent,adminId,notifyUrl);
+        String notifyContent = "게시물 신고가 접수되었습니다.   " + "\"" + deptBoard.getTitle() + "\"";
+        String notifyUrl = "dept/board/detail/" + deptBoard.getDeptBoardId(); // todo 주소 바꾸기
+        MessageDto messageDto = new MessageDto(Notify.NotificationType.REPORT, notifyContent, adminId, notifyUrl);
         notifyService.publishNotificationToRedis(messageDto);
     }
 

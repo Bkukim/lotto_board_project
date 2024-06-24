@@ -10,6 +10,7 @@ import org.example.boardbackend.model.entity.board.free.FreeBoard;
 import org.example.boardbackend.model.entity.board.free.FreeBoardComment;
 import org.example.boardbackend.service.board.complaint.ComplaintBoardService;
 import org.example.boardbackend.service.board.complaint.ComplaintCommentService;
+import org.example.boardbackend.service.notify.NotifyService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -43,6 +44,7 @@ public class ComplaintBoardController {
 
     private final ComplaintBoardService complaintBoardService;
     private final ComplaintCommentService complaintCommentService;
+    private final NotifyService notifyService;
 
     //    todo 전체 조회 + 제목 검색 + 페이징
     @GetMapping("/complaint")
@@ -107,6 +109,7 @@ public class ComplaintBoardController {
         try {
 //            DB 서비스 저장 함수 실행
             ComplaintBoard complaintBoard1 = complaintBoardService.save(complaintBoard);
+            complaintBoardService.sendComplaintNotification(complaintBoard1);
             log.debug("디버그" + complaintBoard1.toString());
 //            성공(OK) 메세지 + 저장된객체
             return new ResponseEntity<>(complaintBoard1, HttpStatus.OK);

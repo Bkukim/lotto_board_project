@@ -394,6 +394,7 @@ export default {
         return;
       }
     },
+   
   },
   mounted() {
     console.log(this.$store.state.notifyCount);

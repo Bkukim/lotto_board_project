@@ -209,7 +209,7 @@
           </td>
           <td @click="viewsUp" class="col-5">
             <router-link
-              :to="`/notice/notice-check/` + data.noticeId + '/' + data.eventYN"
+              :to="'/free/free-boardDetail/' + data.freeBoardId"
               style="
                 color: #444444;
                 font-weight: bold;
@@ -279,7 +279,7 @@
           </td>
           <td @click="viewsUp" class="col-5">
             <router-link
-              :to="`/notice/notice-check/` + data.noticeId + '/' + data.eventYN"
+              :to="`/club/club-boardRecruitment/` + data.clubBoardId"
               style="
                 color: #444444;
                 font-weight: bold;
@@ -349,7 +349,7 @@
           </td>
           <td @click="viewsUp" class="col-5">
             <router-link
-              :to="`/notice/notice-check/` + data.noticeId + '/' + data.eventYN"
+              :to="`/complaint/complaint-boardDetail/` + data.complaintBoardId"
               style="
                 color: #444444;
                 font-weight: bold;
@@ -531,7 +531,6 @@ export default {
       this.retrieveSearchBoard();
     },
     SearchAll(){
-      console.log("asdfa")
       this.retrieveNotice();
       this.retrieveFreeBoard();
       this.retrieveClubBoard();
