@@ -114,15 +114,17 @@
             <table class="table table-bordered table-striped">
               <thead>
                 <tr>
-                  <th style="text-align: center;">참가자</th>
-                  <th style="text-align: center;">승인 상태</th>
-                  <th style="text-align: center;">승인하기</th>
+                  <th style="text-align: center">참가자</th>
+                  <th style="text-align: center">승인 상태</th>
+                  <th style="text-align: center">승인하기</th>
                 </tr>
               </thead>
               <tbody>
                 <tr v-for="participant in participants" :key="participant.id">
                   <td>{{ participant.userId }}</td>
-                  <td>{{ participant.approval === 'N' ? '미승인' : '승인됨' }}</td>
+                  <td>
+                    {{ participant.approval === "N" ? "미승인" : "승인됨" }}
+                  </td>
                   <td>
                     <button
                       v-if="participant.approval === 'N'"
@@ -176,8 +178,10 @@
             </div>
           </div>
           <div class="likes-container">
-            <i class="fas fa-heart liked" style="color: red;"></i>
-            <span style="color: grey; margin-left: 5px;">{{ clubBoard.likes }}</span>
+            <i class="fas fa-heart liked" style="color: red"></i>
+            <span style="color: grey; margin-left: 5px">{{
+              clubBoard.likes
+            }}</span>
           </div>
           <hr class="separator" />
           <div class="fee-time-info">
@@ -327,10 +331,10 @@ export default {
     },
     retrieveMap(address) {
       const kakao = window.kakao;
-          if (!kakao || !kakao.maps) {
-      console.error('Kakao Maps API를 사용할 수 없습니다.');
-      return;
-    }
+      if (!kakao || !kakao.maps) {
+        console.error("Kakao Maps API를 사용할 수 없습니다.");
+        return;
+      }
       const container = this.$refs.map;
       if (!container) {
         console.error(
@@ -373,9 +377,18 @@ export default {
     },
     copyAddress() {
       const address = this.clubBoard.address;
-      navigator.clipboard.writeText(address).then(() => {
+      const textarea = document.createElement("textarea");
+      textarea.value = address;
+      document.body.appendChild(textarea);
+      textarea.select();
+      try {
+        document.execCommand("copy");
         alert("주소가 복사되었습니다.");
-      });
+      } catch (err) {
+        console.error("주소 복사 실패:", err);
+      } finally {
+        document.body.removeChild(textarea);
+      }
     },
     calculateMatchDuration(startTime, endTime) {
       const start = new Date(startTime);
@@ -506,10 +519,10 @@ export default {
   async mounted() {
     window.scrollTo(0, 0);
     await this.fetchClubBoardDetails();
-      if (typeof window.kakao === 'undefined' || !window.kakao.maps) {
-    console.error('Kakao Maps API를 로드할 수 없습니다.');
-    return;
-  }
+    if (typeof window.kakao === "undefined" || !window.kakao.maps) {
+      console.error("Kakao Maps API를 로드할 수 없습니다.");
+      return;
+    }
   },
 };
 </script>

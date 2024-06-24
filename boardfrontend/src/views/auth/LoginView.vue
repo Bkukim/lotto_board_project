@@ -173,7 +173,6 @@ export default {
       const CLIENT_ID = 'Ipydix8nXe2V9m6KRDom';
       const REDIRECT_URI = 'http://localhost:8080/api/auth/naver-redirect';
       const STATE_STRING = 'random_state'; // 보안을 위해 난수로 생성
-
       const naverAuthUrl = `https://nid.naver.com/oauth2.0/authorize?response_type=code&client_id=${CLIENT_ID}&redirect_uri=${REDIRECT_URI}&state=${STATE_STRING}`;
       window.location.href = naverAuthUrl;
     },
