@@ -50,16 +50,16 @@
               <thead>
                 <tr>
                   <th scope="col" style="font-size: 14px">번호</th>
-                  <th scope="col" style="font-size: 14px">제목</th>
+                  <th scope="col" style="font-size: 14px; text-align: left;">제목</th>
                 </tr>
               </thead>
               <tbody>
                 <!-- 반복문 시작할 행 -->
                 <tr v-for="(data, index) in hotList" :key="index">
-                  <td style="font-size: 15px">
+                  <td style="font-size: 15px; ">
                     {{ index + 1 }}
                   </td>
-                  <td class="col-8">{{ data.title }}</td>
+                  <td class="col-8" style="text-align: left;">{{ data.title }}</td>
                 </tr>
               </tbody>
             </table>
@@ -102,7 +102,7 @@
               <thead>
                 <tr>
                   <th scope="col" style="font-size: 14px">번호</th>
-                  <th scope="col" style="font-size: 14px">제목</th>
+                  <th scope="col" style="font-size: 14px;text-align: left;">제목</th>
                 </tr>
               </thead>
               <tbody>
@@ -111,7 +111,7 @@
                   <td style="font-size: 15px">
                     {{ index + 1 }}
                   </td>
-                  <td class="col-8">{{ data.title }}</td>
+                  <td class="col-8" style="text-align: left;">{{ data.title }}</td>
                 </tr>
               </tbody>
             </table>
@@ -158,7 +158,7 @@
               <thead>
                 <tr>
                   <th scope="col" style="font-size: 14px">번호</th>
-                  <th scope="col" style="font-size: 14px">제목</th>
+                  <th scope="col" style="font-size: 14px; text-align: left;">제목</th>
                 </tr>
               </thead>
               <tbody>
@@ -167,7 +167,7 @@
                   <td style="font-size: 15px">
                     {{ index + 1 }}
                   </td>
-                  <td class="col-8"><router-link
+                  <td class="col-8" style="text-align: left;"><router-link
                   style="color: #444444; text-decoration: none"
                     :to="'/free/free-boardDetail/' + data.freeBoardId"
                     class="router-link-exact-active alltext"
@@ -216,7 +216,7 @@
               <thead>
                 <tr>
                   <th scope="col" style="font-size: 14px">번호</th>
-                  <th scope="col" style="font-size: 14px">제목</th>
+                  <th scope="col" style="font-size: 14px; text-align: left;">제목</th>
                 </tr>
               </thead>
               <tbody>
@@ -225,7 +225,7 @@
                   <td style="font-size: 15px">
                     {{ index + 1 }}
                   </td>
-                  <td class="col-8">
+                  <td class="col-8" style="text-align: left ;">
                   <router-link
                   style="color: #444444; text-decoration: none"
                     :to="'/complaint/complaint-boardDetail/' + data.complaintBoardId"

@@ -102,7 +102,7 @@ public class NotifyService {
 
     // todo 읽지 않은 알림 조회
     public List<Notify> findUnReadNotify(String userId) throws IOException {
-        List<Notify> list = notifyRepository.findTop8ByUserIdOrderByInsertTimeDesc(userId/*,"N"*/);
+        List<Notify> list = notifyRepository.findTop50ByUserIdOrderByInsertTimeDesc(userId/*,"N"*/);
         return list;
     }
 
