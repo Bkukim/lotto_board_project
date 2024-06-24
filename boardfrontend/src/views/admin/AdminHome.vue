@@ -1,17 +1,21 @@
 <template>
-
   <!-- <HeaderCom :hideHeader="false" /> -->
   <!-- 관리자 페이지에서는 헤더를 숨김 -->
-  <div class="main-container d-flex" style="height: auto; ">
+  <div class="main-container d-flex" style="height: auto">
     <!-- <AdminHeaderCom class="sidebar" /> -->
     <AdminHeaderCom class="sidebar" :hideHeader="true" />
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <div class="main-content" style="padding-top: 50px;">
-      <h2 class="container mb-5 text-center my-4" style="letter-spacing: -1.5px;">관리자 대시보드</h2>
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <div class="main-content" style="padding-top: 50px">
+      <h2
+        class="container mb-5 text-center my-4"
+        style="letter-spacing: -1.5px"
+      >
+        관리자 대시보드
+      </h2>
 
       <div class="container">
         <!-- 대시보드 카드 섹션 -->
@@ -75,16 +79,14 @@
           <div class="col-lg-6 mb-4">
             <div class="card">
               <div class="card-body">
-                <h5 class="card-title">최근 활동</h5>
-                <ul class="list-group">
-                  <li class="list-group-item">
-                    사용자 A가 자유게시판에 새글을 등록하였습니다.
-                  </li>
-                  <li class="list-group-item">
-                    사용자 B가 건의게시판에 댓글을 등록하였습니다 .
-                  </li>
-                  <li class="list-group-item">
-                    사용자 C가 동아리 신청을 하였습니다.
+                <h5 class="card-title">최근 알림</h5>
+                <ul
+                  class="list-group"
+                  v-for="(data, index) in notificationList"
+                  :key="index"
+                >
+                  <li class="list-group-item" @click="goToUrl(data.notificationType,data.url)">
+                    {{ data.content }}
                   </li>
                 </ul>
               </div>
@@ -93,7 +95,7 @@
           <div class="col-lg-6 mb-4">
             <div class="card">
               <div class="card-body">
-                <h5 class="card-title">알림</h5>
+                <h5 class="card-title">공지</h5>
                 <ul class="list-group">
                   <li class="list-group-item">시스템 점검 예정 (6/15)</li>
                   <li class="list-group-item">신규 기능 업데이트 (6/20)</li>
@@ -106,7 +108,6 @@
       </div>
     </div>
   </div>
-  
 </template>
 
 <script>
@@ -122,10 +123,95 @@ import {
   LineElement,
   PointElement,
 } from "chart.js";
+import NotifyService from "@/services/notify/NotifyService";
 
 export default {
   components: {
     AdminHeaderCom,
+  },
+  data() {
+    return {
+      notificationList: [],
+    };
+  },
+  methods: {
+    async getUnreadNotify() {
+      try {
+        let response = await NotifyService.getUnreadNotify(
+          this.$store.state.user.userId
+        );
+        this.notificationList = response.data;
+        // console.log("알림들", response.data);
+      } catch (error) {
+        console.log(error);
+      }
+    },
+    connectSse(jwt) {
+      // let subscribeUrl = "http://localhost:8000/api/v1/notify/subscribe";
+      // let subscribeUrl = "http://13.209.24.76:8000/api/v1/notify/subscribe";
+      const subscribeUrl =
+        "http://" + this.$store.state.backendIp + "/api/v1/notify/subscribe";
+
+      if (jwt != null) {
+        let token = jwt;
+        this.eventSource = new EventSource(subscribeUrl + "?token=" + token);
+        this.eventSource.onopen = () => {
+          console.log("SSE 연결이 열렸습니다.");
+          this.isConnected = true;
+        };
+        // this.eventSource.addEventListener("connect", function(event) {
+        //     let message = event.data;
+        //     alert(message);
+        // })
+
+        this.eventSource.addEventListener("COMMENT", function (event) {
+          let message = event.data;
+          alert(message);
+        });
+        this.eventSource.addEventListener("REPORT", function (event) {
+          let message = event.data;
+          alert(message);
+        });
+        this.eventSource.addEventListener("CLUB_APPLICATION", function (event) {
+          let message = event.data;
+          alert(message);
+        });
+        this.eventSource.addEventListener("CLUB_APPROVAL", function (event) {
+          let message = event.data;
+          alert(message);
+        });
+        this.eventSource.addEventListener("COMPLAINT", function (event) {
+          let message = event.data;
+          alert(message);
+        });
+        this.eventSource.addEventListener("COMPLAINT_STATUS", function (event) {
+          let message = event.data;
+          alert(message);
+        });
+        this.eventSource.onmessage = (event) => {
+          console.log("새 알림:", event.data);
+          this.messages.push(event.data);
+        };
+        this.eventSource.onerror = (event) => {
+          console.error("SSE 연결 오류:", event);
+          if (event.readyState == EventSource.CLOSED) {
+            console.log("SSE 연결이 닫혔습니다.");
+            this.isConnected = false;
+          } else {
+            console.log("SSE 연결 오류 발생, 재연결 시도 중...");
+          }
+        };
+      } else {
+        console.error("JWT 토큰이 없습니다.");
+      }
+    },
+    goToUrl(notificationType,url) {
+      if (notificationType == "REPORT") {
+        this.$router.push("/admin/report");
+      } else if (notificationType == "COMPLAINT") {
+        this.$router.push("/" + url);
+      }
+    },
   },
   props: {
     hideHeader: {
@@ -133,7 +219,7 @@ export default {
       default: true, // 기본값을 false로 설정
     },
   },
-  setup() {
+   setup() {
     onMounted(() => {
       // Chart.js에 필요한 컴포넌트 등록
       Chart.register(
@@ -210,6 +296,10 @@ export default {
         },
       });
     });
+  },
+  mounted() {
+    this.getUnreadNotify();
+    this.connectSse(this.$store.state.user.accessToken);
   },
 };
 </script>

@@ -135,7 +135,7 @@ public class FreeBoardService {
 
     //    todo: 댓글 조회 함수
     public Page<FreeBoardComment> getCommentByFreeBoardId(long freeBoardId, Pageable pageable) {
-        return freeBoardCommentRepository.findFreeBoardCommentsByFreeBoardIdOrderByInsertTimeAsc(freeBoardId, pageable);
+        return freeBoardCommentRepository.findFreeBoardCommentsByFreeBoardIdOrderByInsertTimeDesc(freeBoardId, pageable);
     }
 
 
