@@ -5,7 +5,8 @@ const routes = [
   {
     path: "/",
     component: HomeView,
-    meta: { showHeader: true }, // 기본적으로 헤더를 보이게 설정
+    meta: { showHeader: true ,shoewFoter: true }, // 기본적으로 헤더를 보이게 설정
+
   },
   // 어도민 홈
   {
@@ -14,28 +15,24 @@ const routes = [
 
     meta: { showHeader: false }, // 관리자 페이지에서는 헤더를 숨김
   },
-  {
-    path: "/about",
-    component: () => import("../views/AboutView.vue"),
-    meta: { showHeader: true }, // 기본적으로 헤더를 보이게 설정
-  },
+
   // 로그인
   {
     path: "/member/login",
     component: () => import("../views/auth/LoginView.vue"),
-    meta: { showHeader: true }, // 기본적으로 헤더를 보이게 설정
+    meta: { showHeader: false , shoewFoter: true },
   },
   // 마이페이지
   {
     path: "/member/mypage",
     component: () => import("../views/auth/MyPage.vue"),
-    meta: { showHeader: true }, // 기본적으로 헤더를 보이게 설정
+    meta: { showHeader: true , shoewFoter: true }, // 기본적으로 헤더를 보이게 설정
   },
   // 카카오 로그인
   {
     path: "/auth-redirect",
     component: () => import("../views/auth/KakaoRedirectView.vue"),
-    meta: { showHeader: true }, // 기본적으로 헤더를 보이게 설정
+    meta: { showHeader: true ,shoewFoter: true }, // 기본적으로 헤더를 보이게 설정
   },
   // 카카오 로그인 시 추가 정보 기입
   {
@@ -47,7 +44,7 @@ const routes = [
   {
     path: "/member/join",
     component: () => import("../views/auth/JoinView.vue"),
-    meta: { showHeader: true }, // 기본적으로 헤더를 보이게 설정
+    meta: { showHeader: true ,shoewFoter: true }, // 기본적으로 헤더를 보이게 설정
   },
   // 회원가입 환영 페이지
   {
@@ -65,7 +62,7 @@ const routes = [
   {
     path: "/member/find-pwd",
     component: () => import("../views/auth/FindPwd.vue"),
-    meta: { showHeader: true }, // 기본적으로 헤더를 보이게 설정
+    meta: { showHeader: true,shoewFoter: true  }, // 기본적으로 헤더를 보이게 설정
   },
   // 비밀번호 재설정 페이지
   {
@@ -99,12 +96,13 @@ const routes = [
   {
     path: "/notice/notice-board",
     component: () => import("../views/notice/noticeBoard.vue"),
-    meta: { showHeader: true }, // 기본적으로 헤더를 보이게 설정
+    meta: { showHeader: true ,shoewFoter: true  }, // 기본적으로 헤더를 보이게 설정
   },
  // 공지사항 -> 상세조회
  {
   path: "/notice/notice-check/:noticeId/:eventYN",
   component: () => import("../views/notice/NoticeCheck.vue"),
+  meta: { showHeader: true }, // 기본적으로 헤더를 보이게 설정
 },
 
   // 공지사항 -> 글쓰기

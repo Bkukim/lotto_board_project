@@ -5,23 +5,28 @@ import AuthHeader from "../auth/AuthHeader";
 // import AuthHeader from "../auth/AuthHeader";
 
 class NotifyService {
-
   // TODO: userId로 알림 전체 조회
- 
+
   getUnreadNotify(userId) {
-   
-    return http.get(`/v1/notify/unread-messages/${userId}`,
-    {
+    return http.get(`/v1/notify/unread-messages/${userId}`, {
       headers: AuthHeader(),
-    }
-    );
+    });
   }
-  countNotify(userId){
-    return http.get(`/v1/notify/count-unread/${userId}`,
-    {
+  markAllAsRead(userId) {
+    return http.put(`/v1/notify/mark/all/read/${userId}`, {
       headers: AuthHeader(),
-    }
-  );
+    });
+  }
+  markAsRead(notifyId) {
+    let data={}
+    return http.put(`/v1/notify/mark/read/${notifyId}`, data,{
+      headers: AuthHeader(),
+    });
+  }
+  countNotify(userId) {
+    return http.get(`/v1/notify/count-unread/${userId}`, {
+      headers: AuthHeader(),
+    });
   }
 }
 

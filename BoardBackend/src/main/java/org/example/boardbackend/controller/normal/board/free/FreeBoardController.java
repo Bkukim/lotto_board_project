@@ -4,6 +4,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.example.boardbackend.model.dto.board.free.FreeBoardDto;
 import org.example.boardbackend.model.dto.board.free.IFreeBoardRecommentDto;
+import org.example.boardbackend.model.dto.notice.INoticeDto;
+import org.example.boardbackend.model.entity.board.club.ClubBoard;
 import org.example.boardbackend.model.entity.board.free.FreeBoard;
 import org.example.boardbackend.model.entity.board.free.FreeBoardComment;
 import org.example.boardbackend.model.entity.board.free.FreeBoardRecomment;
@@ -100,7 +102,6 @@ public class FreeBoardController {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-
 
 
 //    // TODO 댓글 저장 함수
@@ -220,7 +221,7 @@ public class FreeBoardController {
                 return new ResponseEntity<>(HttpStatus.NO_CONTENT);
             }
         } catch (Exception e) {
-            log.debug("대댓글 디버그 :: "+e.getMessage());
+            log.debug("대댓글 디버그 :: " + e.getMessage());
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
@@ -234,7 +235,7 @@ public class FreeBoardController {
             freeBoardService.sendCommentNotification(freeBoardComment);
             return new ResponseEntity<>(HttpStatus.OK);
         } catch (Exception e) {
-            log.debug("asdfasdf"+e.getMessage());
+            log.debug("asdfasdf" + e.getMessage());
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
@@ -242,7 +243,7 @@ public class FreeBoardController {
     // TODO 대댓글 저장 함수
     @PostMapping("/free/save/recomment")
     public ResponseEntity<Object> saveFreeRecomment(@RequestBody FreeBoardRecomment freeBoardRecomment) {
-        log.debug("대댓글"+freeBoardRecomment);
+        log.debug("대댓글" + freeBoardRecomment);
 
         try {
             //            DB 서비스 저장 함수 실행
@@ -250,7 +251,7 @@ public class FreeBoardController {
             freeBoardService.sendRecommentNotification(freeBoardRecomment);
             return new ResponseEntity<>(HttpStatus.OK);
         } catch (Exception e) {
-            log.debug("디버그 :: "+e.getMessage());
+            log.debug("디버그 :: " + e.getMessage());
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
@@ -298,7 +299,75 @@ public class FreeBoardController {
             freeBoardService.sendReportNotification(freeBoardReport);
             return new ResponseEntity<>(HttpStatus.OK);
         } catch (Exception e) {
-            log.debug("디버그 :: "+e.getMessage());
+            log.debug("디버그 :: " + e.getMessage());
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+
+//    todo: 메인에서 조회
+@GetMapping("/main-get/free")
+public ResponseEntity<Object> findFree(FreeBoardDto freeBoardDto) {
+    try {
+        // 전체 조회 서비스 실행
+        List<FreeBoardDto> hotList = freeBoardService.selectByTitleContainingMain(freeBoardDto);
+
+        Map<String, Object> response = new HashMap<>();
+        response.put("hotList", hotList);
+//        response.put("freeBoardDto1", freeBoardDto1.size()); // 총건수(개수)
+
+        if (!hotList.isEmpty()) {
+            // 조회 성공
+            return new ResponseEntity<>(response, HttpStatus.OK);
+        } else {
+            // 데이터 없음
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+    } catch (Exception e) {
+        return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+}
+
+//      todo : 메인에서 최신순으로 조회
+    @GetMapping("/main/free/recent")
+    public ResponseEntity<Object> findLatestFree(FreeBoardDto freeBoardDto) {
+        try {
+            // 전체 조회 서비스 실행
+            List<FreeBoardDto> freeBoard = freeBoardService.getLatestFreeBoards(freeBoardDto);
+
+            Map<String, Object> response = new HashMap<>();
+            response.put("LatestFreeBoard", freeBoard);
+
+            if (!freeBoard.isEmpty()) {
+                // 조회 성공
+                return new ResponseEntity<>(response, HttpStatus.OK);
+            } else {
+                // 데이터 없음
+                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+            }
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @GetMapping("/hot-board")
+    public ResponseEntity<Object> getHotBoard(FreeBoardDto freeBoardDto) {
+        try {
+            // 전체 조회 서비스 실행
+            List<FreeBoardDto> hotList = freeBoardService.getHotBoard(freeBoardDto);
+
+            Map<String, Object> response = new HashMap<>();
+            response.put("hotList", hotList);
+//        response.put("freeBoardDto1", freeBoardDto1.size()); // 총건수(개수)
+
+            if (!hotList.isEmpty()) {
+                // 조회 성공
+                return new ResponseEntity<>(response, HttpStatus.OK);
+            } else {
+                // 데이터 없음
+                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+            }
+        } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }

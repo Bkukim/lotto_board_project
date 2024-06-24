@@ -2,6 +2,36 @@ import http from "@/utils/http-common"; // spring 통신 정의 파일
 import AuthHeader from "@/services/auth/AuthHeader";
 
 class FreeBoardService {
+
+    // TODO: 메인에서 최신순 조회
+    getRecentFreeboard() {
+      console.log("자유게시판 최신순")
+      return http.get(`/normal/board/main/free/recent`,
+        {
+          headers: AuthHeader(),
+        }
+      );
+    }
+    
+  // TODO: 메인에서 좋아요순대로 조회
+  getFreeboardLike() {
+    console.log("여기는 서비스")
+    return http.get(
+      `/normal/board/main-get/free`,
+      {
+        headers: AuthHeader(),
+      }
+    );
+  }
+     //TODO: hot 게시판 조회
+     getHotBoard() {
+      return http.get(`/normal/board/hot-board`, {
+        headers: AuthHeader(),
+      });
+    }
+
+
+
   // TODO: 전체 조회
   getAllBoard(title, page, size) {
     return http.get(
@@ -121,6 +151,13 @@ class FreeBoardService {
     });
   }
 
+  // TODO: 공지사항 조회
+    //TODO: 자유만 조회
+    getFreeNotice(size) {
+      return http.get(`/normal/notice/notice-free?size=${size}`, {
+        headers: AuthHeader(),
+      });
+    }
 
   // // TODO: 신고 게시글 삭제 : isProcessed Y로 수정함수
   // updateFreeBoardReport(reportId) {

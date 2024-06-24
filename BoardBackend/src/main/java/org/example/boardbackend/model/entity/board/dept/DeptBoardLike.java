@@ -27,8 +27,8 @@ import org.hibernate.annotations.DynamicUpdate;
         , initialValue = 1
         , allocationSize = 1
 )
-
-public class DeptBoardLike extends BaseTimeEntity {
+@Getter
+public class DeptBoardLike {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE
             , generator = "SQ_DEPT_BOARD_LIKE_GENERATOR"
@@ -36,6 +36,5 @@ public class DeptBoardLike extends BaseTimeEntity {
     private long likeId;
     private String userId;
     private long deptBoardId;
-    private String insertTime;
 
 }

@@ -105,21 +105,6 @@
           좋아요
           {{ this.freeBoard.likes }}
         </button>
-
-        <button
-          type="button"
-          class="btn btn-light"
-          @click="deleteLike"
-          style="
-            border: none;
-            text-align: center;
-            height: 8vh;
-            width: 15vw;
-            padding: 1vw;
-          "
-        >
-          공감삭제하기
-        </button>
         <button
           type="button"
           class="btn btn-light"
@@ -905,7 +890,8 @@ export default {
       try {
         if (confirm("정말로 삭제하시겠습니까?")) {
           let response = await FreeBoardService.deleteFreeBoard(
-            this.freeBoard.freeBoardId
+            this.freeBoard.freeBoardId,
+            this.$store.state.user.userId
           );
           // 로깅
           console.log(response.data);

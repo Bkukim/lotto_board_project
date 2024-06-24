@@ -15,7 +15,7 @@ export default {
     async kakaoLogin(code) {
       try {
         let response = await AuthService.socialLogin(code);
-
+        console.log("액세스토큰",response.data.accessToken);
         if (response.data.accessToken == null) {
           this.$router.push(
             "/member/login/additional-info/" + response.data.userId
@@ -24,16 +24,24 @@ export default {
           let user = response.data;
           localStorage.setItem("user", JSON.stringify(user));
           this.$store.commit("loginSuccess", user);
-          this.connectSse(response.data.accessToken);
+          // this.connectSse(response.data.accessToken);
           this.$router.push("/");
+          setTimeout(() => window.location.reload(), 1000);
+
         }
       } catch (e) {
         console.log(e);
       }
     },
+    reConnectSse(jwt) {
+      this.connectSse(jwt);
+    },
     // sse 연결 함수
     connectSse(jwt) {
-      let subscribeUrl = "http://localhost:8000/api/v1/notify/subscribe";
+      // let subscribeUrl = "http://localhost:8000/api/v1/notify/subscribe";
+      // let subscribeUrl = "http://13.209.24.76:8000/api/v1/notify/subscribe";
+      const subscribeUrl =
+        "http://" + this.$store.state.backendIp + "/api/v1/notify/subscribe";
 
       if (jwt != null) {
         let token = jwt;
@@ -46,7 +54,7 @@ export default {
         //     let message = event.data;
         //     alert(message);
         // })
-        
+
         this.eventSource.addEventListener("COMMENT", function (event) {
           let message = event.data;
           alert(message);
@@ -82,7 +90,6 @@ export default {
             this.isConnected = false;
           } else {
             console.log("SSE 연결 오류 발생, 재연결 시도 중...");
-            setTimeout(() => this.connectSSE(), 5000); // 5초 후 재연결 시도
           }
         };
       } else {

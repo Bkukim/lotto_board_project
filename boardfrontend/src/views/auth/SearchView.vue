@@ -78,7 +78,7 @@
               class="btn btn-outline-secondary"
               type="button"
               id="button-search"
-              @click="AllsearchBoard"
+              @click="SearchAll"
               style="background-color: #162b59; color: #fff; border: none"
             >
               검색
@@ -104,6 +104,7 @@
 
     <h4 class="mt-5 mb-5" style="color: #333; letter-spacing: -1.5px">
       검색어 " {{searchTitle}}  " 에 관해 전체 '  {{noticesTotalItems+freeBoardsTotalItems+clubBoardsTotalItems+complaintBoardsTotalItems}} '건이 검색되었습니다.
+
     </h4>
 
     <!-- 공지사항 테이블 -->
@@ -167,9 +168,9 @@
       <div class="col-auto">
         <b-pagination
           class="col-12 mb-3 custom-pagination"
-          v-model="freeBoardPage"
-          :total-rows="freeBoardCount"
-          :per-page="freeBoardPageSize"
+          v-model="page"
+          :total-rows="noticesTotalItems"
+          :per-page="pageSize"
         ></b-pagination>
       </div>
     </div>
@@ -208,7 +209,7 @@
           </td>
           <td @click="viewsUp" class="col-5">
             <router-link
-              :to="`/notice/notice-check/` + data.noticeId + '/' + data.eventYN"
+              :to="'/free/free-boardDetail/' + data.freeBoardId"
               style="
                 color: #444444;
                 font-weight: bold;
@@ -217,7 +218,7 @@
                 padding-left: 5vw;
               "
             >
-              [{{ data.noticeType }}] {{ data.title }}
+               {{ data.title }}
             </router-link>
           </td>
           <td class="text-center">관리자</td>
@@ -238,9 +239,9 @@
       <div class="col-auto">
         <b-pagination
           class="col-12 mb-3 custom-pagination"
-          v-model="deptBoardPage"
-          :total-rows="deptBoardCount"
-          :per-page="deptBoardPageSize"
+          v-model="page"
+          :total-rows="freeBoardsTotalItems"
+          :per-page="pageSize"
         ></b-pagination>
       </div>
     </div>
@@ -278,7 +279,7 @@
           </td>
           <td @click="viewsUp" class="col-5">
             <router-link
-              :to="`/notice/notice-check/` + data.noticeId + '/' + data.eventYN"
+              :to="`/club/club-boardRecruitment/` + data.clubBoardId"
               style="
                 color: #444444;
                 font-weight: bold;
@@ -287,7 +288,7 @@
                 padding-left: 5vw;
               "
             >
-              [{{ data.noticeType }}] {{ data.title }}
+              {{ data.title }}
             </router-link>
           </td>
           <td class="text-center">관리자</td>
@@ -308,9 +309,9 @@
       <div class="col-auto">
         <b-pagination
           class="col-12 mb-3 custom-pagination"
-          v-model="deptBoardPage"
-          :total-rows="deptBoardCount"
-          :per-page="deptBoardPageSize"
+          v-model="page"
+          :total-rows="clubBoardsTotalItems"
+          :per-page="pageSize"
         ></b-pagination>
       </div>
     </div>
@@ -348,7 +349,7 @@
           </td>
           <td @click="viewsUp" class="col-5">
             <router-link
-              :to="`/notice/notice-check/` + data.noticeId + '/' + data.eventYN"
+              :to="`/complaint/complaint-boardDetail/` + data.complaintBoardId"
               style="
                 color: #444444;
                 font-weight: bold;
@@ -357,7 +358,7 @@
                 padding-left: 5vw;
               "
             >
-              [{{ data.noticeType }}] {{ data.title }}
+            {{ data.title }}
             </router-link>
           </td>
           <td class="text-center">관리자</td>
@@ -378,9 +379,9 @@
       <div class="col-auto">
         <b-pagination
           class="col-12 mb-3 custom-pagination"
-          v-model="complaintBoardPage"
-          :total-rows="complaintBoardCount"
-          :per-page="complaintBoardPageSize"
+          v-model="page"
+          :total-rows="complaintBoardsTotalItems"
+          :per-page="pageSize"
         ></b-pagination>
       </div>
     </div>
@@ -397,44 +398,47 @@
 </template>
 <script>
 
-import SearchService from "@/services/search/SearchService";
+import ClubBoardService from "@/services/board/club/ClubBoardService";
+import ComplaintBoardService from "@/services/board/complaint/ComplaintBoardService";
+import FreeBoardService from "@/services/board/free/FreeBoardService";
+import NoticeService from "@/services/notice/NoticeService";
 
 
 export default {
   data() {
     return {
 
-      // 자유게시판 페이지네이션 상태
-      freeBoardPage: 1,
-      freeBoardCount: 0,
-      freeBoardPageSize: 3,
-      // 부서게시판 페이지네이션 상태
+      // // 자유게시판 페이지네이션 상태
+      // freeBoardPage: 1,
+      // freeBoardCount: 0,
+      // freeBoardPageSize: 3,
+      // // 부서게시판 페이지네이션 상태
 
-      deptBoardPage: 1,
-      deptBoardCount: 0,
-      deptBoardPageSize: 3,
+      // deptBoardPage: 1,
+      // deptBoardCount: 0,
+      // deptBoardPageSize: 3,
 
-      // 건의게시판 페이지네이션 상태
-      complaintBoardPage: 1,
-      complaintBoardCount: 0,
-      complaintBoardPageSize: 3,
+      // // 건의게시판 페이지네이션 상태
+      // complaintBoardPage: 1,
+      // complaintBoardCount: 0,
+      // complaintBoardPageSize: 3,
 
-      // 동호회게시판 페이지네이션 상태
-      clubBoardPage: 1,
-      clubBoardCount: 0,
-      clubBoardPageSize: 3,
+      // // 동호회게시판 페이지네이션 상태
+      // clubBoardPage: 1,
+      // clubBoardCount: 0,
+      // clubBoardPageSize: 3,
 
       notices: [],
-      noticesTotalItems: 0,
+      noticesTotalItems:0,
       freeBoards: [],
-      freeBoardsTotalItems: 0,
+      freeBoardsTotalItems:0,
       clubBoards: [],
-      clubBoardsTotalItems: 0,
+      clubBoardsTotalItems:0,
       complaintBoards: [],
-      complaintBoardsTotalItems: 0,
+      complaintBoardsTotalItems:0,
       searchTitle: "",
-      page: 1, // 현재페이지번호
-      pageSize: 10, // 1페이지당개수(select태그)
+      page: 1, // 현재페이지번
+      pageSize: 3, // 1페이지당개수(select태그)
 
     };
   },
@@ -444,38 +448,95 @@ export default {
       console.log("검색 함수 호출");
       await this.retrieveSearchBoard();
     },
+    // 공지사항 전체조회 함수
+    async retrieveNotice() {
+      try {
+        // TODO: 1) 공통 전체조회 함수 실행
+        let response = await NoticeService.getAll(
+          this.searchTitle, // 검색어
+          this.page - 1, // 현재페이지번호-1
+          this.pageSize // 1페이지당개수(size)
+        );
+        console.log("프론트입니다");
+        const { notices, totalItems } = response.data; // 부서배열(벡엔드 전송)
+        this.notices = notices; // 부서배열(벡엔드 전송)
+        // this.count = totalItems; // 전체페이지수(벡엔드 전송)
+        this.noticesTotalItems = totalItems; // 전체페이지수(벡엔드 전송)
+        console.log(response.data);
+      } catch (e) {
+        console.log(e);
+      }
+    },
+     // 자유게시판 전체조회 함수
+     async retrieveFreeBoard() {
+      try {
+        // TODO: 1) 공통 전체조회 함수 실행
+        let response = await FreeBoardService.getAllBoard(
+          this.searchTitle, // 검색어
+          this.page - 1, // 현재페이지번호-1
+          this.pageSize // 1페이지당개수(size)
+        );
+        const { freeBoardList, totalItems } = response.data; // 부서배열(벡엔드 전송)
+        // TODO: 3) 바인딩변수(속성)에 저장
+        this.freeBoards = freeBoardList; // 부서배열(벡엔드 전송)
+        // this.count = totalItems; // 전체페이지수(벡엔드 전송)
+        this.freeBoardsTotalItems = totalItems; // 전체페이지수(벡엔드 전송)
+        // TODO: 4) 프론트 로깅 : console.log
+        console.log(response.data);
+      } catch (e) {
+        console.log(e);
+      }
+    },
+
+     // 동호회게시판 젆체조회
+     async retrieveClubBoard() {``
+      try {
+        let response = await ClubBoardService.getAllClubBoardByLocation(
+          this.searchTitle, // 검색어
+          this.page - 1, // 현재페이지번호-1
+          this.pageSize // 1페이지당개수(size)
+        );
+        const { clubBoardList, totalItems } = response.data;
+        this.clubBoards = clubBoardList;
+        // this.clubBoardCount = totalItems;
+        this.clubBoardsTotalItems = totalItems;
+        console.log(response.data);
+      } catch (e) {
+        console.log(e);
+      }
+    },
+     // 건의 게시판 전체조회 함수
+     async retrieveComplaintBoard() {
+      try {
+        // TODO: 1) 공통 전체조회 함수 실행
+        let response = await ComplaintBoardService.getAllComplaintBoard(
+          this.searchTitle, // 검색어
+          this.page - 1, // 현재페이지번호-1
+          this.pageSize // 1페이지당개수(size)
+        );
+        const { complaintBoardList, totalItems } = response.data; // 부서배열(벡엔드 전송)
+        // TODO: 3) 바인딩변수(속성)에 저장
+        this.complaintBoards = complaintBoardList; // 부서배열(벡엔드 전송)
+        // this.count = totalItems; // 전체페이지수(벡엔드 전송)
+        this.complaintBoardsTotalItems = totalItems; // 전체페이지수(벡엔드 전송)
+        // TODO: 4) 프론트 로깅 : console.log
+        console.log(response.data);
+      } catch (e) {
+        console.log(e);
+      }
+    },
     // 초기화 함수
     resetSearch() {
       this.searchTitle = "";
       this.retrieveSearchBoard();
     },
-    async retrieveSearchBoard() {
-      let response = await SearchService.searchAll(
-        this.searchTitle,
-        this.page-1,
-        this.pageSize
-      );
-      const {
-        notices,
-        noticesTotalItems,
-        freeBoards,
-        freeBoardsTotalItems,
-        clubBoards,
-        clubBoardsTotalItems,
-        complaintBoards,
-        complaintBoardsTotalItems,
-      } = response.data; 
-
-      // TODO: 3) 바인딩변수(속성)에 저장
-      this.notices = notices; 
-      this.noticesTotalItems = noticesTotalItems; 
-      this.freeBoards = freeBoards; 
-      this.freeBoardsTotalItems = freeBoardsTotalItems; 
-      this.clubBoards = clubBoards; 
-      this.clubBoardsTotalItems = clubBoardsTotalItems; 
-      this.complaintBoards = complaintBoards; 
-      this.complaintBoardsTotalItems = complaintBoardsTotalItems; 
-    },
+    SearchAll(){
+      this.retrieveNotice();
+      this.retrieveFreeBoard();
+      this.retrieveClubBoard();
+      this.retrieveComplaintBoard();
+    }
+  
   },
 };
 </script>

@@ -1,9 +1,7 @@
-package org.example.boardbackend.controller.user.board.dept;
+package org.example.boardbackend.controller.normal.board.dept;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.example.boardbackend.constant.DeptCode;
-import org.example.boardbackend.model.dto.board.complaint.ComplaintBoardDto;
 import org.example.boardbackend.model.dto.board.dept.DeptBoardDto;
 import org.example.boardbackend.model.dto.board.dept.DeptRecommentDto;
 import org.example.boardbackend.model.entity.board.dept.DeptBoard;
@@ -11,7 +9,6 @@ import org.example.boardbackend.model.entity.board.dept.DeptBoardReport;
 import org.example.boardbackend.model.entity.board.dept.DeptComment;
 import org.example.boardbackend.model.entity.board.dept.DeptRecomment;
 import org.example.boardbackend.model.entity.dept.Department;
-import org.example.boardbackend.model.entity.notify.Notify;
 import org.example.boardbackend.service.board.dept.DeptBoardService;
 import org.example.boardbackend.service.dept.DepartmentService;
 import org.example.boardbackend.service.notify.NotifyService;
@@ -43,9 +40,9 @@ import java.util.Optional;
  */
 @Slf4j
 @RestController
-@RequestMapping("/api/user/dept")
+@RequestMapping("/api/normal/dept")
 @RequiredArgsConstructor
-public class UserDeptBoardController {
+public class NormalDeptBoardController {
 
     private final DeptBoardService deptBoardService;
     private final DepartmentService departmentService;
@@ -312,4 +309,17 @@ public class UserDeptBoardController {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+//    // todo 부서 신고 알림 함수
+//    @PostMapping("/free/report/save")
+//    public ResponseEntity<Object> reportDeptBoard(@RequestBody FreeBoardReport freeBoardReport) {
+//        try {
+//            // 신고 저장
+//            freeBoardService.saveReport(freeBoardReport);
+//            freeBoardService.sendReportNotification(freeBoardReport);
+//            return new ResponseEntity<>(HttpStatus.OK);
+//        } catch (Exception e) {
+//            log.debug("디버그 :: "+e.getMessage());
+//            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+//        }
+//    }
 }

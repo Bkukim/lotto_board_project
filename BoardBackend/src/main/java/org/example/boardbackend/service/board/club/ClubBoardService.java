@@ -63,6 +63,14 @@ public class ClubBoardService {
         return clubBoardRepository.findAll();
     }
 
+    // todo 검색을 위한 위치로 전체조회
+    public Page<ClubBoardDto> findClubBoardByLocationContaining(String location, Pageable pageable)
+    {
+        Page<ClubBoardDto> page
+                = clubBoardRepository.findClubBoardByLocationContaining(location, pageable);
+        return page;
+    }
+
    // TODO: userId 기준으로 내가 작성한 글 조회
    public Page<ClubBoardDto> findClubBoardByUserIdContaining(String userId, Pageable pageable)
    {

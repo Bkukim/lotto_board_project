@@ -1,100 +1,28 @@
 <template>
-  <div class="container mt-5">
-    <div class="row">
-      <div class="col"></div>
-      <div class="col-10">
+  
+  <div id="register-container" class="container mt-5 " style="margin-top: 100px;" >
+    <div class="row justify-content-center" >
+      <div class="col-10 ">
         <!-- 회원유형 테이블 시작 -->
-        <table class="table">
-          <thead>
-            <tr>
-              <td scope="col"><h3 class="mb-5">회원가입</h3></td>
-              <td scope="col"></td>
-              <td scope="col"></td>
-              <td scope="col"></td>
-            </tr>
-          </thead>
-          <tbody>
-            <!-- <tr> -->
-              <!-- <td scope="row">회원 유형</td> -->
-              <!-- <td>
-                <div class="form-check">
-                  <input
-                    class="form-check-input"
-                    type="radio"
-                    name="flexRadioDefault"
-                    id="flexRadioDefault1"
-                    value="권한없음"
-                    v-model="user.role"
-                  />
-                  <label class="form-check-label" for="flexRadioDefault1">
-                    회원
-                  </label>
-                </div>
-              </td> -->
-              <!-- <td>
-                <div class="form-check">
-                  <input
-                    class="form-check-input"
-                    type="radio"
-                    name="flexRadioDefault"
-                    id="flexRadioDefault2"
-                    value="ROLE_ADMIN"
-                    v-model="user.role"
-                  />
-                  <label class="form-check-label" for="flexRadioDefault2">
-                    관리자
-                  </label>
-                </div>
-              </td> -->
-            <!-- </tr> -->
-          </tbody>
-        </table>
-        <!-- 회원 유형 테이블 끝 -->
-        <br />
-        <br />
-        <br />
-
+        <div class="section-header " >
+          <h3 >회원가입</h3>
+        </div>
+        
         <!-- 기본 정보 테이블 시작-->
+        <div class="section-header ">
+          <h3>기본 정보</h3>
+        </div>
         <table class="table">
-          <thead>
-            <tr>
-              <td scope="co"><h3 class="mb-5">기본 정보</h3></td>
-              <td scope="col"></td>
-              <td scope="col"></td>
-              <td scope="col"></td>
-            </tr>
-          </thead>
           <tbody>
-            <!-- 아이디 tr -->
-
             <tr>
-              <td scope="row">
-                <label class="insert-id" for="id">아이디</label>
+              <td scope="row"><label for="id">아이디</label></td>
+              <td>
+                <input class="form-control" type="text" name="id" v-model="user.userId" @change="convertToFalse" />
               </td>
               <td>
-                <div class="col">
-                  <input
-                    class="form-control"
-                    type="text"
-                    name="id"
-                    v-model="user.userId"
-                    @change="convertToFalse"
-                  />
-                </div>
-              </td>
-              <td>
-                <button
-                  class="btn col-1"
-                  type="button"
-                  id="addressBtn"
-                  @click="confirmExistenceID"
-                >
-                  중복 확인
-                </button>
-                <!-- <div class="col-11" v-if="idCheckMessage">
-                      {{ idCheckMessage }}
-                    </div> -->
-                <div v-if="idCheckMessage == '사용 가능한 ID 입니다.'">
+                <button class="btn" type="button" @click="confirmExistenceID">중복 확인</button>
+                <div v-if="idCheckMessage">
+                  <div v-if="idCheckMessage == '사용 가능한 ID 입니다.'">
                   {{ idCheckMessage }}
                 </div>
                 <div v-if="idCheckMessage == '이미 사용중인 ID 입니다.'">
@@ -103,57 +31,12 @@
                 <div v-if="idCheckMessage == ''">
                   {{ idCheckMessage }}
                 </div>
-              </td>
-            </tr>
-            <!-- 비밀번호 tr -->
-            <tr>
-              <td scope="row">
-                <label class="form-label" for="pwd">비밀번호</label>
-              </td>
-              <td>
-                <div class="col">
-                  <input
-                    class="form-control"
-                    type="password"
-                    name="pwd"
-                    v-model="user.password"
-                    @input="validatePassword"
-                  />
                 </div>
               </td>
-              <div class="col">
-                <td>
-                  <p v-if="!isValid">
-                    (영문 대소문자/숫자/특수문자 중 3가지 이상 조합, 8자~16자)
-                  </p>
-                  <p v-else>비밀번호가 조건에 맞습니다.</p>
-                </td>
-              </div>
             </tr>
-            <!-- 비밀번호 확인 tr -->
-            <tr>
-              <td scope="row">
-                <label class="form-label" for="pwdCheck">비밀번호 확인</label>
-              </td>
-              <td>
-                <div class="col">
-                  <input
-                    class="form-control"
-                    type="password"
-                    name="pwdCheck"
-                    id="pwdCheck"
-                    v-model="confirmPassword"
-                    @input="checkPasswordMatch"
-                  />
-                </div>
-              </td>
-              <td>
-                <p v-if="passwordMatchError" style="color: red">
-                  비밀번호가 일치하지 않습니다.
-                </p>
-              </td>
-            </tr>
-            <!-- 비밀번호 확인 질문 tr -->
+
+            <!-- 비밀번호 -->
+                  <!-- 비밀번호 확인 질문 tr -->
             <!-- <tr>
               <td scope="row">
                 <label class="form-label" for="address"
@@ -199,52 +82,53 @@
               </td>
               <td></td>
             </tr> -->
-            <!-- 이름 tr -->
             <tr>
-              <td scope="row">
-                <label class="form-label" for="userName">이름</label>
+              <td scope="row"><label for="pwd">비밀번호</label></td>
+              <td>
+                <input class="form-control" type="password" name="pwd" v-model="user.password" @input="validatePassword" />
               </td>
               <td>
-                <input
-                  class="form-control"
-                  type="text"
-                  name="userName"
-                  v-model="user.userName"
-                />
-              </td>
-              <td></td>
+                  <p v-if="!isValid" class="text-danger">
+                    (영문 대소문자/숫자/특수문자 중 3가지 이상 조합, 8자~16자)
+                  </p>
+                  <p v-else>비밀번호가 조건에 맞습니다.</p>
+                </td>
             </tr>
-
-            <!-- email tr -->
+            <tr>
+              <td scope="row"><label for="pwdCheck">비밀번호 확인</label></td>
+              <td>
+                <input class="form-control" type="password" name="pwdCheck" id="pwdCheck" v-model="confirmPassword" @input="checkPasswordMatch" />
+              </td>
+              <td>
+                <p v-if="passwordMatchError" class="text-danger">비밀번호가 일치하지 않습니다.</p>
+              </td>
+            </tr>
+            <!-- 이름 -->
+            <tr>
+              <td scope="row"><label for="userName">이름</label></td>
+              <td>
+                <input class="form-control" type="text" name="userName" v-model="user.userName" />
+              </td>
+            </tr>
+            <!-- 이메일 -->
             <tr>
               <td scope="row">
                 <label class="form-label" for="email">email</label>
               </td>
               <td>
-                <input
-                  class="form-control"
-                  type="email"
-                  name="email"
-                  v-model="user.email"
-                  @input="validateEmail"
-                />
+                <input class="form-control" type="email" name="email" v-model="user.email" @input="validateEmail" />
               </td>
               <td>
-                <p v-if="!emailIsValid">올바른 이메일 형식이 아닙니다.</p>
+                <p v-if="!emailIsValid" class="text-danger">올바른 이메일 형식이 아닙니다.</p>
               </td>
             </tr>
-
-            <!-- 부서 선택 tr -->
+            <!-- 부서선택 -->
             <tr>
               <td scope="row">
                 <label class="form-label" for="department">부서</label>
               </td>
               <td>
-                <select
-                  class="form-select"
-                  aria-label="Default select example"
-                  v-model="user.department"
-                >
+                <select class="form-select" aria-label="Default select example"  v-model="user.department">
                   <option value="A0001">
                     회계부
                   </option>
@@ -259,26 +143,15 @@
                   </option>
                 </select>
               </td>
-              <td></td>
             </tr>
-            <!-- 주소 tr -->
             <tr>
-              <td scope="row">
-                <label class="form-label" for="address">주소</label>
-              </td>
-              <td>
+              <!-- 주소 -->
+              <td scope="row"><label for="address">주소</label></td>
+              <td colspan="2">
                 <div class="row mb-1">
-                  <!-- 우편번호 -->
                   <div class="col">
-                    <input
-                      class="form-control"
-                      type="text"
-                      v-model="postcode"
-                      placeholder="우편번호"
-                      disabled
-                    />
+                    <input class="form-control" type="text" v-model="postcode" placeholder="우편번호" disabled />
                   </div>
-                  <!-- 주소검색 버튼 -->
                   <div class="col">
                     <button
                       class="btn"
@@ -293,107 +166,29 @@
                 </div>
                 <div class="row mb-1">
                   <div class="col">
-                    <input
-                      class="form-control"
-                      type="text"
-                      v-model="address"
-                      placeholder="주소"
-                      disabled
-                    />
+                    <input class="form-control" type="text" v-model="address" placeholder="주소" disabled />
                   </div>
                 </div>
                 <div class="row mb-1">
                   <div class="col">
-                    <input
-                      class="form-control"
-                      type="text"
-                      v-model="extraAddress"
-                      placeholder=""
-                      disabled
-                    />
+                    <input class="form-control" type="text" v-model="extraAddress" placeholder="추가주소" disabled />
                   </div>
                 </div>
                 <div class="row mb-1">
                   <div class="col">
-                    <input
-                      class="form-control"
-                      type="text"
-                      id="detailAddress"
-                      placeholder="상세주소"
-                      v-model="user.detailAddress"
-                    />
+                    <input class="form-control" type="text" v-model="user.detailAddress" placeholder="상세주소" />
                   </div>
                 </div>
               </td>
-              <td></td>
             </tr>
-            <!-- 전화 번호 tr -->
-            <!-- <tr>
-              <td scope="row">
-                <label class="form-label" for="address">일반 전화 번호</label>
-              </td>
-              <td>
-                <div class="row">
-                  <div class="col-3">
-                    <select
-                      class="form-select"
-                      aria-label="Default select example"
-                      v-model="callNum.first"
-                    >
-                      <option selected value="02">02</option>
-                      <option value="032">032</option>
-                      <option value="042">042</option>
-                      <option value="051">051</option>
-                      <option value="052">052</option>
-                      <option value="053">053</option>
-                      <option value="062">062</option>
-                      <option value="064">064</option>
-                      <option value="031">031</option>
-                      <option value="033">033</option>
-                      <option value="041">041</option>
-                      <option value="043">043</option>
-                      <option value="054">054</option>
-                      <option value="055">055</option>
-                      <option value="061">061</option>
-                      <option value="063">063</option>
-                    </select>
-                  </div>
-                  _
-                  <div class="col-3">
-                    <input
-                      class="form-control"
-                      type="text"
-                      name="call"
-                      v-model="callNum.second"
-                    />
-                  </div>
-                  _
-                  <div class="col-3">
-                    <input
-                      class="form-control"
-                      type="text"
-                      name="call"
-                      v-model="callNum.third"
-                    />
-                  </div>
-                </div>
-              </td>
-              <td></td>
-            </tr> -->
-            <!-- 휴대폰 번호 tr -->
+            <!-- 휴대폰 번호 -->
             <tr>
-              <td scope="row">
-                <label class="form-label" for="address">휴대폰 번호</label>
-              </td>
-              <td>
+              <td scope="row"><label for="phone">휴대폰 번호</label></td>
+              <td colspan="2">
                 <div class="row">
                   <div class="col-3">
-                    <select
-                      class="form-select"
-                      aria-label="Default select example"
-                      v-model="phoneNum.first"
-                    >
-                      <option selected value="010">010</option>
+                    <select class="form-select" v-model="phoneNum.first">
+                      <option value="010">010</option>
                       <option value="011">011</option>
                       <option value="016">016</option>
                       <option value="017">017</option>
@@ -401,83 +196,36 @@
                       <option value="019">019</option>
                     </select>
                   </div>
-                  _
                   <div class="col-3">
-                    <input
-                      class="form-control"
-                      type="text"
-                      name="call"
-                      v-model="phoneNum.second"
-                    />
+                    <input class="form-control" type="text" v-model="phoneNum.second" />
                   </div>
-                  _
                   <div class="col-3">
-                    <input
-                      class="form-control"
-                      type="text"
-                      name="call"
-                      v-model="phoneNum.third"
-                    />
+                    <input class="form-control" type="text" v-model="phoneNum.third" />
                   </div>
                 </div>
               </td>
-              <td></td>
+            </tr>
+            <tr>
+              <td scope="row"><label for="birthday">생년월일</label></td>
+              <td>
+                <input class="form-control" type="text" name="birthday" v-model="user.birthday" placeholder="주민번호 앞 6자리 ex) 990115" />
+              </td>
             </tr>
           </tbody>
         </table>
         <!-- 기본 정보 테이블 끝 -->
-        <br />
-        <br />
-        <!-- 추가 정보 테이블 시작-->
-        <table class="table">
-          <thead>
-            <!-- 생년월일 tr -->
-            <tr>
-              <td scope="row">
-                <label class="form-label" for="userName">생년월일</label>
-              </td>
-              <td>
-                <div class="col">
-                  <input
-                    class="form-control"
-                    type="text"
-                    name="pwd"
-                    v-model="user.birthday"
-                  />
-                </div>
-              </td>
-              <td>주민번호 앞 6자리 ex ) 990115</td>
-            </tr>
-          </thead>
-          <tbody></tbody>
-        </table>
-        <!-- 추가 정보 테이블 끝 -->
+        
+        <div class="text-center">
+          <button class="btn singUpBtn" type="button" @click="handleRegister">회원가입</button>
+        </div>
       </div>
-      <div class="col"></div>
     </div>
   </div>
 
-  <br />
-  <br />
-  <div class="container text-center">
-    <div class="row justify-content-md-center">
-      <div class="col-md-auto">
-        <button
-          class="text-light singUpBtn btn-sm mt-4"
-          id=""
-          type="button"
-          @click="handleRegister"
-        >
-          회원가입
-        </button>
-      </div>
-    </div>
-  </div>
-  <br />
-  <br />
-  <br />
-  <br />
+
+
 </template>
+
 <script>
 import AuthService from "@/services/auth/AuthService";
 export default {
@@ -740,23 +488,46 @@ export default {
   },
 };
 </script>
-<style>
-#addressBtn {
-  /* 주소 검색 버튼 */
-  width: 100px;
-  height: 37px;
-  background-color: #162b59;
-  color: white;
-}
-.singUpBtn {
-  background-color: #515358;
-  color: white;
-  font-size: 20px;
-  width: 200px;
-  height: 50px;
-  border: none;
-}
-.singUpBtn:hover {
-  background-color: #162b59;
+
+<style scoped>
+  .section-header {
+    margin-bottom: 20px;
+    border-bottom: 2px solid #dee2e6;
+    padding-bottom: 10px;
+  }
+
+  .table td, .table th {
+    vertical-align: middle;
+  }
+
+  .form-control, .form-select {
+    width: 100%;
+    margin-bottom: 10px;
+  }
+
+  .btn {
+    background-color: #007bff;
+    color: white;
+    margin: 0;
+  }
+
+  .singUpBtn {
+    background-color: #28a745;
+    color: white;
+    width: 100%;
+  }
+
+  .text-danger {
+    color: #dc3545 !important;
+  }
+
+  .text-success {
+    color: #28a745 !important;
+  }
+  #login-container {
+    display: flex;
+    height: 800px;
+    align-items: center;
+    justify-content: center;
 }
 </style>

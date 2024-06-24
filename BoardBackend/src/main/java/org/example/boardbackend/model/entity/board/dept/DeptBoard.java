@@ -55,4 +55,11 @@ public class DeptBoard extends BaseTimeEntity3 {
     @Lob
     private String content;
 
+    public void increaseOneDeptLikes(){
+        setLikes(getLikes() + 1);
+    }
+    public void decreaseOneDeptLikes(){
+        setLikes(getLikes() - 1);
+    }
+
 }

@@ -27,13 +27,7 @@
           >
             공지사항 등록
           </button>
-          <button
-            type="button"
-            class="btn btn-success"
-            @click="deleteNoticeAll"
-          >
-            공지사항 전체삭제
-          </button>
+         
         </div>
       </div>
 
