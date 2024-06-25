@@ -76,7 +76,24 @@
                   <tr v-for="(data, index) in noticeFree" :key="index">
                     <td>{{ index + 1 }}</td>
                     <td>{{ data.noticeType }}</td>
-                    <td>{{ data.title }}</td>
+                    <td>
+                      <router-link
+                      :to="
+                        `/notice/notice-check/` +
+                        data.noticeId +
+                        '/' +
+                        data.eventYN
+                      "
+                      style="
+                        color: #444444;
+                        text-decoration: none;
+                        text-align: left !important;
+                      "
+                    >
+                      {{ data.title }}</router-link
+                    >
+                    </td>
+                    
                     <td>{{ data.insertTime }}</td>
                     <td>
                       <button
@@ -109,7 +126,24 @@
                   <tr v-for="(data, index) in noticeDept" :key="index">
                     <td>{{ index + 1 }}</td>
                     <td>{{ data.noticeType }}</td>
-                    <td>{{ data.title }}</td>
+                    <td>
+                      <router-link
+                      :to="
+                        `/notice/notice-check/` +
+                        data.noticeId +
+                        '/' +
+                        data.eventYN
+                      "
+                      style="
+                        color: #444444;
+                        text-decoration: none;
+                        text-align: left !important;
+                      "
+                    >
+                      {{ data.title }}</router-link
+                    >
+                    </td>
+                   
                     <td>{{ data.insertTime }}</td>
                     <td>
                       <button
@@ -142,7 +176,23 @@
                   <tr v-for="(data, index) in noticeComplaint" :key="index">
                     <td>{{ index + 1 }}</td>
                     <td>{{ data.noticeType }}</td>
-                    <td>{{ data.title }}</td>
+                    <td>
+                      <router-link
+                      :to="
+                        `/notice/notice-check/` +
+                        data.noticeId +
+                        '/' +
+                        data.eventYN
+                      "
+                      style="
+                        color: #444444;
+                        text-decoration: none;
+                        text-align: left !important;
+                      "
+                    >
+                      {{ data.title }}</router-link
+                    >
+                    </td>
                     <td>{{ data.insertTime }}</td>
                     <td>
                       <button
@@ -175,7 +225,24 @@
                   <tr v-for="(data, index) in noticeGroup" :key="index">
                     <td>{{ index + 1 }}</td>
                     <td>{{ data.noticeType }}</td>
-                    <td>{{ data.title }}</td>
+                    <td>
+                      <router-link
+                      :to="
+                        `/notice/notice-check/` +
+                        data.noticeId +
+                        '/' +
+                        data.eventYN
+                      "
+                      style="
+                        color: #444444;
+                        text-decoration: none;
+                        text-align: left !important;
+                      "
+                    >
+                      {{ data.title }}</router-link
+                    >
+                    </td>
+                    
                     <td>{{ data.insertTime }}</td>
                     <td>
                       <button
@@ -208,7 +275,24 @@
                   <tr v-for="(data, index) in noticeAll" :key="index">
                     <td>{{ index + 1 }}</td>
                     <td>{{ data.noticeType }}</td>
-                    <td>{{ data.title }}</td>
+                    <td>
+                      <router-link
+                      :to="
+                        `/notice/notice-check/` +
+                        data.noticeId +
+                        '/' +
+                        data.eventYN
+                      "
+                      style="
+                        color: #444444;
+                        text-decoration: none;
+                        text-align: left !important;
+                      "
+                    >
+                      {{ data.title }}</router-link
+                    >
+                    </td>
+                    
                     <td>{{ data.insertTime }}</td>
                     <td>
                       <button

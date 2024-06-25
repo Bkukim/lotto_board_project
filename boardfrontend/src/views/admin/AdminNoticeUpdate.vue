@@ -99,7 +99,7 @@ export default {
         alert("수정이 성공했습니다.");
         // 다시 상세조회
         this.getNotice(this.notice.noticeId);
-        this.$router.push(`/notice/notice-check/`+this.notice.noticeId);
+        this.$router.push(`/notice/notice-check/`+this.notice.noticeId+'/'+this.notice.eventYN);
 
       } catch (e) {
         console.log(e);
