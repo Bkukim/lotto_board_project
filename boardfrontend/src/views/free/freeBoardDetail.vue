@@ -8,11 +8,11 @@
 
   <!-- 전체 박스 -->
   <div class="fbd_all" style="height: auto">
-    <br>
-    <br>
+    <br />
+    <br />
     <!-- 해당 게시판 이름 부분 -->
     <!-- <div class="container text-center mb-5"> -->
-      <!-- <h3 style="text-align: left" id="fbd_h3">자유 게시판 글 상세보기</h3> -->
+    <!-- <h3 style="text-align: left" id="fbd_h3">자유 게시판 글 상세보기</h3> -->
     <!-- </div> -->
     <!-- 해당 게시판 이름 부분  끝-->
 
@@ -38,7 +38,7 @@
           background-color: #f2f2f2;
         "
       >
-        {{ freeBoard.title}} 
+        {{ freeBoard.title }}
       </div>
 
       <div
@@ -71,11 +71,13 @@
           word-break: break-all;
         "
       ></div> -->
+      <div   style="max-width: 320px; display: block">
+        <div
+        
+          v-html="freeBoard.content"
+        ></div>
+      </div>
 
-      <div
-        style="max-width: 320px; display: block"
-        v-html="freeBoard.content"
-      ></div>
       <div
         style="
           text-align: left;
@@ -464,7 +466,7 @@
               {{
                 replyToCommentId === data.freeBoardCommentId
                   ? "답글접기"
-                  : "답글" 
+                  : "답글"
               }}
             </button>
           </div>
@@ -763,7 +765,7 @@ export default {
         await this.checkLike();
         console.log(response.data);
       } catch (e) {
-        alert("에러"+e);
+        alert("에러" + e);
         console.log(e);
       }
     },
