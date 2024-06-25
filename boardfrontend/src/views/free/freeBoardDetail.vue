@@ -79,6 +79,10 @@
       </div>
 
       <div
+        id="editor-container"
+        v-html="freeBoard.content"
+      ></div>
+      <div
         style="
           text-align: left;
           padding: 20px 0 20px 30px;
@@ -1125,5 +1129,16 @@ export default {
   position: absolute;
   bottom: 20px;
   right: 10px;
+}
+#editor-container {
+  text-align: left;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+}
+#editor-container img {
+  max-width: 100%;
+  max-height: 1200px;
+  height: auto;
 }
 </style>

@@ -73,7 +73,7 @@
       ></div> -->
 
       <div
-        style="max-width: 320px; display: block"
+        id="editor-container"
         v-html="deptBoard.content"
       ></div>
       <div
@@ -1089,5 +1089,16 @@ export default {
   position: absolute;
   bottom: 20px;
   right: 10px;
+}
+#editor-container {
+  text-align: left;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+}
+#editor-container img {
+  max-width: 100%;
+  max-height: 1200px;
+  height: auto;
 }
 </style>
