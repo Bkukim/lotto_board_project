@@ -436,7 +436,7 @@ export default {
     },
   },
   async mounted() {
-    // await this.checkLogin();
+    await this.checkLogin();
     this.getAllDepartment();
     this.countUnreadNotify();
     setTimeout(() => this.connectSse(), 1000);
