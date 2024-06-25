@@ -71,6 +71,12 @@
           word-break: break-all;
         "
       ></div> -->
+      <div   style="max-width: 320px; display: block">
+        <div
+        
+          v-html="freeBoard.content"
+        ></div>
+      </div>
 
       <div
         id="editor-container"
