@@ -22,5 +22,5 @@ import org.springframework.stereotype.Repository;
  */
 @Repository
 public interface ComplaintBoardCommentRepository extends JpaRepository<ComplaintBoardComment,Long> {
-    Page<ComplaintBoardComment> findComplaintBoardCommentsByComplaintBoardId(long complaintBoardId, Pageable pageable);
+    Page<ComplaintBoardComment> findComplaintBoardCommentsByComplaintBoardIdOrderByInsertTimeDesc(long complaintBoardId, Pageable pageable);
 }
