@@ -58,14 +58,7 @@
         </div>
       </div>
       <div
-        style="
-          text-align: left;
-          border-bottom: #cccccc solid 1px;
-          padding: 20px 0 20px 30px;
-          font-size: 15px;
-          font-weight: 600;
-          height: auto;
-        "
+         id="editor-container"
         v-html="complaintBoard.content"
       ></div>
       <div class="mt-5 text-center">
@@ -863,5 +856,16 @@ async upLike() {
   position: absolute;
   bottom: 20px;
   right: 10px;
+}
+#editor-container {
+  text-align: left;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+}
+#editor-container img {
+  max-width: 100%;
+  max-height: 1200px;
+  height: auto;
 }
 </style>
