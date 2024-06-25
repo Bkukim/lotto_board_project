@@ -8,10 +8,10 @@
       background: linear-gradient(to right, #ffffff 0%, #99ccff 170%);
     "
   >
-    <div class="d-flex align-items-center mb-3 mb-md-0 me-md-auto link-dark text-decoration-none"
-    style="padding: 50px 0">
-      
-    
+    <div
+      class="d-flex align-items-center mb-3 mb-md-0 me-md-auto link-dark text-decoration-none"
+      style="padding: 50px 0"
+    >
       <svg class="bi me-2" width="40" height="32">
         <use xlink:href="#bootstrap" />
       </svg>
@@ -137,14 +137,18 @@ export default {
   // name: 'Sidebar'
   methods: {
     handleLogout() {
-      let result = confirm("정말로 로그아웃 하시겠습니까?");
-      if (result) {
-        AuthService.logout(); // LOCAL저장소에서 USER객체 삭제해주기
-        this.$store.commit("logout"); //
-        this.$store.state.notifyCount = 0;
-        this.$router.push("/member/login");
-      } else {
-        return;
+      try {
+        let result = confirm("정말로 로그아웃 하시겠습니까?");
+        if (result) {
+          AuthService.logout(); // LOCAL저장소에서 USER객체 삭제해주기
+          this.$store.commit("logout"); //
+          this.$store.state.notifyCount = 0;
+          this.$router.push("/member/login");
+        } else {
+          return;
+        }
+      } catch (error) {
+        console.log("에러" + error);
       }
     },
   },

@@ -156,7 +156,8 @@ export default {
       }
     },
     connectSse(jwt) {
-      // let subscribeUrl = "http://localhost:8000/api/v1/notify/subscribe";
+      try {
+        // let subscribeUrl = "http://localhost:8000/api/v1/notify/subscribe";
       // let subscribeUrl = "http://13.209.24.76:8000/api/v1/notify/subscribe";
       const subscribeUrl =
         "http://" + this.$store.state.backendIp + "/api/v1/notify/subscribe";
@@ -213,6 +214,10 @@ export default {
       } else {
         console.error("JWT 토큰이 없습니다.");
       }
+      } catch (error) {
+        console.log("sse연결에러")
+      } 
+      
     },
     goToUrl(notificationType, url) {
       if (notificationType == "REPORT") {
