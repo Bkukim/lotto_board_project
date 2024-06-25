@@ -156,12 +156,13 @@ public class KakaoUserService implements SocialLoginService {
                 socialUserReq.getUserName(),
                 socialUserReq.getBirthday(),
                 socialUserReq.getPhoneNum(),
-                socialUserReq.getEmail(),
+                userId,
                 socialUserReq.getRole(),
                 socialUserReq.getDeptId(),
                 socialUserReq.getNormalAddress(),
                 socialUserReq.getDetailAddress());
         userRepository.save(user);
+        userHashMap.remove(uuid);
         String jwt = jwtUtils.generateJwtTokenForKakao(userId);
         UserRes userRes = new UserRes(
                 jwt,                // 웹토큰

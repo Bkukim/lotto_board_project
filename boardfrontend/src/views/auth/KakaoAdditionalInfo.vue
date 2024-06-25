@@ -30,26 +30,6 @@
               </td>
               <td></td>
             </tr>
-
-            <!-- email tr -->
-            <tr>
-              <td scope="row">
-                <label class="form-label" for="email">email</label>
-              </td>
-              <td>
-                <input
-                  class="form-control"
-                  type="email"
-                  name="email"
-                  v-model="user.email"
-                  @input="validateEmail"
-                />
-              </td>
-              <td>
-                <p v-if="!emailIsValid">올바른 이메일 형식이 아닙니다.</p>
-              </td>
-            </tr>
-
             <!-- 부서 선택 tr -->
             <tr>
               <td scope="row">
@@ -301,7 +281,8 @@ export default {
     // },
     // sse 연결 함수
     connectSse(jwt) {
-      // let subscribeUrl = "http://localhost:8000/api/v1/notify/subscribe";
+      try{
+// let subscribeUrl = "http://localhost:8000/api/v1/notify/subscribe";
       // let subscribeUrl = "http://13.209.24.76:8000/api/v1/notify/subscribe";
       let subscribeUrl = "http://" + this.$store.state.backendIp + "/api/v1/notify/subscribe";
 
@@ -341,6 +322,10 @@ export default {
       } else {
         console.error("JWT 토큰이 없습니다.");
       }
+      }catch(e){
+        console.log(e);
+        console.log("sse에러");
+      }
     },
     /* 회원가입 버튼 누르면 실행될 함수 */
     async handleRegister() {
@@ -348,14 +333,7 @@ export default {
         alert("이름을 입력해주세요");
         return;
       }
-      if (this.user.email == "") {
-        alert("email을 입력해주세요");
-        return;
-      }
-      if (!this.emailIsValid) {
-        alert("올바른 email형식이 아닙니다");
-        return;
-      }
+    
       if (this.user.department == "") {
         alert("부서를 선택해주세요");
         return;
@@ -387,7 +365,7 @@ export default {
           this.phoneNum.first + this.phoneNum.second + this.phoneNum.third,
         // callNum: this.callNum.first + this.callNum.second + this.callNum.third,
         email: this.user.email,
-        role: "ROLE_USER",
+        role: "권한 없음",
         deptId: this.user.department,
         normalAddress: this.address + "," + this.extraAddress,
         detailAddress: this.user.detailAddress,
@@ -404,7 +382,7 @@ export default {
         this.$store.commit("registerFailure");
         this.message = "에러 :" + e;
         alert("세션이 만료되었습니다. 다시 시도해주세요")
-        this.$router.push("/member/login");
+        // this.$router.push("/member/login");
         console.log(e); // 에러 출력
       }
     },
