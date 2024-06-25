@@ -357,7 +357,7 @@ export default {
       }
     },
     connectSse() {
-      if (this.$store.state.user == null) {
+      try{ if (this.$store.state.user == null) {
         return;
       } 
       // let subscribeUrl = "http://localhost:8000/api/v1/notify/subscribe";
@@ -417,6 +417,11 @@ export default {
       } else {
         console.error("JWT 토큰이 없습니다.");
       }
+    }catch(e){
+      console.log(e)
+      console.log("로그아웃상태")
+    }
+     
     },
     checkLogin(){
       if (this.$store.state.user == null) {

@@ -50,25 +50,25 @@ const routes = [
   {
     path: "/member/join",
     component: () => import("../views/auth/JoinView.vue"),
-    meta: { showHeader: true ,shoewFoter: true }, // 기본적으로 헤더를 보이게 설정
+    meta: { showHeader: false }, // 기본적으로 헤더를 보이게 설정
   },
   // 회원가입 환영 페이지
   {
     path: "/member/join/welcome",
     component: () => import("../views/auth/WelcomeView.vue"),
-    meta: { showHeader: true }, // 기본적으로 헤더를 보이게 설정
+    meta: { showHeader: false }, // 기본적으로 헤더를 보이게 설정
   },
   // 아이디 찾기 페이지
   {
     path: "/member/find-id",
     component: () => import("../views/auth/FindId.vue"),
-    meta: { showHeader: true }, // 기본적으로 헤더를 보이게 설정
+    meta: { showHeader: false }, // 기본적으로 헤더를 보이게 설정
   },
   // 비밀번호 찾기 페이지
   {
     path: "/member/find-pwd",
     component: () => import("../views/auth/FindPwd.vue"),
-    meta: { showHeader: true,shoewFoter: true  }, // 기본적으로 헤더를 보이게 설정
+    meta: { showHeader: false,shoewFoter: true  }, // 기본적으로 헤더를 보이게 설정
   },
   // 비밀번호 재설정 페이지
   {
