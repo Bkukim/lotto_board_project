@@ -216,7 +216,7 @@
         <!-- 기본 정보 테이블 끝 -->
         
         <div class="text-center">
-          <button class="btn singUpBtn" type="button" @click="handleRegister">회원가입</button>
+          <button class="btn singUpBtn" type="button" style="background-color: #162B59; width: 10vw;" @click="handleRegister">회원가입</button>
         </div>
       </div>
     </div>
