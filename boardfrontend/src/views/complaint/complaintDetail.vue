@@ -628,7 +628,6 @@ export default {
         };
         await ComplaintBoardService.createComplaintBoardComment(data);
       } catch (e) {
-        alert("관리자만 답변할 수 있습니다.");
         console.log(e);
       }
       this.newComment.content = "";
