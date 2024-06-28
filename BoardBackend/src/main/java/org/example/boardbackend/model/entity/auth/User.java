@@ -8,6 +8,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.example.boardbackend.model.common.BaseTimeEntity;
 import org.example.boardbackend.model.common.BaseTimeEntity2;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
@@ -34,7 +35,7 @@ import org.hibernate.annotations.Where;
 // soft delete jpa 어노테이션
 @Where(clause = "WITHDRAW_YN = 'N'")
 @SQLDelete(sql ="UPDATE LOTTO_USER SET WITHDRAW_YN = 'Y', WITHDRAW_TIME=TO_CHAR(SYSDATE, 'YYYY-MM-DD HH24:MI:SS') WHERE USER_ID = ?")
-public class User extends BaseTimeEntity2 {
+public class User extends BaseTimeEntity {
 
     @Id
     @Column(name = "USER_ID")
@@ -50,6 +51,8 @@ public class User extends BaseTimeEntity2 {
     private String detailAddress;
     private String pwQuestion;
     private String pwAnswer;
+    @Column(name = "WITHDRAW_YN")
+    private String withdrawYN;
 
     public User(String userId, String password, String role) {
         this.userId = userId;
@@ -57,7 +60,7 @@ public class User extends BaseTimeEntity2 {
         this.role = role;
     }
 
-    public User(String userId, String password, String userName, long birthday, String phoneNum, String email, String role, String deptId, String normalAddress, String detailAddress) {
+    public User(String userId, String password, String userName, long birthday, String phoneNum, String email, String role, String deptId, String normalAddress, String detailAddress, String withdrawYN) {
         this.userId = userId;
         this.password = password;
         this.userName = userName;
@@ -68,5 +71,6 @@ public class User extends BaseTimeEntity2 {
         this.deptId = deptId;
         this.normalAddress = normalAddress;
         this.detailAddress = detailAddress;
+        this.withdrawYN = withdrawYN;
     }
 }

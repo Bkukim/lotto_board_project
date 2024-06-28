@@ -131,4 +131,10 @@ public class UserService {
         }
 
     }
+    // todo userId와 email로 확인
+    @Transactional
+    public boolean existsByUserIdAndEmail(String userId, String email) {
+       boolean result = userRepository.existsByUserIdAndEmail(userId,email);
+       return result;
+    }
 }

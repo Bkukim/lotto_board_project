@@ -228,7 +228,6 @@
 <script>
 import UserService from "@/services/user/UserService";
 import AdminHeaderCom from "@/components/common/AdminHeaderCom.vue";
-import AuthService from "@/services/auth/AuthService";
 import Swal from "sweetalert2"; // SweetAlert2 가져오기
 
 export default {
@@ -318,8 +317,6 @@ export default {
           let response = await UserService.deleteUser(userId);
           // alert(userId);
           console.log(response);
-          AuthService.logout(); // LOCAL저장소에서 USER객체 삭제해주기
-          this.$store.commit("logout"); //
           Swal.fire({
             title: "삭제 완료",
             text: "회원 삭제가 완료되었습니다.",

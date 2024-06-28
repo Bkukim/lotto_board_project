@@ -728,7 +728,6 @@ export default {
     // 신고함수
     async report() {
       try {
-        alert("asdfasdf");
         let data = {
           userId: this.$store.state.user.userId,
           deptBoardId: this.deptBoard.deptBoardId,

@@ -43,7 +43,7 @@ import java.util.List;
 // soft delete jpa 어노테이션
 @Where(clause = "DELETE_YN = 'N'")
 @SQLDelete(sql ="UPDATE LOTTO_FREE_BOARD SET DELETE_YN = 'Y' WHERE FREE_BOARD_ID = ?")
-public class FreeBoard extends BaseTimeEntity3{
+public class FreeBoard extends BaseTimeEntity{
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE

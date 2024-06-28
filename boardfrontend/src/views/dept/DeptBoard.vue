@@ -248,10 +248,10 @@ export default {
   },
   async mounted() {
     await this.checkUserDeptId();
+    await this.retrieveDeptNotice();
     this.getDepartment();
     this.retrieveDeptBoard();
     window.scrollTo(0, 0);
-    this.retrieveDeptNotice();
   },
 };
 </script>

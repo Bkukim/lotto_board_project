@@ -8,5 +8,10 @@ class PasswordResetService{
       headers: AuthHeader()
     });
    }
-}
+   checkByUserIdAndEmail(email, userId){
+    return http.get(`/auth/exist/email?email=${email}&userId=${userId}`,{
+      headers: AuthHeader()
+    });
+   }
+  }
 export default new PasswordResetService;

@@ -47,7 +47,7 @@
       </div>
     </div>
   </div>
-  <div class="container text-center" style="margin-top: -60px;">
+  <div class="container text-center" style="margin-top: -60px">
     <div class="row justify-content-md-center">
       <div class="col-md-auto">
         <button
@@ -61,12 +61,12 @@
     </div>
   </div>
 
-  <br>
-  <br>
-  <br>
-  <br>
-  <br>
-  <br>
+  <br />
+  <br />
+  <br />
+  <br />
+  <br />
+  <br />
 </template>
 
 <script>
@@ -84,9 +84,26 @@ export default {
   methods: {
     async sendCode() {
       try {
-        await PasswordResetService.sendCode(this.email, this.userId);
-        alert("인증 코드가 이메일로 전송되었습니다.");
-        this.$router.push("/member/login");
+        let responseEmail = await PasswordResetService.checkByUserIdAndEmail(
+          this.email,
+          this.userId
+        );
+        if (responseEmail.data) {
+          alert("인증 코드가 이메일로 전송되었습니다.");
+          this.$router.push("/member/login");
+        } else {
+          alert("잘못된 이메일 입니다.");
+          return;
+        }
+        let response = await PasswordResetService.sendCode(
+          this.email,
+          this.userId
+        );
+        if (response.data) {
+          console.log("이메일 전송 성공");
+        } else {
+          console.log("이메일 전송 에러");
+        }
       } catch (error) {
         console.log(error);
         alert("인증 코드를 보내는 데 실패했습니다.");
@@ -101,7 +118,7 @@ export default {
 
 <style scoped>
 .container {
-  max-width:1000px;
+  max-width: 1000px;
   margin: auto;
   padding-top: 50px;
   padding-bottom: 50px;
@@ -147,7 +164,8 @@ h2 {
   font-weight: bold;
 }
 
-.form-select, .form-control {
+.form-select,
+.form-control {
   height: 40px;
   font-size: 1rem;
 }

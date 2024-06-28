@@ -250,9 +250,9 @@ export default {
       this.$router.push("/complaint/complaint-boardAdd");
     },
   },
-  mounted() {
+ async mounted() {
+    await this.retrieveComplaintNotice();
     this.retrieveComplaintBoard();
-    this.retrieveComplaintNotice();
     window.scrollTo(0, 0);
   },
 };

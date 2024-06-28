@@ -228,9 +228,9 @@ export default {
       this.$router.push("/free/free-boardAdd");
     },
   },
-  mounted() {
+  async mounted() {
+    await this.retrieveFreeNotice();
     this.retrieveFreeBoard();
-    this.retrieveFreeNotice();
     window.scrollTo(0, 0);
   },
 };

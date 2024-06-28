@@ -371,12 +371,9 @@ export default {
         detailAddress: this.user.detailAddress,
       };
       try {
-        let response = await AuthService.registerSocialUser(this.$route.params.uuid, data);
-        let user = response.data;
-        localStorage.setItem("user", JSON.stringify(user));
-        this.$store.commit("loginSuccess", user);
-        this.connectSse(response.data.accessToken);
-        this.$router.push("/");
+        await AuthService.registerSocialUser(this.$route.params.uuid, data);
+        
+        this.$router.push("/member/login");
       } catch (e) {
         // 공유 저장소의 register 실행함수 실행
         this.$store.commit("registerFailure");

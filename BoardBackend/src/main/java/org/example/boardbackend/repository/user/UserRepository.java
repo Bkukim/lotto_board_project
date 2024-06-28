@@ -89,4 +89,5 @@ public interface UserRepository extends JpaRepository<User, String> {
             , @Param("detailAddress") String detailAddress
             , @Param("userId") String userId
     );
+    public boolean existsByUserIdAndEmail( @Param("userId") String userId, @Param("email") String email);
 }
