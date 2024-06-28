@@ -1,7 +1,9 @@
+![LOTTO_LOGO](https://github.com/Bkukim/lotto_board_project/assets/153472858/1963ea69-a5b8-46ca-a747-0deb1cace729)
 # 사내 게시판 프로젝트
 Spring boot와 Vue.js를 활용한 사내 커뮤니티 게시판 프로젝트입니다.
 
 <br>
+
 
 ## 💻 프로젝트 소개
 #### 1. 사원들의 소통 공간이 커뮤니티 사이트
