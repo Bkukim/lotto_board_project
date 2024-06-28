@@ -3,7 +3,7 @@
 
 
 ![LOTTO_LOGO](https://github.com/Bkukim/lotto_board_project/assets/153472858/1963ea69-a5b8-46ca-a747-0deb1cace729)
-### 📋 직원들이 소통하고 협업할 수 있는 사내 게시판 서비스
+### 📋 직원들이 소통하고 정보를 얻을 수 있는 사내 게시판 서비스
 </div>
 
 <br>
