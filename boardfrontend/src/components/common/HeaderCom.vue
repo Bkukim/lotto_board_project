@@ -502,7 +502,7 @@ export default {
 
 .nav-link:hover {
   font-weight: bolder;
-  color: #ffffff;
+  /* color: #ffffff; */
 }
 
 .nav-item {

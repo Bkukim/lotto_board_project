@@ -115,19 +115,7 @@
       </router-link>
     </div>
 
-    <!-- 페이징 -->
-    <!-- {/* paging 시작 */} -->
-    <div class="row justify-content-center mt-5">
-      <div class="col-auto" style="margin-top: 50px">
-        <b-pagination
-          class="custom-pagination col-12 mb-3"
-          v-model="page"
-          :total-rows="count"
-          :per-page="pageSize"
-          @click="retrieveFreeBoard"
-        ></b-pagination>
-      </div>
-    </div>
+   
   </div>
   <!-- 자유게시판 중앙정렬 전체박스 끝 -->
 </template>

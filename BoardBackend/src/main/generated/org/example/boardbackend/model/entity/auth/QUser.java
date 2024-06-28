@@ -19,7 +19,7 @@ public class QUser extends EntityPathBase<User> {
 
     public static final QUser user = new QUser("user");
 
-    public final org.example.boardbackend.model.common.QBaseTimeEntity2 _super = new org.example.boardbackend.model.common.QBaseTimeEntity2(this);
+    public final org.example.boardbackend.model.common.QBaseTimeEntity _super = new org.example.boardbackend.model.common.QBaseTimeEntity(this);
 
     public final NumberPath<Long> birthday = createNumber("birthday", Long.class);
 
@@ -51,11 +51,7 @@ public class QUser extends EntityPathBase<User> {
 
     public final StringPath userName = createString("userName");
 
-    //inherited
-    public final StringPath withdrawTime = _super.withdrawTime;
-
-    //inherited
-    public final StringPath withdrawYn = _super.withdrawYn;
+    public final StringPath withdrawYN = createString("withdrawYN");
 
     public QUser(String variable) {
         super(User.class, forVariable(variable));

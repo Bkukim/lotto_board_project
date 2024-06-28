@@ -79,7 +79,7 @@
           {{ this.complaintBoard.likes }}
         </button>
 
-        <button
+        <!-- <button
           type="button"
           class="btn btn-light"
           style="margin-left: 3vh; height: 8vh; width: 10vw; padding: 1vw"
@@ -88,10 +88,10 @@
         >
           <img src="@/assets/img/report_icon.png" width="40" height="40" />
           신고
-        </button>
+        </button> -->
 
         <!-- 모달 -->
-        <div
+        <!-- <div
           class="modal fade"
           id="reportModal"
           tabindex="-1"
@@ -121,7 +121,6 @@
                 ></button>
               </div>
               <div class="modal-body">
-                <!-- 신고폼 -->
                 <form>
                   <div class="mb-3">
                     <label for="reportReason" class="form-label"
@@ -138,7 +137,7 @@
               </div>
             </div>
           </div>
-        </div>
+        </div> -->
 
       </div>
     
@@ -405,7 +404,7 @@
                 margin-right: 5px;
               "
             ></div>
-            {{ data.userId }}
+            관리자
           </div>
 
           <!-- 시간 -->

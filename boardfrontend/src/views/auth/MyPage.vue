@@ -402,7 +402,7 @@
                           style="text-align: center; font-weight: bold"
                         >
                           <router-link
-                            :to="'/free/free-boardDetail/' + data.freeBoardId"
+                            :to="'/club/club-boardRecruitment/' + data.clubBoardId"
                             style="text-decoration: none; color: #333"
                             class="alltext router-link-exact-active custom-pagination"
                             >{{ data.title }}</router-link
@@ -791,12 +791,13 @@ export default {
           this.$router.push("/member/login")
         } else {
         let response = await UserService.get(this.$store.state.user.userId);
+       
         this.user = response.data;
         console.log("유저", response.data);
         }
       } catch (e) {
         alert("로그인을 해주세요");
-        console.log(e);
+        console.log("에러",e);
       }
     },
 
@@ -995,7 +996,6 @@ export default {
           );
 
           if (response.data) {
-            this.$store.state.user.userId = "";
             this.result = true;
           } else {
             alert("세션이 만료되었습니다. 로그인 창으로 이동합니다.");

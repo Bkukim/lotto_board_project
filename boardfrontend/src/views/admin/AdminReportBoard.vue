@@ -77,7 +77,9 @@
                     v-for="(data, index) in freeBoardReportsList"
                     :key="index"
                   >
-                    <td>{{ (freeBoardPage - 1) * freeBoardPageSize + index + 1 }}</td>
+                    <td>
+                      {{ (freeBoardPage - 1) * freeBoardPageSize + index + 1 }}
+                    </td>
                     <td
                       id="router_hv"
                       style="text-align: left; padding-left: 100px"
@@ -142,159 +144,165 @@
                 ></b-pagination>
               </div>
             </div>
+          </div>
+
+          <!-- 부서 신고테이블 -->
+          <div v-show="activeTab === 'dept'">
+            <div class="table-responsive shadow">
+              <table class="table mt-5">
+                <thead>
+                  <tr>
+                    <th scope="col">번호</th>
+                    <th scope="col">부서</th>
+                    <th
+                      scope="col"
+                      style="text-align: left; padding-left: 100px"
+                    >
+                      신고 사유
+                    </th>
+                    <th scope="col">작성자</th>
+                    <th scope="col">등록일</th>
+                    <!-- <th scope="col">좋아요</th> -->
+                    <th scope="col">취소</th>
+                    <th scope="col">삭제</th>
+                    <!-- <th scope="col">조회수</th> -->
+                  </tr>
+                </thead>
+                <tbody>
+                  <!-- 반복문 시작할 행 -->
+                  <tr
+                    v-for="(data, index) in deptBoardReportsList"
+                    :key="index"
+                  >
+                    <td>
+                      {{ (deptBoardPage - 1) * deptBoardPageSize + index + 1 }}
+                    </td>
+                    <td>{{ data.deptId }}</td>
+                    <td
+                      id="router_hv"
+                      style="text-align: left; padding-left: 100px"
+                    >
+                      <router-link
+                        style="
+                          color: #444444;
+                          font-weight: bold;
+                          text-decoration: none;
+                        "
+                        :to="'/dept/board/detail/' + data.deptBoardId"
+                        class="router-link-exact-active alltext"
+                      >
+                        {{ data.content }}
+                      </router-link>
+                    </td>
+                    <td>{{ data.userId }}</td>
+                    <td>{{ data.insertTime }}</td>
+                    <!-- <td>{{ data.likes }}</td> -->
+                    <td>
+                      <button
+                        class="btn btn-outline-secondary"
+                        type="button"
+                        id="button-search"
+                        @click="updateDeptBoardReport(data.reportId, data)"
+                        style="
+                          background-color: #fff;
+                          border: 1px solid #162b59;
+                          color: #162b59;
+                          text-align: center;
+                        "
+                      >
+                        취소
+                      </button>
+                    </td>
+                    <td>
+                      <button
+                        class="btn btn-outline-secondary"
+                        type="button"
+                        id="button-search"
+                        @click="
+                          deleteDeptBoardReport(data.reportId, data.deptBoardId)
+                        "
+                        style="background-color: red"
+                      >
+                        삭제
+                      </button>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
             </div>
 
-            <!-- 부서 신고테이블 -->
-            <div v-show="activeTab === 'dept'">
-              <div class="table-responsive shadow">
-                <table class="table mt-5">
-                  <thead>
-                    <tr>
-                      <th scope="col">번호</th>
-                      <th scope="col">부서</th>
-                      <th
-                        scope="col"
-                        style="text-align: left; padding-left: 100px"
-                      >
-                        신고 사유
-                      </th>
-                      <th scope="col">작성자</th>
-                      <th scope="col">등록일</th>
-                      <!-- <th scope="col">좋아요</th> -->
-                      <th scope="col">취소</th>
-                      <th scope="col">삭제</th>
-                      <!-- <th scope="col">조회수</th> -->
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <!-- 반복문 시작할 행 -->
-                    <tr
-                      v-for="(data, index) in deptBoardReportsList"
-                      :key="index"
-                    >
-                      <td>{{ (deptBoardPage - 1) * deptBoardPageSize + index + 1 }}</td>
-                      <td>{{ data.deptId }}</td>
-                      <td
-                        id="router_hv"
-                        style="text-align: left; padding-left: 100px"
-                      >
-                        <router-link
-                          style="
-                            color: #444444;
-                            font-weight: bold;
-                            text-decoration: none;
-                          "
-                          :to="'/dept/board/detail/' + data.deptBoardId"
-                          class="router-link-exact-active alltext"
-                        >
-                          {{ data.content }}
-                        </router-link>
-                      </td>
-                      <td>{{ data.userId }}</td>
-                      <td>{{ data.insertTime }}</td>
-                      <!-- <td>{{ data.likes }}</td> -->
-                      <td>
-                        <button
-                          class="btn btn-outline-secondary"
-                          type="button"
-                          id="button-search"
-                          @click="updateDeptBoardReport(data.reportId, data)"
-                          style="
-                            background-color: #fff;
-                            border: 1px solid #162b59;
-                            color: #162b59;
-                            text-align: center;
-                          "
-                        >
-                          취소
-                        </button>
-                      </td>
-                      <td>
-                        <button
-                          class="btn btn-outline-secondary"
-                          type="button"
-                          id="button-search"
-                          @click="
-                            deleteDeptBoardReport(
-                              data.reportId,
-                              data.deptBoardId
-                            )
-                          "
-                          style="background-color: red"
-                        >
-                          삭제
-                        </button>
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
-
-              <!-- 페이징 -->
-              <div class="row justify-content-center mt-5">
-                <div class="col-auto" style="margin-top: 50px">
-                  <b-pagination
-                    class="custom-pagination col-12 mb-3"
-                    v-model="deptBoardPage"
-                    :total-rows="deptBoardCount"
-                    :per-page="deptBoardPageSize"
-                    @click="retrieveDeptBoardReport()"
-                  ></b-pagination>
-                </div>
+            <!-- 페이징 -->
+            <div class="row justify-content-center mt-5">
+              <div class="col-auto" style="margin-top: 50px">
+                <b-pagination
+                  class="custom-pagination col-12 mb-3"
+                  v-model="deptBoardPage"
+                  :total-rows="deptBoardCount"
+                  :per-page="deptBoardPageSize"
+                  @click="retrieveDeptBoardReport()"
+                ></b-pagination>
               </div>
             </div>
+          </div>
 
-            <!-- 자유 신고 처리 완료 -->
-            <div v-show="activeTab === 'freeprocessed'">
-              <div class="table-responsive shadow">
-                <table class="table mt-5">
-                  <thead>
-                    <tr>
-                      <th scope="col">번호</th>
-                      <!-- <th scope="col">부서</th> -->
-                      <th
-                        scope="col"
-                        style="text-align: left; padding-left: 100px"
-                      >
-                        신고 사유
-                      </th>
-                      <th scope="col">작성자</th>
-                      <th scope="col">등록일</th>
-                      <!-- <th scope="col">좋아요</th> -->
-                      <th scope="col">상태</th>
-                      <!-- <th scope="col">삭제</th> -->
-                      <!-- <th scope="col">조회수</th> -->
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <!-- 반복문 시작할 행 -->
-                    <tr
-                      v-for="(data, index) in freeBoardReportsListProcessed"
-                      :key="index"
+          <!-- 자유 신고 처리 완료 -->
+          <div v-show="activeTab === 'freeprocessed'">
+            <div class="table-responsive shadow">
+              <table class="table mt-5">
+                <thead>
+                  <tr>
+                    <th scope="col">번호</th>
+                    <!-- <th scope="col">부서</th> -->
+                    <th
+                      scope="col"
+                      style="text-align: left; padding-left: 100px"
                     >
-                      <td>{{ (freeBoardProcessedPage - 1) * freeBoardProcessedPageSize + index + 1 }}</td>
-                      <!-- <td>{{data.deptId}}</td> -->
-                      <td
-                        id="router_hv"
-                        style="text-align: left; padding-left: 100px"
+                      신고 사유
+                    </th>
+                    <th scope="col">작성자</th>
+                    <th scope="col">등록일</th>
+                    <!-- <th scope="col">좋아요</th> -->
+                    <th scope="col">상태</th>
+                    <!-- <th scope="col">삭제</th> -->
+                    <!-- <th scope="col">조회수</th> -->
+                  </tr>
+                </thead>
+                <tbody>
+                  <!-- 반복문 시작할 행 -->
+                  <tr
+                    v-for="(data, index) in freeBoardReportsListProcessed"
+                    :key="index"
+                  >
+                    <td>
+                      {{
+                        (freeBoardProcessedPage - 1) *
+                          freeBoardProcessedPageSize +
+                        index +
+                        1
+                      }}
+                    </td>
+                    <!-- <td>{{data.deptId}}</td> -->
+                    <td
+                      id="router_hv"
+                      style="text-align: left; padding-left: 100px"
+                    >
+                      <router-link
+                        style="
+                          color: #444444;
+                          font-weight: bold;
+                          text-decoration: none;
+                        "
+                        :to="'/free/free-boardDetail/' + data.freeBoardId"
+                        class="router-link-exact-active alltext"
                       >
-                        <router-link
-                          style="
-                            color: #444444;
-                            font-weight: bold;
-                            text-decoration: none;
-                          "
-                          :to="'/free/free-boardDetail/' + data.freeBoardId"
-                          class="router-link-exact-active alltext"
-                        >
-                          {{ data.content }}
-                        </router-link>
-                      </td>
-                      <td>{{ data.userId }}</td>
-                      <td>{{ data.insertTime }}</td>
-                      <!-- <td>{{ data.likes }}</td> -->
-                      <td>처리 완료</td>
-                      <!-- <td>
+                        {{ data.content }}
+                      </router-link>
+                    </td>
+                    <td>{{ data.userId }}</td>
+                    <td>{{ data.insertTime }}</td>
+                    <!-- <td>{{ data.likes }}</td> -->
+                    <td>처리 완료</td>
+                    <!-- <td>
                         <button
                           class="btn btn-outline-secondary"
                           type="button"
@@ -304,93 +312,100 @@
                           삭제
                         </button>
                       </td> -->
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
-              <!-- 페이징 -->
-              <div class="row justify-content-center mt-5">
-                <div class="col-auto" style="margin-top: 50px">
-                  <b-pagination
-                    class="custom-pagination col-12 mb-3"
-                    v-model="freeBoardProcessedPage"
-                    :total-rows="freeBoardProcessedCount"
-                    :per-page="freeBoardProcessedPageSize"
-                    @click="retrieveFreeBoardReportProcessed()"
-                  ></b-pagination>
-                </div>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <!-- 페이징 -->
+            <div class="row justify-content-center mt-5">
+              <div class="col-auto" style="margin-top: 50px">
+                <b-pagination
+                  class="custom-pagination col-12 mb-3"
+                  v-model="freeBoardProcessedPage"
+                  :total-rows="freeBoardProcessedCount"
+                  :per-page="freeBoardProcessedPageSize"
+                  @click="retrieveFreeBoardReportProcessed()"
+                ></b-pagination>
               </div>
             </div>
+          </div>
 
-            <!-- 부서 신고 처리 완료 -->
-            <div v-show="activeTab === 'deptprocessed'">
-              <div class="table-responsive shadow">
-                <table class="table mt-5">
-                  <thead>
-                    <tr>
-                      <th scope="col">번호</th>
-                      <!-- <th scope="col">부서</th> -->
-                      <th
-                        scope="col"
-                        style="text-align: left; padding-left: 100px"
-                      >
-                        신고 사유
-                      </th>
-                      <th scope="col">작성자</th>
-                      <th scope="col">등록일</th>
-                      <!-- <th scope="col">좋아요</th> -->
-                      <th scope="col">상태</th>
-                      <!-- <th scope="col">조회수</th> -->
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <!-- 반복문 시작할 행 -->
-                    <tr
-                      v-for="(data, index) in deptBoardReportsListProcessed"
-                      :key="index"
+          <!-- 부서 신고 처리 완료 -->
+          <div v-show="activeTab === 'deptprocessed'">
+            <div class="table-responsive shadow">
+              <table class="table mt-5">
+                <thead>
+                  <tr>
+                    <th scope="col">번호</th>
+                    <!-- <th scope="col">부서</th> -->
+                    <th
+                      scope="col"
+                      style="text-align: left; padding-left: 100px"
                     >
-                      <td>{{ (deptBoardProcessedPage - 1) * deptBoardProcessedPageSize + index + 1 }}</td>
-                      <!-- <td>{{data.deptId}}</td> -->
-                      <td
-                        id="router_hv"
-                        style="text-align: left; padding-left: 100px"
+                      신고 사유
+                    </th>
+                    <th scope="col">작성자</th>
+                    <th scope="col">등록일</th>
+                    <!-- <th scope="col">좋아요</th> -->
+                    <th scope="col">상태</th>
+                    <!-- <th scope="col">조회수</th> -->
+                  </tr>
+                </thead>
+                <tbody>
+                  <!-- 반복문 시작할 행 -->
+                  <tr
+                    v-for="(data, index) in deptBoardReportsListProcessed"
+                    :key="index"
+                  >
+                    <td>
+                      {{
+                        (deptBoardProcessedPage - 1) *
+                          deptBoardProcessedPageSize +
+                        index +
+                        1
+                      }}
+                    </td>
+                    <!-- <td>{{data.deptId}}</td> -->
+                    <td
+                      id="router_hv"
+                      style="text-align: left; padding-left: 100px"
+                    >
+                      <router-link
+                        style="
+                          color: #444444;
+                          font-weight: bold;
+                          text-decoration: none;
+                        "
+                        :to="'/dept/board/detail/' + data.deptBoardId"
+                        class="router-link-exact-active alltext"
                       >
-                        <router-link
-                          style="
-                            color: #444444;
-                            font-weight: bold;
-                            text-decoration: none;
-                          "
-                          :to="'/dept/board/detail/' + data.deptBoardId"
-                          class="router-link-exact-active alltext"
-                        >
-                          {{ data.content }}
-                        </router-link>
-                      </td>
-                      <td>{{ data.userId }}</td>
-                      <td>{{ data.insertTime }}</td>
-                      <!-- <td>{{ data.likes }}</td> -->
-                      <td>처리 완료</td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
-              <!-- 페이징 -->
-              <div class="row justify-content-center mt-5">
-                <div class="col-auto" style="margin-top: 50px">
-                  <b-pagination
-                    class="custom-pagination col-12 mb-3"
-                    v-model="deptBoardProcessedPage"
-                    :total-rows="deptBoardProcessedCount"
-                    :per-page="deptBoardProcessedPageSize"
-                    @click="retrieveDeptBoardReportProcessed()"
-                  ></b-pagination>
-                </div>
+                        {{ data.content }}
+                      </router-link>
+                    </td>
+                    <td>{{ data.userId }}</td>
+                    <td>{{ data.insertTime }}</td>
+                    <!-- <td>{{ data.likes }}</td> -->
+                    <td>처리 완료</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <!-- 페이징 -->
+            <div class="row justify-content-center mt-5">
+              <div class="col-auto" style="margin-top: 50px">
+                <b-pagination
+                  class="custom-pagination col-12 mb-3"
+                  v-model="deptBoardProcessedPage"
+                  :total-rows="deptBoardProcessedCount"
+                  :per-page="deptBoardProcessedPageSize"
+                  @click="retrieveDeptBoardReportProcessed()"
+                ></b-pagination>
               </div>
             </div>
           </div>
         </div>
       </div>
+    </div>
   </div>
 </template>
 
@@ -438,18 +453,18 @@ export default {
   },
   methods: {
     // activeTab을 업데이트하도록 변경 : 현재 활성화된 탭을 추적하기 위해 사용
-      setActiveTab(tab) {
-    this.activeTab = tab;
-    if (tab === 'free') {
-      this.retrieveFreeBoardReport();
-    } else if (tab === 'dept') {
-      this.retrieveDeptBoardReport();
-    } else if (tab === 'freeprocessed') {
-      this.retrieveFreeBoardReportProcessed();
-    } else if (tab === 'deptprocessed') {
-      this.retrieveDeptBoardReportProcessed();
-    }
-  },
+    setActiveTab(tab) {
+      this.activeTab = tab;
+      if (tab === "free") {
+        this.retrieveFreeBoardReport();
+      } else if (tab === "dept") {
+        this.retrieveDeptBoardReport();
+      } else if (tab === "freeprocessed") {
+        this.retrieveFreeBoardReportProcessed();
+      } else if (tab === "deptprocessed") {
+        this.retrieveDeptBoardReportProcessed();
+      }
+    },
     // 자유 :  전체조회
     async retrieveFreeBoardReport() {
       try {
@@ -491,7 +506,7 @@ export default {
         // TODO: 4) 프론트 로깅 : console.log
         console.log(
           "자유게시판 처리완료 목록",
-          this.freeBoardReportsListProcessed
+        freeBoardReportsListProcessed
         );
       } catch (e) {
         console.log(e);

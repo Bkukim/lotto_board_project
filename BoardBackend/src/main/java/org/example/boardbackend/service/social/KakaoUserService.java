@@ -160,7 +160,8 @@ public class KakaoUserService implements SocialLoginService {
                 socialUserReq.getRole(),
                 socialUserReq.getDeptId(),
                 socialUserReq.getNormalAddress(),
-                socialUserReq.getDetailAddress());
+                socialUserReq.getDetailAddress(),
+                "N");
         userRepository.save(user);
         userHashMap.remove(uuid);
         String jwt = jwtUtils.generateJwtTokenForKakao(userId);

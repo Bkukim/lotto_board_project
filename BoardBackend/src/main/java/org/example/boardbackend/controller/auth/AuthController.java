@@ -160,7 +160,8 @@ public class AuthController {
                     newUser.getNormalAddress(),
                     newUser.getDetailAddress(),
                     newUser.getPwQuestion(),
-                    newUser.getPwAnswer()
+                    newUser.getPwAnswer(),
+                    "N"
             );
             log.debug(String.valueOf(user));
 //            3) 저장
@@ -250,11 +251,22 @@ public class AuthController {
     private final EmailService emailService;
     // ?는 requestParam, ?이하는 변수를 알아서 받음 / 그냥은 PathVariable, {}가 들어감
     @PutMapping("/sendEmail")
-    public String sendEmail(@RequestParam String email, @RequestParam String userId){
-        log.debug("이메일"+email);
-        log.debug("아이디"+userId);
-        emailService.sendSimpleEmail(email, userId);
-        return "이메일 발송 성공";
+    public ResponseEntity<Object> sendEmail(@RequestParam String email, @RequestParam String userId){
+        if (userService.existsByUserIdAndEmail(userId,email)) {
+            log.debug("이메일"+email);
+            log.debug("아이디"+userId);
+            emailService.sendSimpleEmail(email, userId);
+            return new ResponseEntity<>(true,HttpStatus.OK);
+        }else {
+            return new ResponseEntity<>(false,HttpStatus.OK);
+        }
+
+    }
+// todo userid와 email로 회원 검사
+    @GetMapping("/exist/email")
+    public ResponseEntity<Object> checkByUserIdAndEmail(@RequestParam String email, @RequestParam String userId){
+        boolean result = userService.existsByUserIdAndEmail(userId,email);
+        return ResponseEntity.ok(result);
     }
     @GetMapping("/exist-pw")
     public ResponseEntity<Object> checkByPw(@RequestBody UserReq userReq){

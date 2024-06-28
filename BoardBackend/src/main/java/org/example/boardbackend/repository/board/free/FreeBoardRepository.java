@@ -91,7 +91,7 @@ List<FreeBoardDto> findFreeBoardByLikes(FreeBoardDto freeBoardDto);
         ", TITLE AS title" +
         ", LIKES AS likes" +
         ", USER_ID AS userId" +
-        ", INSERT_TIME AS inserTime \n" +
+        ", INSERT_TIME AS insertTime \n" +
         "FROM (\n" +
         "    SELECT FREE_BOARD_ID, TITLE, LIKES, USER_ID, INSERT_TIME\n" +
         "    FROM LOTTO_FREE_BOARD\n" +

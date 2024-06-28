@@ -19,12 +19,9 @@ public class QFreeBoard extends EntityPathBase<FreeBoard> {
 
     public static final QFreeBoard freeBoard = new QFreeBoard("freeBoard");
 
-    public final org.example.boardbackend.model.common.QBaseTimeEntity3 _super = new org.example.boardbackend.model.common.QBaseTimeEntity3(this);
+    public final org.example.boardbackend.model.common.QBaseTimeEntity _super = new org.example.boardbackend.model.common.QBaseTimeEntity(this);
 
     public final StringPath content = createString("content");
-
-    //inherited
-    public final StringPath deleteYn = _super.deleteYn;
 
     public final NumberPath<Long> freeBoardId = createNumber("freeBoardId", Long.class);
 

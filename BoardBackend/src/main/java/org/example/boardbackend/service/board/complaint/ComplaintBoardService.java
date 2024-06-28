@@ -89,11 +89,12 @@ public class ComplaintBoardService {
     //   todo:  저장 함수
     public ComplaintBoard save(ComplaintBoard complaintBoard) {
 //        JPA 저장 함수 실행 : return 값 : 저장된 객체
+        complaintBoard.setStatus("확인중");
         ComplaintBoard complaintBoard1 = complaintBoardRepository.save(complaintBoard);
         return complaintBoard1;
     }
     // todo 건의 알림 저장 기능
-    public void sendComplaintNotification(ComplaintBoard complaintBoard) {
+    public void sendComplaintNotification(ComplaintBoard complaintBoard) throws Exception{
 
         // 2. 알림 보내기
         String notifyContent = "건의사항 게시물이 등록되었습니다.   " + "\"" + complaintBoard.getTitle() + "\"";

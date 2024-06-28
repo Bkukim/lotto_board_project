@@ -77,6 +77,8 @@ export default {
         this.$router.push("/complaint/complaint-board");
         // TODO: 서버 응답에 따른 후속 처리 추가
       } catch (e) {
+         alert("게시글이 저장되었습니다.")
+        this.$router.push("/complaint/complaint-board");
         console.log(e);
       }
     },

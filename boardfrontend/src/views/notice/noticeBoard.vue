@@ -57,7 +57,7 @@
             class="btn btn-outline-secondary"
             type="button"
             id="button-reset"
-            @click="resetComplaintSearch"
+            @click="resetSearch"
           >
             초기화
           </button>
@@ -168,7 +168,7 @@ export default {
     },
     resetSearch() {
       this.title = "";
-      this.retrieveFreeBoard();
+      this.retrieveNotice();
     },
   },
   mounted() {

@@ -98,19 +98,19 @@
 
         </div>
         <!-- api 로그인 -->
-        <div class="api-login row container text-center mt-5">
+        <div class="api-login row container text-center mt-3">
           <div class="api-login-icons col text-center">
-            <img
+            <!-- <img
               src="@/assets/img/btnG_축약형.png"
               class="login-icon"
               @click="goToNaverLogin"
               style="width: 110px; margin-right: 7px;"
-            />
+            /> -->
             <img
-              src="@/assets/img/kakao_login_medium.png"
+              src="@/assets/img/kakao_login_large_narrow.png"
               class="login-icon"
               @click="goToKakaoAuth"
-              style="width: 90px;"
+              style="width: 200px;"
             />
           </div>
         </div>

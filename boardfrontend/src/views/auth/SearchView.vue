@@ -45,9 +45,7 @@
               data-bs-toggle="dropdown"
               aria-expanded="false"
               id="search_ck"
-
               style="background-color: #162b59; border: none; color: #fff"
-
             >
               -- 통합검색 선택 ---
             </button>
@@ -103,8 +101,11 @@
     <!-- 검색박스 끝 -->
 
     <h4 class="mt-5 mb-5" style="color: #333; letter-spacing: -1.5px">
-      검색어 " {{searchTitle}}  " 에 관해 전체 '  {{noticesTotalItems+freeBoardsTotalItems+clubBoardsTotalItems+complaintBoardsTotalItems}} '건이 검색되었습니다.
-
+      검색어 " {{ searchTitle }} " 에 관해 전체 '
+      {{
+        totalItems
+      }}
+      '건이 검색되었습니다.
     </h4>
 
     <!-- 공지사항 테이블 -->
@@ -117,7 +118,7 @@
         letter-spacing: -1.5px;
       "
     >
-      공지사항 ( {{noticesTotalItems}} )
+      공지사항 ( {{ noticesTotalItems }} )
     </h5>
     <table class="table mt-5">
       <thead class="text-center">
@@ -189,7 +190,7 @@
         letter-spacing: -1.5px;
       "
     >
-      자유게시판 ( {{freeBoardsTotalItems}} )
+      자유게시판 ( {{ freeBoardsTotalItems }} )
     </h5>
     <table class="table mt-5">
       <thead class="text-center">
@@ -218,7 +219,7 @@
                 padding-left: 5vw;
               "
             >
-               {{ data.title }}
+              {{ data.title }}
             </router-link>
           </td>
           <td class="text-center">관리자</td>
@@ -259,7 +260,7 @@
         letter-spacing: -1.5px;
       "
     >
-      동아리게시판 ( {{clubBoardsTotalItems}} )
+      동아리게시판 ( {{ clubBoardsTotalItems }} )
     </h5>
     <table class="table mt-5">
       <thead class="text-center">
@@ -329,7 +330,7 @@
         letter-spacing: -1.5px;
       "
     >
-      건의게시판 ( {{complaintBoardsTotalItems}} )
+      건의게시판 ( {{ complaintBoardsTotalItems }} )
     </h5>
     <table class="table mt-5">
       <thead class="text-center">
@@ -358,7 +359,7 @@
                 padding-left: 5vw;
               "
             >
-            {{ data.title }}
+              {{ data.title }}
             </router-link>
           </td>
           <td class="text-center">관리자</td>
@@ -397,17 +398,14 @@
   <br />
 </template>
 <script>
-
 import ClubBoardService from "@/services/board/club/ClubBoardService";
 import ComplaintBoardService from "@/services/board/complaint/ComplaintBoardService";
 import FreeBoardService from "@/services/board/free/FreeBoardService";
 import NoticeService from "@/services/notice/NoticeService";
 
-
 export default {
   data() {
     return {
-
       // // 자유게시판 페이지네이션 상태
       // freeBoardPage: 1,
       // freeBoardCount: 0,
@@ -427,19 +425,18 @@ export default {
       // clubBoardPage: 1,
       // clubBoardCount: 0,
       // clubBoardPageSize: 3,
-
+      totalItems:0,
       notices: [],
-      noticesTotalItems:0,
+      noticesTotalItems: 0,
       freeBoards: [],
-      freeBoardsTotalItems:0,
+      freeBoardsTotalItems: 0,
       clubBoards: [],
-      clubBoardsTotalItems:0,
+      clubBoardsTotalItems: 0,
       complaintBoards: [],
-      complaintBoardsTotalItems:0,
+      complaintBoardsTotalItems: 0,
       searchTitle: "",
       page: 1, // 현재페이지번
       pageSize: 3, // 1페이지당개수(select태그)
-
     };
   },
   methods: {
@@ -462,13 +459,13 @@ export default {
         this.notices = notices; // 부서배열(벡엔드 전송)
         // this.count = totalItems; // 전체페이지수(벡엔드 전송)
         this.noticesTotalItems = totalItems; // 전체페이지수(벡엔드 전송)
-        console.log(response.data);
+        console.log(this.noticesTotalItems);
       } catch (e) {
         console.log(e);
       }
     },
-     // 자유게시판 전체조회 함수
-     async retrieveFreeBoard() {
+    // 자유게시판 전체조회 함수
+    async retrieveFreeBoard() {
       try {
         // TODO: 1) 공통 전체조회 함수 실행
         let response = await FreeBoardService.getAllBoard(
@@ -482,14 +479,15 @@ export default {
         // this.count = totalItems; // 전체페이지수(벡엔드 전송)
         this.freeBoardsTotalItems = totalItems; // 전체페이지수(벡엔드 전송)
         // TODO: 4) 프론트 로깅 : console.log
-        console.log(response.data);
+        console.log(this.freeBoardsTotalItems);
       } catch (e) {
         console.log(e);
       }
     },
 
-     // 동호회게시판 젆체조회
-     async retrieveClubBoard() {``
+    // 동호회게시판 젆체조회
+    async retrieveClubBoard() {
+      ``;
       try {
         let response = await ClubBoardService.getAllClubBoardByLocation(
           this.searchTitle, // 검색어
@@ -500,13 +498,13 @@ export default {
         this.clubBoards = clubBoardList;
         // this.clubBoardCount = totalItems;
         this.clubBoardsTotalItems = totalItems;
-        console.log(response.data);
+        console.log(this.clubBoardsTotalItems);
       } catch (e) {
         console.log(e);
       }
     },
-     // 건의 게시판 전체조회 함수
-     async retrieveComplaintBoard() {
+    // 건의 게시판 전체조회 함수
+    async retrieveComplaintBoard() {
       try {
         // TODO: 1) 공통 전체조회 함수 실행
         let response = await ComplaintBoardService.getAllComplaintBoard(
@@ -518,9 +516,11 @@ export default {
         // TODO: 3) 바인딩변수(속성)에 저장
         this.complaintBoards = complaintBoardList; // 부서배열(벡엔드 전송)
         // this.count = totalItems; // 전체페이지수(벡엔드 전송)
-        this.complaintBoardsTotalItems = totalItems; // 전체페이지수(벡엔드 전송)
+        
+          this.complaintBoardsTotalItems = totalItems;
+         // 전체페이지수(벡엔드 전송)
         // TODO: 4) 프론트 로깅 : console.log
-        console.log(response.data);
+        console.log(this.complaintBoardsTotalItems);
       } catch (e) {
         console.log(e);
       }
@@ -530,14 +530,46 @@ export default {
       this.searchTitle = "";
       this.retrieveSearchBoard();
     },
-    SearchAll(){
-      this.retrieveNotice();
-      this.retrieveFreeBoard();
-      this.retrieveClubBoard();
-      this.retrieveComplaintBoard();
+    updateTotalItems() {
+      if (this.noticesTotalItems == undefined) {
+        this.noticesTotalItems = 0
+      }
+      if (this.freeBoardsTotalItems == undefined) {
+        this.freeBoardsTotalItems = 0
+      }
+      if (this.clubBoardsTotalItems == undefined) {
+        this.clubBoardsTotalItems = 0
+      }
+      if (this.complaintBoardsTotalItems == undefined) {
+        this.complaintBoardsTotalItems = 0
+      }
+      
+      this.totalItems =
+        this.noticesTotalItems +
+        this.freeBoardsTotalItems +
+        this.clubBoardsTotalItems +
+        this.complaintBoardsTotalItems;
+        console.log("토탈",this.totalItems)
+        console.log("토탈",this.noticesTotalItems)
+        console.log("토탈",this.tofreeBoardsTotalItemstalItems)
+        console.log("토탈",this.clubBoardsTotalItems)
+        console.log("토탈",this.totalItems)
+    },
+    async SearchAll() {
+    try {
+      // 네 개의 비동기 함수를 병렬로 실행하고, 모든 함수가 완료된 후에 다음 작업을 수행
+      await Promise.all([
+        this.retrieveNotice(),
+        this.retrieveFreeBoard(),
+        this.retrieveClubBoard(),
+        this.retrieveComplaintBoard()
+      ]);
+      this.updateTotalItems(); // 네 개의 비동기 함수가 모두 완료된 후에 호출
+    } catch (e) {
+      console.log(e);
     }
-  
   },
+}
 };
 </script>
 <style>
