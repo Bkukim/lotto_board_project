@@ -1,5 +1,9 @@
+<div align="center">
+
+
+
 ![LOTTO_LOGO](https://github.com/Bkukim/lotto_board_project/assets/153472858/1963ea69-a5b8-46ca-a747-0deb1cace729)
-직원들이 소통하고 협업할 수 있는 사내 게시판 서비스
+### 📋 직원들이 소통하고 협업할 수 있는 사내 게시판 서비스
 
 <br>
 
@@ -34,9 +38,7 @@ Spring boot와 Vue.js를 활용한 사내 커뮤니티 게시판 프로젝트입
  - Kakao 및 Naver 소셜 로그인으로 회원가입 및 로그인 
 #### 7. 알림 기능
  - 회원의 활동 내역에 대한 알림을 수신하는 기능 구현
-#### 8. 이벤트
- - Redis를 이용한 선착순 이벤트 기능 구현
-#### 9. 게시판 관리
+#### 8. 관리자 기능
  - 관리자 페이지를 통한 게시판 관리 및 회원 관리, 신고 관리 기능 구현
 
 <br>
@@ -57,3 +59,4 @@ Spring boot와 Vue.js를 활용한 사내 커뮤니티 게시판 프로젝트입
 ## 📌기술 스택
 <img src="https://img.shields.io/badge/html5-E34F26?style=for-the-badge&logo=html5&logoColor=white"/> <img src="https://img.shields.io/badge/css-1572B6?style=for-the-badge&logo=css3&logoColor=white"/> <img src="https://img.shields.io/badge/javascript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black"/> <img src="https://img.shields.io/badge/vue.js-4FC08D?style=for-the-badge&logo=vue.js&logoColor=white"/> <img src="https://img.shields.io/badge/springboot-6DB33F?style=for-the-badge&logo=springboot&logoColor=white"/> 
 <img src="https://img.shields.io/badge/github-181717?style=for-the-badge&logo=github&logoColor=white"/> <img src="https://img.shields.io/badge/git-F05032?style=for-the-badge&logo=git&logoColor=white"/> <img src="https://img.shields.io/badge/oracle-F80000?style=for-the-badge&logo=oracle&logoColor=white"> <img src="https://img.shields.io/badge/bootstrap-7952B3?style=for-the-badge&logo=bootstrap&logoColor=white"> <img src="https://img.shields.io/badge/amazonaws-232F3E?style=for-the-badge&logo=amazonaws&logoColor=white"> <img src="https://img.shields.io/badge/java-007396?style=for-the-badge&logo=OpenJDK&logoColor=white"> <img src="https://img.shields.io/badge/Redis-DC382D?style=for-the-badge&logo=Redis&logoColor=white"> <img src="https://img.shields.io/badge/nginx-%23009639.svg?style=for-the-badge&logo=nginx&logoColor=white">
+</div>
