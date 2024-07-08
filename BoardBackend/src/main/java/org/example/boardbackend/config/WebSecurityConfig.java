@@ -123,15 +123,15 @@ public class WebSecurityConfig {
         return http.build();
     }
 
-    // todo chainfilter에서 막힐경울 처리해주는 클래스
-    class FailedAuthenticationEntrypoint implements AuthenticationEntryPoint {
-        @Override
-        public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException authException) throws IOException {
-            response.setContentType("application/json"); // 반환할 타입
-            response.setStatus(HttpServletResponse.SC_FORBIDDEN); // 권한없음 신호 보내기
-            // {"code":"NP","message": "No Permission"}
-            response.getWriter().write("{\"code\":\"NP\",\"message\": \"No Permission\"}"); // 실패시 실제로 변경될 메세지
-
-        }
-    }
+//    // todo chainfilter에서 막힐경울 처리해주는 클래스
+//    class FailedAuthenticationEntrypoint implements AuthenticationEntryPoint {
+//        @Override
+//        public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException authException) throws IOException {
+//            response.setContentType("application/json"); // 반환할 타입
+//            response.setStatus(HttpServletResponse.SC_FORBIDDEN); // 권한없음 신호 보내기
+//            // {"code":"NP","message": "No Permission"}
+//            response.getWriter().write("{\"code\":\"NP\",\"message\": \"No Permission\"}"); // 실패시 실제로 변경될 메세지
+//
+//        }
+//    }
 }

@@ -263,41 +263,8 @@ export default {
       }
     },
 
-    // connectSse(jwt) {
-    //   alert(jwt);
-    //   let subscribeUrl = "http://localhost:8000/api/v1/notify/subscribe";
-
-    //   if (jwt != null) {
-    //     let token = jwt;
-    //     let eventSource = new EventSource(subscribeUrl + "?token=" + token);
-
-    //     alert()
-    //     eventSource.onmessage = function(event) {
-    //     alert("새 알림:", event.data);
-    // };
-    //     // eventSource.addEventListener("connect", (e) => {
-    //     //   const { data: receivedConnectData } = e;
-    //     //   alert("connect event data: ", receivedConnectData); // "connected!"
-    //     // });
-    //     // eventSource.addEventListener('connect', function (event) {
-    //     //   let message = event.data;
-    //     //   alert(message);
-    //     // });
-    //     eventSource.addEventListener("UNSENT_MESSAGE", function (event) {
-    //       let message = event.data;
-    //       alert(message);
-    //     });
-
-    //     eventSource.addEventListener("error", function (event) {
-    //       console.log(event);
-    //       eventSource.close();
-    //     });
-    //   }
-    // },
+    
     async handleLogin() {
-      // 공통 로그인 서비스 함수
-      // 로그인 성공 =>
-      // 로그인 실패 => 로그인 실패 공유함수 실행
       try {
         let response = await AuthService.login(this.user);
         console.log(response.data); // response.data == jwt, userId, 권한
@@ -326,8 +293,6 @@ export default {
     },
   },
   created() {
-    // dept와 emp사이에서는 서로 접근이 불가능하여서(의존성을 낮추기 위해) 속성을 공유해서 사용할 수 없다. 그래서 풀옵스와 공유저장소를 이용해서 통신해야한다.
-    // vue의 공유저장소인 vuex를 사용하자, 만약 vuex에 로그인이 true이면 로그인이 되어있는상태이므로 login을 할 필요가 없다. 그래서 강제로 home으로 이동시킨다.
     try {
       if (this.$store.state.loggedIn) {
         this.$router.push("/"); // 로그인이 되어있으므로 강제이동
