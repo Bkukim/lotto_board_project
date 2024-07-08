@@ -12,10 +12,10 @@ export default createStore({
     loggedIn: user ? true : false, // 로그인 여부
     user: user ? user : null, //  로그인 정보 (웹토큰 속성 있음)
     // orderAmount: 1,
-    // backendIp:"localhost:8000",
-    backendIp:"13.209.24.76:8000",
-    // frontendIp:"localhost:8080",
-    frontendIp:"13.209.24.76:8080",
+    backendIp:"localhost:8000",
+    // backendIp:"13.209.24.76:8000",
+    frontendIp:"localhost:8080",
+    // frontendIp:"13.209.24.76:8080",
 
     selectedOption: '', // 라디오 버튼에서 선택된 옵션
   },
