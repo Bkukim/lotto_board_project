@@ -12,6 +12,7 @@ import org.springframework.cache.annotation.Cacheable;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -37,6 +38,7 @@ public class NoticeService {
     private final NoticeRepository noticeRepository;
 
     // todo 공지사항 제목으로 검색 페이지 ::전체조회
+    @Async
     public Page<INoticeDto> findByTitleContaining(String title, Pageable pageable) {
         Page<INoticeDto> notices = noticeRepository.findByTitleContaining(title,pageable);
         return notices;

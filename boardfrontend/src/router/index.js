@@ -80,16 +80,11 @@ const routes = [
   // 검색 페이지
   {
     path: "/member/search",
-    component: () => import("../views/auth/SearchView.vue"),
+    component: () => import("../views/SearchView.vue"),
     meta: { showHeader: true }, // 기본적으로 헤더를 보이게 설정
 
   },
-    // // 검색 페이지
-    // {
-    //   path: "/member/search",
-    //   component: () => import("../views/auth/SearchView.vue"),
-    //   meta: { showHeader: true }, // 기본적으로 헤더를 보이게 설정
-    // },
+
   
   // 회원정보 수정 페이지
   {

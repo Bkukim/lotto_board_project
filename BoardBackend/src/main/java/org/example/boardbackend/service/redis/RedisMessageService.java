@@ -35,9 +35,11 @@ public class RedisMessageService {
     }
 
     // 이벤트 발행
+    // 메세지를 채널에 발행하는 함수
     public void publish( MessageDto messageDto) {
         messageDto.setRoomId(getChannelName(messageDto.getReceiver()));
         redisTemplate.convertAndSend(getChannelName(messageDto.getReceiver()), messageDto);
+        // convertAndSend 는 redisTemplate 에서 제공하는 함수중 하나로 채널명과 메세지 내용을 적어주면 그 채널로 메세지가 전달된다.
     }
 
     // 구독 삭제

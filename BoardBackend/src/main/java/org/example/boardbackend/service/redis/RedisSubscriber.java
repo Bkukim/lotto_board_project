@@ -33,6 +33,8 @@ public class RedisSubscriber implements MessageListener {
     private final RedisTemplate<String, Object> template;
     private final NotifyService notifyService;
 
+
+    // 채널에 메세지가 오면 구독한 회원에게 일어날 현상들을 정의하는 곳이다.
     @Override
     public void onMessage(Message message, byte[] pattern) {
         try {
