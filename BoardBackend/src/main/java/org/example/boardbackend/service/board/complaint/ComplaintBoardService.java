@@ -19,6 +19,7 @@ import org.example.boardbackend.service.notify.NotifyService;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -50,6 +51,7 @@ public class ComplaintBoardService {
     private String adminId;
 
     //    todo 전체 조회
+    @Async
     public Page<ComplaintBoardDto> findComplaintBoardByTitleContaining(
             String title,
             Pageable pageable

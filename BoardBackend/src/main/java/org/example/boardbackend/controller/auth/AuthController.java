@@ -10,6 +10,7 @@ import org.example.boardbackend.model.dto.member.FindId;
 import org.example.boardbackend.model.dto.member.NewPw;
 import org.example.boardbackend.model.entity.auth.User;
 import org.example.boardbackend.security.jwt.JwtUtils;
+import org.example.boardbackend.service.social.KakaoUserService;
 import org.example.boardbackend.service.social.SocialLoginService;
 import org.example.boardbackend.service.user.EmailService;
 import org.example.boardbackend.service.user.UserService;
@@ -48,24 +49,15 @@ public class AuthController {
     private final PasswordEncoder passwordEncoder;
     private final JwtUtils jwtUtils;
     private final AuthenticationManagerBuilder authenticationManagerBuilder;
-    private SocialLoginService socialLoginService;
-    @Autowired
-    public void setSocialLoginService(SocialLoginService socialLoginService) {
-        this.socialLoginService = socialLoginService;
-    }
+    private final SocialLoginService kakaoUserService;
 
     //  todo 카카오 로그인
     @PostMapping("/kakao-login/{code}")
     public ResponseEntity<Object> kakaoLogin(@PathVariable String code){
         try {
-            String accessToken = socialLoginService.getAccessToken(code);
-            UserRes userRes = socialLoginService.getUserInfo(accessToken);
-
-
+            String accessToken = kakaoUserService.getAccessToken(code);
+            UserRes userRes = kakaoUserService.getUserInfo(accessToken);
                 return new ResponseEntity<>(userRes,HttpStatus.OK);
-
-
-
         }catch (Exception e){
             log.debug(e.getMessage());
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
@@ -78,7 +70,7 @@ public class AuthController {
                                              @RequestBody SocialUserReq socialUserReq){
         try {
 
-                UserRes RegisteredUserRes = socialLoginService.socialRegister(uuid, socialUserReq);
+                UserRes RegisteredUserRes = kakaoUserService.socialRegister(uuid, socialUserReq);
               return new ResponseEntity<>(RegisteredUserRes, HttpStatus.OK);
 
         }catch (Exception e){
@@ -86,8 +78,6 @@ public class AuthController {
             return new ResponseEntity<>("회원가입 실패",HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-
-    // TODO 네이버 로그인
 
     //    todo 로그인 함수 : 로그인은 조회. URL에 안뜨게 하려고 GET아니고 POST
     @PostMapping("/login")

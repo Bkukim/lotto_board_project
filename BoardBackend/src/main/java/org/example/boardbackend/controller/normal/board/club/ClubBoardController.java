@@ -96,7 +96,7 @@ public class ClubBoardController {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-    //  TODO: UserId 가 작성한 글 전체조회
+    //  TODO: 위치로 작성한 글 전체조회
     @GetMapping("/club/location/clubBoard")
     public ResponseEntity<Object> findByLocation(
             @RequestParam(defaultValue = "") String location,
@@ -104,7 +104,7 @@ public class ClubBoardController {
             @RequestParam(defaultValue = "3") int size
     ) {
         try {
-            log.debug("::::::::::::::::::::::여기진입:::::::::::::::::::::::");
+
 //            페이징 객체 생성
             Pageable pageable = PageRequest.of(page, size);
 

@@ -7,6 +7,7 @@ import org.example.boardbackend.model.dto.auth.UserRes;
 import org.example.boardbackend.model.entity.auth.User;
 import org.example.boardbackend.repository.user.UserRepository;
 import org.example.boardbackend.security.jwt.JwtUtils;
+import org.example.boardbackend.service.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.*;
@@ -50,25 +51,23 @@ public class KakaoUserService implements SocialLoginService {
     @Value("${kakao.client-secret}")
     private String clientSecret;
 
+    // 의존성 주입
+    private  JwtUtils jwtUtils;
+    private  UserService userService;
+    private  PasswordEncoder passwordEncoder;
+
     @Autowired
     public void setJwtUtils(JwtUtils jwtUtils) {
         this.jwtUtils = jwtUtils;
     }
-
     @Autowired
-    public void setUserRepository(UserRepository userRepository) {
-        this.userRepository = userRepository;
+    public void setUserService(UserService userService) {
+        this.userService = userService;
     }
-
     @Autowired
     public void setPasswordEncoder(PasswordEncoder passwordEncoder) {
         this.passwordEncoder = passwordEncoder;
     }
-
-    // 의존성 주입
-    private JwtUtils jwtUtils;
-    private UserRepository userRepository;
-    private PasswordEncoder passwordEncoder;
 
     private HashMap <String, User> userHashMap = new HashMap<>();
 
@@ -91,7 +90,7 @@ public class KakaoUserService implements SocialLoginService {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
 
-        // 요청 생성 : 바디와 헤더를
+        // 요청 생성 : 바디와 헤더를 넣어 요청으로 보냄
         HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<>(params, headers);
         ResponseEntity<Map> response = restTemplate.exchange(url, HttpMethod.POST, request, Map.class);
 
@@ -126,7 +125,7 @@ public class KakaoUserService implements SocialLoginService {
 
         String userId = ((Map<String, Object>) userInfo.get("kakao_account")).get("email").toString();
 
-        if (userRepository.existsById(userId)) {
+        if (userService.existsById(userId)) {
             // 프론트로 userRes 객체 보내기
             String jwt = jwtUtils.generateJwtTokenForKakao(userId);
             UserRes userRes = new UserRes(
@@ -162,7 +161,7 @@ public class KakaoUserService implements SocialLoginService {
                 socialUserReq.getNormalAddress(),
                 socialUserReq.getDetailAddress(),
                 "N");
-        userRepository.save(user);
+        userService.save(user);
         userHashMap.remove(uuid);
         String jwt = jwtUtils.generateJwtTokenForKakao(userId);
         UserRes userRes = new UserRes(

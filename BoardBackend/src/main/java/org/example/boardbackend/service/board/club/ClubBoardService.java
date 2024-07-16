@@ -22,6 +22,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -64,6 +65,7 @@ public class ClubBoardService {
     }
 
     // todo 검색을 위한 위치로 전체조회
+    @Async
     public Page<ClubBoardDto> findClubBoardByLocationContaining(String location, Pageable pageable)
     {
         Page<ClubBoardDto> page
